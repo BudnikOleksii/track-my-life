@@ -39,7 +39,7 @@ const searchParams = await props.searchParams
 
 ## Component Structure
 
-```
+```text
 my-component/
 ├── MyComponent.tsx
 ├── types.ts              # Shared types (optional)
