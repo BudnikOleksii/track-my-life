@@ -10,7 +10,7 @@ paths: '**/*.ts, **/*.tsx, **/*.js, **/*.jsx'
 - Array variables MUST include `list` suffix (not plural form). Example `userList`
 - Named constants must be in `UPPER_SNAKE_CASE`
 - Place constants at top of file or in `constants.ts` for component-specific constants
-- Shared constants go in `packages/apps-shared/src/constants` or common parent directory
+- Shared constants go in `packages/shared/src/constants` or common parent directory
 
 ## Function Naming Prefixes
 

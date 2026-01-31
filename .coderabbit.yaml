@@ -1,0 +1,34 @@
+language: 'en'
+early_access: true
+reviews:
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  path_instructions:
+    - path: 'apps/money-tracker/**/*'
+      instructions: |
+        Confirm that the code adheres to the following:
+        - NextJS best practices, including file structure, API routes, and static generation methods.
+        - Efficient state management and server-side rendering techniques.
+        - Optimal use of TypeScript for component and utility type safety.
+    - path: 'packages/shared/**/*'
+      instructions: |
+        Confirm that the code adheres to the following:
+         - Cross-application utility functions, types, and constants.
+         - TypeScript best practices to ensure type safety and reusability.
+         - Documentation and examples for library consumers.
+    - path: 'packages/ui/**/*'
+      instructions: |
+        Confirm that the code adheres to the following:
+        - Reusability of components across different React or NextJS apps.
+        - TypeScript usage for defining props and exporting types.
+        - Effective tree-shaking and bundling practices.
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - 'main'
+chat:
+  auto_reply: true

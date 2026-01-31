@@ -19,6 +19,7 @@ globs: **/*.tsx,**/*.jsx
 - Minimize client-side state
 
 ## Async Request APIs
+
 ```typescript
 // Always use async versions of runtime APIs
 const cookieStore = await cookies()
@@ -31,6 +32,7 @@ const searchParams = await props.searchParams
 ```
 
 ## Props
+
 - Prefix callback props with `on` (e.g., `onSubmit`, `onClick`).
 - Prefix handler functions with `handle` (e.g., `handleSubmit`, `handleClick`).
 - Always use curly braces for handler bodies, no implicit returns.
