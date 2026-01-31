@@ -1,0 +1,29 @@
+---
+root: false
+targets: ['*']
+description: 'JavaScript/TypeScript naming conventions'
+globs: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx']
+---
+
+# JavaScript/TypeScript Conventions
+
+## Variables Naming
+
+- Use named exports where possible
+- Array variables MUST include `list` suffix (not plural form). Example `userList`
+- Named constants must be in `UPPER_SNAKE_CASE`
+- Place constants at top of file or in `constants.ts` for component-specific constants
+- Shared constants go in `packages/apps-shared/src/constants` or common parent directory
+
+## Function Naming Prefixes
+
+Use these prefixes consistently:
+
+| Prefix    | Use Case                                 | Example                                |
+| --------- | ---------------------------------------- | -------------------------------------- |
+| `get`     | Retrieve data from objects, calculations | `getConfig`, `getCorrelationId`        |
+| `fetch`   | External API calls, async data retrieval | `fetchFileAsBlob`, `fetchDocumentList` |
+| `check`   | Boolean returns, validation, typeguards  | `checkIsObject`, `checkIsValid`        |
+| `format`  | Transform data appearance                | `formatCardNumber`, `formatDate`       |
+| `convert` | Type/structure conversion                | `convertDateToTimestamp`               |
+| `prepare` | Assemble data structures                 | `prepareProductJsonLd`                 |

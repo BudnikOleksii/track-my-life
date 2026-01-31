@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(!.env.example)",
+      "Read(**/.next/)",
+      "Read(.env*)",
+      "Read(.idea)",
+      "Read(.npmrc)",
+      "Read(.turbo)",
+      "Read(.vscode)"
+    ]
+  }
+}
