@@ -1,0 +1,8 @@
+.npmrc
+
+**/.next/
+
+.idea
+.vscode
+
+.turbo

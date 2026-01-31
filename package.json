@@ -18,7 +18,8 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "commitlint": "commitlint --edit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate-agents-rules": "rulesync generate"
   },
   "devDependencies": {
     "@commitlint/cli": "20.1.0",
@@ -29,6 +30,7 @@
     "lint-staged": "16.2.6",
     "oxfmt": "0.26.0",
     "oxlint": "1.42.0",
+    "rulesync": "6.2.0",
     "turbo": "2.5.8"
   },
   "engines": {

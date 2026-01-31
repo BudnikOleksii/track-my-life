@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "import"],
+  "plugins": ["typescript", "import", "oxc"],
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-debugger": "error",
@@ -46,7 +46,8 @@
     ],
     "import/first": "error",
     "import/no-duplicates": "error",
-    "import/no-self-import": "error"
+    "import/no-self-import": "error",
+    "oxc/no-barrel-file": "error"
   },
   "ignorePatterns": [
     "node_modules/**",
