@@ -1,27 +1,25 @@
-export default function Home() {
-  return (
-    <main
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '6rem',
-      }}
-    >
-      <div>
-        <h1
-          style={{
-            fontSize: '2.25rem',
-            fontWeight: 'bold',
-            marginBottom: '1rem',
-          }}
-        >
-          Welcome to Track My Life
-        </h1>
-        <p style={{ fontSize: '1.125rem' }}>Get started by editing this page.</p>
-      </div>
-    </main>
-  )
-}
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@track-my-life/ui/components/card'
+import { Button } from '@track-my-life/ui/components/button'
+
+const Home = () => (
+  <main className="flex min-h-screen flex-col items-center justify-center p-24">
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle className="text-2xl">Welcome to Track My Life</CardTitle>
+        <CardDescription>Get started by editing this page.</CardDescription>
+      </CardHeader>
+      <CardContent className="flex gap-4">
+        <Button>Get Started</Button>
+        <Button variant="outline">Learn More</Button>
+      </CardContent>
+    </Card>
+  </main>
+)
+
+export default Home
