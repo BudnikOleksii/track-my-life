@@ -4,7 +4,7 @@ paths: '**/*.ts, **/*.tsx, **/*.js, **/*.jsx'
 
 # JavaScript/TypeScript Conventions
 
-## Variables Naming
+## Variables
 
 - Use named exports where possible
 - Array variables MUST include `list` suffix (not plural form). Example `userList`
@@ -12,9 +12,10 @@ paths: '**/*.ts, **/*.tsx, **/*.js, **/*.jsx'
 - Place constants at top of file or in `constants.ts` for component-specific constants
 - Shared constants go in `packages/shared/src/constants` or common parent directory
 
-## Function Naming Prefixes
+## Functions
 
-Use these prefixes consistently:
+- Use arrow functions
+- Use these prefixes consistently:
 
 | Prefix    | Use Case                                 | Example                                |
 | --------- | ---------------------------------------- | -------------------------------------- |
