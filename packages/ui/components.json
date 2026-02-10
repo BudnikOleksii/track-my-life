@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@track-my-life/ui/components",
-    "utils": "@track-my-life/ui/lib/utils",
-    "hooks": "@track-my-life/ui/hooks",
-    "lib": "@track-my-life/ui/lib",
-    "ui": "@track-my-life/ui/components"
+    "components": "src/components",
+    "utils": "src/lib/utils",
+    "hooks": "src/hooks",
+    "lib": "src/lib",
+    "ui": "src/components/ui"
   }
 }

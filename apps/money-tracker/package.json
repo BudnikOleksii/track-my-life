@@ -8,9 +8,7 @@
     "start": "next start",
     "type-check": "tsc --noEmit --incremental false",
     "lint": "oxlint .",
-    "lint:fix": "oxlint --fix .",
-    "eslint": "eslint . --max-warnings 0",
-    "eslint:fix": "eslint ./ --ext .ts,.tsx --fix"
+    "lint:fix": "oxlint --fix ."
   },
   "dependencies": {
     "@track-my-life/ui": "workspace:*",

@@ -1,13 +1,15 @@
+import type { FC } from 'react';
+
+import { Button } from '@track-my-life/ui/components/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@track-my-life/ui/components/card'
-import { Button } from '@track-my-life/ui/components/button'
+} from '@track-my-life/ui/components/card';
 
-const Home = () => (
+const Home: FC = () => (
   <main className="flex min-h-screen flex-col items-center justify-center p-24">
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -20,6 +22,6 @@ const Home = () => (
       </CardContent>
     </Card>
   </main>
-)
+);
 
-export default Home
+export default Home;

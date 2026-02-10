@@ -1,19 +1,7 @@
 {
-  "targets": [
-    "cursor",
-    "claudecode"
-  ],
-  "features": [
-    "rules",
-    "ignore",
-    "mcp",
-    "commands",
-    "subagents",
-    "skills"
-  ],
-  "baseDirs": [
-    "."
-  ],
+  "targets": ["cursor", "claudecode"],
+  "features": ["rules", "ignore", "mcp", "commands", "subagents", "skills"],
+  "baseDirs": ["."],
   "delete": true,
   "verbose": false,
   "silent": false,

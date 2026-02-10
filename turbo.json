@@ -3,10 +3,6 @@
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": ["NODE_ENV", "PORT", "HOST"],
   "tasks": {
-    "//lint": {},
-    "//lint:fix": {},
-    "//format": {},
-    "//format:write": {},
     "dev": {
       "cache": false,
       "persistent": true

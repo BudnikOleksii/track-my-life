@@ -1,19 +1,19 @@
-import type { Metadata } from 'next'
-import './globals.css'
+// oxlint-disable-next-line import/no-unassigned-import
+import './globals.css';
+import type { Metadata } from 'next';
+import type { FC, PropsWithChildren } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Track My Life',
+const metadata: Metadata = {
   description: 'Application for tracking life events',
-}
+  title: 'Track My Life',
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
-}
+const RootLayout: FC<PropsWithChildren> = ({ children }) => (
+  <html lang="en">
+    <body>{children}</body>
+  </html>
+);
+
+export { metadata };
+
+export default RootLayout;

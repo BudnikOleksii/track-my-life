@@ -14,6 +14,10 @@
     "react/no-unescaped-entities": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-max-depth": ["error", { "max": 8 }],
+    "react/only-export-components": "off",
     "nextjs/no-html-link-for-pages": "error",
     "nextjs/no-img-element": "error",
     "nextjs/no-sync-scripts": "error",
@@ -28,6 +32,7 @@
     "out/**",
     "coverage/**",
     "*.min.js",
+    "**/*.mjs",
     "next-env.d.ts"
   ]
 }
