@@ -7,5 +7,13 @@
   "passwordPlaceholder": "Введіть ваш пароль",
   "passwordRequired": "Пароль обов'язковий",
   "passwordMinLength": "Пароль повинен містити щонайменше 8 символів",
-  "errorGeneric": "Сталася помилка. Будь ласка, спробуйте ще раз."
+  "orLabel": "Або продовжити з",
+  "continueWithGoogle": "Продовжити з Google",
+  "continueWithGitHub": "Продовжити з GitHub",
+  "continueWithLinkedIn": "Продовжити з LinkedIn",
+  "errors": {
+    "generic": "Сталася помилка. Будь ласка, спробуйте ще раз.",
+    "invalidCredentials": "Невірна електронна пошта або пароль",
+    "validation": "Перевірте чи валідний мейл і пароль не меньше 8 символів"
+  }
 }

@@ -4,28 +4,28 @@ import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
 import { getMessages, setRequestLocale } from 'next-intl/server';
-import { Poppins, Outfit } from 'next/font/google';
+import { Outfit, Poppins } from 'next/font/google';
 
 // oxlint-disable-next-line import/no-unassigned-import
 import '../globals.css';
 
 const poppins = Poppins({
+  subsets: ['latin'],
   variable: '--default-font-family',
   weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
 });
 
 const outfit = Outfit({
-  variable: '--accent-font-family',
   subsets: ['latin'],
+  variable: '--accent-font-family',
 });
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s - Money Tracker',
-    default: 'Money Tracker Online - Easily manage your expenses and incomes',
-  },
   description: 'Application for tracking life events',
+  title: {
+    default: 'Money Tracker Online - Easily manage your expenses and incomes',
+    template: '%s - Money Tracker',
+  },
 };
 
 interface Props extends PropsWithChildren {

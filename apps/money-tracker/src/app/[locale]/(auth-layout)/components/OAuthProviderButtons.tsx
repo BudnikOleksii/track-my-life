@@ -1,0 +1,65 @@
+'use client';
+
+import type { OAuthProviderName } from '@track-my-life/shared/src/supabase/client';
+import type { FC } from 'react';
+
+import { signInWithOAuthProvider } from '@track-my-life/shared/src/supabase/client';
+import { Button } from '@track-my-life/ui/components/button';
+import { useState } from 'react';
+
+interface Props {
+  googleLabel: string;
+  githubLabel: string;
+  linkedinLabel: string;
+}
+
+const AUTH_PROVIDER_GOOGLE: OAuthProviderName = 'google';
+const AUTH_PROVIDER_GITHUB: OAuthProviderName = 'github';
+const AUTH_PROVIDER_LINKEDIN: OAuthProviderName = 'linkedin_oidc';
+
+const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
+  const [activeProvider, setActiveProvider] = useState<OAuthProviderName | null>(null);
+
+  const handleProviderClick = async (provider: OAuthProviderName) => {
+    setActiveProvider(provider);
+
+    try {
+      await signInWithOAuthProvider(provider);
+    } catch {
+      setActiveProvider(null);
+    }
+  };
+
+  const isSubmitting = Boolean(activeProvider);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Button
+        type="button"
+        variant="outline"
+        disabled={isSubmitting}
+        onClick={() => handleProviderClick(AUTH_PROVIDER_GOOGLE)}
+      >
+        {googleLabel}
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        disabled={isSubmitting}
+        onClick={() => handleProviderClick(AUTH_PROVIDER_GITHUB)}
+      >
+        {githubLabel}
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        disabled={isSubmitting}
+        onClick={() => handleProviderClick(AUTH_PROVIDER_LINKEDIN)}
+      >
+        {linkedinLabel}
+      </Button>
+    </div>
+  );
+};
+
+export default OAuthProviderButtons;

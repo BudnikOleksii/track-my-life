@@ -1,7 +1,7 @@
 import { createNavigation } from 'next-intl/navigation';
 import { defineRouting } from 'next-intl/routing';
 
-import { LOCALE_CODE, LOCALE_CODE_LIST } from './constants/locale-code';
+import { LOCALE_CODE, LOCALE_CODE_LIST } from '../constants/locale-code';
 
 export const routing = defineRouting({
   alternateLinks: false,
