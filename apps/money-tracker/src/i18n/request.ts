@@ -7,16 +7,16 @@ import { notFound } from 'next/navigation';
 import { getMessagesByLocale } from '@/i18n/utils/get-messages-by-locale';
 
 export default getRequestConfig(async ({ requestLocale }) => {
-	const locale = await requestLocale;
+  const locale = await requestLocale;
 
-	if (!locale || !checkIsLocaleCode(locale)) {
-		return notFound();
-	}
+  if (!locale || !checkIsLocaleCode(locale)) {
+    return notFound();
+  }
 
-	return {
-		getMessageFallback: getTranslationMessageFallback,
-		locale,
-		messages: await getMessagesByLocale(locale),
-		onError: onTranslateError,
-	};
+  return {
+    getMessageFallback: getTranslationMessageFallback,
+    locale,
+    messages: await getMessagesByLocale(locale),
+    onError: onTranslateError,
+  };
 });

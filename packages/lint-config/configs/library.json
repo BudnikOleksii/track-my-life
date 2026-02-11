@@ -1,11 +1,11 @@
 {
-	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-	"extends": ["./base.json"],
-	"plugins": ["typescript", "import"],
-	"rules": {
-		"typescript/explicit-function-return-type": "warn",
-		"typescript/explicit-module-boundary-types": "warn",
-		"typescript/no-require-imports": "error"
-	},
-	"ignorePatterns": ["node_modules/**", "dist/**", "build/**", "coverage/**", "*.min.js", ".*.js"]
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "extends": ["./base.json"],
+  "plugins": ["typescript", "import"],
+  "rules": {
+    "typescript/explicit-function-return-type": "warn",
+    "typescript/explicit-module-boundary-types": "warn",
+    "typescript/no-require-imports": "error"
+  },
+  "ignorePatterns": ["node_modules/**", "dist/**", "build/**", "coverage/**", "*.min.js", ".*.js"]
 }

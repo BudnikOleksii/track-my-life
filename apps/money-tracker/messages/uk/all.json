@@ -1,9 +1,9 @@
 {
-	"common": {
-		"welcome": "Ласкаво просимо",
-		"loading": "Завантаження...",
-		"error": "Помилка",
-		"success": "Успіх",
-		"invalidUuid": "Невірний формат UUID"
-	}
+  "common": {
+    "welcome": "Ласкаво просимо",
+    "loading": "Завантаження...",
+    "error": "Помилка",
+    "success": "Успіх",
+    "invalidUuid": "Невірний формат UUID"
+  }
 }

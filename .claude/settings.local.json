@@ -1,5 +1,5 @@
 {
-	"permissions": {
-		"deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
-	}
+  "permissions": {
+    "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
+  }
 }

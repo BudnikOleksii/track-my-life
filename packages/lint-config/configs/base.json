@@ -1,97 +1,97 @@
 {
-	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "import", "oxc", "unicorn"],
-	"categories": {
-		"correctness": "error",
-		"suspicious": "error",
-		"perf": "error",
-		"style": "error",
-		"restriction": "error",
-		"nursery": "error"
-	},
-	"rules": {
-		"id-length": ["error", { "exceptions": ["T"] }],
-		"no-console": ["error", { "allow": ["warn", "error"] }],
-		"no-debugger": "error",
-		"no-alert": "error",
-		"no-var": "error",
-		"no-ternary": "off",
-		"prefer-const": "error",
-		"curly": ["error", "all"],
-		"eqeqeq": ["error", "always"],
-		"no-multiple-empty-lines": ["error", { "max": 1 }],
-		"no-unexpected-multiline": "error",
-		"no-duplicate-imports": ["error", { "allowSeparateTypeImports": true }],
-		"max-params": "error",
-		"sort-imports": "off",
-		"sort-keys": "off",
-		"typescript/no-unused-vars": [
-			"error",
-			{ "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
-		],
-		"typescript/no-explicit-any": "error",
-		"typescript/no-non-null-assertion": "error",
-		"typescript/prefer-nullish-coalescing": "error",
-		"typescript/prefer-optional-chain": "error",
-		"typescript/no-floating-promises": "error",
-		"typescript/no-misused-promises": "error",
-		"typescript/consistent-type-imports": [
-			"error",
-			{ "prefer": "type-imports", "fixStyle": "inline-type-imports" }
-		],
-		"import/prefer-default-export": "off",
-		"import/consistent-type-specifier-style": "error",
-		"import/first": "error",
-		"import/no-duplicates": "error",
-		"import/no-self-import": "error",
-		"import/no-named-export": "off",
-		"import/no-namespace": "off",
-		"import/no-default-export": "off",
-		"import/group-exports": "off",
-		"import/exports-last": "off",
-		"import/order": [
-			"error",
-			{
-				"groups": [["builtin", "external"], ["internal"], ["index", "sibling", "parent"]],
-				"pathGroups": [
-					{
-						"pattern": "@track-my-life/**",
-						"group": "internal",
-						"position": "before"
-					},
-					{
-						"pattern": "@/**",
-						"group": "index",
-						"position": "before"
-					}
-				],
-				"pathGroupsExcludedImportTypes": ["builtin"],
-				"newlines-between": "always"
-			}
-		],
-		"oxc/no-barrel-file": "error",
-		"oxc/no-rest-spread-properties": "off",
-		"oxc/no-optional-chaining": "off",
-		"oxc/no-async-await": "off",
-		"unicorn/no-null": "off",
-		"unicorn/filename-case": [
-			"error",
-			{
-				"cases": {
-					"kebabCase": true,
-					"pascalCase": true
-				}
-			}
-		]
-	},
-	"ignorePatterns": [
-		"node_modules/**",
-		"dist/**",
-		".next/**",
-		"build/**",
-		"out/**",
-		"coverage/**",
-		"*.min.js",
-		"*.mjs"
-	]
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "oxc", "unicorn"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error",
+    "style": "error",
+    "restriction": "error",
+    "nursery": "error"
+  },
+  "rules": {
+    "id-length": ["error", { "exceptions": ["T"] }],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-debugger": "error",
+    "no-alert": "error",
+    "no-var": "error",
+    "no-ternary": "off",
+    "prefer-const": "error",
+    "curly": ["error", "all"],
+    "eqeqeq": ["error", "always"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-unexpected-multiline": "error",
+    "no-duplicate-imports": ["error", { "allowSeparateTypeImports": true }],
+    "max-params": "error",
+    "sort-imports": "off",
+    "sort-keys": "off",
+    "typescript/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "typescript/no-explicit-any": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/prefer-nullish-coalescing": "error",
+    "typescript/prefer-optional-chain": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports", "fixStyle": "inline-type-imports" }
+    ],
+    "import/prefer-default-export": "off",
+    "import/consistent-type-specifier-style": "error",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "import/no-self-import": "error",
+    "import/no-named-export": "off",
+    "import/no-namespace": "off",
+    "import/no-default-export": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [["builtin", "external"], ["internal"], ["index", "sibling", "parent"]],
+        "pathGroups": [
+          {
+            "pattern": "@track-my-life/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@/**",
+            "group": "index",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always"
+      }
+    ],
+    "oxc/no-barrel-file": "error",
+    "oxc/no-rest-spread-properties": "off",
+    "oxc/no-optional-chaining": "off",
+    "oxc/no-async-await": "off",
+    "unicorn/no-null": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "kebabCase": true,
+          "pascalCase": true
+        }
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    ".next/**",
+    "build/**",
+    "out/**",
+    "coverage/**",
+    "*.min.js",
+    "*.mjs"
+  ]
 }

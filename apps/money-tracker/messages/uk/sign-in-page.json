@@ -1,14 +1,14 @@
 {
-	"metadata": {
-		"title": "Вхід",
-		"description": "Увійдіть до свого облікового запису"
-	},
-	"content": {
-		"title": "Вхід",
-		"subtitle": "Увійдіть до свого облікового запису",
-		"signInButton": "Увійти",
-		"noAccount": "Немає облікового запису?",
-		"signUpLink": "Зареєструватися",
-		"errorInvalidCredentials": "Невірна електронна пошта або пароль"
-	}
+  "metadata": {
+    "title": "Вхід",
+    "description": "Увійдіть до свого облікового запису"
+  },
+  "content": {
+    "title": "Вхід",
+    "subtitle": "Увійдіть до свого облікового запису",
+    "signInButton": "Увійти",
+    "noAccount": "Немає облікового запису?",
+    "signUpLink": "Зареєструватися",
+    "errorInvalidCredentials": "Невірна електронна пошта або пароль"
+  }
 }

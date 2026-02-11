@@ -11,209 +11,209 @@ import { Label } from './label';
 import { Separator } from './separator';
 
 const FieldSet: FC<React.ComponentProps<'fieldset'>> = ({ className, ...props }) => (
-	<fieldset
-		data-slot="field-set"
-		className={cn(
-			'flex flex-col gap-6',
-			'has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3',
-			className,
-		)}
-		{...props}
-	/>
+  <fieldset
+    data-slot="field-set"
+    className={cn(
+      'flex flex-col gap-6',
+      'has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const FieldLegend: FC<React.ComponentProps<'legend'> & { variant?: 'legend' | 'label' }> = ({
-	className,
-	variant = 'legend',
-	...props
+  className,
+  variant = 'legend',
+  ...props
 }) => (
-	<legend
-		data-slot="field-legend"
-		data-variant={variant}
-		className={cn(
-			'mb-3 font-medium',
-			'data-[variant=legend]:text-base',
-			'data-[variant=label]:text-sm',
-			className,
-		)}
-		{...props}
-	/>
+  <legend
+    data-slot="field-legend"
+    data-variant={variant}
+    className={cn(
+      'mb-3 font-medium',
+      'data-[variant=legend]:text-base',
+      'data-[variant=label]:text-sm',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const FieldGroup: FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
-	<div
-		data-slot="field-group"
-		className={cn(
-			'group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 [&>[data-slot=field-group]]:gap-4',
-			className,
-		)}
-		{...props}
-	/>
+  <div
+    data-slot="field-group"
+    className={cn(
+      'group/field-group @container/field-group flex w-full flex-col gap-7 data-[slot=checkbox-group]:gap-3 [&>[data-slot=field-group]]:gap-4',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const fieldVariants = cva('group/field flex w-full gap-3 data-[invalid=true]:text-destructive', {
-	defaultVariants: {
-		orientation: 'vertical',
-	},
-	variants: {
-		orientation: {
-			horizontal: [
-				'flex-row items-center',
-				'[&>[data-slot=field-label]]:flex-auto',
-				'has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
-			],
-			responsive: [
-				'flex-col [&>*]:w-full [&>.sr-only]:w-auto @md/field-group:flex-row @md/field-group:items-center @md/field-group:[&>*]:w-auto',
-				'@md/field-group:[&>[data-slot=field-label]]:flex-auto',
-				'@md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
-			],
-			vertical: ['flex-col [&>*]:w-full [&>.sr-only]:w-auto'],
-		},
-	},
+  defaultVariants: {
+    orientation: 'vertical',
+  },
+  variants: {
+    orientation: {
+      horizontal: [
+        'flex-row items-center',
+        '[&>[data-slot=field-label]]:flex-auto',
+        'has-[>[data-slot=field-content]]:items-start has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
+      ],
+      responsive: [
+        'flex-col [&>*]:w-full [&>.sr-only]:w-auto @md/field-group:flex-row @md/field-group:items-center @md/field-group:[&>*]:w-auto',
+        '@md/field-group:[&>[data-slot=field-label]]:flex-auto',
+        '@md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px',
+      ],
+      vertical: ['flex-col [&>*]:w-full [&>.sr-only]:w-auto'],
+    },
+  },
 });
 
 const Field: FC<React.ComponentProps<'div'> & VariantProps<typeof fieldVariants>> = ({
-	className,
-	orientation = 'vertical',
-	...props
+  className,
+  orientation = 'vertical',
+  ...props
 }) => (
-	<div
-		role="group"
-		data-slot="field"
-		data-orientation={orientation}
-		className={cn(fieldVariants({ orientation }), className)}
-		{...props}
-	/>
+  <div
+    role="group"
+    data-slot="field"
+    data-orientation={orientation}
+    className={cn(fieldVariants({ orientation }), className)}
+    {...props}
+  />
 );
 
 const FieldContent: FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
-	<div
-		data-slot="field-content"
-		className={cn('group/field-content flex flex-1 flex-col gap-1.5 leading-snug', className)}
-		{...props}
-	/>
+  <div
+    data-slot="field-content"
+    className={cn('group/field-content flex flex-1 flex-col gap-1.5 leading-snug', className)}
+    {...props}
+  />
 );
 
 const FieldLabel: FC<React.ComponentProps<typeof Label>> = ({ className, ...props }) => (
-	<Label
-		data-slot="field-label"
-		className={cn(
-			'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50',
-			'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4',
-			'has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10',
-			className,
-		)}
-		{...props}
-	/>
+  <Label
+    data-slot="field-label"
+    className={cn(
+      'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50',
+      'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4',
+      'has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const FieldTitle: FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
-	<div
-		data-slot="field-label"
-		className={cn(
-			'flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50',
-			className,
-		)}
-		{...props}
-	/>
+  <div
+    data-slot="field-label"
+    className={cn(
+      'flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const FieldDescription: FC<React.ComponentProps<'p'>> = ({ className, ...props }) => (
-	<p
-		data-slot="field-description"
-		className={cn(
-			'text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance',
-			'last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5',
-			'[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4',
-			className,
-		)}
-		{...props}
-	/>
+  <p
+    data-slot="field-description"
+    className={cn(
+      'text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance',
+      'last:mt-0 nth-last-2:-mt-1 [[data-variant=legend]+&]:-mt-1.5',
+      '[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4',
+      className,
+    )}
+    {...props}
+  />
 );
 
 const FieldSeparator: FC<
-	React.ComponentProps<'div'> & {
-		children?: React.ReactNode;
-	}
+  React.ComponentProps<'div'> & {
+    children?: React.ReactNode;
+  }
 > = ({ children, className, ...props }) => (
-	<div
-		data-slot="field-separator"
-		data-content={Boolean(children)}
-		className={cn(
-			'relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2',
-			className,
-		)}
-		{...props}
-	>
-		<Separator className="absolute inset-0 top-1/2" />
-		{children && (
-			<span
-				className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
-				data-slot="field-separator-content"
-			>
-				{children}
-			</span>
-		)}
-	</div>
+  <div
+    data-slot="field-separator"
+    data-content={Boolean(children)}
+    className={cn(
+      'relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2',
+      className,
+    )}
+    {...props}
+  >
+    <Separator className="absolute inset-0 top-1/2" />
+    {children && (
+      <span
+        className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
+        data-slot="field-separator-content"
+      >
+        {children}
+      </span>
+    )}
+  </div>
 );
 
 const FIELD_ERROR_MIN_LENGTH = 1;
 const FIRST_ARRAY_ELEMENT = 0;
 
 const FieldError: FC<
-	React.ComponentProps<'div'> & {
-		errors?: ({ message?: string } | undefined)[];
-	}
+  React.ComponentProps<'div'> & {
+    errors?: ({ message?: string } | undefined)[];
+  }
 > = ({ className, children, errors, ...props }) => {
-	const content = useMemo(() => {
-		if (children) {
-			return children;
-		}
+  const content = useMemo(() => {
+    if (children) {
+      return children;
+    }
 
-		if (!errors?.length) {
-			return null;
-		}
+    if (!errors?.length) {
+      return null;
+    }
 
-		const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
+    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
-		if (uniqueErrors?.length === FIELD_ERROR_MIN_LENGTH) {
-			return uniqueErrors[FIRST_ARRAY_ELEMENT]?.message;
-		}
+    if (uniqueErrors?.length === FIELD_ERROR_MIN_LENGTH) {
+      return uniqueErrors[FIRST_ARRAY_ELEMENT]?.message;
+    }
 
-		return (
-			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map(
-					(error) => error?.message && <li key={error.message}>{error.message}</li>,
-				)}
-			</ul>
-		);
-	}, [children, errors]);
+    return (
+      <ul className="ml-4 flex list-disc flex-col gap-1">
+        {uniqueErrors.map(
+          (error) => error?.message && <li key={error.message}>{error.message}</li>,
+        )}
+      </ul>
+    );
+  }, [children, errors]);
 
-	if (!content) {
-		return null;
-	}
+  if (!content) {
+    return null;
+  }
 
-	return (
-		<div
-			role="alert"
-			data-slot="field-error"
-			className={cn('text-destructive text-sm font-normal', className)}
-			{...props}
-		>
-			{content}
-		</div>
-	);
+  return (
+    <div
+      role="alert"
+      data-slot="field-error"
+      className={cn('text-destructive text-sm font-normal', className)}
+      {...props}
+    >
+      {content}
+    </div>
+  );
 };
 
 export {
-	Field,
-	FieldLabel,
-	FieldDescription,
-	FieldError,
-	FieldGroup,
-	FieldLegend,
-	FieldSeparator,
-	FieldSet,
-	FieldContent,
-	FieldTitle,
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldContent,
+  FieldTitle,
 };

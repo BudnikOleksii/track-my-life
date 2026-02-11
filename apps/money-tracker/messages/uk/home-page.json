@@ -1,12 +1,12 @@
 {
-	"metadata": {
-		"title": "Головна сторінка",
-		"description": "Головна сторінка"
-	},
-	"content": {
-		"title": "Головна сторінка",
-		"description": "Ласкаво просимо до Track My Money",
-		"getStarted": "Почати",
-		"learnMore": "Більше"
-	}
+  "metadata": {
+    "title": "Головна сторінка",
+    "description": "Головна сторінка"
+  },
+  "content": {
+    "title": "Головна сторінка",
+    "description": "Ласкаво просимо до Track My Money",
+    "getStarted": "Почати",
+    "learnMore": "Більше"
+  }
 }

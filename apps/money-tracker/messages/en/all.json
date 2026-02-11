@@ -1,9 +1,9 @@
 {
-	"common": {
-		"welcome": "Welcome",
-		"loading": "Loading...",
-		"error": "Error",
-		"success": "Success",
-		"invalidUuid": "Invalid UUID format"
-	}
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "invalidUuid": "Invalid UUID format"
+  }
 }

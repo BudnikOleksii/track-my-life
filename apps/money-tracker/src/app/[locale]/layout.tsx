@@ -11,45 +11,45 @@ import { Poppins, Outfit } from 'next/font/google';
 import '../globals.css';
 
 const poppins = Poppins({
-	variable: '--default-font-family',
-	weight: ['400', '500', '600', '700', '800'],
-	subsets: ['latin'],
+  variable: '--default-font-family',
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
 });
 
 const outfit = Outfit({
-	variable: '--accent-font-family',
-	subsets: ['latin'],
+  variable: '--accent-font-family',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-	title: {
-		template: '%s - Money Tracker',
-		default: 'Money Tracker Online - Easily manage your expenses and incomes',
-	},
-	description: 'Application for tracking life events',
+  title: {
+    template: '%s - Money Tracker',
+    default: 'Money Tracker Online - Easily manage your expenses and incomes',
+  },
+  description: 'Application for tracking life events',
 };
 
 interface Props extends PropsWithChildren {
-	params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }
 
 const RootLayout: FC<Props> = async (props) => {
-	const params = await props.params;
-	const { children } = props;
+  const params = await props.params;
+  const { children } = props;
 
-	setRequestLocale(params.locale);
+  setRequestLocale(params.locale);
 
-	const messages = await getMessages();
+  const messages = await getMessages();
 
-	return (
-		<html lang={params.locale}>
-			<body className={`${poppins.variable} ${outfit.variable} antialiased`}>
-				<NextIntlClientProvider messages={messages}>
-					<NextIntlUseClientFallbackProvider>{children}</NextIntlUseClientFallbackProvider>
-				</NextIntlClientProvider>
-			</body>
-		</html>
-	);
+  return (
+    <html lang={params.locale}>
+      <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
+        <NextIntlClientProvider messages={messages}>
+          <NextIntlUseClientFallbackProvider>{children}</NextIntlUseClientFallbackProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
 };
 
 export default RootLayout;

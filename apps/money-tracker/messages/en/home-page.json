@@ -1,12 +1,12 @@
 {
-	"metadata": {
-		"title": "Home Page",
-		"description": "Home Page"
-	},
-	"content": {
-		"title": "Home Page",
-		"description": "Welcome to Track My Money",
-		"getStarted": "Get Started",
-		"learnMore": "Learn More"
-	}
+  "metadata": {
+    "title": "Home Page",
+    "description": "Home Page"
+  },
+  "content": {
+    "title": "Home Page",
+    "description": "Welcome to Track My Money",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  }
 }
