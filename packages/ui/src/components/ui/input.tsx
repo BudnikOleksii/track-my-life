@@ -1,7 +1,8 @@
-import * as React from 'react'
-import { cn } from '../../lib/utils'
+import * as React from 'react';
 
-const Input = ({ className, type, ...props }: React.ComponentProps<'input'>) => (
+import { cn } from '../../lib/utils';
+
+const Input: React.FC<React.ComponentProps<'input'>> = ({ className, type, ...props }) => (
   <input
     type={type}
     data-slot="input"
@@ -13,6 +14,6 @@ const Input = ({ className, type, ...props }: React.ComponentProps<'input'>) => 
     )}
     {...props}
   />
-)
+);
 
-export { Input }
+export { Input };

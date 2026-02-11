@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "title": "Категорії - Track My Money",
+    "description": "Керуйте своїми категоріями транзакцій"
+  },
+  "content": {
+    "title": "Категорії",
+    "createButton": "Створити категорію",
+    "editButton": "Редагувати",
+    "deleteButton": "Видалити",
+    "nameLabel": "Назва категорії",
+    "namePlaceholder": "Введіть назву категорії",
+    "typeLabel": "Тип транзакції",
+    "parentCategoryLabel": "Батьківська категорія (необов'язково)",
+    "parentCategoryPlaceholder": "Виберіть батьківську категорію",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "nameRequired": "Назва категорії обов'язкова",
+    "typeRequired": "Тип транзакції обов'язковий",
+    "atLeastOneFieldRequired": "Необхідно заповнити принаймні одне поле",
+    "createSuccess": "Категорію успішно створено",
+    "updateSuccess": "Категорію успішно оновлено",
+    "deleteSuccess": "Категорію успішно видалено",
+    "createError": "Не вдалося створити категорію",
+    "updateError": "Не вдалося оновити категорію",
+    "deleteError": "Не вдалося видалити категорію",
+    "noCategories": "Категорії не знайдено",
+    "filterByType": "Фільтр за типом",
+    "allTypes": "Всі типи",
+    "subcategories": "Підкатегорії",
+    "noSubcategories": "Немає підкатегорій",
+    "deleteConfirm": "Ви впевнені, що хочете видалити цю категорію?",
+    "cancel": "Скасувати"
+  }
+}

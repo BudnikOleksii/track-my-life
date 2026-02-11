@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "title": "Home Page",
+    "description": "Welcome to your Track My Money home page"
+  },
+  "content": {
+    "title": "Home Page",
+    "description": "Welcome to Track My Money",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  }
+}

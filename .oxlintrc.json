@@ -1,40 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "import"],
-  "rules": {
-    "typescript/no-unused-vars": "error",
-    "typescript/no-explicit-any": "warn",
-    "typescript/no-non-null-assertion": "warn",
-    "typescript/prefer-nullish-coalescing": "error",
-    "typescript/prefer-optional-chain": "error",
-    "typescript/no-floating-promises": "error",
-    "typescript/no-misused-promises": "error",
-    "import/order": [
-      "error",
-      {
-        "groups": [["builtin", "external"], ["internal"], ["index", "sibling", "parent"]],
-        "pathGroups": [
-          {
-            "pattern": "@track-my-life/**",
-            "group": "internal",
-            "position": "before"
-          },
-          {
-            "pattern": "@/**",
-            "group": "index",
-            "position": "before"
-          }
-        ],
-        "pathGroupsExcludedImportTypes": ["builtin"],
-        "newlines-between": "always"
-      }
-    ],
-    "import/first": "error",
-    "import/no-duplicates": "error",
-    "curly": ["error", "all"],
-    "no-console": ["error", { "allow": ["warn", "error"] }],
-    "no-multiple-empty-lines": ["error", { "max": 1 }]
-  },
+  "extends": ["./packages/lint-config/configs/base.json"],
   "ignorePatterns": [
     "node_modules/**",
     "dist/**",

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "title": "Dashboard - Track My Money",
+    "description": "Your Track My Money dashboard"
+  },
+  "content": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "logoutButton": "Logout",
+    "userInfo": "User Information",
+    "email": "Email",
+    "name": "Name"
+  }
+}

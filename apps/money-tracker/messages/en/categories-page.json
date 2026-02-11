@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "title": "Categories - Track My Money",
+    "description": "Manage your transaction categories"
+  },
+  "content": {
+    "title": "Categories",
+    "createButton": "Create Category",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "nameLabel": "Category Name",
+    "namePlaceholder": "Enter category name",
+    "typeLabel": "Transaction Type",
+    "parentCategoryLabel": "Parent Category (Optional)",
+    "parentCategoryPlaceholder": "Select parent category",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "nameRequired": "Category name is required",
+    "typeRequired": "Transaction type is required",
+    "atLeastOneFieldRequired": "At least one field must be provided",
+    "createSuccess": "Category created successfully",
+    "updateSuccess": "Category updated successfully",
+    "deleteSuccess": "Category deleted successfully",
+    "createError": "Failed to create category",
+    "updateError": "Failed to update category",
+    "deleteError": "Failed to delete category",
+    "noCategories": "No categories found",
+    "filterByType": "Filter by type",
+    "allTypes": "All Types",
+    "subcategories": "Subcategories",
+    "noSubcategories": "No subcategories",
+    "deleteConfirm": "Are you sure you want to delete this category?",
+    "cancel": "Cancel"
+  }
+}

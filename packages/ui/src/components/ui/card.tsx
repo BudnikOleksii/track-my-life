@@ -1,7 +1,8 @@
-import * as React from 'react'
-import { cn } from '../../lib/utils'
+import * as React from 'react';
 
-const Card = ({ className, ...props }: React.ComponentProps<'div'>) => (
+import { cn } from '../../lib/utils';
+
+const Card: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
     data-slot="card"
     className={cn(
@@ -10,9 +11,9 @@ const Card = ({ className, ...props }: React.ComponentProps<'div'>) => (
     )}
     {...props}
   />
-)
+);
 
-const CardHeader = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardHeader: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
     data-slot="card-header"
     className={cn(
@@ -21,38 +22,38 @@ const CardHeader = ({ className, ...props }: React.ComponentProps<'div'>) => (
     )}
     {...props}
   />
-)
+);
 
-const CardTitle = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardTitle: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div data-slot="card-title" className={cn('leading-none font-semibold', className)} {...props} />
-)
+);
 
-const CardDescription = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardDescription: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
     data-slot="card-description"
     className={cn('text-muted-foreground text-sm', className)}
     {...props}
   />
-)
+);
 
-const CardAction = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardAction: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
     data-slot="card-action"
     className={cn('col-start-2 row-span-2 row-start-1 self-start justify-self-end', className)}
     {...props}
   />
-)
+);
 
-const CardContent = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardContent: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div data-slot="card-content" className={cn('px-6', className)} {...props} />
-)
+);
 
-const CardFooter = ({ className, ...props }: React.ComponentProps<'div'>) => (
+const CardFooter: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
     data-slot="card-footer"
     className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
     {...props}
   />
-)
+);
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent }
+export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent };

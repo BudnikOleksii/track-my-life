@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "title": "Sign Up",
+    "description": "Create a new account"
+  },
+  "content": {
+    "title": "Sign Up",
+    "subtitle": "Create a new account",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "signUpButton": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in"
+  }
+}

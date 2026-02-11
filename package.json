@@ -22,8 +22,9 @@
     "generate-agents-rules": "rulesync generate"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.1.0",
-    "@commitlint/config-conventional": "20.0.0",
+    "@commitlint/cli": "20.4.1",
+    "@commitlint/config-conventional": "20.4.1",
+    "@commitlint/types": "20.4.0",
     "@track-my-life/lint-config": "workspace:*",
     "@track-my-life/typescript-config": "workspace:*",
     "husky": "9.1.7",

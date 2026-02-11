@@ -6,8 +6,7 @@
   "exports": {
     "./base": "./configs/base.json",
     "./next-js": "./configs/next.json",
-    "./library": "./configs/library.json",
-    "./react-internal": "./configs/react.json"
+    "./library": "./configs/library.json"
   },
   "devDependencies": {
     "oxlint": "1.42.0"
