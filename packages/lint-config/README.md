@@ -25,8 +25,8 @@ For a Next.js app:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-  "extends": ["@track-my-life/lint-config/next-js"]
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+	"extends": ["@track-my-life/lint-config/next-js"]
 }
 ```
 
@@ -34,8 +34,8 @@ For a library:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
-  "extends": ["@track-my-life/lint-config/library"]
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+	"extends": ["@track-my-life/lint-config/library"]
 }
 ```
 
@@ -43,10 +43,10 @@ For a library:
 
 ```json
 {
-  "scripts": {
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
-  }
+	"scripts": {
+		"lint": "oxlint",
+		"lint:fix": "oxlint --fix"
+	}
 }
 ```
 

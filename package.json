@@ -1,42 +1,42 @@
 {
-  "name": "track-my-life",
-  "version": "0.0.0",
-  "private": true,
-  "description": "",
-  "license": "UNLICENSED",
-  "author": "",
-  "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "build:packages": "turbo run build --filter='./packages/*'",
-    "build:storybook": "turbo run build:storybook",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e",
-    "type-check": "turbo run type-check",
-    "lint": "oxlint .",
-    "lint:fix": "oxlint --fix .",
-    "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
-    "commitlint": "commitlint --edit",
-    "prepare": "husky",
-    "generate-agents-rules": "rulesync generate"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "20.4.1",
-    "@commitlint/config-conventional": "20.4.1",
-    "@commitlint/types": "20.4.0",
-    "@track-my-life/lint-config": "workspace:*",
-    "@track-my-life/typescript-config": "workspace:*",
-    "husky": "9.1.7",
-    "lint-staged": "16.2.6",
-    "oxfmt": "0.26.0",
-    "oxlint": "1.42.0",
-    "rulesync": "6.2.0",
-    "turbo": "2.5.8"
-  },
-  "engines": {
-    "node": "22.15.0",
-    "pnpm": "10.10.0"
-  },
-  "packageManager": "pnpm@10.10.0"
+	"name": "track-my-life",
+	"version": "0.0.0",
+	"private": true,
+	"description": "",
+	"license": "UNLICENSED",
+	"author": "",
+	"scripts": {
+		"dev": "turbo run dev",
+		"build": "turbo run build",
+		"build:packages": "turbo run build --filter='./packages/*'",
+		"build:storybook": "turbo run build:storybook",
+		"test": "turbo run test",
+		"test:e2e": "turbo run test:e2e",
+		"type-check": "turbo run type-check",
+		"lint": "oxlint .",
+		"lint:fix": "oxlint --fix .",
+		"fmt": "oxfmt",
+		"fmt:check": "oxfmt --check",
+		"commitlint": "commitlint --edit",
+		"prepare": "husky",
+		"generate-agents-rules": "rulesync generate"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "20.4.1",
+		"@commitlint/config-conventional": "20.4.1",
+		"@commitlint/types": "20.4.0",
+		"@track-my-life/lint-config": "workspace:*",
+		"@track-my-life/typescript-config": "workspace:*",
+		"husky": "9.1.7",
+		"lint-staged": "16.2.6",
+		"oxfmt": "0.26.0",
+		"oxlint": "1.42.0",
+		"rulesync": "6.2.0",
+		"turbo": "2.5.8"
+	},
+	"engines": {
+		"node": "22.15.0",
+		"pnpm": "10.10.0"
+	},
+	"packageManager": "pnpm@10.10.0"
 }

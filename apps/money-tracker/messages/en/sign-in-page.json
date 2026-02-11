@@ -1,0 +1,14 @@
+{
+	"metadata": {
+		"title": "Sign In",
+		"description": "Sign in to your account"
+	},
+	"content": {
+		"title": "Sign In",
+		"subtitle": "Sign in to your account",
+		"signInButton": "Sign In",
+		"noAccount": "Don't have an account?",
+		"signUpLink": "Sign up",
+		"errorInvalidCredentials": "Invalid email or password"
+	}
+}
