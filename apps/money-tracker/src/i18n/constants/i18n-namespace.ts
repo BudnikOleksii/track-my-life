@@ -1,4 +1,4 @@
-import type { ObjectKeysUnion } from '@track-my-life/shared/src/types/object-key-union';
+import type { ObjectValuesUnion } from '@track-my-life/shared/src/types/object-values-union';
 
 export const I18N_NAMESPACE = {
   all: 'all',
@@ -10,4 +10,4 @@ export const I18N_NAMESPACE = {
   signUpPage: 'signUpPage',
 } as const;
 
-export type I18Namespace = ObjectKeysUnion<typeof I18N_NAMESPACE>;
+export type I18Namespace = ObjectValuesUnion<typeof I18N_NAMESPACE>;

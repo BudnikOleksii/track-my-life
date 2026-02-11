@@ -5,10 +5,9 @@ export const withCache = <TArgs extends unknown[], TResult>(
 
   return async (...args: TArgs): Promise<TResult> => {
     const key = JSON.stringify(args);
-    const cachedResult = cache.get(key);
 
-    if (cachedResult) {
-      return cachedResult;
+    if (cache.has(key)) {
+      return cache.get(key) as TResult;
     }
 
     const result = await fn(...args);

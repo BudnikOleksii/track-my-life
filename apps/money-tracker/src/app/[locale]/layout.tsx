@@ -2,8 +2,7 @@
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
-import { NextIntlUseClientFallbackProvider } from '@track-my-life/shared/src/providers/NextIntlUseClientFallbackProvider';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Poppins, Outfit } from 'next/font/google';
 
@@ -44,9 +43,9 @@ const RootLayout: FC<Props> = async (props) => {
   return (
     <html lang={params.locale}>
       <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          <NextIntlUseClientFallbackProvider>{children}</NextIntlUseClientFallbackProvider>
-        </NextIntlClientProvider>
+        <NextIntlProvider locale={params.locale} messages={messages}>
+          {children}
+        </NextIntlProvider>
       </body>
     </html>
   );

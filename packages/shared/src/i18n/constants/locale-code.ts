@@ -1,11 +1,11 @@
-import type { ObjectKeysUnion } from '../../types/object-key-union';
+import type { ObjectValuesUnion } from '../../types/object-values-union';
 
 export const LOCALE_CODE = {
   EN: 'en',
   UK: 'uk',
 } as const;
 
-export type LocaleCode = ObjectKeysUnion<typeof LOCALE_CODE>;
+export type LocaleCode = ObjectValuesUnion<typeof LOCALE_CODE>;
 
 export const LOCALE_CODE_LIST = Object.values(LOCALE_CODE);
 

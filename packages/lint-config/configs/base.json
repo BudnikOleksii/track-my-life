@@ -91,7 +91,6 @@
     "build/**",
     "out/**",
     "coverage/**",
-    "*.min.js",
-    "*.mjs"
+    "*.min.js"
   ]
 }

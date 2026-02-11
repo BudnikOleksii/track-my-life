@@ -109,7 +109,7 @@ const FieldLabel: FC<React.ComponentProps<typeof Label>> = ({ className, ...prop
 
 const FieldTitle: FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
   <div
-    data-slot="field-label"
+    data-slot="field-title"
     className={cn(
       'flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50',
       className,
@@ -174,15 +174,15 @@ const FieldError: FC<
       return null;
     }
 
-    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
+    const uniqueErrorList = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
-    if (uniqueErrors?.length === FIELD_ERROR_MIN_LENGTH) {
-      return uniqueErrors[FIRST_ARRAY_ELEMENT]?.message;
+    if (uniqueErrorList?.length === FIELD_ERROR_MIN_LENGTH) {
+      return uniqueErrorList[FIRST_ARRAY_ELEMENT]?.message;
     }
 
     return (
       <ul className="ml-4 flex list-disc flex-col gap-1">
-        {uniqueErrors.map(
+        {uniqueErrorList.map(
           (error) => error?.message && <li key={error.message}>{error.message}</li>,
         )}
       </ul>
