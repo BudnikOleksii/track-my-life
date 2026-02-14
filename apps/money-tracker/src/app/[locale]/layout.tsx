@@ -21,7 +21,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  description: 'Application for tracking life events',
+  description: 'Easily manage your expenses and incomes with Money Tracker Online',
   title: {
     default: 'Money Tracker Online - Easily manage your expenses and incomes',
     template: '%s - Money Tracker',
