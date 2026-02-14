@@ -1,17 +1,17 @@
 'use server';
 
 import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
-import { signUpWithEmailAndPassword } from '@track-my-life/shared/src/supabase/server';
+import { signUpWithEmailAndPassword } from '@track-my-life/shared/src/supabase/auth/sign-up';
 import { getLocale } from 'next-intl/server';
 
 import type { AuthAction } from '@/app/[locale]/(auth-layout)/types/auth-action';
 
 import { authFormSchema } from '@/app/[locale]/(auth-layout)/constants/auth-form-schema';
-import { ROUTES } from '@/constants/routes';
+import { PATHS } from '@/constants/paths';
 
-export const signUp: AuthAction = async ({ email, password }) => {
+export const signUp: AuthAction = async (credentials) => {
   const locale = await getLocale();
-  const validatedFields = authFormSchema.safeParse({ email, password });
+  const validatedFields = authFormSchema.safeParse(credentials);
 
   if (!validatedFields.success) {
     return {
@@ -19,7 +19,7 @@ export const signUp: AuthAction = async ({ email, password }) => {
     };
   }
 
-  const { error } = await signUpWithEmailAndPassword(email, password);
+  const { error } = await signUpWithEmailAndPassword(validatedFields.data);
 
   if (error) {
     return {
@@ -27,6 +27,6 @@ export const signUp: AuthAction = async ({ email, password }) => {
     };
   }
 
-  redirect({ href: ROUTES.verifyEmail, locale });
+  redirect({ href: PATHS.verifyEmail, locale });
   return null;
 };

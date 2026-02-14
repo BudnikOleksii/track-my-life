@@ -12,7 +12,7 @@ import {
 import { FieldSeparator } from '@track-my-life/ui/components/field';
 import { getTranslations } from 'next-intl/server';
 
-import { ROUTES } from '@/constants/routes';
+import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { AuthForm } from '../components/AuthForm';
@@ -39,7 +39,8 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const SignUpPage: FC<Props> = async () => {
+const SignUpPage: FC<Props> = async (props) => {
+  await props.params;
   const tSignUp = await getTranslations(I18N_NAMESPACE.signUpPage);
   const tAuthShared = await getTranslations(I18N_NAMESPACE.authShared);
 
@@ -64,7 +65,7 @@ const SignUpPage: FC<Props> = async () => {
           <p className="text-muted-foreground text-sm text-center">
             {tSignUp('content.haveAccount')}{' '}
             <NavigationLink
-              href={ROUTES.signIn}
+              href={PATHS.signIn}
               className="text-primary underline-offset-4 hover:underline"
             >
               {tSignUp('content.signInLink')}

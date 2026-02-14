@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { FC } from 'react';
 
-import { getAuthenticatedUserOrRedirect } from '@track-my-life/shared/src/supabase/server';
+import { getAuthenticatedUserOrRedirect } from '@track-my-life/shared/src/supabase/auth/get-user-or-redirect';
 import { Button } from '@track-my-life/ui/components/button';
 import {
   Card,
@@ -12,8 +12,8 @@ import {
 } from '@track-my-life/ui/components/card';
 import { getTranslations } from 'next-intl/server';
 
-import { signOut } from '@/app/[locale]/auth/action';
-import { ROUTES } from '@/constants/routes';
+import { signOut } from '@/actions/sign-out';
+import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 interface Props {
@@ -39,7 +39,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const DashboardPage: FC<Props> = async (props) => {
   await props.params;
 
-  const user = await getAuthenticatedUserOrRedirect(ROUTES.signIn);
+  const user = await getAuthenticatedUserOrRedirect(PATHS.signIn);
 
   const translations = await getTranslations(I18N_NAMESPACE.dashboardPage);
 

@@ -1,9 +1,12 @@
 'use client';
 
-import type { OAuthProviderName } from '@track-my-life/shared/src/supabase/client';
 import type { FC } from 'react';
 
-import { signInWithOAuthProvider } from '@track-my-life/shared/src/supabase/client';
+import type {
+  OAuthProviderName} from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
+import {
+  signInWithOAuthProvider,
+} from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
 import { Button } from '@track-my-life/ui/components/button';
 import { useState } from 'react';
 

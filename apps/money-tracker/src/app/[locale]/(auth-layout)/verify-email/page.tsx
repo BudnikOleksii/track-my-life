@@ -11,7 +11,7 @@ import {
 } from '@track-my-life/ui/components/card';
 import { getTranslations } from 'next-intl/server';
 
-import { ROUTES } from '@/constants/routes';
+import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 interface Props {
@@ -46,7 +46,7 @@ const VerifyEmailPage: FC<Props> = async () => {
         </CardHeader>
         <CardContent>
           <NavigationLink
-            href={ROUTES.signIn}
+            href={PATHS.signIn}
             className="text-primary underline-offset-4 hover:underline"
           >
             {tVerifyEmail('content.signInLink')}
