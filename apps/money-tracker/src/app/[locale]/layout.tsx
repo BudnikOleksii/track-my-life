@@ -3,29 +3,29 @@ import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
-import { getMessages, setRequestLocale } from 'next-intl/server';
-import { Poppins, Outfit } from 'next/font/google';
+import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
+import { Outfit, Poppins } from 'next/font/google';
 
 // oxlint-disable-next-line import/no-unassigned-import
 import '../globals.css';
 
 const poppins = Poppins({
+  subsets: ['latin'],
   variable: '--default-font-family',
   weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
 });
 
 const outfit = Outfit({
-  variable: '--accent-font-family',
   subsets: ['latin'],
+  variable: '--accent-font-family',
 });
 
 export const metadata: Metadata = {
+  description: 'Easily manage your expenses and incomes with Money Tracker Online',
   title: {
-    template: '%s - Money Tracker',
     default: 'Money Tracker Online - Easily manage your expenses and incomes',
+    template: '%s - Money Tracker',
   },
-  description: 'Application for tracking life events',
 };
 
 interface Props extends PropsWithChildren {
@@ -39,11 +39,13 @@ const RootLayout: FC<Props> = async (props) => {
   setRequestLocale(params.locale);
 
   const messages = await getMessages();
+  const timeZone = await getTimeZone();
+  const now = await getNow();
 
   return (
     <html lang={params.locale}>
       <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
-        <NextIntlProvider locale={params.locale} messages={messages}>
+        <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           {children}
         </NextIntlProvider>
       </body>

@@ -1,0 +1,8 @@
+{
+  "metadata": { "title": "Verify Email", "description": "Verify your email address" },
+  "content": {
+    "title": "Check your email",
+    "subtitle": "We sent a verification link to your email address. Click the link to verify your account and sign in.",
+    "signInLink": "Back to Sign In"
+  }
+}

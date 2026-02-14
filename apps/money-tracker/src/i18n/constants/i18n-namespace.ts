@@ -8,6 +8,7 @@ export const I18N_NAMESPACE = {
   homePage: 'homePage',
   signInPage: 'signInPage',
   signUpPage: 'signUpPage',
+  verifyEmailPage: 'verifyEmailPage',
 } as const;
 
 export type I18Namespace = ObjectValuesUnion<typeof I18N_NAMESPACE>;
