@@ -1,6 +1,5 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
-import { HTTP_STATUS_CODE } from '@track-my-life/shared/src/constants/http-status-code';
 import { routing } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { updateSession } from '@track-my-life/shared/src/supabase/proxy';
 import createIntlMiddleware from 'next-intl/middleware';
@@ -17,15 +16,6 @@ export const proxy = async (request: NextRequest): Promise<NextResponse> => {
   }
 
   const supabaseResponse = await updateSession(request);
-
-  if (
-    supabaseResponse.redirected ||
-    supabaseResponse.status === HTTP_STATUS_CODE.TEMPORARY_REDIRECT ||
-    supabaseResponse.status === HTTP_STATUS_CODE.FORBIDDEN
-  ) {
-    return supabaseResponse;
-  }
-
   const intlResponse = handleI18nRouting(request);
 
   supabaseResponse.cookies.getAll().forEach((cookie) => {

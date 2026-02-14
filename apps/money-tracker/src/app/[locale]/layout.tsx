@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
 import { Outfit, Poppins } from 'next/font/google';
 
 // oxlint-disable-next-line import/no-unassigned-import
@@ -39,11 +39,13 @@ const RootLayout: FC<Props> = async (props) => {
   setRequestLocale(params.locale);
 
   const messages = await getMessages();
+  const timeZone = await getTimeZone();
+  const now = await getNow();
 
   return (
     <html lang={params.locale}>
       <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
-        <NextIntlProvider locale={params.locale} messages={messages}>
+        <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           {children}
         </NextIntlProvider>
       </body>
