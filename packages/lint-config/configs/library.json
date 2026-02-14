@@ -19,7 +19,8 @@
     "react/jsx-max-depth": ["error", { "max": 8 }],
     "react/only-export-components": "off",
     "react-perf/jsx-no-new-function-as-prop": "off",
-    "react-perf/jsx-no-new-array-as-prop": "off"
+    "react-perf/jsx-no-new-array-as-prop": "off",
+    "react-perf/jsx-no-new-object-as-prop": "off"
   },
   "ignorePatterns": [
     "node_modules/**",

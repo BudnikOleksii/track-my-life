@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
+import { Toaster } from '@track-my-life/ui/components/toaster';
 import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
 import { Outfit, Poppins } from 'next/font/google';
 
@@ -48,6 +49,7 @@ const RootLayout: FC<Props> = async (props) => {
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           {children}
         </NextIntlProvider>
+        <Toaster />
       </body>
     </html>
   );
