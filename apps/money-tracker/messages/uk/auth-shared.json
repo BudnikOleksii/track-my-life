@@ -1,19 +1,18 @@
 {
   "email": "Електронна пошта",
   "emailPlaceholder": "Введіть вашу електронну пошту",
-  "emailRequired": "Електронна пошта обов'язкова",
-  "emailInvalid": "Введіть дійсну електронну пошту",
   "password": "Пароль",
   "passwordPlaceholder": "Введіть ваш пароль",
-  "passwordRequired": "Пароль обов'язковий",
-  "passwordMinLength": "Пароль повинен містити щонайменше 8 символів",
   "orLabel": "Або продовжити з",
   "continueWithGoogle": "Продовжити з Google",
   "continueWithGitHub": "Продовжити з GitHub",
   "continueWithLinkedIn": "Продовжити з LinkedIn",
   "errors": {
-    "generic": "Сталася помилка. Будь ласка, спробуйте ще раз.",
-    "invalidCredentials": "Невірна електронна пошта або пароль",
-    "validation": "Перевірте чи валідний мейл і пароль не меньше 8 символів"
+    "emailRequired": "Електронна пошта обов'язкова",
+    "emailInvalid": "Введіть дійсну електронну пошту",
+    "passwordRequired": "Пароль обов'язковий",
+    "passwordMinLength": "Пароль повинен містити щонайменше 8 символів",
+    "generic": "Сталася помилка. Перевірте правильлність данних та спробуйте ще раз.",
+    "invalidCredentials": "Невірна електронна пошта або пароль"
   }
 }

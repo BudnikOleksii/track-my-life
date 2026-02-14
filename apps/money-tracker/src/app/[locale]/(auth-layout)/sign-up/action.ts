@@ -4,31 +4,29 @@ import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { signUpWithEmailAndPassword } from '@track-my-life/shared/src/supabase/server';
 import { getLocale } from 'next-intl/server';
 
-import type { SignUpError } from '@/app/[locale]/(auth-layout)/sign-up/constants';
+import type { AuthAction } from '@/app/[locale]/(auth-layout)/types/auth-action';
 
-import { MIN_PASSWORD_LENGTH } from '@/app/[locale]/(auth-layout)/constants/min-password-length';
-import { SIGN_UP_ERROR } from '@/app/[locale]/(auth-layout)/sign-up/constants';
-import { getFormFieldValue } from '@/app/[locale]/(auth-layout)/utils/get-form-field-value';
+import { authFormSchema } from '@/app/[locale]/(auth-layout)/constants/auth-form-schema';
 import { ROUTES } from '@/constants/routes';
 
-const redirectWithError = (error: SignUpError, locale: string) => {
-  redirect({ href: `${ROUTES.signIn}?error=${error}`, locale });
-};
-
-export const signUp = async (formData: FormData) => {
-  const email = getFormFieldValue(formData, 'email');
-  const password = getFormFieldValue(formData, 'password');
+export const signUp: AuthAction = async ({ email, password }) => {
   const locale = await getLocale();
+  const validatedFields = authFormSchema.safeParse({ email, password });
 
-  if (!email || !password || password.length < MIN_PASSWORD_LENGTH) {
-    redirectWithError(SIGN_UP_ERROR.validation, locale);
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.issues,
+    };
   }
 
   const { error } = await signUpWithEmailAndPassword(email, password);
 
   if (error) {
-    redirectWithError(SIGN_UP_ERROR.generic, locale);
+    return {
+      errors: [{ message: 'generic' }],
+    };
   }
 
   redirect({ href: ROUTES.verifyEmail, locale });
+  return null;
 };

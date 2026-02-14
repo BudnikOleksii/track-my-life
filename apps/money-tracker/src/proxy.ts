@@ -1,9 +1,8 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
+import { routing } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { updateSession } from '@track-my-life/shared/src/supabase/proxy';
 import createIntlMiddleware from 'next-intl/middleware';
-
-import { routing } from '../../../packages/shared/src/i18n/navigation/navigation';
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
@@ -23,7 +22,8 @@ export const proxy = async (request: NextRequest): Promise<NextResponse> => {
 
   // Merge cookies from Supabase response
   supabaseResponse.cookies.getAll().forEach((cookie) => {
-    intlResponse.cookies.set(cookie.name, cookie.value);
+    const { name, value, ...options } = cookie;
+    intlResponse.cookies.set(name, value, options);
   });
 
   return intlResponse;

@@ -5,12 +5,12 @@ import { getLocale } from 'next-intl/server';
 import { cookies } from 'next/headers';
 
 import { redirect } from '../i18n/navigation/navigation';
-import { supabaseConfig } from './config';
+import { SUPABASE_CONFIG } from './config';
 
 const createSupabaseServerClient = async () => {
   const cookieStore = await cookies();
 
-  return createServerClient(supabaseConfig.url, supabaseConfig.publishableKey, {
+  return createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();

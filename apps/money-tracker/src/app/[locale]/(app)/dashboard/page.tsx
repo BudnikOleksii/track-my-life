@@ -12,7 +12,7 @@ import {
 } from '@track-my-life/ui/components/card';
 import { getTranslations } from 'next-intl/server';
 
-import { API_ROUTES } from '@/constants/api-routes';
+import { signOut } from '@/app/[locale]/auth/action';
 import { ROUTES } from '@/constants/routes';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -64,7 +64,7 @@ const DashboardPage: FC<Props> = async (props) => {
             </p>
           </section>
 
-          <form action={API_ROUTES.signOut} method="post" className="pt-4">
+          <form action={signOut} className="pt-4">
             <Button type="submit" variant="outline" className="w-full">
               {translations('content.logoutButton')}
             </Button>

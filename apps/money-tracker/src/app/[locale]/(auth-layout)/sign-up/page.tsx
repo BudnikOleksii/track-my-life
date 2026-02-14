@@ -15,32 +15,15 @@ import { getTranslations } from 'next-intl/server';
 import { ROUTES } from '@/constants/routes';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { SignUpError } from './constants';
-
 import { AuthForm } from '../components/AuthForm';
 import OAuthProviderButtons from '../components/OAuthProviderButtons';
 import { signUp } from './action';
-import { SIGN_UP_ERROR } from './constants';
 
 interface Props {
   params: Promise<{
     locale: string;
   }>;
-  searchParams: Promise<{
-    error?: SignUpError;
-  }>;
 }
-
-const getErrorMessageKey = (errorCode: SignUpError) => {
-  switch (errorCode) {
-    case SIGN_UP_ERROR.validation: {
-      return 'validation';
-    }
-    default: {
-      return 'generic';
-    }
-  }
-};
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
@@ -56,14 +39,9 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const SignUpPage: FC<Props> = async (props) => {
-  const { error } = await props.searchParams;
-
+const SignUpPage: FC<Props> = async () => {
   const tSignUp = await getTranslations(I18N_NAMESPACE.signUpPage);
   const tAuthShared = await getTranslations(I18N_NAMESPACE.authShared);
-
-  const errorMessageCode = error && getErrorMessageKey(error);
-  const errorList = errorMessageCode && [{ message: tAuthShared(`errors.${errorMessageCode}`) }];
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -73,11 +51,7 @@ const SignUpPage: FC<Props> = async (props) => {
           <CardDescription>{tSignUp('content.subtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <AuthForm
-            errorList={errorList}
-            action={signUp}
-            submitText={tSignUp('content.signUpButton')}
-          />
+          <AuthForm action={signUp} submitText={tSignUp('content.signUpButton')} />
 
           <FieldSeparator>{tAuthShared('orLabel')}</FieldSeparator>
 

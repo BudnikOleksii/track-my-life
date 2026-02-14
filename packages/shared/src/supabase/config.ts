@@ -9,4 +9,4 @@ const getSupabaseConfig = () => {
   return { publishableKey, url };
 };
 
-export const supabaseConfig = getSupabaseConfig();
+export const SUPABASE_CONFIG = getSupabaseConfig();

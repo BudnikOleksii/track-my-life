@@ -1,20 +1,19 @@
 {
   "email": "Email",
   "emailPlaceholder": "Enter your email",
-  "emailRequired": "Email is required",
-  "emailInvalid": "Please enter a valid email",
   "password": "Password",
   "passwordPlaceholder": "Enter your password",
-  "passwordRequired": "Password is required",
-  "passwordMinLength": "Password must be at least 8 characters",
   "errorGeneric": "An error occurred. Please try again.",
   "orLabel": "Or continue with",
   "continueWithGoogle": "Continue with Google",
   "continueWithGitHub": "Continue with GitHub",
   "continueWithLinkedIn": "Continue with LinkedIn",
   "errors": {
-    "generic": "An error occurred. Please try again.",
-    "invalidCredentials": "Invalid email or password",
-    "validation": "Password should be at least 8 characters and emil should be valid"
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "generic": "An error occurred. Check your credentials or try again.",
+    "invalidCredentials": "Invalid email or password"
   }
 }

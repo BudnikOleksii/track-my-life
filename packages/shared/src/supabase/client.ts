@@ -4,7 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 import { createBrowserClient } from '@supabase/ssr';
 
-import { supabaseConfig } from './config';
+import { SUPABASE_CONFIG } from './config';
 
 type OAuthProviderName = 'google' | 'github' | 'linkedin_oidc';
 
@@ -12,7 +12,7 @@ let browserClient: SupabaseClient | undefined = undefined;
 
 const getSupabaseBrowserClient = (): SupabaseClient => {
   if (!browserClient) {
-    browserClient = createBrowserClient(supabaseConfig.url, supabaseConfig.publishableKey);
+    browserClient = createBrowserClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey);
   }
 
   return browserClient;

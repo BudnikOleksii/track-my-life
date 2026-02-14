@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 
-import { supabaseConfig } from './config';
+import { SUPABASE_CONFIG } from './config';
 
 export const updateSession = async (request: NextRequest) => {
   let supabaseResponse = NextResponse.next({
@@ -11,19 +11,21 @@ export const updateSession = async (request: NextRequest) => {
   });
   // With Fluid compute, don't put this client in a global environment
   // Variable. Always create a new one on each request.
-  const supabase = createServerClient(supabaseConfig.url, supabaseConfig.publishableKey, {
+  const supabase = createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey, {
     cookies: {
       getAll() {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        cookiesToSet.forEach(({ name, value }) => {
+          request.cookies.set(name, value);
+        });
         supabaseResponse = NextResponse.next({
           request,
         });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options),
-        );
+        cookiesToSet.forEach(({ name, value, options }) => {
+          supabaseResponse.cookies.set(name, value, options);
+        });
       },
     },
   });
@@ -36,12 +38,13 @@ export const updateSession = async (request: NextRequest) => {
   const user = data?.claims;
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
+    !request.nextUrl.pathname.startsWith('/sign-in') &&
+    !request.nextUrl.pathname.startsWith('/sign-up') &&
     !request.nextUrl.pathname.startsWith('/auth')
   ) {
     // No user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
+    url.pathname = '/sign-in';
     return NextResponse.redirect(url);
   }
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
