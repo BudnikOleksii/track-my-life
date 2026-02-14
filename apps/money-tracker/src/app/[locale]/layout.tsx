@@ -5,10 +5,11 @@ import type { FC, PropsWithChildren } from 'react';
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
 import { Toaster } from '@track-my-life/ui/components/toaster';
 import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
-import { Outfit, Poppins } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 // oxlint-disable-next-line import/no-unassigned-import
 import '../globals.css';
+import { Outfit, Poppins } from 'next/font/google';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -47,9 +48,12 @@ const RootLayout: FC<Props> = async (props) => {
     <html lang={params.locale}>
       <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
-          {children}
+          <ThemeProvider>
+            {children}
+
+            <Toaster />
+          </ThemeProvider>
         </NextIntlProvider>
-        <Toaster />
       </body>
     </html>
   );
