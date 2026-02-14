@@ -3,4 +3,4 @@ export const PATHS = {
   signUp: '/sign-up',
   verifyEmail: '/verify-email',
   dashboard: '/dashboard',
-};
+} as const;

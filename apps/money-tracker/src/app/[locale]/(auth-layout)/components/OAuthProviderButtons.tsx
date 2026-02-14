@@ -1,12 +1,9 @@
 'use client';
 
+import type { OAuthProviderName } from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
 import type { FC } from 'react';
 
-import type {
-  OAuthProviderName} from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
-import {
-  signInWithOAuthProvider,
-} from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
+import { signInWithOAuthProvider } from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
 import { Button } from '@track-my-life/ui/components/button';
 import { useState } from 'react';
 
@@ -20,7 +17,7 @@ const AUTH_PROVIDER_GOOGLE: OAuthProviderName = 'google';
 const AUTH_PROVIDER_GITHUB: OAuthProviderName = 'github';
 const AUTH_PROVIDER_LINKEDIN: OAuthProviderName = 'linkedin_oidc';
 
-const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
+export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
   const [activeProvider, setActiveProvider] = useState<OAuthProviderName | null>(null);
 
   const handleProviderClick = async (provider: OAuthProviderName) => {
@@ -64,5 +61,3 @@ const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLab
     </div>
   );
 };
-
-export default OAuthProviderButtons;

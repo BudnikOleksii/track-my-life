@@ -16,7 +16,7 @@ import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { AuthForm } from '../components/AuthForm';
-import OAuthProviderButtons from '../components/OAuthProviderButtons';
+import { OAuthProviderButtons } from '../components/OAuthProviderButtons';
 import { signUp } from './action';
 
 interface Props {
