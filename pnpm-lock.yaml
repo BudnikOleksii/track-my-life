@@ -20,6 +20,9 @@ importers:
       '@track-my-life/lint-config':
         specifier: workspace:*
         version: link:packages/lint-config
+      '@track-my-life/stylelint-config':
+        specifier: workspace:*
+        version: link:packages/stylelint-config
       '@track-my-life/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
@@ -38,6 +41,9 @@ importers:
       rulesync:
         specifier: 6.2.0
         version: 6.2.0(hono@4.11.7)(valibot@1.2.0(typescript@5.9.3))
+      stylelint:
+        specifier: 16.25.0
+        version: 16.25.0(typescript@5.9.3)
       turbo:
         specifier: 2.5.8
         version: 2.5.8
