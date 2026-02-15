@@ -1,0 +1,14 @@
+{
+  "name": "@track-my-life/stylelint-config",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@stylistic/stylelint-config": "3.0.1",
+    "stylelint": "16.25.0",
+    "stylelint-config-standard": "38.0.0",
+    "stylelint-config-standard-scss": "16.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "2.8.0",
+    "stylelint-order": "7.0.0",
+    "stylelint-scss": "6.12.1"
+  }
+}

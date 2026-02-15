@@ -4,8 +4,10 @@ import type { OAuthProviderName } from '@track-my-life/shared/src/supabase/auth/
 import type { FC } from 'react';
 
 import { signInWithOAuthProvider } from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
-import { Button } from '@track-my-life/ui/components/button';
+import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { useState } from 'react';
+
+import styles from './OAuthProviderButtons.module.scss';
 
 interface Props {
   googleLabel: string;
@@ -33,7 +35,7 @@ export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, link
   const isSubmitting = Boolean(activeProvider);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={styles.root}>
       <Button
         type="button"
         variant="outline"

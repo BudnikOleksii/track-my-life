@@ -1,3 +1,2 @@
 #!/bin/sh
-set -e
-pnpm type-check && pnpm test
+pnpm type-check && pnpm stylelint && pnpm test

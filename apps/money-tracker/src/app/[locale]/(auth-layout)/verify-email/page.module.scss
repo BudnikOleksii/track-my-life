@@ -1,0 +1,16 @@
+.main {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+
+  padding: var(--spacing-4);
+}
+
+.card {
+  width: 100%;
+  max-width: 28rem;
+}

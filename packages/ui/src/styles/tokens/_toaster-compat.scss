@@ -1,0 +1,14 @@
+// Compatibility layer for Toaster (sonner) which expects --popover, --popover-foreground, --border, --radius
+:root {
+  --popover: var(--surface);
+  --popover-foreground: var(--on-surface);
+  --border: var(--outline);
+  --radius: var(--radius-md);
+}
+
+[data-theme="dark"] {
+  --popover: var(--surface);
+  --popover-foreground: var(--on-surface);
+  --border: var(--outline);
+  --radius: var(--radius-md);
+}

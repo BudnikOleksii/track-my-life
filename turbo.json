@@ -24,6 +24,12 @@
     "lint:fix": {
       "cache": false
     },
+    "stylelint": {
+      "cache": false
+    },
+    "stylelint:fix": {
+      "cache": false
+    },
     "commitlint": {
       "cache": false
     },
