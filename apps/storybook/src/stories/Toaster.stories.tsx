@@ -121,7 +121,10 @@ export const AllVariants: Story = {
       </Button>
       <Button
         variant="outline"
-        onClick={() => toast.loading('Loading...', { id: 'loading-toast' })}
+        onClick={() => {
+          const id = toast.loading('Loading...');
+          globalThis.setTimeout(() => toast.dismiss(id), TIME_OUT);
+        }}
       >
         Loading
       </Button>
