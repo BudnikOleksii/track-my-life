@@ -104,10 +104,6 @@
   color: var(--primary);
 
   background-color: transparent;
-
-  @include hover {
-    text-decoration: underline;
-  }
 }
 
 .destructive {

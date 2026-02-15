@@ -3,7 +3,7 @@ import type { PropsWithChildren, ElementType, CSSProperties } from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './Typography.module.scss';
 
-type TypographyVariant =
+export type TypographyVariant =
   | 'title-xl'
   | 'title-l'
   | 'title-m'
@@ -13,7 +13,7 @@ type TypographyVariant =
   | 'body-m'
   | 'body-s';
 
-type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extra-bold';
+export type FontWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extra-bold';
 
 const VARIANT_TAG_MAP: Record<TypographyVariant, ElementType> = {
   'title-xl': 'h1',
@@ -53,12 +53,12 @@ interface BaseProps {
   className?: string;
 }
 
-type TypographyProps<T extends IntrinsicElementsKeys> = BaseProps &
+export type TypographyProps<T extends IntrinsicElementsKeys> = BaseProps &
   Omit<React.JSX.IntrinsicElements[T], keyof BaseProps> & {
     tag?: T;
   };
 
-export const Typography = <T extends IntrinsicElementsKeys = 'span'>({
+export const Typography = <T extends IntrinsicElementsKeys = 'p'>({
   variant = 'body-m',
   tag,
   fontWeight,

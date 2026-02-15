@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './underline-link.module.scss';
 
-type UnderlineLinkProps<Comp extends React.ElementType = 'a'> = {
+export type UnderlineLinkProps<Comp extends React.ElementType = 'a'> = {
   component?: Comp;
   className?: string;
 } & Omit<React.ComponentPropsWithoutRef<Comp>, 'component' | 'className'>;
