@@ -1,3 +1,2 @@
 #!/bin/sh
-pnpm type-check & pnpm stylelint & wait
-pnpm test
+pnpm type-check && pnpm stylelint && pnpm test

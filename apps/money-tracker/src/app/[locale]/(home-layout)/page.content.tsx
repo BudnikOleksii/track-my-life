@@ -19,7 +19,7 @@ export const HomePageContent: FC<HomePageContentProps> = ({ translations }) => (
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
-        <CardTitle className={styles.cardTitle}>{translations('content.title')}</CardTitle>
+        <CardTitle>{translations('content.title')}</CardTitle>
         <CardDescription>{translations('content.description')}</CardDescription>
       </CardHeader>
       <CardContent className={styles.cardContent}>

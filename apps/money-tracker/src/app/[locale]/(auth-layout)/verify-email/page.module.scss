@@ -15,18 +15,3 @@
   max-width: 28rem;
 }
 
-.cardTitle {
-  font-size: var(--font-title-l-size);
-  font-weight: var(--font-title-l-weight);
-  line-height: var(--font-title-l-line-height);
-}
-
-.footerLink {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--primary);
-
-  &:hover {
-    text-decoration: underline;
-  }
-}

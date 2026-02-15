@@ -35,18 +35,7 @@
   }
 }
 
-.cardTitle {
-  font-family: var(--default-font-family);
-  font-size: var(--font-title-s-size);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--font-title-s-line-height);
-}
-
 .cardDescription {
-  font-family: var(--default-font-family);
-  font-size: var(--font-body-m-size);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--font-body-m-line-height);
   color: var(--on-surface-variant);
 }
 

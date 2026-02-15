@@ -1,5 +1,6 @@
 import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {
   Card,
   CardContent,
@@ -26,9 +27,7 @@ export const SignInPageContent = async () => {
     <main className={styles.main}>
       <Card className={styles.card}>
         <CardHeader>
-          <CardTitle>
-            <Typography variant="title-l">{tSignIn('content.title')}</Typography>
-          </CardTitle>
+          <CardTitle>{tSignIn('content.title')}</CardTitle>
           <CardDescription>{tSignIn('content.subtitle')}</CardDescription>
         </CardHeader>
 
@@ -43,11 +42,11 @@ export const SignInPageContent = async () => {
             linkedinLabel={tAuthShared('continueWithLinkedIn')}
           />
 
-          <Typography variant="body-m" className={styles.footerText}>
+          <Typography className={styles.footerText}>
             {tSignIn('content.noAccount')}{' '}
-            <NavigationLink href={PATHS.signUp} className={styles.footerLink}>
+            <UnderlineLink component={NavigationLink} href={PATHS.signUp}>
               {tSignIn('content.signUpLink')}
-            </NavigationLink>
+            </UnderlineLink>
           </Typography>
         </CardContent>
       </Card>

@@ -5,15 +5,8 @@ import { forwardRef } from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './button.module.scss';
 
-type ButtonVariant =
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'outline'
-  | 'ghost'
-  | 'link'
-  | 'destructive';
-type ButtonSize = 'default' | 'sm' | 'md' | 'lg' | 'icon';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -21,7 +14,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeToClass: Record<ButtonSize, string> = {
-  default: styles.md ?? '',
   sm: styles.sm ?? '',
   md: styles.md ?? '',
   lg: styles.lg ?? '',
@@ -29,7 +21,6 @@ const sizeToClass: Record<ButtonSize, string> = {
 };
 
 const variantToClass: Record<ButtonVariant, string> = {
-  default: styles.default ?? '',
   primary: styles.primary ?? '',
   secondary: styles.secondary ?? '',
   outline: styles.outline ?? '',
@@ -39,7 +30,7 @@ const variantToClass: Record<ButtonVariant, string> = {
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'default', size = 'default', type = 'button', ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', type = 'button', ...props }, ref) => {
     const variantClass = variantToClass[variant];
     const sizeClass = sizeToClass[size];
 

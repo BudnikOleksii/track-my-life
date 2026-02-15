@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
 import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
+import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {
   Card,
   CardContent,
@@ -21,13 +22,13 @@ export const VerifyEmailPageContent: FC<VerifyEmailPageContentProps> = ({ tVerif
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
-        <CardTitle className={styles.cardTitle}>{tVerifyEmail('content.title')}</CardTitle>
+        <CardTitle>{tVerifyEmail('content.title')}</CardTitle>
         <CardDescription>{tVerifyEmail('content.subtitle')}</CardDescription>
       </CardHeader>
       <CardContent>
-        <NavigationLink href={PATHS.signIn} className={styles.footerLink}>
+        <UnderlineLink component={NavigationLink} href={PATHS.signIn}>
           {tVerifyEmail('content.signInLink')}
-        </NavigationLink>
+        </UnderlineLink>
       </CardContent>
     </Card>
   </main>

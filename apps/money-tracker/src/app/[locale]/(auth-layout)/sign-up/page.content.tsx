@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 
 import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
+import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {
   Card,
   CardContent,
@@ -26,7 +28,7 @@ export const SignUpPageContent: FC<SignUpPageContentProps> = ({ tSignUp, tAuthSh
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
-        <CardTitle className={styles.cardTitle}>{tSignUp('content.title')}</CardTitle>
+        <CardTitle>{tSignUp('content.title')}</CardTitle>
         <CardDescription>{tSignUp('content.subtitle')}</CardDescription>
       </CardHeader>
       <CardContent className={styles.cardContent}>
@@ -40,12 +42,12 @@ export const SignUpPageContent: FC<SignUpPageContentProps> = ({ tSignUp, tAuthSh
           linkedinLabel={tAuthShared('continueWithLinkedIn')}
         />
 
-        <p className={styles.footerText}>
+        <Typography className={styles.footerText}>
           {tSignUp('content.haveAccount')}{' '}
-          <NavigationLink href={PATHS.signIn} className={styles.footerLink}>
+          <UnderlineLink component={NavigationLink} href={PATHS.signIn}>
             {tSignUp('content.signInLink')}
-          </NavigationLink>
-        </p>
+          </UnderlineLink>
+        </Typography>
       </CardContent>
     </Card>
   </main>

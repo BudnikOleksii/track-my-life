@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '../../../lib/utils';
+import { Typography } from '../../atoms/typography/Typography';
 import styles from './card.module.scss';
 
 const Card: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
@@ -26,12 +27,23 @@ const CardHeader: React.FC<React.ComponentProps<'div'>> = ({ className, ...props
   />
 );
 
-const CardTitle: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
-  <div data-slot="card-title" className={cn(styles.cardTitle, className)} {...props} />
-);
+const CardTitle: React.FC<React.ComponentProps<typeof Typography>> = ({
+  variant = 'title-l',
+  className,
+  ...props
+}) => <Typography data-slot="card-title" variant={variant} className={className} {...props} />;
 
-const CardDescription: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (
-  <div data-slot="card-description" className={cn(styles.cardDescription, className)} {...props} />
+const CardDescription: React.FC<React.ComponentProps<typeof Typography>> = ({
+  variant = 'body-m',
+  className,
+  ...props
+}) => (
+  <Typography
+    data-slot="card-description"
+    variant={variant}
+    className={cn(styles.cardDescription, className)}
+    {...props}
+  />
 );
 
 const CardAction: React.FC<React.ComponentProps<'div'>> = ({ className, ...props }) => (

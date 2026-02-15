@@ -48,7 +48,7 @@ const FONT_WEIGHT_MAP: Record<FontWeight, string> = {
 type IntrinsicElementsKeys = keyof React.JSX.IntrinsicElements;
 
 interface BaseProps {
-  variant: TypographyVariant;
+  variant?: TypographyVariant;
   fontWeight?: FontWeight;
   className?: string;
 }
@@ -59,7 +59,7 @@ type TypographyProps<T extends IntrinsicElementsKeys> = BaseProps &
   };
 
 export const Typography = <T extends IntrinsicElementsKeys = 'span'>({
-  variant,
+  variant = 'body-m',
   tag,
   fontWeight,
   className,

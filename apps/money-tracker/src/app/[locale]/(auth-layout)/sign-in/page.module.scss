@@ -27,12 +27,3 @@
   color: var(--on-surface-variant);
 }
 
-.footerLink {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--primary);
-
-  &:hover {
-    text-decoration: underline;
-  }
-}

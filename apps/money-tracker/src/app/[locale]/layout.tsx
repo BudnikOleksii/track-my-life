@@ -12,8 +12,6 @@ import '@track-my-life/ui/src/styles/index.scss';
 import '../globals.css';
 import { Outfit, Poppins } from 'next/font/google';
 
-import styles from './layout.module.scss';
-
 const poppins = Poppins({
   subsets: ['latin'],
   variable: '--default-font-family',
@@ -49,7 +47,7 @@ const RootLayout: FC<Props> = async (props) => {
 
   return (
     <html lang={params.locale} suppressHydrationWarning>
-      <body className={`${poppins.variable} ${outfit.variable} ${styles.root}`}>
+      <body className={`${poppins.variable} ${outfit.variable}`}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           <ThemeProvider>
             {children}

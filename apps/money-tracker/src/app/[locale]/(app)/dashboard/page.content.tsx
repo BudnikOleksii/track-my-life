@@ -25,7 +25,7 @@ export const DashboardPageContent: FC<DashboardPageContentProps> = ({ user, tran
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
-        <CardTitle className={styles.cardTitle}>{translations('content.title')}</CardTitle>
+        <CardTitle>{translations('content.title')}</CardTitle>
         <CardDescription>{translations('content.welcome')}</CardDescription>
       </CardHeader>
 

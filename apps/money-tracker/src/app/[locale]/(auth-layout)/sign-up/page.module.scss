@@ -22,24 +22,8 @@
   gap: var(--spacing-6);
 }
 
-.cardTitle {
-  font-size: var(--font-title-l-size);
-  font-weight: var(--font-title-l-weight);
-  line-height: var(--font-title-l-line-height);
-}
-
 .footerText {
-  font-size: var(--font-body-m-size);
   text-align: center;
   color: var(--on-surface-variant);
 }
 
-.footerLink {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--primary);
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
