@@ -66,7 +66,7 @@ export const Password: Story = {
   },
 };
 
-export const Number: Story = {
+export const NumberInput: Story = {
   args: {
     type: 'number',
     placeholder: '0',
@@ -86,7 +86,7 @@ export const File: Story = {
   },
 };
 
-export const Error: Story = {
+export const ErrorState: Story = {
   args: {
     error: true,
     defaultValue: 'Invalid input',
