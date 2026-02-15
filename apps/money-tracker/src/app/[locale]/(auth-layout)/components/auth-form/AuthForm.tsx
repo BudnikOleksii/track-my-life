@@ -4,7 +4,8 @@ import type { FieldErrorList } from '@track-my-life/shared/src/types/field-error
 import type { FC } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@track-my-life/ui/components/button';
+import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
+import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {
   Field,
   FieldContent,
@@ -14,8 +15,7 @@ import {
   FieldLabel,
   FieldSet,
   FieldTitle,
-} from '@track-my-life/ui/components/field';
-import { Input } from '@track-my-life/ui/components/input';
+} from '@track-my-life/ui/src/components/molecules/field/field';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +25,8 @@ import type { AuthAction } from '@/app/[locale]/(auth-layout)/types/auth-action'
 
 import { authFormSchema } from '@/app/[locale]/(auth-layout)/constants/auth-form-schema';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+
+import styles from './AuthForm.module.scss';
 
 interface Props {
   action: AuthAction;
@@ -64,7 +66,7 @@ export const AuthForm: FC<Props> = ({ action, submitText }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -109,7 +111,7 @@ export const AuthForm: FC<Props> = ({ action, submitText }) => {
       </FieldSet>
       {serverErrorList && <FieldError errors={serverErrorList} />}
 
-      <Button type="submit" className="w-full" disabled={isPending}>
+      <Button type="submit" className={styles.submitButton} disabled={isPending}>
         {submitText}
       </Button>
     </form>

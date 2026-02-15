@@ -92,6 +92,9 @@
     "build/**",
     "out/**",
     "coverage/**",
-    "*.min.js"
+    "*.min.js",
+    "*/stylelint-config/*.js",
+    "**/stylelint.config.js",
+    "packages/stylelint-config/**"
   ]
 }

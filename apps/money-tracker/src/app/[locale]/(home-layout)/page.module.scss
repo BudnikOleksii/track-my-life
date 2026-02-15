@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+
+  padding: var(--spacing-24);
+}
+
+.card {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.cardContent {
+  display: flex;
+
+  gap: var(--spacing-4);
+}
+
+.cardTitle {
+  font-size: var(--font-title-l-size);
+  font-weight: var(--font-title-l-weight);
+  line-height: var(--font-title-l-line-height);
+}

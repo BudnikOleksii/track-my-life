@@ -15,6 +15,8 @@
     "type-check": "turbo run type-check",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
+    "stylelint": "turbo run stylelint",
+    "stylelint:fix": "turbo run stylelint:fix",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "commitlint": "commitlint --edit",

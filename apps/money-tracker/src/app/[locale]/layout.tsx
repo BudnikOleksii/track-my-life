@@ -3,13 +3,16 @@ import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
-import { Toaster } from '@track-my-life/ui/components/toaster';
+import { Toaster } from '@track-my-life/ui/src/components/molecules/toaster/toaster';
 import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
-
+// oxlint-disable-next-line import/no-unassigned-import
+import '@track-my-life/ui/src/styles/index.scss';
 // oxlint-disable-next-line import/no-unassigned-import
 import '../globals.css';
 import { Outfit, Poppins } from 'next/font/google';
+
+import styles from './layout.module.scss';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -45,8 +48,8 @@ const RootLayout: FC<Props> = async (props) => {
   const now = await getNow();
 
   return (
-    <html lang={params.locale}>
-      <body className={`${poppins.variable} ${outfit.variable} antialiased`}>
+    <html lang={params.locale} suppressHydrationWarning>
+      <body className={`${poppins.variable} ${outfit.variable} ${styles.root}`}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           <ThemeProvider>
             {children}

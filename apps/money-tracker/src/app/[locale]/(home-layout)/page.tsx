@@ -1,17 +1,11 @@
 import type { Metadata } from 'next';
 import type { FC } from 'react';
 
-import { Button } from '@track-my-life/ui/components/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@track-my-life/ui/components/card';
 import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+
+import { HomePageContent } from './page.content';
 
 interface Props {
   params: Promise<{
@@ -36,20 +30,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const HomePage: FC<Props> = async () => {
   const translations = await getTranslations(I18N_NAMESPACE.homePage);
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">{translations('content.title')}</CardTitle>
-          <CardDescription>{translations('content.description')}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex gap-4">
-          <Button>{translations('content.getStarted')}</Button>
-          <Button variant="outline">{translations('content.learnMore')}</Button>
-        </CardContent>
-      </Card>
-    </main>
-  );
+  return <HomePageContent translations={translations} />;
 };
 
 export default HomePage;

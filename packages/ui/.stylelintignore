@@ -1,0 +1,2 @@
+# Ignore theme token directories (generated + hand-written tokens)
+src/styles/tokens/
