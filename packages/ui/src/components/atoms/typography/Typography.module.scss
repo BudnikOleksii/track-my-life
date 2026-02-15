@@ -1,3 +1,5 @@
+@use "../../../styles/breakpoints";
+
 .titleXl {
   margin: 0;
 
@@ -7,7 +9,7 @@
   line-height: var(--font-title-xl-line-height);
   letter-spacing: var(--font-title-xl-tracking);
 
-  @include media-s {
+  @include breakpoints.media-s {
     font-size: calc(var(--font-title-xl-size) * 0.875);
     line-height: calc(var(--font-title-xl-line-height) * 0.875);
   }
@@ -22,7 +24,7 @@
   line-height: var(--font-title-l-line-height);
   letter-spacing: var(--font-title-l-tracking);
 
-  @include media-s {
+  @include breakpoints.media-s {
     font-size: calc(var(--font-title-l-size) * 0.875);
     line-height: calc(var(--font-title-l-line-height) * 0.875);
   }

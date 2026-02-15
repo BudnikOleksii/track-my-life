@@ -1,3 +1,5 @@
+@use "../../../styles/mixins";
+
 .input {
   display: flex;
 
@@ -60,7 +62,7 @@
       border: none;
       border-radius: var(--radius-sm);
 
-      @include hover {
+      @include mixins.hover {
         background-color: var(--surface-container);
       }
     }

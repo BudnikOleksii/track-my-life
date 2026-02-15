@@ -1,3 +1,5 @@
+@use "../../../styles/mixins";
+
 .button {
   display: inline-flex;
 
@@ -41,7 +43,7 @@
 
   background-color: var(--primary);
 
-  @include hover {
+  @include mixins.hover {
     color: var(--on-primary-container);
 
     background-color: var(--primary-container);
@@ -57,7 +59,7 @@
 
   background-color: var(--secondary);
 
-  @include hover {
+  @include mixins.hover {
     color: var(--on-secondary-container);
 
     background-color: var(--secondary-container);
@@ -74,7 +76,7 @@
   background-color: transparent;
   border: 1px solid var(--outline);
 
-  @include hover {
+  @include mixins.hover {
     background-color: var(--surface-container);
   }
 
@@ -88,7 +90,7 @@
 
   background-color: transparent;
 
-  @include hover {
+  @include mixins.hover {
     background-color: var(--surface-container);
   }
 
@@ -110,7 +112,7 @@
 
   background-color: var(--error);
 
-  @include hover {
+  @include mixins.hover {
     color: var(--on-error-container);
 
     background-color: var(--error-container);
