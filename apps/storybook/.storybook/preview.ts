@@ -1,4 +1,4 @@
-import type { Preview, StoryObj } from '@storybook/react-vite';
+import type { Preview } from '@storybook/react-vite';
 import type { StoryContext } from 'storybook/internal/csf';
 
 import { withThemeByDataAttribute, DecoratorHelpers } from '@storybook/addon-themes';
@@ -19,7 +19,7 @@ const withDataTheme = withThemeByDataAttribute({
 });
 
 const withNextThemes: Preview['decorators'] = [
-  (Story: StoryObj, context: StoryContext) => {
+  (Story: React.ComponentType, context: StoryContext) => {
     const theme = pluckThemeFromContext(context) || 'light';
     return React.createElement(
       ThemeProvider,
