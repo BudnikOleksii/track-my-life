@@ -22,7 +22,7 @@ globs: ['**/*.scss', '**/*.css']
 
 ```scss
 .mobileButton.mobileButton {
-  @include media(desktop) {
+  @include media-l {
     display: none;
   }
 }
@@ -30,7 +30,7 @@ globs: ['**/*.scss', '**/*.css']
 .desktopButton.desktopButton {
   display: none;
 
-  @include media(desktop) {
+  @include media-l {
     display: block;
   }
 }

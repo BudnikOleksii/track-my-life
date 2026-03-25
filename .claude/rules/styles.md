@@ -21,7 +21,7 @@ paths:
 
 ```scss
 .mobileButton.mobileButton {
-  @include media(desktop) {
+  @include media-l {
     display: none;
   }
 }
@@ -29,7 +29,7 @@ paths:
 .desktopButton.desktopButton {
   display: none;
 
-  @include media(desktop) {
+  @include media-l {
     display: block;
   }
 }

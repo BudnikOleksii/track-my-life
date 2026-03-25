@@ -53,13 +53,19 @@ Check every changed file against these rules:
 Batch all findings into a single review using:
 
 ```
-gh api repos/{owner}/{repo}/pulls/{pr}/reviews
+gh api repos/{owner}/{repo}/pulls/{pull_number}/reviews \
+  --method POST \
+  -f commit_id='<head-commit-sha>' \
+  -f event='REQUEST_CHANGES' \
+  -f comments='[{"path":"<file>","position":<diff-position>,"body":"<message>"}]'
 ```
 
-Use the `comments` array with `path`, `line`, `side` for inline comments.
-Set `event: "COMMENT"` for observations, `event: "REQUEST_CHANGES"` for blockers.
+For complex batches, write the payload to a file and pass it with `--input payload.json`.
 
-Each comment should include:
+Use `position` (not `line`) for inline comments — it refers to the line's position in the unified diff.
+Set `event` to `"COMMENT"` for observations, `"REQUEST_CHANGES"` for blockers, or `"APPROVE"` to approve.
+
+Each comment body should include:
 
 - What's wrong
 - Why it matters
