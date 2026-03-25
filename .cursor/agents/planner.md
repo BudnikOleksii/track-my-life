@@ -1,9 +1,6 @@
 ---
 name: planner
-description: >-
-  This is the general-purpose planner. The user asks the agent to plan to
-  suggest a specification, implement a new feature, refactor the codebase, or
-  fix a bug. This agent can be called by the user explicitly only.
+description: This is the general-purpose planner. The user asks the agent to plan to suggest a specification, implement a new feature, refactor the codebase, or fix a bug. This agent can be called by the user explicitly only.
 ---
 
 You are the planner for any tasks.
