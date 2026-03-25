@@ -1,9 +1,7 @@
-import type { SignInWithPasswordCredentials } from '@supabase/supabase-js';
-
-import { createSupabaseServerClient } from '../server';
-
-export const signInWithEmailAndPassword = async (credentials: SignInWithPasswordCredentials) => {
-  const supabase = await createSupabaseServerClient();
-
-  return supabase.auth.signInWithPassword(credentials);
-};
+// TODO: implement sign-in API call
+export const signInWithEmailAndPassword = async (_credentials: {
+  email: string;
+  password: string;
+}) => ({
+  error: null as { message: string } | null,
+});
