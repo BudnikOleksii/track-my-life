@@ -34,7 +34,7 @@
     "lint-staged": "16.2.6",
     "oxfmt": "0.26.0",
     "oxlint": "1.42.0",
-    "rulesync": "6.2.0",
+    "rulesync": "7.23.0",
     "stylelint": "16.25.0",
     "turbo": "2.5.8"
   },

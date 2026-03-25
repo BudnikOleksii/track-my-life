@@ -1,5 +1,7 @@
 ---
-paths: '**/*.tsx, **/*.jsx'
+paths:
+  - '**/*.tsx'
+  - '**/*.jsx'
 ---
 
 ## Component Architecture
@@ -9,6 +11,10 @@ paths: '**/*.tsx, **/*.jsx'
 - Implement proper error boundaries
 - Use Suspense for async operations
 - Optimize for performance and Web Vitals (LCP, CLS, FID)
+
+## React Conventions
+
+- Use the `Typography` component from `packages/ui` for all text content.
 
 ## State Management
 
