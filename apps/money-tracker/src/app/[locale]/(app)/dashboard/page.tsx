@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import type { FC } from 'react';
 
-import { getAuthenticatedUserOrRedirect } from '@track-my-life/shared/src/supabase/auth/get-user-or-redirect';
 import { getTranslations } from 'next-intl/server';
 
-import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { DashboardPageContent } from './page.content';
@@ -29,14 +27,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const DashboardPage: FC<Props> = async (props) => {
-  await props.params;
-
-  const user = await getAuthenticatedUserOrRedirect(PATHS.signIn);
-
+const DashboardPage: FC<Props> = async () => {
   const translations = await getTranslations(I18N_NAMESPACE.dashboardPage);
 
-  return <DashboardPageContent user={user} translations={translations} />;
+  return <DashboardPageContent translations={translations} />;
 };
 
 export default DashboardPage;

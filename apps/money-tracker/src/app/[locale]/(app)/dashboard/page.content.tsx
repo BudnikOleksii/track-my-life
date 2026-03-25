@@ -14,14 +14,10 @@ import { signOut } from '@/actions/sign-out';
 import styles from './page.module.scss';
 
 interface DashboardPageContentProps {
-  user: {
-    email?: string;
-    user_metadata?: { name?: string };
-  };
   translations: (key: string) => string;
 }
 
-export const DashboardPageContent: FC<DashboardPageContentProps> = ({ user, translations }) => (
+export const DashboardPageContent: FC<DashboardPageContentProps> = ({ translations }) => (
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
@@ -30,18 +26,6 @@ export const DashboardPageContent: FC<DashboardPageContentProps> = ({ user, tran
       </CardHeader>
 
       <CardContent className={styles.cardContent}>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{translations('content.userInfo')}</h2>
-          <p className={styles.paragraph}>
-            <span className={styles.label}>{translations('content.email')}: </span>
-            {user.email}
-          </p>
-          <p className={styles.paragraph}>
-            <span className={styles.label}>{translations('content.name')}: </span>
-            {user.user_metadata?.name ?? ''}
-          </p>
-        </section>
-
         <form action={signOut} className={styles.signOutForm}>
           <Button type="submit" variant="outline" className={styles.signOutButton}>
             {translations('content.logoutButton')}

@@ -1,7 +1,10 @@
 'use server';
 
+import {
+  authApiService,
+  serverActionTokenProvider,
+} from '@track-my-life/shared/src/api/server-api';
 import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
-import { signInWithEmailAndPassword } from '@track-my-life/shared/src/supabase/auth/sign-in';
 import { getLocale } from 'next-intl/server';
 
 import type { AuthAction } from '@/app/[locale]/(auth-layout)/types/auth-action';
@@ -19,13 +22,15 @@ export const signIn: AuthAction = async (credentials) => {
     };
   }
 
-  const { error } = await signInWithEmailAndPassword(validatedFields.data);
+  const { data, error } = await authApiService.login(validatedFields.data);
 
-  if (error) {
+  if (error || !data) {
     return {
       errors: [{ message: 'generic' }],
     };
   }
+
+  await serverActionTokenProvider.setTokenPair(data.accessToken, data.refreshToken);
 
   redirect({ href: PATHS.dashboard, locale });
   return null;

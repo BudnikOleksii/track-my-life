@@ -1,13 +1,13 @@
 'use client';
 
-import type { OAuthProviderName } from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
 import type { FC } from 'react';
 
-import { signInWithOAuthProvider } from '@track-my-life/shared/src/supabase/auth/sign-in-with-social';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { useState } from 'react';
 
 import styles from './OAuthProviderButtons.module.scss';
+
+type OAuthProviderName = 'google' | 'github' | 'linkedin_oidc';
 
 interface Props {
   googleLabel: string;
@@ -22,11 +22,11 @@ const AUTH_PROVIDER_LINKEDIN: OAuthProviderName = 'linkedin_oidc';
 export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
   const [activeProvider, setActiveProvider] = useState<OAuthProviderName | null>(null);
 
-  const handleProviderClick = async (provider: OAuthProviderName) => {
-    setActiveProvider(provider);
+  const handleProviderClick = async (_provider: OAuthProviderName) => {
+    setActiveProvider(_provider);
 
     try {
-      await signInWithOAuthProvider(provider);
+      // TODO: wire to backend OAuth endpoint when available
     } catch {
       setActiveProvider(null);
     }
