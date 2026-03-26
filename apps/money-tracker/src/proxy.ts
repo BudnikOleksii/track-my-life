@@ -12,7 +12,7 @@ const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:8080';
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
-const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail, PATHS.dashboard];
+const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail];
 
 const checkIsPublicPath = (pathname: string): boolean =>
   PUBLIC_PATH_LIST.some((publicPath) => {
