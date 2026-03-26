@@ -11,7 +11,15 @@
       "Bash(curl -s http://localhost:3000/swagger-json)",
       "Bash(cat:*)",
       "Bash(pnpm type-check:*)",
-      "Bash(ls *)"
+      "Bash(ls *)",
+      "Bash(head:*)",
+      "Bash(mkdir -p \"apps/money-tracker/src/app/[locale]/\\(app-layout\\)/components/app-sidebar/nav-item\")",
+      "Bash(mkdir -p \"apps/money-tracker/src/app/[locale]/\\(app-layout\\)/components/app-header/user-menu\")",
+      "Bash(grep:*)",
+      "Bash(pnpm stylelint:*)",
+      "Bash(pnpm turbo:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)"
     ],
     "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
   },
