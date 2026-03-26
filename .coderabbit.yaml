@@ -6,6 +6,8 @@ reviews:
   poem: false
   review_status: true
   collapse_walkthrough: false
+  path_filters:
+    - "!**/openspec/changes/archive/**"
   path_instructions:
     - path: 'apps/money-tracker/**/*'
       instructions: |

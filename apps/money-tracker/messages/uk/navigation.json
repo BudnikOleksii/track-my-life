@@ -1,0 +1,15 @@
+{
+  "labels": {
+    "dashboard": "Панель керування",
+    "transactions": "Транзакції",
+    "categories": "Категорії",
+    "budgets": "Бюджети",
+    "settings": "Налаштування"
+  },
+  "actions": {
+    "collapse": "Згорнути бічну панель",
+    "expand": "Розгорнути бічну панель",
+    "openMenu": "Відкрити меню",
+    "signOut": "Вийти"
+  }
+}

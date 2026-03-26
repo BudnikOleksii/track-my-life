@@ -11,7 +11,7 @@
 
   --spacing: 4px;
 
-  @for $i from 2 through 30 {
+  @for $i from 2 through 32 {
     --spacing-#{$i}: calc(var(--spacing) * #{$i});
   }
 }
