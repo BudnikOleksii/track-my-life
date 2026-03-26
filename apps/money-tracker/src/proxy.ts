@@ -23,13 +23,24 @@ const checkIsPublicPath = (pathname: string): boolean =>
 
 const createSignInRedirect = (request: NextRequest): NextResponse => {
   const signInUrl = new URL(PATHS.signIn, request.url);
-  return NextResponse.redirect(signInUrl);
+  const redirectResponse = NextResponse.redirect(signInUrl);
+  new MiddlewareTokenProvider(request, redirectResponse).clearTokenPair();
+  return redirectResponse;
+};
+
+const createSameUrlRedirect = (request: NextRequest, response: NextResponse): NextResponse => {
+  const redirectResponse = NextResponse.redirect(request.url);
+  response.cookies.getAll().forEach((cookie) => {
+    redirectResponse.cookies.set(cookie.name, cookie.value);
+  });
+  return redirectResponse;
 };
 
 const attemptTokenRefresh = async (
   tokenProvider: MiddlewareTokenProvider,
   request: NextRequest,
-): Promise<NextResponse | null> => {
+  response: NextResponse,
+): Promise<NextResponse> => {
   const refreshToken = tokenProvider.getRefreshToken();
 
   if (!refreshToken) {
@@ -40,32 +51,44 @@ const attemptTokenRefresh = async (
   const refreshResult = await authApiService.refreshToken({ refreshToken });
 
   if (refreshResult.error || !refreshResult.data) {
-    tokenProvider.clearTokenPair();
     return createSignInRedirect(request);
   }
 
   tokenProvider.setTokenPair(refreshResult.data.accessToken, refreshResult.data.refreshToken);
 
-  return null;
+  return createSameUrlRedirect(request, response);
 };
 
-export const proxy = async (request: NextRequest): Promise<NextResponse> => {
-  const { pathname } = request.nextUrl;
-
-  if (checkIsPublicPath(pathname)) {
-    return handleI18nRouting(request);
-  }
-
-  const i18nResponse = handleI18nRouting(request);
-  const response = NextResponse.next({ request, headers: i18nResponse.headers });
+const handleAuthenticatedRoute = async (
+  request: NextRequest,
+  response: NextResponse,
+): Promise<NextResponse> => {
   const tokenProvider = new MiddlewareTokenProvider(request, response);
   const accessToken = tokenProvider.getAccessToken();
 
   if (!accessToken) {
-    return (await attemptTokenRefresh(tokenProvider, request)) ?? response;
+    try {
+      return await attemptTokenRefresh(tokenProvider, request, response);
+    } catch {
+      return createSignInRedirect(request);
+    }
   }
 
   return response;
+};
+
+export const proxy = async (request: NextRequest): Promise<NextResponse> => {
+  if (checkIsPublicPath(request.nextUrl.pathname)) {
+    return handleI18nRouting(request);
+  }
+
+  const i18nResponse = handleI18nRouting(request);
+
+  if (!i18nResponse.ok) {
+    return i18nResponse;
+  }
+
+  return handleAuthenticatedRoute(request, i18nResponse);
 };
 
 export const config = {

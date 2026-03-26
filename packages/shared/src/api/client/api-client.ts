@@ -39,11 +39,18 @@ const parseResponseBody = async <TData>(
         };
   }
 
-  const body = await response.json();
+  try {
+    const body = await response.json();
 
-  return response.ok
-    ? { data: body as TData, error: null }
-    : { data: null, error: body as ProblemDetailsDto };
+    return response.ok
+      ? { data: body as TData, error: null }
+      : { data: null, error: body as ProblemDetailsDto };
+  } catch {
+    return {
+      data: null,
+      error: { type: 'about:blank', title: 'Invalid JSON response', status: response.status },
+    };
+  }
 };
 
 const applyRequestInterceptorList = (
@@ -99,11 +106,12 @@ export class ApiClient {
       this.requestInterceptorList,
       initialRequest,
     );
+    const fetchRequestClone = fetchRequest.clone();
     const rawResponse = await fetch(fetchRequest);
     const response = await applyResponseInterceptorList(
       this.responseInterceptorList,
       rawResponse,
-      fetchRequest,
+      fetchRequestClone,
     );
     const { data, error } = await parseResponseBody<TData>(response);
 

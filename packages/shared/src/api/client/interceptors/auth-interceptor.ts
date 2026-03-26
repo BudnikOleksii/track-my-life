@@ -31,7 +31,7 @@ const retryWithNewToken = (request: Request, accessToken: string): Promise<Respo
 };
 
 export class AuthInterceptor {
-  private isRefreshing = false;
+  private refreshPromise: Promise<AuthResponseDto | null> | null = null;
 
   constructor(
     private tokenProvider: TokenProvider,
@@ -58,44 +58,61 @@ export class AuthInterceptor {
   };
 
   private handleResponse = async (response: Response, request: Request): Promise<Response> => {
-    if (response.status !== HTTP_STATUS_CODE.UNAUTHORIZED || this.isRefreshing) {
+    if (response.status !== HTTP_STATUS_CODE.UNAUTHORIZED) {
       return response;
     }
 
+    if (this.refreshPromise) {
+      return this.waitForPendingRefresh(response, request);
+    }
+
+    return this.initiateTokenRefresh(response, request);
+  };
+
+  private waitForPendingRefresh = async (
+    fallbackResponse: Response,
+    request: Request,
+  ): Promise<Response> => {
+    const tokenData = await this.refreshPromise;
+
+    return tokenData ? retryWithNewToken(request, tokenData.accessToken) : fallbackResponse;
+  };
+
+  private initiateTokenRefresh = async (
+    fallbackResponse: Response,
+    request: Request,
+  ): Promise<Response> => {
     const refreshToken = await this.tokenProvider.getRefreshToken();
 
     if (!refreshToken) {
-      return response;
+      return fallbackResponse;
     }
 
-    this.isRefreshing = true;
+    this.refreshPromise = fetchRefreshedToken(this.refreshUrl, refreshToken);
 
     try {
-      return await this.attemptTokenRefresh(response, request, refreshToken);
+      return await this.processRefreshResult(fallbackResponse, request);
+    } catch {
+      await this.tokenProvider.clearTokenPair();
+      return fallbackResponse;
     } finally {
-      this.isRefreshing = false;
+      this.refreshPromise = null;
     }
   };
 
-  private attemptTokenRefresh = async (
-    originalResponse: Response,
+  private processRefreshResult = async (
+    fallbackResponse: Response,
     request: Request,
-    refreshToken: string,
   ): Promise<Response> => {
-    try {
-      const tokenData = await fetchRefreshedToken(this.refreshUrl, refreshToken);
+    const tokenData = await this.refreshPromise;
 
-      if (!tokenData) {
-        await this.tokenProvider.clearTokenPair();
-        return originalResponse;
-      }
-
-      await this.tokenProvider.setTokenPair(tokenData.accessToken, tokenData.refreshToken);
-
-      return retryWithNewToken(request, tokenData.accessToken);
-    } catch {
+    if (!tokenData) {
       await this.tokenProvider.clearTokenPair();
-      return originalResponse;
+      return fallbackResponse;
     }
+
+    await this.tokenProvider.setTokenPair(tokenData.accessToken, tokenData.refreshToken);
+
+    return retryWithNewToken(request, tokenData.accessToken);
   };
 }

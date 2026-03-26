@@ -27,7 +27,7 @@ export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, link
 
     try {
       // TODO: wire to backend OAuth endpoint when available
-    } catch {
+    } finally {
       setActiveProvider(null);
     }
   };
