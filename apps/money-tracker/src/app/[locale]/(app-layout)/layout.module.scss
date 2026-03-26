@@ -22,7 +22,7 @@
     margin-left: 240px;
 
     [data-sidebar-collapsed] & {
-      margin-left: 68px;
+      margin-left: var(--spacing-16);
     }
   }
 }

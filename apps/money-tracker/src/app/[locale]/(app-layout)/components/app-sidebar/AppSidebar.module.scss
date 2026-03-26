@@ -32,7 +32,7 @@
 
 .collapsed {
   @include media-m {
-    width: 68px;
+    width: var(--spacing-16);
   }
 }
 
