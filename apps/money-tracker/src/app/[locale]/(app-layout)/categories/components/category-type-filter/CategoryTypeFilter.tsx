@@ -35,7 +35,9 @@ export const CategoryTypeFilter: FC<CategoryTypeFilterProps> = ({ value, onValue
           key={option}
           variant={value === option ? 'primary' : 'outline'}
           size="sm"
-          onClick={() => onValueChange(option)}
+          onClick={() => {
+            onValueChange(option);
+          }}
           className={cn(styles.button, value === option && styles.active)}
         >
           {translations(FILTER_TO_LABEL_KEY[option])}

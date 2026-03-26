@@ -32,15 +32,21 @@
 
   flex-shrink: 0;
   gap: var(--spacing);
-
-  opacity: 0;
-
-  transition: opacity 0.15s ease;
 }
 
-.itemRow:hover .actions,
-.childRow:hover .actions {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .actions {
+    opacity: 0;
+
+    transition: opacity 0.15s ease;
+  }
+
+  .itemRow:hover .actions,
+  .childRow:hover .actions,
+  .itemRow:focus-within .actions,
+  .childRow:focus-within .actions {
+    opacity: 1;
+  }
 }
 
 .childList {

@@ -85,7 +85,9 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => onEdit(parent)}
+                  onClick={() => {
+                    onEdit(parent);
+                  }}
                   aria-label={translations('content.editButton')}
                 >
                   <Pencil size={16} />
@@ -93,7 +95,9 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => onDelete(parent)}
+                  onClick={() => {
+                    onDelete(parent);
+                  }}
                   aria-label={translations('content.deleteButton')}
                 >
                   <Trash2 size={16} />
@@ -114,7 +118,9 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => onEdit(child)}
+                          onClick={() => {
+                            onEdit(child);
+                          }}
                           aria-label={translations('content.editButton')}
                         >
                           <Pencil size={14} />
@@ -122,7 +128,9 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => onDelete(child)}
+                          onClick={() => {
+                            onDelete(child);
+                          }}
                           aria-label={translations('content.deleteButton')}
                         >
                           <Trash2 size={14} />

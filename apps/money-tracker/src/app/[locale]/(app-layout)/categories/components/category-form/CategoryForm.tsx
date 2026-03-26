@@ -36,7 +36,6 @@ import type { CategoryItemDto } from '../../actions/fetch-category-list';
 import type { CategoryFormValues } from '../../constants/category-form-schema';
 
 import { createCategory } from '../../actions/create-category';
-import { fetchCategoryList } from '../../actions/fetch-category-list';
 import { updateCategory } from '../../actions/update-category';
 import { categoryFormSchema, TRANSACTION_TYPE } from '../../constants/category-form-schema';
 import styles from './CategoryForm.module.scss';
@@ -98,8 +97,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({
         if (result) {
           onSuccess({
             ...category,
-            name: values.name,
-            parentCategoryId: parentCategoryId ?? null,
+            ...result,
           });
         }
       } else {
@@ -109,12 +107,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({
           parentCategoryId,
         });
         if (result) {
-          fetchCategoryList().then((categoryItemList) => {
-            const created = categoryItemList.find((item) => item.name === values.name);
-            if (created) {
-              onSuccess(created);
-            }
-          });
+          onSuccess(result as CategoryItemDto);
         }
       }
     },

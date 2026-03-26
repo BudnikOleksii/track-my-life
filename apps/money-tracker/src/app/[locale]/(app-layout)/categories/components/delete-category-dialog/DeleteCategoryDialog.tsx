@@ -42,11 +42,13 @@ export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
     }
 
     setIsDeleting(true);
-    const result = await deleteCategory(category.id);
-    setIsDeleting(false);
-
-    if (result?.success) {
-      onSuccess(category.id);
+    try {
+      const result = await deleteCategory(category.id);
+      if (result?.success) {
+        onSuccess(category.id);
+      }
+    } finally {
+      setIsDeleting(false);
     }
   }, [category, onSuccess]);
 
@@ -63,8 +65,13 @@ export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
               {translations('content.cancel')}
             </Button>
           </AlertDialogCancel>
-          <AlertDialogAction>
-            <Button variant="destructive" onClick={handleConfirm} disabled={isDeleting}>
+          <AlertDialogAction
+            onClick={async (event) => {
+              event.preventDefault();
+              await handleConfirm();
+            }}
+          >
+            <Button variant="destructive" disabled={isDeleting}>
               {translations('content.deleteButton')}
             </Button>
           </AlertDialogAction>

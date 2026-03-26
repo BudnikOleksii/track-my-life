@@ -1,4 +1,3 @@
-import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
 import type {
   CreateCategoryDto,
   TransactionCategoriesControllerCreateResponses,
@@ -10,6 +9,7 @@ import type {
   UpdateCategoryDto,
 } from '../generated/types.gen';
 
+import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
 import { ApiClient } from '../client/api-client';
 
 type FindAllQuery = TransactionCategoriesControllerFindAllData['query'];

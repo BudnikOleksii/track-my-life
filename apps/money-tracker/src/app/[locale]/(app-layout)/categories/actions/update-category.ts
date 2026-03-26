@@ -7,7 +7,15 @@ import { revalidatePath } from 'next/cache';
 
 import { PATHS } from '@/constants/paths';
 
+import { categoryFormSchema } from '../constants/category-form-schema';
+
 export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
+  const validated = categoryFormSchema.partial().safeParse(body);
+
+  if (!validated.success) {
+    return null;
+  }
+
   const { data, error } = await categoryApiService.updateCategory(id, body);
 
   if (error) {

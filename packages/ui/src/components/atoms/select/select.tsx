@@ -23,6 +23,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     data-slot="select-trigger"
+    aria-invalid={error || undefined}
     className={cn(styles.trigger, error && styles.error, className)}
     {...props}
   >

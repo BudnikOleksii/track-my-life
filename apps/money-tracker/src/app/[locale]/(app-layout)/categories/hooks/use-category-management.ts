@@ -59,9 +59,9 @@ export const useCategoryManagement = () => {
       setCategoryList((prev) => {
         const existingIndex = prev.findIndex((item) => item.id === category.id);
         if (existingIndex !== NOT_FOUND_INDEX) {
-          const updated = [...prev];
-          updated[existingIndex] = category;
-          return updated;
+          const updatedList = [...prev];
+          updatedList[existingIndex] = category;
+          return updatedList;
         }
         return [...prev, category];
       });
