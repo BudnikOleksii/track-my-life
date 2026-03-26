@@ -1,0 +1,38 @@
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.layout {
+  display: flex;
+
+  min-height: 100dvh;
+
+  background-color: var(--background);
+}
+
+.content {
+  display: flex;
+
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  transition: margin-left 0.2s ease;
+
+  @include media-m {
+    margin-left: 240px;
+
+    [data-sidebar-collapsed] & {
+      margin-left: 68px;
+    }
+  }
+}
+
+.main {
+  flex: 1;
+
+  padding: var(--spacing-5) var(--spacing-4);
+
+  @include media-m {
+    padding: var(--spacing-6);
+  }
+}

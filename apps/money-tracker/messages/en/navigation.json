@@ -1,0 +1,15 @@
+{
+  "labels": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "categories": "Categories",
+    "budgets": "Budgets",
+    "settings": "Settings"
+  },
+  "actions": {
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "openMenu": "Open menu",
+    "signOut": "Sign out"
+  }
+}
