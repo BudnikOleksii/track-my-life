@@ -27,8 +27,8 @@ const parseResponseBody = async <TData>(
   data: TData | null;
   error: ProblemDetailsDto | null;
 }> => {
-  const contentType = response.headers.get('content-type');
-  const hasJsonBody = contentType?.includes('application/json');
+  const contentType = response.headers.get('content-type')?.toLowerCase() ?? '';
+  const hasJsonBody = contentType.includes('application/json') || contentType.includes('+json');
 
   if (!hasJsonBody) {
     return response.ok
