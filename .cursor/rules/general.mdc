@@ -3,7 +3,51 @@ description: General coding rules that apply across the codebase
 globs: **/*
 ---
 
-# Project Overview
+Track My Life — a personal life tracking monorepo (pnpm workspaces + Turborepo).
+
+## Tech Stack
+
+- **Runtime**: Node 22.15.0, pnpm 10.10.0
+- **Framework**: Next.js 16, React 19
+- **Language**: TypeScript 5.9, SCSS for styles
+- **i18n**: next-intl
+- **Forms**: react-hook-form + zod
+- **UI primitives**: Radix UI (via `@track-my-life/ui`)
+- **Linting**: oxlint, stylelint, commitlint (conventional commits)
+- **Formatting**: oxfmt
+- **API client generation**: @hey-api/openapi-ts (in `packages/shared`)
+
+## Monorepo Structure
+
+```
+apps/
+  money-tracker/       # Next.js app — personal finance tracker
+  storybook/           # Component playground
+packages/
+  ui/                  # Shared UI component library (@track-my-life/ui)
+  shared/              # Shared constants, types, i18n, API client (@track-my-life/shared)
+  lint-config/         # Shared oxlint config
+  stylelint-config/    # Shared stylelint config
+  typescript-config/   # Shared tsconfig
+```
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start all apps in dev mode |
+| `pnpm build` | Build all apps and packages |
+| `pnpm build:packages` | Build packages only |
+| `pnpm build:storybook` | Build Storybook |
+| `pnpm test` | Run tests |
+| `pnpm test:e2e` | Run end-to-end tests |
+| `pnpm type-check` | TypeScript type checking |
+| `pnpm lint` | Run oxlint |
+| `pnpm lint:fix` | Run oxlint with auto-fix |
+| `pnpm stylelint` | Run stylelint |
+| `pnpm stylelint:fix` | Run stylelint with auto-fix |
+| `pnpm fmt` | Format code with oxfmt |
+| `pnpm fmt:check` | Check formatting |
 
 ## General rules
 
@@ -20,3 +64,8 @@ globs: **/*
 - Use dependency injection for better testability
 - Implement proper error handling
 - Follow single responsibility principle
+
+## Skills
+
+- Apply the `frontend-design` skill (`.claude/skills/frontend-design`) when building or designing app pages, components, layouts, or any UI work
+- Apply the `vercel-react-best-practices` skill (`.claude/skills/vercel-react-best-practices`) when writing or refactoring React/Next.js code for performance
