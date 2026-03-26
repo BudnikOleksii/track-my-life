@@ -6,17 +6,17 @@
   "scripts": {
     "type-check": "tsc --noEmit --incremental false",
     "lint": "oxlint .",
-    "lint:fix": "oxlint --fix ."
+    "lint:fix": "oxlint --fix .",
+    "generate:api": "openapi-ts"
   },
   "dependencies": {
-    "@supabase/ssr": "0.8.0",
-    "@supabase/supabase-js": "2.95.3",
     "next": "16.1.5",
     "next-intl": "4.8.2",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "0.94.5",
     "@track-my-life/lint-config": "workspace:*",
     "@track-my-life/typescript-config": "workspace:*",
     "@types/node": "24.10.0",

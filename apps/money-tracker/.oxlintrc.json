@@ -3,6 +3,7 @@
   "extends": ["../../packages/lint-config/configs/next.json"],
   "env": {
     "browser": true,
-    "es2022": true
+    "es2022": true,
+    "node": true
   }
 }
