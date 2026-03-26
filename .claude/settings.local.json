@@ -10,7 +10,8 @@
       "WebFetch(domain:localhost)",
       "Bash(curl -s http://localhost:3000/swagger-json)",
       "Bash(cat:*)",
-      "Bash(pnpm type-check:*)"
+      "Bash(pnpm type-check:*)",
+      "Bash(ls *)"
     ],
     "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
   },
