@@ -1,5 +1,28 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(openspec new:*)",
+      "Bash(ls *)",
+      "Bash(openspec status:*)",
+      "Bash(openspec instructions:*)",
+      "mcp__serena__list_dir",
+      "Bash(find *)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s http://localhost:3000/swagger-json)",
+      "Bash(cat *)",
+      "Bash(pnpm type-check:*)",
+      "Bash(head:*)",
+      "Bash(grep:*)",
+      "Bash(pnpm stylelint:*)",
+      "Bash(pnpm turbo:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:fix:*)",
+      "Bash(pnpm lint:fix)"
+    ],
     "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
   }
 }

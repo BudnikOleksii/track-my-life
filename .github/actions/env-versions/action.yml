@@ -11,7 +11,7 @@ outputs:
     value: 10.10.0
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Set Node.js and pnpm versions
       id: set-env
