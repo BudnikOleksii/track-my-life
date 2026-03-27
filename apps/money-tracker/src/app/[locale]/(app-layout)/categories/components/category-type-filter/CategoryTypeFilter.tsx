@@ -36,6 +36,7 @@ export const CategoryTypeFilter: FC<CategoryTypeFilterProps> = ({ value, onValue
           key={option}
           variant={value === option ? 'primary' : 'outline'}
           size="sm"
+          aria-pressed={value === option}
           onClick={() => {
             onValueChange(option);
           }}
