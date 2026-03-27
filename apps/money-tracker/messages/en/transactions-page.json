@@ -34,6 +34,10 @@
     "typeRequired": "Transaction type is required",
     "amountRequired": "Amount is required",
     "currencyRequired": "Currency is required",
-    "dateRequired": "Date is required"
+    "dateRequired": "Date is required",
+    "amountInvalid": "Amount must be a valid number",
+    "createError": "Failed to create transaction",
+    "updateError": "Failed to update transaction",
+    "deleteError": "Failed to delete transaction"
   }
 }

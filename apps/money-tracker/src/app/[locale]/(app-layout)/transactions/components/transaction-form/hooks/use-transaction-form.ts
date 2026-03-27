@@ -5,6 +5,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -24,12 +25,14 @@ interface UseTransactionFormParams {
   isOpen: boolean;
   transaction: TransactionResponseDto | null;
   onSuccess: (transaction: TransactionResponseDto) => void;
+  translations: (key: string) => string;
 }
 
 export const useTransactionForm = ({
   isOpen,
   transaction,
   onSuccess,
+  translations,
 }: UseTransactionFormParams) => {
   const isEditing = Boolean(transaction);
   const [categoryList, setCategoryList] = useState<CategoryResponseDto[]>([]);
@@ -98,15 +101,19 @@ export const useTransactionForm = ({
         const result = await updateTransaction(transaction.id, body);
         if (result) {
           onSuccess({ ...transaction, ...result });
+        } else {
+          toast.error(translations('content.updateError'));
         }
       } else {
         const result = await createTransaction(body);
         if (result) {
           onSuccess(result as TransactionResponseDto);
+        } else {
+          toast.error(translations('content.createError'));
         }
       }
     },
-    [isEditing, transaction, onSuccess],
+    [isEditing, transaction, onSuccess, translations],
   );
 
   return {

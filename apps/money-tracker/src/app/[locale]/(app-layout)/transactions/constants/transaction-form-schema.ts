@@ -10,7 +10,11 @@ export const transactionFormSchema = z.object({
   type: z.enum([TRANSACTION_TYPE.INCOME, TRANSACTION_TYPE.EXPENSE], {
     error: 'typeRequired',
   }),
-  amount: z.string().trim().min(MIN_AMOUNT_LENGTH, 'amountRequired'),
+  amount: z
+    .string()
+    .trim()
+    .min(MIN_AMOUNT_LENGTH, 'amountRequired')
+    .regex(/^\d+([.,]\d{1,2})?$/, 'amountInvalid'),
   currencyCode: z.string().min(MIN_FIELD_LENGTH, 'currencyRequired'),
   date: z.string().min(MIN_FIELD_LENGTH, 'dateRequired'),
   description: z.string().optional(),

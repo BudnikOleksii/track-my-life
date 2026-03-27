@@ -62,7 +62,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
-  } = useTransactionForm({ isOpen, transaction, onSuccess });
+  } = useTransactionForm({ isOpen, transaction, onSuccess, translations });
 
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

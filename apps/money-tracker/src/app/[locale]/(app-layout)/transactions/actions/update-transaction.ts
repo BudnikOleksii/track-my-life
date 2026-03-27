@@ -1,6 +1,9 @@
 'use server';
 
-import type { UpdateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type {
+  CurrencyCode,
+  UpdateTransactionDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
 import { revalidatePath } from 'next/cache';
@@ -16,7 +19,10 @@ export const updateTransaction = async (id: string, body: UpdateTransactionDto) 
     return null;
   }
 
-  const { data, error } = await transactionApiService.updateTransaction(id, body);
+  const { data, error } = await transactionApiService.updateTransaction(id, {
+    ...validated.data,
+    currencyCode: validated.data.currencyCode as CurrencyCode,
+  });
 
   if (error) {
     return null;

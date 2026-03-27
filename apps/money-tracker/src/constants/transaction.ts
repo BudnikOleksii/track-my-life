@@ -1,4 +1,4 @@
-import type { TransactionType } from '../../../../packages/shared/src/api/generated';
+import type { TransactionType } from '@track-my-life/shared/src/api/generated/types.gen';
 
 export const TRANSACTION_TYPE: Record<TransactionType, TransactionType> = {
   INCOME: 'INCOME',

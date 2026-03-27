@@ -14,6 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
+import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
@@ -45,11 +46,13 @@ export const DeleteTransactionDialog: FC<DeleteTransactionDialogProps> = ({
       const result = await deleteTransaction(transaction.id);
       if (result?.success) {
         onSuccess(transaction.id);
+      } else {
+        toast.error(translations('content.deleteError'));
       }
     } finally {
       setIsDeleting(false);
     }
-  }, [transaction, onSuccess]);
+  }, [transaction, onSuccess, translations]);
 
   return (
     <AlertDialog open={Boolean(transaction)} onOpenChange={(open) => !open && onClose()}>
