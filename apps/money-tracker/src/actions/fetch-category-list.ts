@@ -7,8 +7,6 @@ import type {
 
 import { categoryApiService } from '@track-my-life/shared/src/api/server-api';
 
-export type { CategoryResponseDto };
-
 const MAX_PAGE_SIZE = 100;
 
 const checkIsCategoryListResponse = (value: unknown): value is CategoryListResponseDto =>

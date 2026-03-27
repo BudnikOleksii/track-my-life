@@ -12,17 +12,15 @@ import { FILTER_TO_LABEL_KEY } from '@/constants/filter';
 import { FILTER_OPTION_LIST } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import styles from './CategoryTypeFilter.module.scss';
+import styles from './TransactionTypeFilter.module.scss';
 
-export type { FilterValue };
-
-interface CategoryTypeFilterProps {
+interface TransactionTypeFilterProps {
   value: FilterValue;
   onValueChange: (value: FilterValue) => void;
 }
 
-export const CategoryTypeFilter: FC<CategoryTypeFilterProps> = ({ value, onValueChange }) => {
-  const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
+export const TransactionTypeFilter: FC<TransactionTypeFilterProps> = ({ value, onValueChange }) => {
+  const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
 
   return (
     <div className={styles.filter} role="group" aria-label={translations('content.filterByType')}>

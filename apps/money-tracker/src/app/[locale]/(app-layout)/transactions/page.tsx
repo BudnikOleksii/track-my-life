@@ -27,10 +27,6 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const TransactionsPage: FC<Props> = async () => {
-  const translations = await getTranslations(I18N_NAMESPACE.transactionsPage);
-
-  return <TransactionsPageContent translations={translations} />;
-};
+const TransactionsPage: FC<Props> = () => <TransactionsPageContent />;
 
 export default TransactionsPage;

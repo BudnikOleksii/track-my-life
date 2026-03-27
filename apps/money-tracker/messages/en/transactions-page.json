@@ -4,6 +4,36 @@
     "description": "View and manage your transactions"
   },
   "content": {
-    "title": "Transactions"
+    "title": "Transactions",
+    "createButton": "Create Transaction",
+    "editTransaction": "Edit Transaction",
+    "deleteButton": "Delete",
+    "typeLabel": "Transaction Type",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select category",
+    "amountLabel": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "currencyLabel": "Currency",
+    "dateLabel": "Date",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "noTransactions": "No transactions found",
+    "filterByType": "Filter by type",
+    "allTypes": "All Types",
+    "dateFrom": "Date from",
+    "dateTo": "Date to",
+    "deleteConfirm": "Are you sure you want to delete this transaction?",
+    "cancel": "Cancel",
+    "editButton": "Edit",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageInfo": "Page {page} of {total}",
+    "categoryRequired": "Category is required",
+    "typeRequired": "Transaction type is required",
+    "amountRequired": "Amount is required",
+    "currencyRequired": "Currency is required",
+    "dateRequired": "Date is required"
   }
 }

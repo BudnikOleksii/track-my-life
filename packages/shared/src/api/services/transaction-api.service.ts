@@ -1,0 +1,66 @@
+import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type {
+  CreateTransactionDto,
+  TransactionsControllerCreateResponses,
+  TransactionsControllerDeleteResponses,
+  TransactionsControllerFindAllData,
+  TransactionsControllerFindAllResponses,
+  TransactionsControllerFindByIdResponses,
+  TransactionsControllerUpdateResponses,
+  UpdateTransactionDto,
+} from '../generated/types.gen';
+
+import { ApiClient } from '../client/api-client';
+
+type FindAllQuery = TransactionsControllerFindAllData['query'];
+type FindAllResponse = TransactionsControllerFindAllResponses[typeof HTTP_STATUS_CODE.OK];
+type FindByIdResponse = TransactionsControllerFindByIdResponses[typeof HTTP_STATUS_CODE.OK];
+type CreateResponse = TransactionsControllerCreateResponses[typeof HTTP_STATUS_CODE.CREATED];
+type UpdateResponse = TransactionsControllerUpdateResponses[typeof HTTP_STATUS_CODE.OK];
+type DeleteResponse = TransactionsControllerDeleteResponses[typeof HTTP_STATUS_CODE.OK];
+
+export class TransactionApiService extends ApiClient {
+  private BASE_URL = '/api/transactions' as const;
+
+  private getByIdUrl(id: string) {
+    return `${this.BASE_URL}/${id}`;
+  }
+
+  fetchTransactionList(query?: FindAllQuery) {
+    return this.request<FindAllResponse>({
+      method: 'GET',
+      url: this.BASE_URL,
+      query: query as Record<string, unknown>,
+    });
+  }
+
+  fetchTransactionById(id: string) {
+    return this.request<FindByIdResponse>({
+      method: 'GET',
+      url: this.getByIdUrl(id),
+    });
+  }
+
+  createTransaction(body: CreateTransactionDto) {
+    return this.request<CreateResponse>({
+      method: 'POST',
+      url: this.BASE_URL,
+      body,
+    });
+  }
+
+  updateTransaction(id: string, body: UpdateTransactionDto) {
+    return this.request<UpdateResponse>({
+      method: 'PATCH',
+      url: this.getByIdUrl(id),
+      body,
+    });
+  }
+
+  deleteTransaction(id: string) {
+    return this.request<DeleteResponse>({
+      method: 'DELETE',
+      url: this.getByIdUrl(id),
+    });
+  }
+}

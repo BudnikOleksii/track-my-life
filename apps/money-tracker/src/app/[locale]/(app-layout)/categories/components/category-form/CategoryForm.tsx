@@ -1,8 +1,10 @@
 'use client';
 
+import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {
@@ -30,17 +32,15 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { TRANSACTION_TYPE } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryResponseDto } from '../../actions/fetch-category-list';
 import type { CategoryFormValues } from '../../constants/category-form-schema';
 
 import { createCategory } from '../../actions/create-category';
 import { updateCategory } from '../../actions/update-category';
-import { categoryFormSchema, TRANSACTION_TYPE } from '../../constants/category-form-schema';
+import { categoryFormSchema } from '../../constants/category-form-schema';
 import styles from './CategoryForm.module.scss';
-
-const EMPTY_LIST_LENGTH = 0;
 
 interface CategoryFormProps {
   isOpen: boolean;

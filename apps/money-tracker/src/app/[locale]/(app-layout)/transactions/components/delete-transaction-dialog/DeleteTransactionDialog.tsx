@@ -1,6 +1,6 @@
 'use client';
 
-import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -19,40 +19,40 @@ import { useCallback, useState } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { deleteCategory } from '../../actions/delete-category';
+import { deleteTransaction } from '../../actions/delete-transaction';
 
-interface DeleteCategoryDialogProps {
-  category: CategoryResponseDto | null;
+interface DeleteTransactionDialogProps {
+  transaction: TransactionResponseDto | null;
   onClose: () => void;
-  onSuccess: (categoryId: string) => void;
+  onSuccess: (transactionId: string) => void;
 }
 
-export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
-  category,
+export const DeleteTransactionDialog: FC<DeleteTransactionDialogProps> = ({
+  transaction,
   onClose,
   onSuccess,
 }) => {
-  const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
+  const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = useCallback(async () => {
-    if (!category) {
+    if (!transaction) {
       return;
     }
 
     setIsDeleting(true);
     try {
-      const result = await deleteCategory(category.id);
+      const result = await deleteTransaction(transaction.id);
       if (result?.success) {
-        onSuccess(category.id);
+        onSuccess(transaction.id);
       }
     } finally {
       setIsDeleting(false);
     }
-  }, [category, onSuccess]);
+  }, [transaction, onSuccess]);
 
   return (
-    <AlertDialog open={Boolean(category)} onOpenChange={(open) => !open && onClose()}>
+    <AlertDialog open={Boolean(transaction)} onOpenChange={(open) => !open && onClose()}>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogTitle>{translations('content.deleteButton')}</AlertDialogTitle>
