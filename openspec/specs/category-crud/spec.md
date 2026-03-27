@@ -2,7 +2,7 @@
 
 ### Requirement: CategoryApiService provides CRUD operations
 
-The system SHALL expose a `CategoryApiService` class extending `ApiClient` in `packages/shared/src/api/services/category-api.service.ts` with methods for all category CRUD operations. The service file SHALL export its own pre-configured instance.
+The system SHALL expose a `CategoryApiService` class extending `ApiClient` in `packages/shared/src/api/services/category-api.service.ts` with methods for all category CRUD operations. A pre-configured instance SHALL be exported from `packages/shared/src/api/server-api.ts`.
 
 #### Scenario: Fetch category list
 

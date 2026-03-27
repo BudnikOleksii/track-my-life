@@ -2,11 +2,11 @@
 
 ### Requirement: Categories settings page route
 
-The system SHALL render a categories management page at `/settings/categories` within the `(settings-layout)` route group. The page SHALL use the standard `page.tsx` + `page.content.tsx` pattern.
+The system SHALL render a categories management page at `/categories` within the `(app-layout)` route group. The page SHALL use the standard `page.tsx` + `page.content.tsx` pattern.
 
-#### Scenario: Navigate to categories settings
+#### Scenario: Navigate to categories page
 
-- **WHEN** a user navigates to `/settings/categories`
+- **WHEN** a user navigates to `/categories`
 - **THEN** the system SHALL display the categories management page with a category tree and controls for filtering, creating, editing, and deleting categories
 
 ### Requirement: Category tree displays parent-child hierarchy
