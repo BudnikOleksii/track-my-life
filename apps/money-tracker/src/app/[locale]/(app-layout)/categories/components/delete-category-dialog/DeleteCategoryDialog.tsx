@@ -18,12 +18,12 @@ import { useCallback, useState } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryItemDto } from '../../actions/fetch-category-list';
+import type { CategoryResponseDto } from '../../actions/fetch-category-list';
 
 import { deleteCategory } from '../../actions/delete-category';
 
 interface DeleteCategoryDialogProps {
-  category: CategoryItemDto | null;
+  category: CategoryResponseDto | null;
   onClose: () => void;
   onSuccess: (categoryId: string) => void;
 }

@@ -17,21 +17,21 @@ import { useMemo } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryItemDto } from '../../actions/fetch-category-list';
+import type { CategoryResponseDto } from '../../actions/fetch-category-list';
 
 import styles from './CategoryTree.module.scss';
 
 interface CategoryTreeProps {
-  categoryList: CategoryItemDto[];
-  onEdit: (category: CategoryItemDto) => void;
-  onDelete: (category: CategoryItemDto) => void;
+  categoryList: CategoryResponseDto[];
+  onEdit: (category: CategoryResponseDto) => void;
+  onDelete: (category: CategoryResponseDto) => void;
 }
 
 const EMPTY_LIST_LENGTH = 0;
 
-const buildCategoryHierarchy = (categoryList: CategoryItemDto[]) => {
+const buildCategoryHierarchy = (categoryList: CategoryResponseDto[]) => {
   const parentList = categoryList.filter((item) => !item.parentCategoryId);
-  const children = new Map<string, CategoryItemDto[]>();
+  const children = new Map<string, CategoryResponseDto[]>();
 
   for (const category of categoryList) {
     if (category.parentCategoryId) {

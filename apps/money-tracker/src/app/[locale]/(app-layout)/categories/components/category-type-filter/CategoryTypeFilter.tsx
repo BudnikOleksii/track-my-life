@@ -1,5 +1,6 @@
 'use client';
 
+import type { TransactionType } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -10,7 +11,7 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './CategoryTypeFilter.module.scss';
 
-type FilterValue = 'ALL' | 'INCOME' | 'EXPENSE';
+export type FilterValue = 'ALL' | TransactionType;
 
 interface CategoryTypeFilterProps {
   value: FilterValue;

@@ -10,6 +10,8 @@ import { useMemo, useState } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import type { FilterValue } from './components/category-type-filter/CategoryTypeFilter';
+
 import { CategoryForm } from './components/category-form/CategoryForm';
 import { CategoryTree } from './components/category-tree/CategoryTree';
 import { CategoryTypeFilter } from './components/category-type-filter/CategoryTypeFilter';
@@ -17,11 +19,9 @@ import { DeleteCategoryDialog } from './components/delete-category-dialog/Delete
 import { useCategoryManagement } from './hooks/use-category-management';
 import styles from './page.module.scss';
 
-type CategoryTypeFilterValue = 'ALL' | 'INCOME' | 'EXPENSE';
-
 export const CategoriesPageContent: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
-  const [activeFilter, setActiveFilter] = useState<CategoryTypeFilterValue>('ALL');
+  const [activeFilter, setActiveFilter] = useState<FilterValue>('ALL');
 
   const {
     categoryList,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import type { CategoryItemDto } from '../actions/fetch-category-list';
+import type { CategoryResponseDto } from '../actions/fetch-category-list';
 
 import { fetchCategoryList } from '../actions/fetch-category-list';
 
@@ -8,20 +8,20 @@ const NOT_FOUND_INDEX = -1;
 
 const useCategoryDialogs = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<CategoryItemDto | null>(null);
-  const [deletingCategory, setDeletingCategory] = useState<CategoryItemDto | null>(null);
+  const [editingCategory, setEditingCategory] = useState<CategoryResponseDto | null>(null);
+  const [deletingCategory, setDeletingCategory] = useState<CategoryResponseDto | null>(null);
 
   const handleCreate = useCallback(() => {
     setEditingCategory(null);
     setIsFormOpen(true);
   }, []);
 
-  const handleEdit = useCallback((category: CategoryItemDto) => {
+  const handleEdit = useCallback((category: CategoryResponseDto) => {
     setEditingCategory(category);
     setIsFormOpen(true);
   }, []);
 
-  const handleDelete = useCallback((category: CategoryItemDto) => {
+  const handleDelete = useCallback((category: CategoryResponseDto) => {
     setDeletingCategory(category);
   }, []);
 
@@ -47,7 +47,7 @@ const useCategoryDialogs = () => {
 };
 
 export const useCategoryManagement = () => {
-  const [categoryList, setCategoryList] = useState<CategoryItemDto[]>([]);
+  const [categoryList, setCategoryList] = useState<CategoryResponseDto[]>([]);
   const dialogs = useCategoryDialogs();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const useCategoryManagement = () => {
   }, []);
 
   const handleFormSuccess = useCallback(
-    (category: CategoryItemDto) => {
+    (category: CategoryResponseDto) => {
       setCategoryList((prev) => {
         const existingIndex = prev.findIndex((item) => item.id === category.id);
         if (existingIndex !== NOT_FOUND_INDEX) {

@@ -1,6 +1,8 @@
+import type { TransactionType } from '@track-my-life/shared/src/api/generated/types.gen';
+
 import { z } from 'zod';
 
-export const TRANSACTION_TYPE = {
+export const TRANSACTION_TYPE: Record<TransactionType, TransactionType> = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
 } as const;

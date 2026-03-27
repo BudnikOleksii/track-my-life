@@ -32,7 +32,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryItemDto } from '../../actions/fetch-category-list';
+import type { CategoryResponseDto } from '../../actions/fetch-category-list';
 import type { CategoryFormValues } from '../../constants/category-form-schema';
 
 import { createCategory } from '../../actions/create-category';
@@ -44,10 +44,10 @@ const EMPTY_LIST_LENGTH = 0;
 
 interface CategoryFormProps {
   isOpen: boolean;
-  category: CategoryItemDto | null;
-  parentCategoryList: CategoryItemDto[];
+  category: CategoryResponseDto | null;
+  parentCategoryList: CategoryResponseDto[];
   onClose: () => void;
-  onSuccess: (category: CategoryItemDto) => void;
+  onSuccess: (category: CategoryResponseDto) => void;
 }
 
 export const CategoryForm: FC<CategoryFormProps> = ({
@@ -107,7 +107,7 @@ export const CategoryForm: FC<CategoryFormProps> = ({
           parentCategoryId,
         });
         if (result) {
-          onSuccess(result as CategoryItemDto);
+          onSuccess(result as CategoryResponseDto);
         }
       }
     },
