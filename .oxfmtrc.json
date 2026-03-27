@@ -22,5 +22,12 @@
       "unknown"
     ]
   },
-  "ignorePatterns": ["pnpm-lock.yaml", "dist", "**/*.html", "**/*.jsonc"]
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "dist",
+    "**/*.html",
+    "**/*.jsonc",
+    "**/*.scss",
+    "src/styles/**/*.scss"
+  ]
 }
