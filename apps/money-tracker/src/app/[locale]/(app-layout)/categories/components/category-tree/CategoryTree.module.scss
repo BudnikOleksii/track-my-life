@@ -1,0 +1,112 @@
+@use "@track-my-life/ui/src/styles/mixins";
+
+.tree {
+  padding: 0 var(--spacing-4);
+
+  background-color: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+}
+
+.itemRow {
+  display: flex;
+
+  align-items: center;
+}
+
+.trigger {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.categoryName {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.actions {
+  display: flex;
+
+  flex-shrink: 0;
+  gap: var(--spacing);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .actions {
+    opacity: 0;
+
+    transition: opacity 0.15s ease;
+  }
+
+  .itemRow:hover .actions,
+  .childRow:hover .actions,
+  .itemRow:focus-within .actions,
+  .childRow:focus-within .actions {
+    opacity: 1;
+  }
+}
+
+.childList {
+  display: flex;
+
+  flex-direction: column;
+
+  margin-left: var(--spacing-4);
+  padding-left: var(--spacing-4);
+
+  border-left: 2px solid var(--outline-variant);
+}
+
+.childRow {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: var(--spacing-2) var(--spacing-3);
+
+  border-radius: var(--radius-md);
+
+  transition: background-color 0.15s ease;
+
+  @include mixins.hover {
+    background-color: var(--surface-container);
+  }
+}
+
+.noChildren {
+  padding: var(--spacing-2) 0 0 var(--spacing-8);
+
+  font-style: italic;
+  color: var(--on-surface-variant);
+
+  opacity: 0.6;
+}
+
+.empty {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+
+  padding: var(--spacing-12) var(--spacing-6);
+
+  background-color: var(--surface-container-lowest);
+  border: 2px dashed var(--outline-variant);
+  border-radius: var(--radius-xl);
+}
+
+.emptyIcon {
+  color: var(--on-surface-variant);
+
+  opacity: 0.4;
+}
+
+.emptyText {
+  color: var(--on-surface-variant);
+}

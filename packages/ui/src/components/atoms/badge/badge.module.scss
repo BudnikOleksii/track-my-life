@@ -16,7 +16,9 @@
 
   border-radius: var(--radius-sm);
 
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .default {
@@ -48,4 +50,28 @@
   color: var(--on-surface-variant);
 
   background-color: var(--surface-container);
+}
+
+.success {
+  color: #1b6e2d;
+
+  background-color: #d4f5dc;
+
+  [data-theme="dark"] & {
+    color: #7ee896;
+
+    background-color: rgb(30 73 41 / 60%);
+  }
+}
+
+.warning {
+  color: #924040;
+
+  background-color: #fce4e4;
+
+  [data-theme="dark"] & {
+    color: #f5a0a0;
+
+    background-color: rgb(92 30 30 / 60%);
+  }
 }

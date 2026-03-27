@@ -27,10 +27,6 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const CategoriesPage: FC<Props> = async () => {
-  const translations = await getTranslations(I18N_NAMESPACE.categoriesPage);
+const CategoriesSettingsPage: FC<Props> = () => <CategoriesPageContent />;
 
-  return <CategoriesPageContent translations={translations} />;
-};
-
-export default CategoriesPage;
+export default CategoriesSettingsPage;

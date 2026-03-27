@@ -165,19 +165,304 @@ export type CurrencyCode =
 
 export type TransactionType = 'EXPENSE' | 'INCOME';
 
+export type SummaryResponseDto = {
+  /**
+   * Total income amount
+   */
+  totalIncome: string;
+  /**
+   * Total expenses amount
+   */
+  totalExpenses: string;
+  /**
+   * Net balance (income - expenses)
+   */
+  netBalance: string;
+  /**
+   * Total number of transactions
+   */
+  transactionCount: number;
+  /**
+   * Currency code
+   */
+  currencyCode: string;
+  /**
+   * Period start date
+   */
+  dateFrom: string;
+  /**
+   * Period end date
+   */
+  dateTo: string;
+};
+
+export type CategoryBreakdownItemDto = {
+  /**
+   * Category ID
+   */
+  categoryId: string;
+  /**
+   * Category name
+   */
+  categoryName: string;
+  /**
+   * Category type
+   */
+  type: TransactionType;
+  /**
+   * Total amount for this category
+   */
+  total: string;
+  /**
+   * Number of transactions in this category
+   */
+  transactionCount: number;
+  /**
+   * Percentage of total
+   */
+  percentage: number;
+};
+
+export type CategoryBreakdownResponseDto = {
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Period start date
+   */
+  dateFrom: string;
+  /**
+   * Period end date
+   */
+  dateTo: string;
+  /**
+   * Category breakdown data
+   */
+  breakdown: Array<CategoryBreakdownItemDto>;
+};
+
 export type Granularity = 'weekly' | 'monthly';
+
+/**
+ * Time granularity
+ */
+export type TrendsGranularity = 'weekly' | 'monthly';
+
+export type TrendPeriodDto = {
+  /**
+   * Period start date
+   */
+  periodStart: string;
+  /**
+   * Period end date
+   */
+  periodEnd: string;
+  /**
+   * Total income for this period
+   */
+  totalIncome: string;
+  /**
+   * Total expenses for this period
+   */
+  totalExpenses: string;
+  /**
+   * Net balance for this period
+   */
+  netBalance: string;
+  /**
+   * Number of transactions in this period
+   */
+  transactionCount: number;
+};
+
+export type TrendsResponseDto = {
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Time granularity
+   */
+  granularity: TrendsGranularity;
+  /**
+   * Trend periods data
+   */
+  periods: Array<TrendPeriodDto>;
+};
+
+export type TopCategoryItemDto = {
+  /**
+   * Category rank
+   */
+  rank: number;
+  /**
+   * Category ID
+   */
+  categoryId: string;
+  /**
+   * Category name
+   */
+  categoryName: string;
+  /**
+   * Total amount
+   */
+  total: string;
+  /**
+   * Percentage of total
+   */
+  percentage: number;
+  /**
+   * Number of transactions
+   */
+  transactionCount: number;
+};
+
+export type TopCategoriesResponseDto = {
+  /**
+   * Currency code
+   */
+  currencyCode: string;
+  /**
+   * Top categories data
+   */
+  categories: Array<TopCategoryItemDto>;
+};
+
+export type DailySpendingItemDto = {
+  /**
+   * Date
+   */
+  date: string;
+  /**
+   * Total amount for this day
+   */
+  total: string;
+  /**
+   * Number of transactions on this day
+   */
+  transactionCount: number;
+};
+
+export type DailySpendingResponseDto = {
+  /**
+   * Currency code
+   */
+  currencyCode: string;
+  /**
+   * Year
+   */
+  year: number;
+  /**
+   * Month (1-12)
+   */
+  month: number;
+  /**
+   * Daily spending data
+   */
+  days: Array<DailySpendingItemDto>;
+};
+
+export type AuditLogResponseDto = {
+  /**
+   * Audit log entry ID
+   */
+  id: string;
+  /**
+   * Action performed
+   */
+  action: string;
+  /**
+   * Actor user ID
+   */
+  actorId: string | null;
+  /**
+   * Actor email address
+   */
+  actorEmail: string | null;
+  /**
+   * Resource type affected
+   */
+  resourceType: string | null;
+  /**
+   * Resource ID affected
+   */
+  resourceId: string | null;
+  /**
+   * Additional details
+   */
+  detail: {
+    [key: string]: unknown;
+  } | null;
+  /**
+   * Client IP address
+   */
+  ipAddress: string | null;
+  /**
+   * Client user agent
+   */
+  userAgent: string | null;
+  /**
+   * Request ID
+   */
+  requestId: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+};
+
+export type AuditLogListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of audit log entries
+   */
+  data: Array<AuditLogResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
 
 export type RegisterDto = {
   email: string;
   password: string;
 };
 
+export type AuthUserDto = {
+  /**
+   * Unique user identifier
+   */
+  id: string;
+  /**
+   * User email address
+   */
+  email: string;
+  /**
+   * User role
+   */
+  role: string;
+};
+
 export type AuthResponseDto = {
   accessToken: string;
   refreshToken: string;
-  user: {
-    [key: string]: unknown;
-  };
+  user: AuthUserDto;
 };
 
 export type LoginDto = {
@@ -189,6 +474,85 @@ export type RefreshTokenDto = {
   refreshToken: string;
 };
 
+export type RefreshTokenUserDto = {
+  /**
+   * User ID
+   */
+  id: string;
+  /**
+   * User email address
+   */
+  email: string;
+  /**
+   * User role
+   */
+  role: string;
+};
+
+export type RefreshTokenDetailDto = {
+  /**
+   * Refresh token session ID
+   */
+  id: string;
+  /**
+   * Token expiration date
+   */
+  expiresAt: string;
+  /**
+   * IP address that created the token
+   */
+  ipAddress: string | null;
+  /**
+   * User agent that created the token
+   */
+  userAgent: string | null;
+};
+
+export type RefreshTokenInfoDto = {
+  /**
+   * User information
+   */
+  user: RefreshTokenUserDto;
+  /**
+   * Refresh token details
+   */
+  refreshToken: RefreshTokenDetailDto;
+};
+
+export type RefreshTokenItemDto = {
+  /**
+   * Refresh token session ID
+   */
+  id: string;
+  /**
+   * IP address that created the token
+   */
+  ipAddress: string | null;
+  /**
+   * User agent that created the token
+   */
+  userAgent: string | null;
+  /**
+   * When the token was created
+   */
+  createdAt: string;
+  /**
+   * When the token expires
+   */
+  expiresAt: string;
+  /**
+   * Whether this is the current session token
+   */
+  isCurrent: boolean;
+};
+
+export type RefreshTokenListDto = {
+  /**
+   * List of active refresh tokens
+   */
+  refreshTokens: Array<RefreshTokenItemDto>;
+};
+
 export type LogoutDto = {
   /**
    * Refresh Token
@@ -196,11 +560,109 @@ export type LogoutDto = {
   refreshToken: string;
 };
 
+export type LogoutResponseDto = {
+  /**
+   * Whether the logout was successful
+   */
+  success: boolean;
+  /**
+   * Human-readable result message
+   */
+  message: string;
+};
+
 export type RevokeRefreshTokenDto = {
   sessionId: string;
 };
 
+export type RevokeTokenResponseDto = {
+  /**
+   * Whether the token was successfully revoked
+   */
+  success: boolean;
+  /**
+   * Human-readable result message
+   */
+  message: string;
+};
+
+export type RevokeAllTokensResponseDto = {
+  /**
+   * Number of refresh tokens that were revoked
+   */
+  revokedCount: number;
+  /**
+   * Human-readable result message
+   */
+  message: string;
+};
+
 export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+
+export type UserResponseDto = {
+  /**
+   * User ID
+   */
+  id: string;
+  /**
+   * User email address
+   */
+  email: string;
+  /**
+   * User role
+   */
+  role: UserRole;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type UserListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of users
+   */
+  data: Array<UserResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
+
+export type UserSummaryResponseDto = {
+  /**
+   * Total number of registered users
+   */
+  total: number;
+  /**
+   * Number of users with the ADMIN role
+   */
+  adminCount: number;
+  /**
+   * Number of users registered today
+   */
+  newToday: number;
+};
 
 export type CreateUserDto = {
   name: string;
@@ -217,6 +679,60 @@ export type AssignRoleDto = {
   role: UserRole;
 };
 
+export type CategoryResponseDto = {
+  /**
+   * Category ID
+   */
+  id: string;
+  /**
+   * Category name
+   */
+  name: string;
+  /**
+   * Category type
+   */
+  type: TransactionType;
+  /**
+   * Parent category ID
+   */
+  parentCategoryId: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type CategoryListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of categories
+   */
+  data: Array<CategoryResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
+
 export type CreateCategoryDto = {
   name: string;
   type: TransactionType;
@@ -228,6 +744,83 @@ export type UpdateCategoryDto = {
   parentCategoryId?: {
     [key: string]: unknown;
   } | null;
+};
+
+export type MessageResponseDto = {
+  /**
+   * Response message
+   */
+  message: string;
+};
+
+export type TransactionResponseDto = {
+  /**
+   * Transaction ID
+   */
+  id: string;
+  /**
+   * Category ID
+   */
+  categoryId: string;
+  /**
+   * Transaction type
+   */
+  type: TransactionType;
+  /**
+   * Transaction amount
+   */
+  amount: string;
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Transaction date
+   */
+  date: string;
+  /**
+   * Transaction description
+   */
+  description: string | null;
+  /**
+   * Linked recurring transaction ID
+   */
+  recurringTransactionId: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type TransactionListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of transactions
+   */
+  data: Array<TransactionResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
 };
 
 export type CreateTransactionDto = {
@@ -251,6 +844,96 @@ export type UpdateTransactionDto = {
 export type RecurringTransactionStatus = 'ACTIVE' | 'PAUSED' | 'CANCELLED';
 
 export type RecurringFrequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
+export type RecurringTransactionResponseDto = {
+  /**
+   * Recurring transaction ID
+   */
+  id: string;
+  /**
+   * User ID
+   */
+  userId: string;
+  /**
+   * Category ID
+   */
+  categoryId: string;
+  /**
+   * Transaction type
+   */
+  type: TransactionType;
+  /**
+   * Transaction amount
+   */
+  amount: string;
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Transaction description
+   */
+  description: string | null;
+  /**
+   * Recurrence frequency
+   */
+  frequency: RecurringFrequency;
+  /**
+   * Recurrence interval
+   */
+  interval: number;
+  /**
+   * Start date
+   */
+  startDate: string;
+  /**
+   * End date
+   */
+  endDate: string | null;
+  /**
+   * Next occurrence date
+   */
+  nextOccurrenceDate: string;
+  /**
+   * Recurring transaction status
+   */
+  status: RecurringTransactionStatus;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type RecurringTransactionListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of recurring transactions
+   */
+  data: Array<RecurringTransactionResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
 
 export type CreateRecurringTransactionDto = {
   categoryId: string;
@@ -276,9 +959,117 @@ export type UpdateRecurringTransactionDto = {
   endDate?: string;
 };
 
+export type ProcessResultResponseDto = {
+  /**
+   * Number of recurring transactions processed
+   */
+  processedCount: number;
+  /**
+   * Number of transactions created
+   */
+  transactionsCreated: number;
+};
+
 export type BudgetStatus = 'ACTIVE' | 'EXCEEDED';
 
 export type BudgetPeriod = 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'CUSTOM';
+
+export type BudgetResponseDto = {
+  /**
+   * Budget ID
+   */
+  id: string;
+  /**
+   * User ID
+   */
+  userId: string;
+  /**
+   * Category ID
+   */
+  categoryId: string | null;
+  /**
+   * Budget amount
+   */
+  amount: string;
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Budget period
+   */
+  period: BudgetPeriod;
+  /**
+   * Budget start date
+   */
+  startDate: string;
+  /**
+   * Budget end date
+   */
+  endDate: string;
+  /**
+   * Budget status
+   */
+  status: BudgetStatus;
+  /**
+   * Budget description
+   */
+  description: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type BudgetListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of budgets
+   */
+  data: Array<BudgetResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
+
+export type BudgetProgressResponseDto = {
+  /**
+   * The budget details
+   */
+  budget: BudgetResponseDto;
+  /**
+   * Amount spent so far
+   */
+  spentAmount: string;
+  /**
+   * Remaining budget amount
+   */
+  remainingAmount: string;
+  /**
+   * Percentage of budget used
+   */
+  percentUsed: number;
+};
 
 export type CreateBudgetDto = {
   amount: string;
@@ -411,8 +1202,11 @@ export type TransactionsAnalyticsControllerGetSummaryError =
   TransactionsAnalyticsControllerGetSummaryErrors[keyof TransactionsAnalyticsControllerGetSummaryErrors];
 
 export type TransactionsAnalyticsControllerGetSummaryResponses = {
-  200: unknown;
+  200: SummaryResponseDto;
 };
+
+export type TransactionsAnalyticsControllerGetSummaryResponse =
+  TransactionsAnalyticsControllerGetSummaryResponses[keyof TransactionsAnalyticsControllerGetSummaryResponses];
 
 export type TransactionsAnalyticsControllerGetCategoryBreakdownData = {
   body?: never;
@@ -438,8 +1232,11 @@ export type TransactionsAnalyticsControllerGetCategoryBreakdownError =
   TransactionsAnalyticsControllerGetCategoryBreakdownErrors[keyof TransactionsAnalyticsControllerGetCategoryBreakdownErrors];
 
 export type TransactionsAnalyticsControllerGetCategoryBreakdownResponses = {
-  200: unknown;
+  200: CategoryBreakdownResponseDto;
 };
+
+export type TransactionsAnalyticsControllerGetCategoryBreakdownResponse =
+  TransactionsAnalyticsControllerGetCategoryBreakdownResponses[keyof TransactionsAnalyticsControllerGetCategoryBreakdownResponses];
 
 export type TransactionsAnalyticsControllerGetTrendsData = {
   body?: never;
@@ -466,8 +1263,11 @@ export type TransactionsAnalyticsControllerGetTrendsError =
   TransactionsAnalyticsControllerGetTrendsErrors[keyof TransactionsAnalyticsControllerGetTrendsErrors];
 
 export type TransactionsAnalyticsControllerGetTrendsResponses = {
-  200: unknown;
+  200: TrendsResponseDto;
 };
+
+export type TransactionsAnalyticsControllerGetTrendsResponse =
+  TransactionsAnalyticsControllerGetTrendsResponses[keyof TransactionsAnalyticsControllerGetTrendsResponses];
 
 export type TransactionsAnalyticsControllerGetTopCategoriesData = {
   body?: never;
@@ -494,8 +1294,11 @@ export type TransactionsAnalyticsControllerGetTopCategoriesError =
   TransactionsAnalyticsControllerGetTopCategoriesErrors[keyof TransactionsAnalyticsControllerGetTopCategoriesErrors];
 
 export type TransactionsAnalyticsControllerGetTopCategoriesResponses = {
-  200: unknown;
+  200: TopCategoriesResponseDto;
 };
+
+export type TransactionsAnalyticsControllerGetTopCategoriesResponse =
+  TransactionsAnalyticsControllerGetTopCategoriesResponses[keyof TransactionsAnalyticsControllerGetTopCategoriesResponses];
 
 export type TransactionsAnalyticsControllerGetDailySpendingData = {
   body?: never;
@@ -520,8 +1323,11 @@ export type TransactionsAnalyticsControllerGetDailySpendingError =
   TransactionsAnalyticsControllerGetDailySpendingErrors[keyof TransactionsAnalyticsControllerGetDailySpendingErrors];
 
 export type TransactionsAnalyticsControllerGetDailySpendingResponses = {
-  200: unknown;
+  200: DailySpendingResponseDto;
 };
+
+export type TransactionsAnalyticsControllerGetDailySpendingResponse =
+  TransactionsAnalyticsControllerGetDailySpendingResponses[keyof TransactionsAnalyticsControllerGetDailySpendingResponses];
 
 export type AuditLogControllerFindAllData = {
   body?: never;
@@ -546,8 +1352,11 @@ export type AuditLogControllerFindAllError =
   AuditLogControllerFindAllErrors[keyof AuditLogControllerFindAllErrors];
 
 export type AuditLogControllerFindAllResponses = {
-  200: unknown;
+  200: AuditLogListResponseDto;
 };
+
+export type AuditLogControllerFindAllResponse =
+  AuditLogControllerFindAllResponses[keyof AuditLogControllerFindAllResponses];
 
 export type AuthControllerRegisterData = {
   body: RegisterDto;
@@ -614,8 +1423,11 @@ export type AuthControllerGetRefreshTokenError =
   AuthControllerGetRefreshTokenErrors[keyof AuthControllerGetRefreshTokenErrors];
 
 export type AuthControllerGetRefreshTokenResponses = {
-  200: unknown;
+  200: RefreshTokenInfoDto;
 };
+
+export type AuthControllerGetRefreshTokenResponse =
+  AuthControllerGetRefreshTokenResponses[keyof AuthControllerGetRefreshTokenResponses];
 
 export type AuthControllerRefreshTokenData = {
   body: RefreshTokenDto;
@@ -659,8 +1471,11 @@ export type AuthControllerListRefreshTokensError =
   AuthControllerListRefreshTokensErrors[keyof AuthControllerListRefreshTokensErrors];
 
 export type AuthControllerListRefreshTokensResponses = {
-  200: unknown;
+  200: RefreshTokenListDto;
 };
+
+export type AuthControllerListRefreshTokensResponse =
+  AuthControllerListRefreshTokensResponses[keyof AuthControllerListRefreshTokensResponses];
 
 export type AuthControllerLogoutData = {
   body: LogoutDto;
@@ -680,8 +1495,11 @@ export type AuthControllerLogoutError =
   AuthControllerLogoutErrors[keyof AuthControllerLogoutErrors];
 
 export type AuthControllerLogoutResponses = {
-  200: unknown;
+  200: LogoutResponseDto;
 };
+
+export type AuthControllerLogoutResponse =
+  AuthControllerLogoutResponses[keyof AuthControllerLogoutResponses];
 
 export type AuthControllerRevokeRefreshTokenData = {
   body: RevokeRefreshTokenDto;
@@ -701,8 +1519,11 @@ export type AuthControllerRevokeRefreshTokenError =
   AuthControllerRevokeRefreshTokenErrors[keyof AuthControllerRevokeRefreshTokenErrors];
 
 export type AuthControllerRevokeRefreshTokenResponses = {
-  200: unknown;
+  200: RevokeTokenResponseDto;
 };
+
+export type AuthControllerRevokeRefreshTokenResponse =
+  AuthControllerRevokeRefreshTokenResponses[keyof AuthControllerRevokeRefreshTokenResponses];
 
 export type AuthControllerRevokeRefreshTokensData = {
   body?: never;
@@ -722,8 +1543,11 @@ export type AuthControllerRevokeRefreshTokensError =
   AuthControllerRevokeRefreshTokensErrors[keyof AuthControllerRevokeRefreshTokensErrors];
 
 export type AuthControllerRevokeRefreshTokensResponses = {
-  200: unknown;
+  200: RevokeAllTokensResponseDto;
 };
+
+export type AuthControllerRevokeRefreshTokensResponse =
+  AuthControllerRevokeRefreshTokensResponses[keyof AuthControllerRevokeRefreshTokensResponses];
 
 export type UserControllerFindAllData = {
   body?: never;
@@ -748,8 +1572,11 @@ export type UserControllerFindAllError =
   UserControllerFindAllErrors[keyof UserControllerFindAllErrors];
 
 export type UserControllerFindAllResponses = {
-  200: unknown;
+  200: UserListResponseDto;
 };
+
+export type UserControllerFindAllResponse =
+  UserControllerFindAllResponses[keyof UserControllerFindAllResponses];
 
 export type UserControllerCreateData = {
   body: CreateUserDto;
@@ -773,10 +1600,7 @@ export type UserControllerCreateError =
   UserControllerCreateErrors[keyof UserControllerCreateErrors];
 
 export type UserControllerCreateResponses = {
-  /**
-   * Error response (includes 400/401/403/404/422/429/500, etc.)
-   */
-  default: ProblemDetailsDto;
+  201: UserResponseDto;
 };
 
 export type UserControllerCreateResponse =
@@ -800,8 +1624,11 @@ export type UserControllerGetSummaryError =
   UserControllerGetSummaryErrors[keyof UserControllerGetSummaryErrors];
 
 export type UserControllerGetSummaryResponses = {
-  200: unknown;
+  200: UserSummaryResponseDto;
 };
+
+export type UserControllerGetSummaryResponse =
+  UserControllerGetSummaryResponses[keyof UserControllerGetSummaryResponses];
 
 export type UserControllerDeleteData = {
   body?: never;
@@ -860,10 +1687,7 @@ export type UserControllerFindByIdError =
   UserControllerFindByIdErrors[keyof UserControllerFindByIdErrors];
 
 export type UserControllerFindByIdResponses = {
-  /**
-   * Error response (includes 400/401/403/404/422/429/500, etc.)
-   */
-  default: ProblemDetailsDto;
+  200: UserResponseDto;
 };
 
 export type UserControllerFindByIdResponse =
@@ -893,10 +1717,7 @@ export type UserControllerUpdateError =
   UserControllerUpdateErrors[keyof UserControllerUpdateErrors];
 
 export type UserControllerUpdateResponses = {
-  /**
-   * Error response (includes 400/401/403/404/422/429/500, etc.)
-   */
-  default: ProblemDetailsDto;
+  200: UserResponseDto;
 };
 
 export type UserControllerUpdateResponse =
@@ -930,10 +1751,7 @@ export type UserControllerAssignRoleError =
   UserControllerAssignRoleErrors[keyof UserControllerAssignRoleErrors];
 
 export type UserControllerAssignRoleResponses = {
-  /**
-   * Error response (includes 400/401/403/404/422/429/500, etc.)
-   */
-  default: ProblemDetailsDto;
+  200: UserResponseDto;
 };
 
 export type UserControllerAssignRoleResponse =
@@ -963,8 +1781,11 @@ export type TransactionCategoriesControllerFindAllError =
   TransactionCategoriesControllerFindAllErrors[keyof TransactionCategoriesControllerFindAllErrors];
 
 export type TransactionCategoriesControllerFindAllResponses = {
-  200: unknown;
+  200: CategoryListResponseDto;
 };
+
+export type TransactionCategoriesControllerFindAllResponse =
+  TransactionCategoriesControllerFindAllResponses[keyof TransactionCategoriesControllerFindAllResponses];
 
 export type TransactionCategoriesControllerCreateData = {
   body: CreateCategoryDto;
@@ -988,8 +1809,11 @@ export type TransactionCategoriesControllerCreateError =
   TransactionCategoriesControllerCreateErrors[keyof TransactionCategoriesControllerCreateErrors];
 
 export type TransactionCategoriesControllerCreateResponses = {
-  201: unknown;
+  201: CategoryResponseDto;
 };
+
+export type TransactionCategoriesControllerCreateResponse =
+  TransactionCategoriesControllerCreateResponses[keyof TransactionCategoriesControllerCreateResponses];
 
 export type TransactionCategoriesControllerDeleteData = {
   body?: never;
@@ -1019,8 +1843,11 @@ export type TransactionCategoriesControllerDeleteError =
   TransactionCategoriesControllerDeleteErrors[keyof TransactionCategoriesControllerDeleteErrors];
 
 export type TransactionCategoriesControllerDeleteResponses = {
-  200: unknown;
+  200: MessageResponseDto;
 };
+
+export type TransactionCategoriesControllerDeleteResponse =
+  TransactionCategoriesControllerDeleteResponses[keyof TransactionCategoriesControllerDeleteResponses];
 
 export type TransactionCategoriesControllerFindByIdData = {
   body?: never;
@@ -1046,8 +1873,11 @@ export type TransactionCategoriesControllerFindByIdError =
   TransactionCategoriesControllerFindByIdErrors[keyof TransactionCategoriesControllerFindByIdErrors];
 
 export type TransactionCategoriesControllerFindByIdResponses = {
-  200: unknown;
+  200: CategoryResponseDto;
 };
+
+export type TransactionCategoriesControllerFindByIdResponse =
+  TransactionCategoriesControllerFindByIdResponses[keyof TransactionCategoriesControllerFindByIdResponses];
 
 export type TransactionCategoriesControllerUpdateData = {
   body: UpdateCategoryDto;
@@ -1077,8 +1907,11 @@ export type TransactionCategoriesControllerUpdateError =
   TransactionCategoriesControllerUpdateErrors[keyof TransactionCategoriesControllerUpdateErrors];
 
 export type TransactionCategoriesControllerUpdateResponses = {
-  200: unknown;
+  200: CategoryResponseDto;
 };
+
+export type TransactionCategoriesControllerUpdateResponse =
+  TransactionCategoriesControllerUpdateResponses[keyof TransactionCategoriesControllerUpdateResponses];
 
 export type TransactionsControllerFindAllData = {
   body?: never;
@@ -1106,8 +1939,11 @@ export type TransactionsControllerFindAllError =
   TransactionsControllerFindAllErrors[keyof TransactionsControllerFindAllErrors];
 
 export type TransactionsControllerFindAllResponses = {
-  200: unknown;
+  200: TransactionListResponseDto;
 };
+
+export type TransactionsControllerFindAllResponse =
+  TransactionsControllerFindAllResponses[keyof TransactionsControllerFindAllResponses];
 
 export type TransactionsControllerCreateData = {
   body: CreateTransactionDto;
@@ -1135,8 +1971,11 @@ export type TransactionsControllerCreateError =
   TransactionsControllerCreateErrors[keyof TransactionsControllerCreateErrors];
 
 export type TransactionsControllerCreateResponses = {
-  201: unknown;
+  201: TransactionResponseDto;
 };
+
+export type TransactionsControllerCreateResponse =
+  TransactionsControllerCreateResponses[keyof TransactionsControllerCreateResponses];
 
 export type TransactionsControllerDeleteData = {
   body?: never;
@@ -1162,8 +2001,11 @@ export type TransactionsControllerDeleteError =
   TransactionsControllerDeleteErrors[keyof TransactionsControllerDeleteErrors];
 
 export type TransactionsControllerDeleteResponses = {
-  200: unknown;
+  200: MessageResponseDto;
 };
+
+export type TransactionsControllerDeleteResponse =
+  TransactionsControllerDeleteResponses[keyof TransactionsControllerDeleteResponses];
 
 export type TransactionsControllerFindByIdData = {
   body?: never;
@@ -1189,8 +2031,11 @@ export type TransactionsControllerFindByIdError =
   TransactionsControllerFindByIdErrors[keyof TransactionsControllerFindByIdErrors];
 
 export type TransactionsControllerFindByIdResponses = {
-  200: unknown;
+  200: TransactionResponseDto;
 };
+
+export type TransactionsControllerFindByIdResponse =
+  TransactionsControllerFindByIdResponses[keyof TransactionsControllerFindByIdResponses];
 
 export type TransactionsControllerUpdateData = {
   body: UpdateTransactionDto;
@@ -1220,8 +2065,11 @@ export type TransactionsControllerUpdateError =
   TransactionsControllerUpdateErrors[keyof TransactionsControllerUpdateErrors];
 
 export type TransactionsControllerUpdateResponses = {
-  200: unknown;
+  200: TransactionResponseDto;
 };
+
+export type TransactionsControllerUpdateResponse =
+  TransactionsControllerUpdateResponses[keyof TransactionsControllerUpdateResponses];
 
 export type RecurringTransactionsControllerFindAllData = {
   body?: never;
@@ -1249,8 +2097,11 @@ export type RecurringTransactionsControllerFindAllError =
   RecurringTransactionsControllerFindAllErrors[keyof RecurringTransactionsControllerFindAllErrors];
 
 export type RecurringTransactionsControllerFindAllResponses = {
-  200: unknown;
+  200: RecurringTransactionListResponseDto;
 };
+
+export type RecurringTransactionsControllerFindAllResponse =
+  RecurringTransactionsControllerFindAllResponses[keyof RecurringTransactionsControllerFindAllResponses];
 
 export type RecurringTransactionsControllerCreateData = {
   body: CreateRecurringTransactionDto;
@@ -1278,8 +2129,11 @@ export type RecurringTransactionsControllerCreateError =
   RecurringTransactionsControllerCreateErrors[keyof RecurringTransactionsControllerCreateErrors];
 
 export type RecurringTransactionsControllerCreateResponses = {
-  201: unknown;
+  201: RecurringTransactionResponseDto;
 };
+
+export type RecurringTransactionsControllerCreateResponse =
+  RecurringTransactionsControllerCreateResponses[keyof RecurringTransactionsControllerCreateResponses];
 
 export type RecurringTransactionsControllerDeleteData = {
   body?: never;
@@ -1305,8 +2159,11 @@ export type RecurringTransactionsControllerDeleteError =
   RecurringTransactionsControllerDeleteErrors[keyof RecurringTransactionsControllerDeleteErrors];
 
 export type RecurringTransactionsControllerDeleteResponses = {
-  200: unknown;
+  200: MessageResponseDto;
 };
+
+export type RecurringTransactionsControllerDeleteResponse =
+  RecurringTransactionsControllerDeleteResponses[keyof RecurringTransactionsControllerDeleteResponses];
 
 export type RecurringTransactionsControllerFindByIdData = {
   body?: never;
@@ -1332,8 +2189,11 @@ export type RecurringTransactionsControllerFindByIdError =
   RecurringTransactionsControllerFindByIdErrors[keyof RecurringTransactionsControllerFindByIdErrors];
 
 export type RecurringTransactionsControllerFindByIdResponses = {
-  200: unknown;
+  200: RecurringTransactionResponseDto;
 };
+
+export type RecurringTransactionsControllerFindByIdResponse =
+  RecurringTransactionsControllerFindByIdResponses[keyof RecurringTransactionsControllerFindByIdResponses];
 
 export type RecurringTransactionsControllerUpdateData = {
   body: UpdateRecurringTransactionDto;
@@ -1363,8 +2223,11 @@ export type RecurringTransactionsControllerUpdateError =
   RecurringTransactionsControllerUpdateErrors[keyof RecurringTransactionsControllerUpdateErrors];
 
 export type RecurringTransactionsControllerUpdateResponses = {
-  200: unknown;
+  200: RecurringTransactionResponseDto;
 };
+
+export type RecurringTransactionsControllerUpdateResponse =
+  RecurringTransactionsControllerUpdateResponses[keyof RecurringTransactionsControllerUpdateResponses];
 
 export type RecurringTransactionsControllerPauseData = {
   body?: never;
@@ -1394,8 +2257,11 @@ export type RecurringTransactionsControllerPauseError =
   RecurringTransactionsControllerPauseErrors[keyof RecurringTransactionsControllerPauseErrors];
 
 export type RecurringTransactionsControllerPauseResponses = {
-  200: unknown;
+  200: RecurringTransactionResponseDto;
 };
+
+export type RecurringTransactionsControllerPauseResponse =
+  RecurringTransactionsControllerPauseResponses[keyof RecurringTransactionsControllerPauseResponses];
 
 export type RecurringTransactionsControllerResumeData = {
   body?: never;
@@ -1425,8 +2291,11 @@ export type RecurringTransactionsControllerResumeError =
   RecurringTransactionsControllerResumeErrors[keyof RecurringTransactionsControllerResumeErrors];
 
 export type RecurringTransactionsControllerResumeResponses = {
-  200: unknown;
+  200: RecurringTransactionResponseDto;
 };
+
+export type RecurringTransactionsControllerResumeResponse =
+  RecurringTransactionsControllerResumeResponses[keyof RecurringTransactionsControllerResumeResponses];
 
 export type RecurringTransactionsControllerProcessData = {
   body?: never;
@@ -1446,8 +2315,11 @@ export type RecurringTransactionsControllerProcessError =
   RecurringTransactionsControllerProcessErrors[keyof RecurringTransactionsControllerProcessErrors];
 
 export type RecurringTransactionsControllerProcessResponses = {
-  200: unknown;
+  200: ProcessResultResponseDto;
 };
+
+export type RecurringTransactionsControllerProcessResponse =
+  RecurringTransactionsControllerProcessResponses[keyof RecurringTransactionsControllerProcessResponses];
 
 export type BudgetsControllerFindAllData = {
   body?: never;
@@ -1474,8 +2346,11 @@ export type BudgetsControllerFindAllError =
   BudgetsControllerFindAllErrors[keyof BudgetsControllerFindAllErrors];
 
 export type BudgetsControllerFindAllResponses = {
-  200: unknown;
+  200: BudgetListResponseDto;
 };
+
+export type BudgetsControllerFindAllResponse =
+  BudgetsControllerFindAllResponses[keyof BudgetsControllerFindAllResponses];
 
 export type BudgetsControllerCreateData = {
   body: CreateBudgetDto;
@@ -1507,8 +2382,11 @@ export type BudgetsControllerCreateError =
   BudgetsControllerCreateErrors[keyof BudgetsControllerCreateErrors];
 
 export type BudgetsControllerCreateResponses = {
-  201: unknown;
+  201: BudgetResponseDto;
 };
+
+export type BudgetsControllerCreateResponse =
+  BudgetsControllerCreateResponses[keyof BudgetsControllerCreateResponses];
 
 export type BudgetsControllerDeleteData = {
   body?: never;
@@ -1534,8 +2412,11 @@ export type BudgetsControllerDeleteError =
   BudgetsControllerDeleteErrors[keyof BudgetsControllerDeleteErrors];
 
 export type BudgetsControllerDeleteResponses = {
-  200: unknown;
+  200: MessageResponseDto;
 };
+
+export type BudgetsControllerDeleteResponse =
+  BudgetsControllerDeleteResponses[keyof BudgetsControllerDeleteResponses];
 
 export type BudgetsControllerFindByIdData = {
   body?: never;
@@ -1561,8 +2442,11 @@ export type BudgetsControllerFindByIdError =
   BudgetsControllerFindByIdErrors[keyof BudgetsControllerFindByIdErrors];
 
 export type BudgetsControllerFindByIdResponses = {
-  200: unknown;
+  200: BudgetResponseDto;
 };
+
+export type BudgetsControllerFindByIdResponse =
+  BudgetsControllerFindByIdResponses[keyof BudgetsControllerFindByIdResponses];
 
 export type BudgetsControllerUpdateData = {
   body: UpdateBudgetDto;
@@ -1596,8 +2480,11 @@ export type BudgetsControllerUpdateError =
   BudgetsControllerUpdateErrors[keyof BudgetsControllerUpdateErrors];
 
 export type BudgetsControllerUpdateResponses = {
-  200: unknown;
+  200: BudgetResponseDto;
 };
+
+export type BudgetsControllerUpdateResponse =
+  BudgetsControllerUpdateResponses[keyof BudgetsControllerUpdateResponses];
 
 export type BudgetsControllerGetProgressData = {
   body?: never;
@@ -1623,5 +2510,8 @@ export type BudgetsControllerGetProgressError =
   BudgetsControllerGetProgressErrors[keyof BudgetsControllerGetProgressErrors];
 
 export type BudgetsControllerGetProgressResponses = {
-  200: unknown;
+  200: BudgetProgressResponseDto;
 };
+
+export type BudgetsControllerGetProgressResponse =
+  BudgetsControllerGetProgressResponses[keyof BudgetsControllerGetProgressResponses];

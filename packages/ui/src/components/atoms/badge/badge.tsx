@@ -3,7 +3,14 @@ import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './badge.module.scss';
 
-type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost';
+type BadgeVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'outline'
+  | 'ghost'
+  | 'success'
+  | 'warning';
 
 const variantToClass: Record<BadgeVariant, string> = {
   default: styles.default ?? '',
@@ -11,6 +18,8 @@ const variantToClass: Record<BadgeVariant, string> = {
   destructive: styles.destructive ?? '',
   outline: styles.outline ?? '',
   ghost: styles.ghost ?? '',
+  success: styles.success ?? '',
+  warning: styles.warning ?? '',
 };
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
