@@ -59,6 +59,23 @@ const attemptTokenRefresh = async (
   return createSameUrlRedirect(request, response);
 };
 
+const SECONDS_TO_MS = 1000;
+
+const checkIsTokenExpired = (token: string): boolean => {
+  const [, payloadPart] = token.split('.');
+
+  if (!payloadPart) {
+    return true;
+  }
+
+  try {
+    const payload = JSON.parse(atob(payloadPart)) as { exp?: number };
+    return typeof payload.exp === 'number' && payload.exp * SECONDS_TO_MS < Date.now();
+  } catch {
+    return true;
+  }
+};
+
 const handleAuthenticatedRoute = async (
   request: NextRequest,
   response: NextResponse,
@@ -66,7 +83,7 @@ const handleAuthenticatedRoute = async (
   const tokenProvider = new MiddlewareTokenProvider(request, response);
   const accessToken = tokenProvider.getAccessToken();
 
-  if (!accessToken) {
+  if (!accessToken || checkIsTokenExpired(accessToken)) {
     try {
       return await attemptTokenRefresh(tokenProvider, request, response);
     } catch {

@@ -1,6 +1,6 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
-import type { TokenProvider } from './types';
+import type { ReadWriteTokenProvider } from './types';
 
 const ACCESS_TOKEN_COOKIE = 'access_token';
 const REFRESH_TOKEN_COOKIE = 'refresh_token';
@@ -12,7 +12,7 @@ const TOKEN_COOKIE_OPTIONS = {
   path: '/',
 };
 
-export class MiddlewareTokenProvider implements TokenProvider {
+export class MiddlewareTokenProvider implements ReadWriteTokenProvider {
   constructor(
     private request: NextRequest,
     private response: NextResponse,

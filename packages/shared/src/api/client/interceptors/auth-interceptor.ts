@@ -1,8 +1,9 @@
 import type { AuthResponseDto } from '../../generated/types.gen';
 import type { ApiClient } from '../api-client';
-import type { TokenProvider } from '../token/types';
+import type { ReadOnlyTokenProvider, ReadWriteTokenProvider } from '../token/types';
 
 import { HTTP_STATUS_CODE } from '../../../constants/http-status-code';
+import { checkIsReadWriteTokenProvider } from '../token/types';
 
 const fetchRefreshedToken = async (
   refreshUrl: string,
@@ -34,7 +35,7 @@ export class AuthInterceptor {
   private refreshPromise: Promise<AuthResponseDto | null> | null = null;
 
   constructor(
-    private tokenProvider: TokenProvider,
+    private tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider,
     private refreshUrl: string,
   ) {}
 
@@ -59,6 +60,10 @@ export class AuthInterceptor {
 
   private handleResponse = async (response: Response, request: Request): Promise<Response> => {
     if (response.status !== HTTP_STATUS_CODE.UNAUTHORIZED) {
+      return response;
+    }
+
+    if (!checkIsReadWriteTokenProvider(this.tokenProvider)) {
       return response;
     }
 
@@ -93,7 +98,9 @@ export class AuthInterceptor {
     try {
       return await this.processRefreshResult(fallbackResponse, request);
     } catch {
-      await this.tokenProvider.clearTokenPair();
+      if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
+        await this.tokenProvider.clearTokenPair();
+      }
       return fallbackResponse;
     } finally {
       this.refreshPromise = null;
@@ -107,11 +114,15 @@ export class AuthInterceptor {
     const tokenData = await this.refreshPromise;
 
     if (!tokenData) {
-      await this.tokenProvider.clearTokenPair();
+      if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
+        await this.tokenProvider.clearTokenPair();
+      }
       return fallbackResponse;
     }
 
-    await this.tokenProvider.setTokenPair(tokenData.accessToken, tokenData.refreshToken);
+    if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
+      await this.tokenProvider.setTokenPair(tokenData.accessToken, tokenData.refreshToken);
+    }
 
     return retryWithNewToken(request, tokenData.accessToken);
   };

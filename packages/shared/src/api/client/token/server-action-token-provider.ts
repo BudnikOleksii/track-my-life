@@ -1,4 +1,4 @@
-import type { TokenProvider } from './types';
+import type { ReadWriteTokenProvider } from './types';
 
 const ACCESS_TOKEN_COOKIE = 'access_token';
 const REFRESH_TOKEN_COOKIE = 'refresh_token';
@@ -10,7 +10,7 @@ const TOKEN_COOKIE_OPTIONS = {
   path: '/',
 };
 
-export class ServerActionTokenProvider implements TokenProvider {
+export class ServerActionTokenProvider implements ReadWriteTokenProvider {
   async getAccessToken(): Promise<string | null> {
     const { cookies } = await import('next/headers');
     const cookieStore = await cookies();
