@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { FC } from 'react';
 
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -27,10 +28,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const DashboardPage: FC<Props> = async () => {
-  const translations = await getTranslations(I18N_NAMESPACE.dashboardPage);
-
-  return <DashboardPageContent translations={translations} />;
-};
+const DashboardPage: FC<Props> = () => (
+  <Suspense>
+    <DashboardPageContent />
+  </Suspense>
+);
 
 export default DashboardPage;

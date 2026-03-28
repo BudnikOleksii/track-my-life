@@ -1,51 +1,35 @@
-.main {
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.page {
   display: flex;
 
   flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+
   align-items: center;
-  justify-content: center;
-
-  min-height: 100vh;
-
-  padding: var(--spacing-4);
+  justify-content: space-between;
 }
 
-.card {
-  width: 100%;
-  max-width: 28rem;
-}
+.grid {
+  display: grid;
 
-.cardContent {
-  display: flex;
+  grid-template-columns: 1fr;
 
-  flex-direction: column;
   gap: var(--spacing-4);
+
+  @include media-m {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-xl {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.section {
-  display: flex;
-
-  flex-direction: column;
-  gap: var(--spacing-2);
-}
-
-.sectionTitle {
-  font-size: var(--font-body-l-size);
-  font-weight: var(--font-weight-semibold);
-}
-
-.paragraph {
-  font-size: var(--font-body-m-size);
-}
-
-.label {
-  font-weight: var(--font-weight-medium);
-}
-
-.signOutForm {
-  padding-top: var(--spacing-4);
-}
-
-.signOutButton {
-  width: 100%;
+.summary {
+  grid-column: 1 / -1;
 }

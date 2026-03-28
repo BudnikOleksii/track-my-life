@@ -1,14 +1,28 @@
 {
   "metadata": {
     "title": "Dashboard - Track My Money",
-    "description": "Your Track My Money dashboard"
+    "description": "Your financial overview"
   },
   "content": {
     "title": "Dashboard",
-    "welcome": "Welcome",
-    "logoutButton": "Logout",
-    "userInfo": "User Information",
-    "email": "Email",
-    "name": "Name"
+    "filterDateFrom": "From",
+    "filterDateTo": "To",
+    "filterType": "Transaction type",
+    "filterCurrency": "Currency",
+    "allTypes": "All",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "summaryTitle": "Summary",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses",
+    "netBalance": "Net Balance",
+    "transactionCount": "Transactions",
+    "categoryBreakdownTitle": "Spending by Category",
+    "trendsTitle": "Income vs Expenses",
+    "topCategoriesTitle": "Top Categories",
+    "dailySpendingTitle": "Daily Spending",
+    "recentTransactionsTitle": "Recent Transactions",
+    "noData": "No data available for the selected period",
+    "viewAllTransactions": "View all transactions"
   }
 }

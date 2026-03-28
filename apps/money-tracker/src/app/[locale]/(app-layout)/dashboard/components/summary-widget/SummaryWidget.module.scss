@@ -1,0 +1,49 @@
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: var(--spacing-4);
+
+  @include media-l {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statCard {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-1);
+
+  padding: var(--spacing-3);
+
+  background-color: var(--surface-container);
+  border-radius: var(--radius-md);
+}
+
+.label {
+  color: var(--on-surface-variant);
+}
+
+.income {
+  color: #1b6e2d;
+
+  [data-theme="dark"] & {
+    color: #7ee896;
+  }
+}
+
+.expense {
+  color: #924040;
+
+  [data-theme="dark"] & {
+    color: #f5a0a0;
+  }
+}
+
+.balance {
+  color: var(--primary);
+}

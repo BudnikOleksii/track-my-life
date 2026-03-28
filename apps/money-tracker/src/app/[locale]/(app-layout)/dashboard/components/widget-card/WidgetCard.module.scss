@@ -1,0 +1,19 @@
+.card {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.skeletonContainer {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.empty {
+  padding: var(--spacing-6) 0;
+
+  text-align: center;
+  color: var(--on-surface-variant);
+}
