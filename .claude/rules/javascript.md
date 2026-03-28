@@ -25,11 +25,13 @@ paths:
 - Use arrow functions
 - Use these prefixes consistently:
 
-| Prefix    | Use Case                                 | Example                                |
-| --------- | ---------------------------------------- | -------------------------------------- |
-| `get`     | Retrieve data from objects, calculations | `getConfig`, `getCorrelationId`        |
-| `fetch`   | External API calls, async data retrieval | `fetchFileAsBlob`, `fetchDocumentList` |
-| `check`   | Boolean returns, validation, typeguards  | `checkIsObject`, `checkIsValid`        |
-| `format`  | Transform data appearance                | `formatCardNumber`, `formatDate`       |
-| `convert` | Type/structure conversion                | `convertDateToTimestamp`               |
-| `prepare` | Assemble data structures                 | `prepareProductJsonLd`                 |
+| Prefix      | Use Case                                 | Example                                |
+| ----------- | ---------------------------------------- | -------------------------------------- |
+| `get`       | Retrieve data from objects, calculations | `getConfig`, `getCorrelationId`        |
+| `fetch`     | External API calls, async data retrieval | `fetchFileAsBlob`, `fetchDocumentList` |
+| `check`     | Boolean returns, validation, typeguards  | `checkIsObject`, `checkIsValid`        |
+| `format`    | Transform data appearance                | `formatCardNumber`, `formatDate`       |
+| `convert`   | Type/structure conversion                | `convertDateToTimestamp`               |
+| `prepare`   | Assemble data structures                 | `prepareProductJsonLd`                 |
+| `parse`     | Extract structured data from raw input   | `parseDashboardSearchParams`           |
+| `normalize` | Coerce values to a consistent type       | `normalizeParam`                       |

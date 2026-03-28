@@ -82,9 +82,9 @@ Components must be framework-agnostic (no `next-intl`, no app-specific imports).
 
 Constants specific to one app but used across multiple features (e.g., `FILTER_TO_LABEL_KEY` with i18n keys, route paths).
 
-### `apps/<app>/src/actions/` — App-wide shared server actions
+### `apps/<app>/src/actions/` — App-wide shared data functions and server actions
 
-Server actions used by multiple features (e.g., `fetch-category-list.ts` used by both categories and transactions).
+Shared async functions used by multiple features. Read functions are plain async (no `'use server'`), callable from RSC. Mutation functions are server actions (`'use server'`), callable from client components. Example: `fetch-category-list.ts` used by both categories and transactions.
 
 ### Decision guide
 
@@ -94,10 +94,6 @@ Server actions used by multiple features (e.g., `fetch-category-list.ts` used by
 | UI component, no app dependencies | `packages/ui/src/components/`                            |
 | Used across features in one app   | `apps/<app>/src/constants/` or `apps/<app>/src/actions/` |
 | Used by one feature only          | Keep in the feature directory                            |
-
-## Storybook
-
-When a component is added to `packages/ui`, add a corresponding story in `apps/storybook/src/stories/`. Follow CSF3 format with `Meta`, `StoryObj`, `tags: ['autodocs']`, and `parameters: { layout: 'centered' }`. Use `useState` wrapper components for interactive stories.
 
 ## Skills
 

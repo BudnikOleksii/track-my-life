@@ -12,6 +12,19 @@ paths:
 - Use Suspense for async operations
 - Optimize for performance and Web Vitals (LCP, CLS, FID)
 
+## RSC Data Fetching
+
+- Fetch data in async server components, pass to client components as props
+- Use async server wrapper components (e.g., `TransactionListServer`) that fetch data and render the corresponding client component
+- Wrap each server wrapper in its own `<Suspense>` boundary with a skeleton fallback for independent streaming
+- Use a `key` prop on `<Suspense>` derived from filters/searchParams to reset boundaries on filter changes
+- Extract Suspense fallback JSX into module-level constants to satisfy `jsx-no-jsx-as-prop` lint rule
+- Read `searchParams` in `page.tsx` (server), parse with a `parse*SearchParams` helper, pass to server wrappers
+- Read functions (`fetch*`) are plain async functions (no `'use server'`), importable by server components. Use `rsc-api.ts` service instances
+- Mutation functions (`create*`, `update*`, `delete*`) remain as server actions (`'use server'`), use `server-api.ts` service instances
+- After mutations, rely on `revalidatePath` for data refresh — do NOT duplicate server-fetched data in client state
+- Client hooks should only manage UI state (dialog open/close, editing entity) — never list data that comes from the server
+
 ## React Conventions
 
 - Use all simple UI components (Typography, Button, Input, etc.) from `packages/ui`.
@@ -23,8 +36,8 @@ paths:
 
 - Use `useActionState` instead of deprecated `useFormState`
 - Leverage enhanced `useFormStatus` with new properties (data, method, action)
-- Implement URL state management with 'nuqs'
-- Minimize client-side state
+- Use URL searchParams for filter/pagination state — update via `router.replace` to trigger server re-renders
+- Minimize client-side state: dialog open/close and editing entity only, never list data
 
 ## Async Request APIs
 

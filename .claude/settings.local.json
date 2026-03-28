@@ -39,7 +39,13 @@
       "Bash(find /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\\\\\(app-layout\\\\\\)/transactions/components -type f -name \"*.tsx\")",
       "Bash(cat:*)",
       "Bash(gh api:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "mcp__serena__get_symbols_overview",
+      "Bash(ls -la /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\"\\(app-layout\\)\"/)",
+      "Bash(find \"/Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\(app-layout\\)/transactions\" -type f -name \"*.tsx\" -o -name \"*.ts\")",
+      "Bash(find \"/Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\(app-layout\\)/categories\" -type f -name \"*.tsx\" -o -name \"*.ts\")",
+      "Bash(find /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\"\\(auth-layout\\)\" -type f -name \"*.ts\")",
+      "Bash(find:*)"
     ],
     "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
   },
