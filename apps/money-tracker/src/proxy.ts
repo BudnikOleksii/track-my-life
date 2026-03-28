@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 
 import { MiddlewareTokenProvider } from '@track-my-life/shared/src/api/client/token/middleware-token-provider';
 import { AuthApiService } from '@track-my-life/shared/src/api/services/auth-api.service';
+import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
 import { routing } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import createIntlMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
@@ -14,12 +15,23 @@ const handleI18nRouting = createIntlMiddleware(routing);
 
 const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail];
 
+const ONBOARDING_COMPLETED_COOKIE = 'onboarding_completed';
+
+const getPathWithoutLocale = (pathname: string): string => {
+  const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '');
+  return pathWithoutLocale || '/';
+};
+
 const checkIsPublicPath = (pathname: string): boolean =>
   PUBLIC_PATH_LIST.some((publicPath) => {
-    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '');
-    const normalizedPath = pathWithoutLocale || '/';
+    const normalizedPath = getPathWithoutLocale(pathname);
     return normalizedPath === publicPath || normalizedPath.startsWith(`${publicPath}/`);
   });
+
+const checkIsOnboardingPath = (pathname: string): boolean => {
+  const normalizedPath = getPathWithoutLocale(pathname);
+  return normalizedPath === PATHS.onboarding || normalizedPath.startsWith(`${PATHS.onboarding}/`);
+};
 
 const createSignInRedirect = (request: NextRequest): NextResponse => {
   const signInUrl = new URL(PATHS.signIn, request.url);
@@ -76,10 +88,87 @@ const checkIsTokenExpired = (token: string): boolean => {
   }
 };
 
-const handleAuthenticatedRoute = async (
+const fetchOnboardingStatus = async (accessToken: string): Promise<boolean> => {
+  const profileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
+  profileApiService.addRequestInterceptor((request) => {
+    const authenticatedRequest = new Request(request, {
+      headers: new Headers(request.headers),
+    });
+    authenticatedRequest.headers.set('Authorization', `Bearer ${accessToken}`);
+    return authenticatedRequest;
+  });
+
+  const { data, error } = await profileApiService.fetchProfile();
+
+  if (error || !data) {
+    return true;
+  }
+
+  return data.onboardingCompleted;
+};
+
+const checkOnboardingStatus = async (
   request: NextRequest,
   response: NextResponse,
-): Promise<NextResponse> => {
+  accessToken: string,
+): Promise<boolean> => {
+  const cachedStatus = request.cookies.get(ONBOARDING_COMPLETED_COOKIE)?.value;
+
+  if (cachedStatus === 'true') {
+    return true;
+  }
+
+  if (cachedStatus === 'false') {
+    return false;
+  }
+
+  const onboardingCompleted = await fetchOnboardingStatus(accessToken);
+
+  response.cookies.set(ONBOARDING_COMPLETED_COOKIE, String(onboardingCompleted), {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+  });
+
+  return onboardingCompleted;
+};
+
+const createRedirectWithCookies = (
+  path: string,
+  request: NextRequest,
+  response: NextResponse,
+): NextResponse => {
+  const url = new URL(path, request.url);
+  const redirectResponse = NextResponse.redirect(url);
+  response.cookies.getAll().forEach((cookie) => {
+    redirectResponse.cookies.set(cookie.name, cookie.value);
+  });
+  return redirectResponse;
+};
+
+const handleOnboardingRedirect = (
+  request: NextRequest,
+  response: NextResponse,
+  onboardingCompleted: boolean,
+): NextResponse | null => {
+  const isOnboardingPath = checkIsOnboardingPath(request.nextUrl.pathname);
+
+  if (onboardingCompleted && isOnboardingPath) {
+    return createRedirectWithCookies(PATHS.dashboard, request, response);
+  }
+
+  if (!onboardingCompleted && !isOnboardingPath) {
+    return createRedirectWithCookies(PATHS.onboarding, request, response);
+  }
+
+  return null;
+};
+
+const validateAccessToken = async (
+  request: NextRequest,
+  response: NextResponse,
+): Promise<{ accessToken: string } | NextResponse> => {
   const tokenProvider = new MiddlewareTokenProvider(request, response);
   const accessToken = tokenProvider.getAccessToken();
 
@@ -91,7 +180,26 @@ const handleAuthenticatedRoute = async (
     }
   }
 
-  return response;
+  return { accessToken };
+};
+
+const handleAuthenticatedRoute = async (
+  request: NextRequest,
+  response: NextResponse,
+): Promise<NextResponse> => {
+  const tokenResult = await validateAccessToken(request, response);
+
+  if (tokenResult instanceof NextResponse) {
+    return tokenResult;
+  }
+
+  const onboardingCompleted = await checkOnboardingStatus(
+    request,
+    response,
+    tokenResult.accessToken,
+  );
+
+  return handleOnboardingRedirect(request, response, onboardingCompleted) ?? response;
 };
 
 export const proxy = async (request: NextRequest): Promise<NextResponse> => {

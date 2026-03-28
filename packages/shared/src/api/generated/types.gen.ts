@@ -947,23 +947,27 @@ export type ProfileResponseDto = {
   /**
    * First name
    */
-  firstName?: {
+  firstName: {
     [key: string]: unknown;
-  };
+  } | null;
   /**
    * Last name
    */
-  lastName?: {
+  lastName: {
     [key: string]: unknown;
-  };
+  } | null;
   /**
    * Country code (ISO 3166-1 alpha-2)
    */
-  countryCode?: CountryCode;
+  countryCode: CountryCode | null;
   /**
    * Base currency code (ISO 4217)
    */
-  baseCurrencyCode?: CurrencyCode;
+  baseCurrencyCode: CurrencyCode | null;
+  /**
+   * Whether the user has completed onboarding
+   */
+  onboardingCompleted: boolean;
   /**
    * User role
    */
@@ -983,6 +987,10 @@ export type UpdateProfileDto = {
   lastName?: string;
   countryCode?: CountryCode;
   baseCurrencyCode?: CurrencyCode;
+  /**
+   * Whether the user has completed onboarding
+   */
+  onboardingCompleted?: boolean;
 };
 
 export type ChangePasswordDto = {

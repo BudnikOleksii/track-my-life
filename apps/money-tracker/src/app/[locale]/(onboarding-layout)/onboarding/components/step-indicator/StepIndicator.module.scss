@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+
+  margin-bottom: var(--spacing-4);
+}
+
+.step {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+
+  background-color: var(--outline-variant);
+  border-radius: 50%;
+
+  transition: background-color 0.2s ease;
+}
+
+.active .dot {
+  background-color: var(--primary);
+}
+
+.completed .dot {
+  background-color: var(--primary);
+}
+
+.label {
+  font-size: var(--text-xs);
+  color: var(--on-surface-variant);
+}
+
+.active .label {
+  font-weight: 600;
+  color: var(--on-surface);
+}
