@@ -4,6 +4,36 @@
     "description": "Керування налаштуваннями облікового запису"
   },
   "content": {
-    "title": "Налаштування"
+    "title": "Налаштування",
+    "profileSection": "Профіль",
+    "securitySection": "Безпека",
+    "dangerZoneSection": "Небезпечна зона",
+    "dangerZoneDescription": "Видалити обліковий запис та всі пов'язані дані назавжди. Цю дію неможливо скасувати.",
+    "firstNameLabel": "Ім'я",
+    "firstNamePlaceholder": "Введіть ваше ім'я",
+    "lastNameLabel": "Прізвище",
+    "lastNamePlaceholder": "Введіть ваше прізвище",
+    "countryLabel": "Країна",
+    "countryPlaceholder": "Оберіть країну",
+    "baseCurrencyLabel": "Основна валюта",
+    "baseCurrencyPlaceholder": "Оберіть валюту",
+    "saveButton": "Зберегти зміни",
+    "profileUpdateSuccess": "Профіль успішно оновлено",
+    "profileUpdateError": "Не вдалося оновити профіль",
+    "currentPasswordLabel": "Поточний пароль",
+    "currentPasswordPlaceholder": "Введіть поточний пароль",
+    "newPasswordLabel": "Новий пароль",
+    "newPasswordPlaceholder": "Введіть новий пароль",
+    "changePasswordButton": "Змінити пароль",
+    "passwordChangeSuccess": "Пароль успішно змінено",
+    "passwordChangeError": "Не вдалося змінити пароль. Перевірте поточний пароль.",
+    "deleteAccountButton": "Видалити обліковий запис",
+    "deleteAccountTitle": "Видалення облікового запису",
+    "deleteAccountDescription": "Ви впевнені, що хочете видалити свій обліковий запис? Ця дія є незворотною. Усі ваші дані буде втрачено.",
+    "deleteAccountPasswordLabel": "Пароль",
+    "deleteAccountPasswordPlaceholder": "Введіть пароль для підтвердження",
+    "deleteAccountConfirmButton": "Видалити мій обліковий запис",
+    "deleteAccountError": "Не вдалося видалити обліковий запис. Перевірте пароль.",
+    "cancelButton": "Скасувати"
   }
 }

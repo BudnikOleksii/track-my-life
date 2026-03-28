@@ -442,6 +442,8 @@ export type AuditLogListResponseDto = {
 export type RegisterDto = {
   email: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 export type AuthUserDto = {
@@ -679,6 +681,326 @@ export type AssignRoleDto = {
   role: UserRole;
 };
 
+/**
+ * Country code (ISO 3166-1 alpha-2)
+ */
+export type CountryCode =
+  | 'AD'
+  | 'AE'
+  | 'AF'
+  | 'AG'
+  | 'AI'
+  | 'AL'
+  | 'AM'
+  | 'AO'
+  | 'AQ'
+  | 'AR'
+  | 'AS'
+  | 'AT'
+  | 'AU'
+  | 'AW'
+  | 'AX'
+  | 'AZ'
+  | 'BA'
+  | 'BB'
+  | 'BD'
+  | 'BE'
+  | 'BF'
+  | 'BG'
+  | 'BH'
+  | 'BI'
+  | 'BJ'
+  | 'BL'
+  | 'BM'
+  | 'BN'
+  | 'BO'
+  | 'BQ'
+  | 'BR'
+  | 'BS'
+  | 'BT'
+  | 'BV'
+  | 'BW'
+  | 'BY'
+  | 'BZ'
+  | 'CA'
+  | 'CC'
+  | 'CD'
+  | 'CF'
+  | 'CG'
+  | 'CH'
+  | 'CI'
+  | 'CK'
+  | 'CL'
+  | 'CM'
+  | 'CN'
+  | 'CO'
+  | 'CR'
+  | 'CU'
+  | 'CV'
+  | 'CW'
+  | 'CX'
+  | 'CY'
+  | 'CZ'
+  | 'DE'
+  | 'DJ'
+  | 'DK'
+  | 'DM'
+  | 'DO'
+  | 'DZ'
+  | 'EC'
+  | 'EE'
+  | 'EG'
+  | 'EH'
+  | 'ER'
+  | 'ES'
+  | 'ET'
+  | 'FI'
+  | 'FJ'
+  | 'FK'
+  | 'FM'
+  | 'FO'
+  | 'FR'
+  | 'GA'
+  | 'GB'
+  | 'GD'
+  | 'GE'
+  | 'GF'
+  | 'GG'
+  | 'GH'
+  | 'GI'
+  | 'GL'
+  | 'GM'
+  | 'GN'
+  | 'GP'
+  | 'GQ'
+  | 'GR'
+  | 'GS'
+  | 'GT'
+  | 'GU'
+  | 'GW'
+  | 'GY'
+  | 'HK'
+  | 'HM'
+  | 'HN'
+  | 'HR'
+  | 'HT'
+  | 'HU'
+  | 'ID'
+  | 'IE'
+  | 'IL'
+  | 'IM'
+  | 'IN'
+  | 'IO'
+  | 'IQ'
+  | 'IR'
+  | 'IS'
+  | 'IT'
+  | 'JE'
+  | 'JM'
+  | 'JO'
+  | 'JP'
+  | 'KE'
+  | 'KG'
+  | 'KH'
+  | 'KI'
+  | 'KM'
+  | 'KN'
+  | 'KP'
+  | 'KR'
+  | 'KW'
+  | 'KY'
+  | 'KZ'
+  | 'LA'
+  | 'LB'
+  | 'LC'
+  | 'LI'
+  | 'LK'
+  | 'LR'
+  | 'LS'
+  | 'LT'
+  | 'LU'
+  | 'LV'
+  | 'LY'
+  | 'MA'
+  | 'MC'
+  | 'MD'
+  | 'ME'
+  | 'MF'
+  | 'MG'
+  | 'MH'
+  | 'MK'
+  | 'ML'
+  | 'MM'
+  | 'MN'
+  | 'MO'
+  | 'MP'
+  | 'MQ'
+  | 'MR'
+  | 'MS'
+  | 'MT'
+  | 'MU'
+  | 'MV'
+  | 'MW'
+  | 'MX'
+  | 'MY'
+  | 'MZ'
+  | 'NA'
+  | 'NC'
+  | 'NE'
+  | 'NF'
+  | 'NG'
+  | 'NI'
+  | 'NL'
+  | 'NO'
+  | 'NP'
+  | 'NR'
+  | 'NU'
+  | 'NZ'
+  | 'OM'
+  | 'PA'
+  | 'PE'
+  | 'PF'
+  | 'PG'
+  | 'PH'
+  | 'PK'
+  | 'PL'
+  | 'PM'
+  | 'PN'
+  | 'PR'
+  | 'PS'
+  | 'PT'
+  | 'PW'
+  | 'PY'
+  | 'QA'
+  | 'RE'
+  | 'RO'
+  | 'RS'
+  | 'RU'
+  | 'RW'
+  | 'SA'
+  | 'SB'
+  | 'SC'
+  | 'SD'
+  | 'SE'
+  | 'SG'
+  | 'SH'
+  | 'SI'
+  | 'SJ'
+  | 'SK'
+  | 'SL'
+  | 'SM'
+  | 'SN'
+  | 'SO'
+  | 'SR'
+  | 'SS'
+  | 'ST'
+  | 'SV'
+  | 'SX'
+  | 'SY'
+  | 'SZ'
+  | 'TC'
+  | 'TD'
+  | 'TF'
+  | 'TG'
+  | 'TH'
+  | 'TJ'
+  | 'TK'
+  | 'TL'
+  | 'TM'
+  | 'TN'
+  | 'TO'
+  | 'TR'
+  | 'TT'
+  | 'TV'
+  | 'TW'
+  | 'TZ'
+  | 'UA'
+  | 'UG'
+  | 'UM'
+  | 'US'
+  | 'UY'
+  | 'UZ'
+  | 'VA'
+  | 'VC'
+  | 'VE'
+  | 'VG'
+  | 'VI'
+  | 'VN'
+  | 'VU'
+  | 'WF'
+  | 'WS'
+  | 'YE'
+  | 'YT'
+  | 'ZA'
+  | 'ZM'
+  | 'ZW';
+
+export type ProfileResponseDto = {
+  /**
+   * User ID
+   */
+  id: string;
+  /**
+   * User email address
+   */
+  email: string;
+  /**
+   * First name
+   */
+  firstName?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Last name
+   */
+  lastName?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Country code (ISO 3166-1 alpha-2)
+   */
+  countryCode?: CountryCode;
+  /**
+   * Base currency code (ISO 4217)
+   */
+  baseCurrencyCode?: CurrencyCode;
+  /**
+   * User role
+   */
+  role: UserRole;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type UpdateProfileDto = {
+  firstName?: string;
+  lastName?: string;
+  countryCode?: CountryCode;
+  baseCurrencyCode?: CurrencyCode;
+};
+
+export type ChangePasswordDto = {
+  currentPassword: string;
+  newPassword: string;
+};
+
+export type MessageResponseDto = {
+  /**
+   * Response message
+   */
+  message: string;
+};
+
+export type DeleteAccountDto = {
+  password: string;
+};
+
 export type CategoryResponseDto = {
   /**
    * Category ID
@@ -744,13 +1066,6 @@ export type UpdateCategoryDto = {
   parentCategoryId?: {
     [key: string]: unknown;
   } | null;
-};
-
-export type MessageResponseDto = {
-  /**
-   * Response message
-   */
-  message: string;
 };
 
 export type TransactionResponseDto = {
@@ -1756,6 +2071,122 @@ export type UserControllerAssignRoleResponses = {
 
 export type UserControllerAssignRoleResponse =
   UserControllerAssignRoleResponses[keyof UserControllerAssignRoleResponses];
+
+export type ProfileControllerDeleteAccountData = {
+  body: DeleteAccountDto;
+  path?: never;
+  query?: never;
+  url: '/api/profile';
+};
+
+export type ProfileControllerDeleteAccountErrors = {
+  /**
+   * Invalid password
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type ProfileControllerDeleteAccountError =
+  ProfileControllerDeleteAccountErrors[keyof ProfileControllerDeleteAccountErrors];
+
+export type ProfileControllerDeleteAccountResponses = {
+  200: MessageResponseDto;
+};
+
+export type ProfileControllerDeleteAccountResponse =
+  ProfileControllerDeleteAccountResponses[keyof ProfileControllerDeleteAccountResponses];
+
+export type ProfileControllerGetProfileData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/profile';
+};
+
+export type ProfileControllerGetProfileErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type ProfileControllerGetProfileError =
+  ProfileControllerGetProfileErrors[keyof ProfileControllerGetProfileErrors];
+
+export type ProfileControllerGetProfileResponses = {
+  200: ProfileResponseDto;
+};
+
+export type ProfileControllerGetProfileResponse =
+  ProfileControllerGetProfileResponses[keyof ProfileControllerGetProfileResponses];
+
+export type ProfileControllerUpdateProfileData = {
+  body: UpdateProfileDto;
+  path?: never;
+  query?: never;
+  url: '/api/profile';
+};
+
+export type ProfileControllerUpdateProfileErrors = {
+  /**
+   * Validation error
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type ProfileControllerUpdateProfileError =
+  ProfileControllerUpdateProfileErrors[keyof ProfileControllerUpdateProfileErrors];
+
+export type ProfileControllerUpdateProfileResponses = {
+  200: ProfileResponseDto;
+};
+
+export type ProfileControllerUpdateProfileResponse =
+  ProfileControllerUpdateProfileResponses[keyof ProfileControllerUpdateProfileResponses];
+
+export type ProfileControllerChangePasswordData = {
+  body: ChangePasswordDto;
+  path?: never;
+  query?: never;
+  url: '/api/profile/password';
+};
+
+export type ProfileControllerChangePasswordErrors = {
+  /**
+   * Invalid current password
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type ProfileControllerChangePasswordError =
+  ProfileControllerChangePasswordErrors[keyof ProfileControllerChangePasswordErrors];
+
+export type ProfileControllerChangePasswordResponses = {
+  200: MessageResponseDto;
+};
+
+export type ProfileControllerChangePasswordResponse =
+  ProfileControllerChangePasswordResponses[keyof ProfileControllerChangePasswordResponses];
 
 export type TransactionCategoriesControllerFindAllData = {
   body?: never;

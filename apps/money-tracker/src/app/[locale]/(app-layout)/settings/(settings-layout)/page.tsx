@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import type { FC } from 'react';
 
+import { Skeleton } from '@track-my-life/ui/src/components/atoms/skeleton/skeleton';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { SettingsPageContent } from './page.content';
+import { SettingsPageServer } from './components/settings-page-server/SettingsPageServer';
 
 interface Props {
   params: Promise<{
@@ -27,10 +28,24 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const SettingsPage: FC<Props> = async () => {
-  const translations = await getTranslations(I18N_NAMESPACE.settingsPage);
+const SKELETON_COUNT = 4;
+const SKELETON_HEIGHT = 56;
+const skeletonList = Array.from({ length: SKELETON_COUNT }, (_unused, index) => index);
 
-  return <SettingsPageContent translations={translations} />;
-};
+const SettingsPageSkeleton = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
+    {skeletonList.map((index) => (
+      <Skeleton key={index} width="100%" height={SKELETON_HEIGHT} />
+    ))}
+  </div>
+);
+
+const settingsSkeletonFallback = <SettingsPageSkeleton />;
+
+const SettingsPage = async () => (
+  <Suspense fallback={settingsSkeletonFallback}>
+    <SettingsPageServer />
+  </Suspense>
+);
 
 export default SettingsPage;
