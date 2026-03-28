@@ -33,7 +33,13 @@
       "Bash(pnpm --filter money-tracker lint)",
       "Bash(find /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\\\\\(app-layout\\\\\\)/settings/\\\\\\(settings-layout\\\\\\)/categories -type f -o -type d)",
       "Bash(find /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\\\\\(app-layout\\\\\\)/settings/\\\\\\(settings-layout\\\\\\) -type d)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "mcp__serena__find_file",
+      "Bash(ls -la \"/Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\(app-layout\\)/categories/\")",
+      "Bash(find /Users/user/Desktop/projects/tracker/track-my-life/apps/money-tracker/src/app/[locale]/\\\\\\(app-layout\\\\\\)/transactions/components -type f -name \"*.tsx\")",
+      "Bash(cat:*)",
+      "Bash(gh api:*)",
+      "Bash(git commit:*)"
     ],
     "deny": ["Read(**/.next/)", "Read(.idea)", "Read(.npmrc)", "Read(.turbo)", "Read(.vscode)"]
   },

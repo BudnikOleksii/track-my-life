@@ -62,6 +62,43 @@ packages/
 - Implement proper error handling
 - Follow single responsibility principle
 
+## Shared Code Placement
+
+When code is duplicated across features, move it to the appropriate shared level:
+
+### `packages/shared/src/constants/` — Cross-app reusable values
+
+Domain constants, types, and utilities that any app could use:
+
+- `list.ts` — generic list helpers (`NOT_FOUND_INDEX`, `EMPTY_LIST_LENGTH`)
+- `transaction.ts` — domain constants (`TRANSACTION_TYPE`, `FilterValue`, `FILTER_OPTION_LIST`)
+- `http-status-code.ts` — HTTP status codes
+
+### `packages/ui/src/components/` — Cross-app reusable UI components
+
+Components must be framework-agnostic (no `next-intl`, no app-specific imports). Pass labels, formatters, and callbacks via props so any app can use them.
+
+### `apps/<app>/src/constants/` — App-wide shared values
+
+Constants specific to one app but used across multiple features (e.g., `FILTER_TO_LABEL_KEY` with i18n keys, route paths).
+
+### `apps/<app>/src/actions/` — App-wide shared server actions
+
+Server actions used by multiple features (e.g., `fetch-category-list.ts` used by both categories and transactions).
+
+### Decision guide
+
+| Scope                             | Location                                                 |
+| --------------------------------- | -------------------------------------------------------- |
+| Used by multiple apps or packages | `packages/shared/src/`                                   |
+| UI component, no app dependencies | `packages/ui/src/components/`                            |
+| Used across features in one app   | `apps/<app>/src/constants/` or `apps/<app>/src/actions/` |
+| Used by one feature only          | Keep in the feature directory                            |
+
+## Storybook
+
+When a component is added to `packages/ui`, add a corresponding story in `apps/storybook/src/stories/`. Follow CSF3 format with `Meta`, `StoryObj`, `tags: ['autodocs']`, and `parameters: { layout: 'centered' }`. Use `useState` wrapper components for interactive stories.
+
 ## Skills
 
 - Apply the `frontend-design` skill (`.claude/skills/frontend-design`) when building or designing app pages, components, layouts, or any UI work

@@ -8,6 +8,10 @@ paths:
 
 # JavaScript/TypeScript Conventions
 
+## General
+
+- Never re-export variables, types, functions. Do not create barrel files.
+
 ## Variables
 
 - Use named exports where possible
