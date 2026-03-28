@@ -53,8 +53,10 @@
 }
 
 .barFill {
+  width: var(--bar-width);
   height: 100%;
 
+  background-color: var(--bar-color);
   border-radius: var(--radius-full);
 
   transition: width 0.3s ease;

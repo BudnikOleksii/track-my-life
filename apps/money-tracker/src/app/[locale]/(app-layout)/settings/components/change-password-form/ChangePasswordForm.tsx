@@ -18,6 +18,7 @@ import { useChangePasswordForm } from './hooks/use-change-password-form';
 
 export const ChangePasswordForm: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.settingsPage);
+  const tErrors = useTranslations(`${I18N_NAMESPACE.settingsPage}.errors`);
 
   const { register, handleSubmit, errors, isSubmitting, handleFormSubmit } = useChangePasswordForm({
     translations,
@@ -36,7 +37,13 @@ export const ChangePasswordForm: FC = () => {
           error={Boolean(errors.currentPassword)}
           {...register('currentPassword')}
         />
-        <FieldError errors={errors.currentPassword ? [errors.currentPassword] : undefined} />
+        <FieldError
+          errors={
+            errors.currentPassword?.message
+              ? [{ message: tErrors(errors.currentPassword.message) }]
+              : undefined
+          }
+        />
       </Field>
 
       <Field>
@@ -48,7 +55,13 @@ export const ChangePasswordForm: FC = () => {
           error={Boolean(errors.newPassword)}
           {...register('newPassword')}
         />
-        <FieldError errors={errors.newPassword ? [errors.newPassword] : undefined} />
+        <FieldError
+          errors={
+            errors.newPassword?.message
+              ? [{ message: tErrors(errors.newPassword.message) }]
+              : undefined
+          }
+        />
       </Field>
 
       <div className={styles.actions}>

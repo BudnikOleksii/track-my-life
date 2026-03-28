@@ -2,6 +2,7 @@ import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types
 
 import type { FilterValue } from '@/constants/transaction';
 
+import { normalizeParam } from '@/constants/normalize-param';
 import { FILTER_OPTION_LIST } from '@/constants/transaction';
 
 export const DEFAULT_CURRENCY_CODE: CurrencyCode = 'UAH';
@@ -43,11 +44,6 @@ const checkIsValidCurrencyCode = (value: string): value is CurrencyCode =>
 
 const checkIsValidFilterType = (value: string): value is FilterValue =>
   VALID_TYPE_SET.has(value as FilterValue);
-
-const FIRST_ELEMENT_INDEX = 0;
-
-const normalizeParam = (value: string | string[] | undefined): string =>
-  Array.isArray(value) ? (value[FIRST_ELEMENT_INDEX] ?? '') : (value ?? '');
 
 export const parseDashboardSearchParams = (
   searchParams: Record<string, string | string[] | undefined>,

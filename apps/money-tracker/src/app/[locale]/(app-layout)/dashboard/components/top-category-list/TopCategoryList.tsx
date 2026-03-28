@@ -49,10 +49,12 @@ export const TopCategoryList: FC<TopCategoryListProps> = ({ data, currencyCode }
             <div className={styles.barTrack}>
               <div
                 className={styles.barFill}
-                style={{
-                  width: `${category.percentage}%`,
-                  backgroundColor: CHART_COLOR_LIST[index % CHART_COLOR_LIST.length],
-                }}
+                style={
+                  {
+                    '--bar-width': `${category.percentage}%`,
+                    '--bar-color': CHART_COLOR_LIST[index % CHART_COLOR_LIST.length],
+                  } as React.CSSProperties
+                }
               />
             </div>
           </div>

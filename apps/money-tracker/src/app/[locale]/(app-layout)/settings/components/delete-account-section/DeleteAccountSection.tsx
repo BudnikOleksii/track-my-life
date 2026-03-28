@@ -37,6 +37,7 @@ import styles from './DeleteAccountSection.module.scss';
 
 export const DeleteAccountSection: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.settingsPage);
+  const tErrors = useTranslations(`${I18N_NAMESPACE.settingsPage}.errors`);
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -103,7 +104,13 @@ export const DeleteAccountSection: FC = () => {
               error={Boolean(errors.password)}
               {...register('password')}
             />
-            <FieldError errors={errors.password ? [errors.password] : undefined} />
+            <FieldError
+              errors={
+                errors.password?.message
+                  ? [{ message: tErrors(errors.password.message) }]
+                  : undefined
+              }
+            />
           </Field>
 
           <AlertDialogFooter>

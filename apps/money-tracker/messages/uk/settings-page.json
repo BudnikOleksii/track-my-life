@@ -35,5 +35,9 @@
     "deleteAccountConfirmButton": "Видалити мій обліковий запис",
     "deleteAccountError": "Не вдалося видалити обліковий запис. Перевірте пароль.",
     "cancelButton": "Скасувати"
+  },
+  "errors": {
+    "passwordRequired": "Пароль обов'язковий",
+    "passwordMinLength": "Пароль має містити щонайменше 8 символів"
   }
 }
