@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import type { FC } from 'react';
 
+import { Skeleton } from '@track-my-life/ui/src/components/atoms/skeleton/skeleton';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { CategoriesPageContent } from './page.content';
+import { CategoryListServer } from './components/category-list-server/CategoryListServer';
 
 interface Props {
   params: Promise<{
@@ -27,6 +28,24 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const CategoriesSettingsPage: FC<Props> = () => <CategoriesPageContent />;
+const SKELETON_COUNT = 5;
+const SKELETON_HEIGHT = 48;
+const skeletonList = Array.from({ length: SKELETON_COUNT }, (_unused, index) => index);
+
+const CategoriesPageSkeleton = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
+    {skeletonList.map((index) => (
+      <Skeleton key={index} width="100%" height={SKELETON_HEIGHT} />
+    ))}
+  </div>
+);
+
+const categoriesSkeletonFallback = <CategoriesPageSkeleton />;
+
+const CategoriesSettingsPage = async () => (
+  <Suspense fallback={categoriesSkeletonFallback}>
+    <CategoryListServer />
+  </Suspense>
+);
 
 export default CategoriesSettingsPage;

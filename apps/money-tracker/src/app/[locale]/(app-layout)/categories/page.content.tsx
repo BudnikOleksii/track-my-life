@@ -1,5 +1,6 @@
 'use client';
 
+import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -16,15 +17,18 @@ import { CategoryForm } from './components/category-form/CategoryForm';
 import { CategoryTree } from './components/category-tree/CategoryTree';
 import { CategoryTypeFilter } from './components/category-type-filter/CategoryTypeFilter';
 import { DeleteCategoryDialog } from './components/delete-category-dialog/DeleteCategoryDialog';
-import { useCategoryManagement } from './hooks/use-category-management';
+import { useCategoryDialogs } from './hooks/use-category-management';
 import styles from './page.module.scss';
 
-export const CategoriesPageContent: FC = () => {
+interface CategoriesPageContentProps {
+  categoryList: CategoryResponseDto[];
+}
+
+export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ categoryList }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
   const [activeFilter, setActiveFilter] = useState<FilterValue>('ALL');
 
   const {
-    categoryList,
     isFormOpen,
     editingCategory,
     deletingCategory,
@@ -33,9 +37,7 @@ export const CategoriesPageContent: FC = () => {
     handleDelete,
     handleFormClose,
     handleDeleteClose,
-    handleFormSuccess,
-    handleDeleteSuccess,
-  } = useCategoryManagement();
+  } = useCategoryDialogs();
 
   const filteredCategoryList = useMemo(
     () =>
@@ -73,13 +75,13 @@ export const CategoriesPageContent: FC = () => {
         category={editingCategory}
         parentCategoryList={parentCategoryList}
         onClose={handleFormClose}
-        onSuccess={handleFormSuccess}
+        onSuccess={handleFormClose}
       />
 
       <DeleteCategoryDialog
         category={deletingCategory}
         onClose={handleDeleteClose}
-        onSuccess={handleDeleteSuccess}
+        onSuccess={handleDeleteClose}
       />
     </div>
   );

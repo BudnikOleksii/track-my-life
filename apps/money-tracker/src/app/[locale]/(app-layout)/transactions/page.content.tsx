@@ -1,5 +1,9 @@
 'use client';
 
+import type {
+  CategoryResponseDto,
+  TransactionResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -8,6 +12,8 @@ import { Pagination } from '@track-my-life/ui/src/components/molecules/paginatio
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
+import type { FilterValue } from '@/constants/transaction';
+
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog/DeleteTransactionDialog';
@@ -15,16 +21,35 @@ import { TransactionDateFilter } from './components/transaction-date-filter/Tran
 import { TransactionForm } from './components/transaction-form/TransactionForm';
 import { TransactionList } from './components/transaction-list/TransactionList';
 import { TransactionTypeFilter } from './components/transaction-type-filter/TransactionTypeFilter';
-import { useTransactionManagement } from './hooks/use-transaction-management';
+import { useTransactionDialogs } from './hooks/use-transaction-dialogs';
+import { useTransactionFilters } from './hooks/use-transaction-filters';
 import styles from './page.module.scss';
 
-export const TransactionsPageContent: FC = () => {
+interface TransactionFilters {
+  page: number;
+  pageSize: number;
+  type: FilterValue;
+  dateFrom: string;
+  dateTo: string;
+}
+
+interface TransactionsPageContentProps {
+  transactionList: TransactionResponseDto[];
+  total: number;
+  filters: TransactionFilters;
+  categoryList: CategoryResponseDto[];
+}
+
+export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
+  transactionList,
+  total,
+  filters,
+  categoryList,
+}) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
+  const { handleFilterChange } = useTransactionFilters();
 
   const {
-    transactionList,
-    total,
-    filters,
     isFormOpen,
     editingTransaction,
     deletingTransaction,
@@ -33,10 +58,7 @@ export const TransactionsPageContent: FC = () => {
     handleDelete,
     handleFormClose,
     handleDeleteClose,
-    handleFilterChange,
-    handleFormSuccess,
-    handleDeleteSuccess,
-  } = useTransactionManagement();
+  } = useTransactionDialogs();
 
   return (
     <div className={styles.page}>
@@ -90,14 +112,15 @@ export const TransactionsPageContent: FC = () => {
       <TransactionForm
         isOpen={isFormOpen}
         transaction={editingTransaction}
+        categoryList={categoryList}
         onClose={handleFormClose}
-        onSuccess={handleFormSuccess}
+        onSuccess={handleFormClose}
       />
 
       <DeleteTransactionDialog
         transaction={deletingTransaction}
         onClose={handleDeleteClose}
-        onSuccess={handleDeleteSuccess}
+        onSuccess={handleDeleteClose}
       />
     </div>
   );

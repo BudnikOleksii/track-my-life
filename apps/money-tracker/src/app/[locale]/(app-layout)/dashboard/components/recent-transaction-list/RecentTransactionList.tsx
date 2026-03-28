@@ -1,5 +1,6 @@
 'use client';
 
+import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
@@ -11,16 +12,11 @@ import { useTranslations } from 'next-intl';
 import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { DashboardFilters } from '../../hooks/use-dashboard-filters';
-
-import { fetchTransactionList } from '../../../transactions/actions/fetch-transaction-list';
-import { RECENT_TRANSACTION_LIST_LIMIT } from '../../constants/dashboard';
-import { useWidgetData } from '../../hooks/use-widget-data';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './RecentTransactionList.module.scss';
 
 interface RecentTransactionListProps {
-  filters: DashboardFilters;
+  transactionList: TransactionResponseDto[];
 }
 
 const BADGE_VARIANT_MAP = {
@@ -35,26 +31,13 @@ const formatDate = (dateString: string): string => {
 
 const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
-export const RecentTransactionList: FC<RecentTransactionListProps> = ({ filters }) => {
+export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transactionList }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
-
-  const { data, isLoading } = useWidgetData(
-    () =>
-      fetchTransactionList({
-        pageSize: RECENT_TRANSACTION_LIST_LIMIT,
-        ...(filters.type !== 'ALL' && { type: filters.type }),
-        ...(filters.dateFrom && { dateFrom: filters.dateFrom }),
-        ...(filters.dateTo && { dateTo: filters.dateTo }),
-      }),
-    `recent-${filters.type}-${filters.dateFrom}-${filters.dateTo}`,
-  );
-
-  const transactionList = data?.data ?? [];
 
   return (
     <WidgetCard
       title={translations('content.recentTransactionsTitle')}
-      isLoading={isLoading}
+      isLoading={false}
       isEmpty={transactionList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.list}>

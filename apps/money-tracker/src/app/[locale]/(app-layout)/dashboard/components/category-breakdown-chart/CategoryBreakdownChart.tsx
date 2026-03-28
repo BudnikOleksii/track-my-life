@@ -1,5 +1,6 @@
 'use client';
 
+import type { CategoryBreakdownResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
@@ -8,42 +9,27 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recha
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { DashboardFilters } from '../../hooks/use-dashboard-filters';
-
-import { fetchCategoryBreakdown } from '../../actions/fetch-category-breakdown';
 import { CHART_COLOR_LIST } from '../../constants/dashboard';
-import { useWidgetData } from '../../hooks/use-widget-data';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './CategoryBreakdownChart.module.scss';
 
 interface CategoryBreakdownChartProps {
-  filters: DashboardFilters;
+  data: CategoryBreakdownResponseDto | null;
 }
 
 const CHART_HEIGHT = 300;
 const OUTER_RADIUS = 100;
 const INNER_RADIUS = 60;
 
-export const CategoryBreakdownChart: FC<CategoryBreakdownChartProps> = ({ filters }) => {
+export const CategoryBreakdownChart: FC<CategoryBreakdownChartProps> = ({ data }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
-
-  const { data, isLoading } = useWidgetData(
-    () =>
-      fetchCategoryBreakdown({
-        currencyCode: filters.currencyCode,
-        ...(filters.dateFrom && { dateFrom: filters.dateFrom }),
-        ...(filters.dateTo && { dateTo: filters.dateTo }),
-        ...(filters.type !== 'ALL' && { type: filters.type }),
-      }),
-    `breakdown-${filters.currencyCode}-${filters.dateFrom}-${filters.dateTo}-${filters.type}`,
-  );
 
   const breakdownList = data?.breakdown ?? [];
 
   return (
     <WidgetCard
       title={translations('content.categoryBreakdownTitle')}
-      isLoading={isLoading}
+      isLoading={false}
       isEmpty={breakdownList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.chartContainer}>

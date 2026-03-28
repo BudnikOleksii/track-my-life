@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Transaction list display
 
@@ -50,12 +50,3 @@ The system SHALL allow filtering transactions by date range using URL search par
 
 - **WHEN** the user sets a start date and/or end date
 - **THEN** the URL params SHALL update and the server component SHALL re-fetch transactions within that range
-
-### Requirement: Create transaction button
-
-The page SHALL display a "Create Transaction" button in the page header.
-
-#### Scenario: Click create button
-
-- **WHEN** the user clicks the "Create Transaction" button
-- **THEN** the transaction form dialog SHALL open in create mode

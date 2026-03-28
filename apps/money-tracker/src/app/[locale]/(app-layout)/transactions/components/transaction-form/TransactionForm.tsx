@@ -1,6 +1,9 @@
 'use client';
 
-import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type {
+  CategoryResponseDto,
+  TransactionResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -39,6 +42,7 @@ import styles from './TransactionForm.module.scss';
 interface TransactionFormProps {
   isOpen: boolean;
   transaction: TransactionResponseDto | null;
+  categoryList: CategoryResponseDto[];
   onClose: () => void;
   onSuccess: (transaction: TransactionResponseDto) => void;
 }
@@ -46,6 +50,7 @@ interface TransactionFormProps {
 export const TransactionForm: FC<TransactionFormProps> = ({
   isOpen,
   transaction,
+  categoryList,
   onClose,
   onSuccess,
 }) => {
@@ -62,7 +67,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
-  } = useTransactionForm({ isOpen, transaction, onSuccess, translations });
+  } = useTransactionForm({ isOpen, transaction, categoryList, onSuccess, translations });
 
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

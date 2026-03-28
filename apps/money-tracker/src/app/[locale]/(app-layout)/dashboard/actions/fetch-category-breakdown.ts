@@ -1,12 +1,10 @@
-'use server';
-
 import type {
   CategoryBreakdownResponseDto,
   CurrencyCode,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionsAnalyticsApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchCategoryBreakdownParams {
   currencyCode: CurrencyCode;
@@ -24,7 +22,7 @@ const checkIsCategoryBreakdownResponse = (value: unknown): value is CategoryBrea
 export const fetchCategoryBreakdown = async (
   params: FetchCategoryBreakdownParams,
 ): Promise<CategoryBreakdownResponseDto | null> => {
-  const { data } = await transactionsAnalyticsApiService.fetchCategoryBreakdown(params);
+  const { data } = await rscTransactionsAnalyticsApiService.fetchCategoryBreakdown(params);
 
   if (checkIsCategoryBreakdownResponse(data)) {
     return data;

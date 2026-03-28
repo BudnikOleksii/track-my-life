@@ -1,11 +1,9 @@
-'use server';
-
 import type {
   TransactionListResponseDto,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchTransactionListParams {
   page?: number;
@@ -24,7 +22,7 @@ const checkIsTransactionListResponse = (value: unknown): value is TransactionLis
 export const fetchTransactionList = async (
   params?: FetchTransactionListParams,
 ): Promise<TransactionListResponseDto | null> => {
-  const { data } = await transactionApiService.fetchTransactionList(params);
+  const { data } = await rscTransactionApiService.fetchTransactionList(params);
 
   if (checkIsTransactionListResponse(data)) {
     return data;

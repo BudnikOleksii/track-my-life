@@ -1,12 +1,10 @@
-'use server';
-
 import type {
   CurrencyCode,
   DailySpendingResponseDto,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionsAnalyticsApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchDailySpendingParams {
   year: number;
@@ -24,7 +22,7 @@ const checkIsDailySpendingResponse = (value: unknown): value is DailySpendingRes
 export const fetchDailySpending = async (
   params: FetchDailySpendingParams,
 ): Promise<DailySpendingResponseDto | null> => {
-  const { data } = await transactionsAnalyticsApiService.fetchDailySpending(params);
+  const { data } = await rscTransactionsAnalyticsApiService.fetchDailySpending(params);
 
   if (checkIsDailySpendingResponse(data)) {
     return data;

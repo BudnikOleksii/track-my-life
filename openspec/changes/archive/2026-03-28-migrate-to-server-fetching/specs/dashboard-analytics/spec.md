@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Dashboard page displays financial summary widget
 
@@ -111,37 +111,4 @@ The dashboard page SHALL provide a filter bar with date range (from/to), transac
 #### Scenario: Default filter values on page load
 
 - **WHEN** the dashboard page loads for the first time without searchParams
-- **THEN** filters default to: dateFrom = empty (no constraint), dateTo = empty (no constraint), type = All, currencyCode = UAH
-
-### Requirement: Dashboard layout is responsive
-
-The dashboard page SHALL use a CSS Grid layout that adapts to screen size.
-
-#### Scenario: Mobile layout (below 768px)
-
-- **WHEN** the viewport width is below 768px
-- **THEN** all widgets stack in a single column
-
-#### Scenario: Tablet layout (768px and above)
-
-- **WHEN** the viewport width is 768px or wider
-- **THEN** widgets arrange in a 2-column grid with the summary widget spanning full width
-
-#### Scenario: Large desktop layout (1440px and above)
-
-- **WHEN** the viewport width is 1440px or wider
-- **THEN** widgets arrange in a 3-column grid with the summary widget spanning full width
-
-### Requirement: Dashboard supports i18n
-
-The dashboard page SHALL use translated labels from `next-intl` for all visible text, supporting en and uk locales.
-
-#### Scenario: English locale renders English labels
-
-- **WHEN** the locale is set to `en`
-- **THEN** all dashboard labels, widget titles, and filter labels render in English
-
-#### Scenario: Ukrainian locale renders Ukrainian labels
-
-- **WHEN** the locale is set to `uk`
-- **THEN** all dashboard labels, widget titles, and filter labels render in Ukrainian
+- **THEN** filters default to: dateFrom = 1st of current month, dateTo = today, type = All, currencyCode = USD

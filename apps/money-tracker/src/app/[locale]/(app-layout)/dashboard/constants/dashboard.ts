@@ -1,5 +1,9 @@
 import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 
+import type { FilterValue } from '@/constants/transaction';
+
+import { FILTER_OPTION_LIST } from '@/constants/transaction';
+
 export const DEFAULT_CURRENCY_CODE: CurrencyCode = 'UAH';
 export const TOP_CATEGORY_LIST_LIMIT = 5;
 export const TRENDS_GRANULARITY = 'monthly' as const;
@@ -24,3 +28,37 @@ export const SEARCH_PARAM_KEY = {
   DATE_TO: 'dateTo',
   TYPE: 'type',
 } as const;
+
+export interface DashboardFilters {
+  dateFrom: string;
+  dateTo: string;
+  type: FilterValue;
+  currencyCode: CurrencyCode;
+}
+
+const VALID_TYPE_SET = new Set<FilterValue>(FILTER_OPTION_LIST);
+
+const checkIsValidCurrencyCode = (value: string): value is CurrencyCode =>
+  CURRENCY_CODE_LIST.includes(value as CurrencyCode);
+
+const checkIsValidFilterType = (value: string): value is FilterValue =>
+  VALID_TYPE_SET.has(value as FilterValue);
+
+const FIRST_ELEMENT_INDEX = 0;
+
+const normalizeParam = (value: string | string[] | undefined): string =>
+  Array.isArray(value) ? (value[FIRST_ELEMENT_INDEX] ?? '') : (value ?? '');
+
+export const parseDashboardSearchParams = (
+  searchParams: Record<string, string | string[] | undefined>,
+): DashboardFilters => {
+  const rawCurrency = normalizeParam(searchParams[SEARCH_PARAM_KEY.CURRENCY_CODE]);
+  const rawType = normalizeParam(searchParams[SEARCH_PARAM_KEY.TYPE]);
+
+  return {
+    dateFrom: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_FROM]),
+    dateTo: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_TO]),
+    type: checkIsValidFilterType(rawType) ? rawType : 'ALL',
+    currencyCode: checkIsValidCurrencyCode(rawCurrency) ? rawCurrency : DEFAULT_CURRENCY_CODE,
+  };
+};
