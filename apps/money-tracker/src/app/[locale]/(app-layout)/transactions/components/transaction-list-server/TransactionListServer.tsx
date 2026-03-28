@@ -48,15 +48,20 @@ export const TransactionListServer: FC<TransactionListServerProps> = async ({
   );
 };
 
+const FIRST_ELEMENT_INDEX = 0;
+
+const normalizeParam = (value: string | string[] | undefined): string =>
+  Array.isArray(value) ? (value[FIRST_ELEMENT_INDEX] ?? '') : (value ?? '');
+
 export const parseTransactionSearchParams = (
   searchParams: Record<string, string | string[] | undefined>,
 ) => {
-  const page = Number(searchParams.page) || DEFAULT_PAGE;
-  const pageSize = Number(searchParams.pageSize) || DEFAULT_PAGE_SIZE;
-  const rawType = (searchParams.type as string) ?? '';
+  const page = Number(normalizeParam(searchParams.page)) || DEFAULT_PAGE;
+  const pageSize = Number(normalizeParam(searchParams.pageSize)) || DEFAULT_PAGE_SIZE;
+  const rawType = normalizeParam(searchParams.type);
   const type: FilterValue = rawType === 'INCOME' || rawType === 'EXPENSE' ? rawType : 'ALL';
-  const dateFrom = (searchParams.dateFrom as string) ?? '';
-  const dateTo = (searchParams.dateTo as string) ?? '';
+  const dateFrom = normalizeParam(searchParams.dateFrom);
+  const dateTo = normalizeParam(searchParams.dateTo);
 
   return { page, pageSize, type, dateFrom, dateTo };
 };

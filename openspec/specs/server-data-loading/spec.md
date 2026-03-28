@@ -45,7 +45,7 @@ The system SHALL convert existing `'use server'` fetch actions (e.g., `fetchTran
 #### Scenario: Fetch function retains validation and error handling
 
 - **WHEN** a fetch function is called
-- **THEN** it SHALL retain its existing input validation (Zod) and error handling, returning null on failure
+- **THEN** it SHALL retain its existing parameter constraints, response type guards, and error handling, returning null or an empty collection on failure
 
 ### Requirement: Client components receive data as props instead of fetching
 

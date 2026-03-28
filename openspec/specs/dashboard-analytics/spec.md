@@ -111,7 +111,7 @@ The dashboard page SHALL provide a filter bar with date range (from/to), transac
 #### Scenario: Default filter values on page load
 
 - **WHEN** the dashboard page loads for the first time without searchParams
-- **THEN** filters default to: dateFrom = 1st of current month, dateTo = today, type = All, currencyCode = USD
+- **THEN** filters default to: dateFrom = empty (no constraint), dateTo = empty (no constraint), type = All, currencyCode = UAH
 
 ### Requirement: Dashboard layout is responsive
 

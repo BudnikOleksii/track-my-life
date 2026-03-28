@@ -44,15 +44,20 @@ const checkIsValidCurrencyCode = (value: string): value is CurrencyCode =>
 const checkIsValidFilterType = (value: string): value is FilterValue =>
   VALID_TYPE_SET.has(value as FilterValue);
 
+const FIRST_ELEMENT_INDEX = 0;
+
+const normalizeParam = (value: string | string[] | undefined): string =>
+  Array.isArray(value) ? (value[FIRST_ELEMENT_INDEX] ?? '') : (value ?? '');
+
 export const parseDashboardSearchParams = (
   searchParams: Record<string, string | string[] | undefined>,
 ): DashboardFilters => {
-  const rawCurrency = (searchParams[SEARCH_PARAM_KEY.CURRENCY_CODE] as string) ?? '';
-  const rawType = (searchParams[SEARCH_PARAM_KEY.TYPE] as string) ?? '';
+  const rawCurrency = normalizeParam(searchParams[SEARCH_PARAM_KEY.CURRENCY_CODE]);
+  const rawType = normalizeParam(searchParams[SEARCH_PARAM_KEY.TYPE]);
 
   return {
-    dateFrom: (searchParams[SEARCH_PARAM_KEY.DATE_FROM] as string) ?? '',
-    dateTo: (searchParams[SEARCH_PARAM_KEY.DATE_TO] as string) ?? '',
+    dateFrom: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_FROM]),
+    dateTo: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_TO]),
     type: checkIsValidFilterType(rawType) ? rawType : 'ALL',
     currencyCode: checkIsValidCurrencyCode(rawCurrency) ? rawCurrency : DEFAULT_CURRENCY_CODE,
   };

@@ -30,10 +30,10 @@ const FILTER_KEY_TO_SEARCH_PARAM: Record<keyof TransactionFilterUpdate, string> 
   dateTo: SEARCH_PARAM_KEY.DATE_TO,
 };
 
-const NON_PAGINATION_KEY_SET = new Set<string>(['type', 'dateFrom', 'dateTo']);
+const PAGE_RESET_KEY_SET = new Set<string>(['type', 'dateFrom', 'dateTo', 'pageSize']);
 
-const checkIsNonPaginationUpdate = (update: TransactionFilterUpdate): boolean =>
-  Object.keys(update).some((key) => NON_PAGINATION_KEY_SET.has(key));
+const checkShouldResetPage = (update: TransactionFilterUpdate): boolean =>
+  Object.keys(update).some((key) => PAGE_RESET_KEY_SET.has(key));
 
 export const useTransactionFilters = () => {
   const searchParams = useSearchParams();
@@ -43,10 +43,6 @@ export const useTransactionFilters = () => {
     (update: TransactionFilterUpdate) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      if (checkIsNonPaginationUpdate(update)) {
-        params.set(SEARCH_PARAM_KEY.PAGE, String(DEFAULT_PAGE));
-      }
-
       for (const [key, value] of Object.entries(update)) {
         const paramKey = FILTER_KEY_TO_SEARCH_PARAM[key as keyof TransactionFilterUpdate];
 
@@ -55,6 +51,10 @@ export const useTransactionFilters = () => {
         } else {
           params.delete(paramKey);
         }
+      }
+
+      if (checkShouldResetPage(update) && !update.page) {
+        params.set(SEARCH_PARAM_KEY.PAGE, String(DEFAULT_PAGE));
       }
 
       const queryString = params.toString();
