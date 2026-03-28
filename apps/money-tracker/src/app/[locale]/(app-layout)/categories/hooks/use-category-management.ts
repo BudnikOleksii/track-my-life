@@ -1,10 +1,9 @@
+import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
+
+import { NOT_FOUND_INDEX } from '@track-my-life/shared/src/constants/list';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { CategoryResponseDto } from '../actions/fetch-category-list';
-
-import { fetchCategoryList } from '../actions/fetch-category-list';
-
-const NOT_FOUND_INDEX = -1;
+import { fetchCategoryList } from '@/actions/fetch-category-list';
 
 const useCategoryDialogs = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);

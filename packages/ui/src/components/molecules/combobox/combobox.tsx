@@ -23,6 +23,7 @@ export interface ComboboxProps {
   className?: string;
   error?: boolean;
   disabled?: boolean;
+  container?: HTMLElement | null;
 }
 
 const Combobox: React.FC<ComboboxProps> = ({
@@ -34,6 +35,7 @@ const Combobox: React.FC<ComboboxProps> = ({
   className,
   error,
   disabled,
+  container,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -87,7 +89,7 @@ const Combobox: React.FC<ComboboxProps> = ({
           </span>
         </button>
       </PopoverPrimitive.Trigger>
-      <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Portal container={container}>
         <PopoverPrimitive.Content
           data-slot="combobox-content"
           className={styles.content}

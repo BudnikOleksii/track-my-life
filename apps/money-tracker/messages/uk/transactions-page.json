@@ -1,9 +1,43 @@
 {
   "metadata": {
     "title": "Транзакції - Track My Money",
-    "description": "Перегляд та керування транзакціями"
+    "description": "Переглядайте та керуйте своїми транзакціями"
   },
   "content": {
-    "title": "Транзакції"
+    "title": "Транзакції",
+    "createButton": "Створити транзакцію",
+    "editTransaction": "Редагувати транзакцію",
+    "deleteButton": "Видалити",
+    "typeLabel": "Тип транзакції",
+    "categoryLabel": "Категорія",
+    "categoryPlaceholder": "Виберіть категорію",
+    "amountLabel": "Сума",
+    "amountPlaceholder": "Введіть суму",
+    "currencyLabel": "Валюта",
+    "dateLabel": "Дата",
+    "descriptionLabel": "Опис",
+    "descriptionPlaceholder": "Введіть опис (необов'язково)",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "noTransactions": "Транзакції не знайдено",
+    "filterByType": "Фільтр за типом",
+    "allTypes": "Всі типи",
+    "dateFrom": "Дата від",
+    "dateTo": "Дата до",
+    "deleteConfirm": "Ви впевнені, що хочете видалити цю транзакцію?",
+    "cancel": "Скасувати",
+    "editButton": "Редагувати",
+    "previousPage": "Попередня сторінка",
+    "nextPage": "Наступна сторінка",
+    "pageInfo": "Сторінка {page} з {total}",
+    "categoryRequired": "Категорія обов'язкова",
+    "typeRequired": "Тип транзакції обов'язковий",
+    "amountRequired": "Сума обов'язкова",
+    "currencyRequired": "Валюта обов'язкова",
+    "dateRequired": "Дата обов'язкова",
+    "amountInvalid": "Сума має бути дійсним числом",
+    "createError": "Не вдалося створити транзакцію",
+    "updateError": "Не вдалося оновити транзакцію",
+    "deleteError": "Не вдалося видалити транзакцію"
   }
 }

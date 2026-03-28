@@ -1,7 +1,9 @@
 'use client';
 
+import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
+import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -17,8 +19,6 @@ import { useMemo } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryResponseDto } from '../../actions/fetch-category-list';
-
 import styles from './CategoryTree.module.scss';
 
 interface CategoryTreeProps {
@@ -26,8 +26,6 @@ interface CategoryTreeProps {
   onEdit: (category: CategoryResponseDto) => void;
   onDelete: (category: CategoryResponseDto) => void;
 }
-
-const EMPTY_LIST_LENGTH = 0;
 
 const buildCategoryHierarchy = (categoryList: CategoryResponseDto[]) => {
   const parentList = categoryList.filter((item) => !item.parentCategoryId);
