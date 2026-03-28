@@ -1,15 +1,14 @@
 import type {
-  CategoryResponseDto,
+  CreateTransactionDto,
   CurrencyCode,
   TransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 
 import type { TransactionFormValues } from '../../../constants/transaction-form-schema';
@@ -17,6 +16,7 @@ import type { TransactionFormValues } from '../../../constants/transaction-form-
 import { createTransaction } from '../../../actions/create-transaction';
 import { updateTransaction } from '../../../actions/update-transaction';
 import { transactionFormSchema } from '../../../constants/transaction-form-schema';
+import { useCategoryList } from './use-category-list';
 
 const DEFAULT_CURRENCY = 'USD';
 const DATE_PART_INDEX = 0;
@@ -35,7 +35,6 @@ export const useTransactionForm = ({
   translations,
 }: UseTransactionFormParams) => {
   const isEditing = Boolean(transaction);
-  const [categoryList, setCategoryList] = useState<CategoryResponseDto[]>([]);
 
   const {
     register,
@@ -58,10 +57,10 @@ export const useTransactionForm = ({
   });
 
   const selectedType = watch('type');
+  const { categoryOptionList } = useCategoryList(isOpen, selectedType);
 
   useEffect(() => {
     if (isOpen) {
-      fetchCategoryList().then(setCategoryList);
       reset({
         categoryId: transaction?.categoryId ?? '',
         type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
@@ -73,20 +72,44 @@ export const useTransactionForm = ({
     }
   }, [isOpen, transaction, reset]);
 
-  const categoryOptionList = useMemo(
-    () =>
-      categoryList
-        .filter((item) => item.type === selectedType)
-        .map((item) => ({ value: item.id, label: item.name })),
-    [categoryList, selectedType],
-  );
-
   const handleTypeChange = useCallback(
     (value: string) => {
       setValue('type', value as TransactionFormValues['type']);
       setValue('categoryId', '');
     },
     [setValue],
+  );
+
+  const handleUpdate = useCallback(
+    async (body: CreateTransactionDto, current: TransactionResponseDto) => {
+      try {
+        const result = await updateTransaction(current.id, body);
+        if (result) {
+          onSuccess({ ...current, ...result });
+        } else {
+          toast.error(translations('content.updateError'));
+        }
+      } catch {
+        toast.error(translations('content.updateError'));
+      }
+    },
+    [onSuccess, translations],
+  );
+
+  const handleCreate = useCallback(
+    async (body: CreateTransactionDto) => {
+      try {
+        const result = await createTransaction(body);
+        if (result) {
+          onSuccess(result as TransactionResponseDto);
+        } else {
+          toast.error(translations('content.createError'));
+        }
+      } catch {
+        toast.error(translations('content.createError'));
+      }
+    },
+    [onSuccess, translations],
   );
 
   const handleFormSubmit = useCallback(
@@ -98,22 +121,12 @@ export const useTransactionForm = ({
       };
 
       if (isEditing && transaction) {
-        const result = await updateTransaction(transaction.id, body);
-        if (result) {
-          onSuccess({ ...transaction, ...result });
-        } else {
-          toast.error(translations('content.updateError'));
-        }
+        await handleUpdate(body, transaction);
       } else {
-        const result = await createTransaction(body);
-        if (result) {
-          onSuccess(result as TransactionResponseDto);
-        } else {
-          toast.error(translations('content.createError'));
-        }
+        await handleCreate(body);
       }
     },
-    [isEditing, transaction, onSuccess, translations],
+    [isEditing, transaction, handleUpdate, handleCreate],
   );
 
   return {
