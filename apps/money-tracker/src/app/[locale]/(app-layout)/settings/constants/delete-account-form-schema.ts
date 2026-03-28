@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-const MIN_PASSWORD_LENGTH = 1;
+import { MIN_PASSWORD_LENGTH } from '@/constants/min-password-length';
 
 export const deleteAccountFormSchema = z.object({
-  password: z.string().min(MIN_PASSWORD_LENGTH, 'Password is required'),
+  password: z.string().min(MIN_PASSWORD_LENGTH, 'passwordMinLength'),
 });
 
 export type DeleteAccountFormValues = z.infer<typeof deleteAccountFormSchema>;

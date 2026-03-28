@@ -7,16 +7,15 @@ import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
-
-import type { FilterValue } from './components/category-type-filter/CategoryTypeFilter';
 
 import { CategoryForm } from './components/category-form/CategoryForm';
 import { CategoryTree } from './components/category-tree/CategoryTree';
 import { CategoryTypeFilter } from './components/category-type-filter/CategoryTypeFilter';
 import { DeleteCategoryDialog } from './components/delete-category-dialog/DeleteCategoryDialog';
+import { useCategoryFilters } from './hooks/use-category-filters';
 import { useCategoryDialogs } from './hooks/use-category-management';
 import styles from './page.module.scss';
 
@@ -26,7 +25,7 @@ interface CategoriesPageContentProps {
 
 export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ categoryList }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
-  const [activeFilter, setActiveFilter] = useState<FilterValue>('ALL');
+  const { activeFilter, handleFilterChange } = useCategoryFilters();
 
   const {
     isFormOpen,
@@ -62,7 +61,7 @@ export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ category
         </Button>
       </div>
 
-      <CategoryTypeFilter value={activeFilter} onValueChange={setActiveFilter} />
+      <CategoryTypeFilter value={activeFilter} onValueChange={handleFilterChange} />
 
       <CategoryTree
         categoryList={filteredCategoryList}

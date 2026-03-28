@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
-import { Skeleton } from '@track-my-life/ui/src/components/atoms/skeleton/skeleton';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import { PageSkeleton } from '../components/page-skeleton/PageSkeleton';
 import {
   parseTransactionSearchParams,
   TransactionListServer,
@@ -32,19 +32,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const SKELETON_COUNT = 8;
-const SKELETON_HEIGHT = 56;
-const skeletonList = Array.from({ length: SKELETON_COUNT }, (_unused, index) => index);
-
-const TransactionsPageSkeleton = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-    {skeletonList.map((index) => (
-      <Skeleton key={index} width="100%" height={SKELETON_HEIGHT} />
-    ))}
-  </div>
-);
-
-const transactionsSkeletonFallback = <TransactionsPageSkeleton />;
+const transactionsSkeletonFallback = <PageSkeleton count={8} height={56} />;
 
 const TransactionsPage = async (props: Props) => {
   const searchParams = await props.searchParams;

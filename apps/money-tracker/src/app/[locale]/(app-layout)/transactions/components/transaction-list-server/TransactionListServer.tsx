@@ -5,6 +5,7 @@ import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import type { FilterValue } from '@/constants/transaction';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { normalizeParam } from '@/constants/normalize-param';
 
 import { fetchTransactionList } from '../../actions/fetch-transaction-list';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '../../constants/transaction-list';
@@ -47,11 +48,6 @@ export const TransactionListServer: FC<TransactionListServerProps> = async ({
     />
   );
 };
-
-const FIRST_ELEMENT_INDEX = 0;
-
-const normalizeParam = (value: string | string[] | undefined): string =>
-  Array.isArray(value) ? (value[FIRST_ELEMENT_INDEX] ?? '') : (value ?? '');
 
 export const parseTransactionSearchParams = (
   searchParams: Record<string, string | string[] | undefined>,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MIN_PASSWORD_LENGTH } from './min-password-length';
+import { MIN_PASSWORD_LENGTH } from '@/constants/min-password-length';
 
 export const authFormSchema = z.object({
   email: z.email('emailInvalid'),

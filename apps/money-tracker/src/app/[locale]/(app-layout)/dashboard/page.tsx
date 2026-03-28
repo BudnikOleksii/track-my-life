@@ -43,14 +43,7 @@ const SKELETON_HEIGHT = 20;
 const skeletonList = Array.from({ length: SKELETON_COUNT }, (_unused, index) => index);
 
 const WidgetSkeleton = () => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 'var(--spacing-2)',
-      padding: 'var(--spacing-4)',
-    }}
-  >
+  <div className={styles.widgetSkeleton}>
     {skeletonList.map((index) => (
       <Skeleton key={index} width="100%" height={SKELETON_HEIGHT} />
     ))}

@@ -35,5 +35,9 @@
     "deleteAccountConfirmButton": "Delete My Account",
     "deleteAccountError": "Failed to delete account. Please check your password.",
     "cancelButton": "Cancel"
+  },
+  "errors": {
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters"
   }
 }
