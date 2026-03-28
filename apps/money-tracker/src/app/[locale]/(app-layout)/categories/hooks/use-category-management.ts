@@ -1,9 +1,7 @@
 import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { NOT_FOUND_INDEX } from '@track-my-life/shared/src/constants/list';
-import { useCallback, useEffect, useState } from 'react';
-
-import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { useCallback, useState } from 'react';
 
 const useCategoryDialogs = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -45,13 +43,9 @@ const useCategoryDialogs = () => {
   };
 };
 
-export const useCategoryManagement = () => {
-  const [categoryList, setCategoryList] = useState<CategoryResponseDto[]>([]);
+export const useCategoryManagement = (initialCategoryList: CategoryResponseDto[]) => {
+  const [categoryList, setCategoryList] = useState<CategoryResponseDto[]>(initialCategoryList);
   const dialogs = useCategoryDialogs();
-
-  useEffect(() => {
-    fetchCategoryList().then(setCategoryList);
-  }, []);
 
   const handleFormSuccess = useCallback(
     (category: CategoryResponseDto) => {

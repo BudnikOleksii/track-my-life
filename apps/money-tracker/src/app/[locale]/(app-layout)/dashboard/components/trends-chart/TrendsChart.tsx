@@ -1,5 +1,6 @@
 'use client';
 
+import type { TrendsResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
@@ -8,16 +9,11 @@ import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } fro
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { DashboardFilters } from '../../hooks/use-dashboard-filters';
-
-import { fetchTrends } from '../../actions/fetch-trends';
-import { TRENDS_GRANULARITY } from '../../constants/dashboard';
-import { useWidgetData } from '../../hooks/use-widget-data';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './TrendsChart.module.scss';
 
 interface TrendsChartProps {
-  filters: DashboardFilters;
+  data: TrendsResponseDto | null;
 }
 
 const CHART_HEIGHT = 300;
@@ -29,20 +25,8 @@ const formatPeriodLabel = (periodStart: string): string => {
   return date.toLocaleDateString(undefined, { month: 'short', year: '2-digit' });
 };
 
-export const TrendsChart: FC<TrendsChartProps> = ({ filters }) => {
+export const TrendsChart: FC<TrendsChartProps> = ({ data }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
-
-  const { data, isLoading } = useWidgetData(
-    () =>
-      fetchTrends({
-        currencyCode: filters.currencyCode,
-        granularity: TRENDS_GRANULARITY,
-        ...(filters.dateFrom && { dateFrom: filters.dateFrom }),
-        ...(filters.dateTo && { dateTo: filters.dateTo }),
-        ...(filters.type !== 'ALL' && { type: filters.type }),
-      }),
-    `trends-${filters.currencyCode}-${filters.dateFrom}-${filters.dateTo}-${filters.type}`,
-  );
 
   const periodList = data?.periods ?? [];
   const chartData = periodList.map((period) => ({
@@ -54,7 +38,7 @@ export const TrendsChart: FC<TrendsChartProps> = ({ filters }) => {
   return (
     <WidgetCard
       title={translations('content.trendsTitle')}
-      isLoading={isLoading}
+      isLoading={false}
       isEmpty={periodList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.chartContainer}>

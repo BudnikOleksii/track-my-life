@@ -1,5 +1,9 @@
 'use client';
 
+import type {
+  CurrencyCode,
+  SummaryResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
@@ -8,38 +12,24 @@ import { useTranslations } from 'next-intl';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { DashboardFilters } from '../../hooks/use-dashboard-filters';
-
-import { fetchSummary } from '../../actions/fetch-summary';
-import { useWidgetData } from '../../hooks/use-widget-data';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './SummaryWidget.module.scss';
 
 interface SummaryWidgetProps {
-  filters: DashboardFilters;
+  data: SummaryResponseDto | null;
+  currencyCode: CurrencyCode;
   className?: string;
 }
 
 const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
-export const SummaryWidget: FC<SummaryWidgetProps> = ({ filters, className }) => {
+export const SummaryWidget: FC<SummaryWidgetProps> = ({ data, currencyCode, className }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
-
-  const { data, isLoading } = useWidgetData(
-    () =>
-      fetchSummary({
-        currencyCode: filters.currencyCode,
-        ...(filters.dateFrom && { dateFrom: filters.dateFrom }),
-        ...(filters.dateTo && { dateTo: filters.dateTo }),
-        ...(filters.type !== 'ALL' && { type: filters.type }),
-      }),
-    `summary-${filters.currencyCode}-${filters.dateFrom}-${filters.dateTo}-${filters.type}`,
-  );
 
   return (
     <WidgetCard
       title={translations('content.summaryTitle')}
-      isLoading={isLoading}
+      isLoading={false}
       isEmpty={data === null || data.transactionCount === EMPTY_LIST_LENGTH}
       className={className}
     >
@@ -50,7 +40,7 @@ export const SummaryWidget: FC<SummaryWidgetProps> = ({ filters, className }) =>
               {translations('content.totalIncome')}
             </Typography>
             <Typography variant="title-xs" className={styles.income}>
-              {formatAmount(data.totalIncome, data.currencyCode)}
+              {formatAmount(data.totalIncome, currencyCode)}
             </Typography>
           </div>
           <div className={styles.statCard}>
@@ -58,7 +48,7 @@ export const SummaryWidget: FC<SummaryWidgetProps> = ({ filters, className }) =>
               {translations('content.totalExpenses')}
             </Typography>
             <Typography variant="title-xs" className={styles.expense}>
-              {formatAmount(data.totalExpenses, data.currencyCode)}
+              {formatAmount(data.totalExpenses, currencyCode)}
             </Typography>
           </div>
           <div className={styles.statCard}>
@@ -66,7 +56,7 @@ export const SummaryWidget: FC<SummaryWidgetProps> = ({ filters, className }) =>
               {translations('content.netBalance')}
             </Typography>
             <Typography variant="title-xs" className={styles.balance}>
-              {formatAmount(data.netBalance, data.currencyCode)}
+              {formatAmount(data.netBalance, currencyCode)}
             </Typography>
           </div>
           <div className={styles.statCard}>

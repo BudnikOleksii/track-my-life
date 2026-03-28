@@ -1,4 +1,5 @@
 import type {
+  CategoryResponseDto,
   CreateTransactionDto,
   CurrencyCode,
   TransactionResponseDto,
@@ -6,7 +7,7 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { TRANSACTION_TYPE } from '@/constants/transaction';
@@ -16,7 +17,6 @@ import type { TransactionFormValues } from '../../../constants/transaction-form-
 import { createTransaction } from '../../../actions/create-transaction';
 import { updateTransaction } from '../../../actions/update-transaction';
 import { transactionFormSchema } from '../../../constants/transaction-form-schema';
-import { useCategoryList } from './use-category-list';
 
 const DEFAULT_CURRENCY = 'USD';
 const DATE_PART_INDEX = 0;
@@ -24,6 +24,7 @@ const DATE_PART_INDEX = 0;
 interface UseTransactionFormParams {
   isOpen: boolean;
   transaction: TransactionResponseDto | null;
+  categoryList: CategoryResponseDto[];
   onSuccess: (transaction: TransactionResponseDto) => void;
   translations: (key: string) => string;
 }
@@ -31,6 +32,7 @@ interface UseTransactionFormParams {
 export const useTransactionForm = ({
   isOpen,
   transaction,
+  categoryList,
   onSuccess,
   translations,
 }: UseTransactionFormParams) => {
@@ -57,7 +59,14 @@ export const useTransactionForm = ({
   });
 
   const selectedType = watch('type');
-  const { categoryOptionList } = useCategoryList(isOpen, selectedType);
+
+  const categoryOptionList = useMemo(
+    () =>
+      categoryList
+        .filter((item) => item.type === selectedType)
+        .map((item) => ({ value: item.id, label: item.name })),
+    [categoryList, selectedType],
+  );
 
   useEffect(() => {
     if (isOpen) {

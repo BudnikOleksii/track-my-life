@@ -1,12 +1,10 @@
-'use server';
-
 import type {
   CurrencyCode,
   TopCategoriesResponseDto,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionsAnalyticsApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchTopCategoryListParams {
   currencyCode: CurrencyCode;
@@ -25,7 +23,7 @@ const checkIsTopCategoriesResponse = (value: unknown): value is TopCategoriesRes
 export const fetchTopCategoryList = async (
   params: FetchTopCategoryListParams,
 ): Promise<TopCategoriesResponseDto | null> => {
-  const { data } = await transactionsAnalyticsApiService.fetchTopCategories(params);
+  const { data } = await rscTransactionsAnalyticsApiService.fetchTopCategories(params);
 
   if (checkIsTopCategoriesResponse(data)) {
     return data;

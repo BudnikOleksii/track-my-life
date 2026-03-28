@@ -1,5 +1,3 @@
-'use server';
-
 import type {
   CurrencyCode,
   Granularity,
@@ -7,7 +5,7 @@ import type {
   TrendsResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionsAnalyticsApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchTrendsParams {
   currencyCode: CurrencyCode;
@@ -24,7 +22,7 @@ const checkIsTrendsResponse = (value: unknown): value is TrendsResponseDto =>
   Array.isArray((value as Record<string, unknown>).periods);
 
 export const fetchTrends = async (params: FetchTrendsParams): Promise<TrendsResponseDto | null> => {
-  const { data } = await transactionsAnalyticsApiService.fetchTrends(params);
+  const { data } = await rscTransactionsAnalyticsApiService.fetchTrends(params);
 
   if (checkIsTrendsResponse(data)) {
     return data;

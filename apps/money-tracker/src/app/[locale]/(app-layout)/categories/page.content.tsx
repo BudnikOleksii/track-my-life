@@ -1,5 +1,6 @@
 'use client';
 
+import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -19,7 +20,11 @@ import { DeleteCategoryDialog } from './components/delete-category-dialog/Delete
 import { useCategoryManagement } from './hooks/use-category-management';
 import styles from './page.module.scss';
 
-export const CategoriesPageContent: FC = () => {
+interface CategoriesPageContentProps {
+  initialCategoryList: CategoryResponseDto[];
+}
+
+export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ initialCategoryList }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
   const [activeFilter, setActiveFilter] = useState<FilterValue>('ALL');
 
@@ -35,7 +40,7 @@ export const CategoriesPageContent: FC = () => {
     handleDeleteClose,
     handleFormSuccess,
     handleDeleteSuccess,
-  } = useCategoryManagement();
+  } = useCategoryManagement(initialCategoryList);
 
   const filteredCategoryList = useMemo(
     () =>

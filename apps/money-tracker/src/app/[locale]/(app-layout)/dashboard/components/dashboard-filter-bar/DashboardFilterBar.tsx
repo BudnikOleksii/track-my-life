@@ -19,7 +19,7 @@ import { FILTER_TO_LABEL_KEY } from '@/constants/filter';
 import { FILTER_OPTION_LIST } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { DashboardFilters } from '../../hooks/use-dashboard-filters';
+import type { DashboardFilters } from '../../constants/dashboard';
 
 import { CURRENCY_CODE_LIST } from '../../constants/dashboard';
 import styles from './DashboardFilterBar.module.scss';

@@ -1,12 +1,10 @@
-'use server';
-
 import type {
   CurrencyCode,
   SummaryResponseDto,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionsAnalyticsApiService } from '@track-my-life/shared/src/api/server-api';
+import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
 
 interface FetchSummaryParams {
   currencyCode: CurrencyCode;
@@ -21,7 +19,7 @@ const checkIsSummaryResponse = (value: unknown): value is SummaryResponseDto =>
 export const fetchSummary = async (
   params: FetchSummaryParams,
 ): Promise<SummaryResponseDto | null> => {
-  const { data } = await transactionsAnalyticsApiService.fetchSummary(params);
+  const { data } = await rscTransactionsAnalyticsApiService.fetchSummary(params);
 
   if (checkIsSummaryResponse(data)) {
     return data;
