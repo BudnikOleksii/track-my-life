@@ -31,7 +31,12 @@ The system SHALL expose a `CategoryApiService` class extending `ApiClient` in `p
 
 ### Requirement: Server actions wrap API service calls
 
-The system SHALL provide Next.js server actions for create, update, and delete operations in feature-scoped `actions/` files. Each action SHALL call the `CategoryApiService` server-side, handle errors, and revalidate the categories data.
+The system SHALL provide Next.js server actions for create, update, and delete operations in feature-scoped `actions/` files. The `fetchCategoryList` function SHALL be converted to a plain async function (without `'use server'` directive) callable from server components. Mutation actions (create, update, delete) SHALL remain as server actions.
+
+#### Scenario: Fetch category list from server component
+
+- **WHEN** a server component calls `fetchCategoryList`
+- **THEN** it SHALL execute as a plain async function on the server, returning the category list without server action serialization overhead
 
 #### Scenario: Create category action
 
