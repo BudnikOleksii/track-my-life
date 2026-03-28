@@ -1,0 +1,33 @@
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.bar {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-3);
+
+  @include media-m {
+    flex-flow: row wrap;
+    align-items: center;
+  }
+}
+
+.dateRange {
+  display: flex;
+
+  gap: var(--spacing-2);
+}
+
+.typeFilter {
+  display: flex;
+
+  gap: var(--spacing-1);
+}
+
+.filterButton {
+  min-width: 5rem;
+}
+
+.currencySelect {
+  width: 6rem;
+}

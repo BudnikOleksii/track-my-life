@@ -1,14 +1,28 @@
 {
   "metadata": {
-    "title": "Панель керування",
-    "description": "Панель керування"
+    "title": "Панель керування - Track My Money",
+    "description": "Ваш фінансовий огляд"
   },
   "content": {
     "title": "Панель керування",
-    "welcome": "Ласкаво просимо",
-    "logoutButton": "Вийти",
-    "userInfo": "Інформація користувача",
-    "email": "Електронна пошта",
-    "name": "Ім'я"
+    "filterDateFrom": "Від",
+    "filterDateTo": "До",
+    "filterType": "Тип транзакції",
+    "filterCurrency": "Валюта",
+    "allTypes": "Всі",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "summaryTitle": "Підсумок",
+    "totalIncome": "Загальний дохід",
+    "totalExpenses": "Загальні витрати",
+    "netBalance": "Чистий баланс",
+    "transactionCount": "Транзакції",
+    "categoryBreakdownTitle": "Витрати за категоріями",
+    "trendsTitle": "Доходи та витрати",
+    "topCategoriesTitle": "Топ категорії",
+    "dailySpendingTitle": "Щоденні витрати",
+    "recentTransactionsTitle": "Останні транзакції",
+    "noData": "Немає даних за обраний період",
+    "viewAllTransactions": "Переглянути всі транзакції"
   }
 }
