@@ -1,13 +1,55 @@
+'use client';
+
+import type { ProfileResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import {
+  FieldSet,
+  FieldLegend,
+  FieldGroup,
+} from '@track-my-life/ui/src/components/molecules/field/field';
+import { useTranslations } from 'next-intl';
+
+import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+
+import { ChangePasswordForm } from './components/change-password-form/ChangePasswordForm';
+import { DeleteAccountSection } from './components/delete-account-section/DeleteAccountSection';
+import { ProfileForm } from './components/profile-form/ProfileForm';
+import styles from './page.module.scss';
 
 interface SettingsPageContentProps {
-  translations: (key: string) => string;
+  profile: ProfileResponseDto;
 }
 
-export const SettingsPageContent: FC<SettingsPageContentProps> = ({ translations }) => (
-  <div>
-    <Typography variant="title-l">{translations('content.title')}</Typography>
-  </div>
-);
+export const SettingsPageContent: FC<SettingsPageContentProps> = ({ profile }) => {
+  const translations = useTranslations(I18N_NAMESPACE.settingsPage);
+
+  return (
+    <div className={styles.container}>
+      <Typography variant="title-l">{translations('content.title')}</Typography>
+
+      <FieldSet>
+        <FieldLegend variant="label">{translations('content.profileSection')}</FieldLegend>
+        <FieldGroup>
+          <ProfileForm profile={profile} />
+        </FieldGroup>
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="label">{translations('content.securitySection')}</FieldLegend>
+        <FieldGroup>
+          <ChangePasswordForm />
+        </FieldGroup>
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="label">{translations('content.dangerZoneSection')}</FieldLegend>
+        <FieldGroup>
+          <Typography variant="body-s">{translations('content.dangerZoneDescription')}</Typography>
+          <DeleteAccountSection />
+        </FieldGroup>
+      </FieldSet>
+    </div>
+  );
+};

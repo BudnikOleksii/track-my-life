@@ -4,6 +4,36 @@
     "description": "Manage your account settings"
   },
   "content": {
-    "title": "Settings"
+    "title": "Settings",
+    "profileSection": "Profile",
+    "securitySection": "Security",
+    "dangerZoneSection": "Danger Zone",
+    "dangerZoneDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "countryLabel": "Country",
+    "countryPlaceholder": "Select country",
+    "baseCurrencyLabel": "Base Currency",
+    "baseCurrencyPlaceholder": "Select currency",
+    "saveButton": "Save Changes",
+    "profileUpdateSuccess": "Profile updated successfully",
+    "profileUpdateError": "Failed to update profile",
+    "currentPasswordLabel": "Current Password",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPasswordLabel": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "changePasswordButton": "Change Password",
+    "passwordChangeSuccess": "Password changed successfully",
+    "passwordChangeError": "Failed to change password. Please check your current password.",
+    "deleteAccountButton": "Delete Account",
+    "deleteAccountTitle": "Delete Account",
+    "deleteAccountDescription": "Are you sure you want to delete your account? This action is permanent and cannot be undone. All your data will be lost.",
+    "deleteAccountPasswordLabel": "Password",
+    "deleteAccountPasswordPlaceholder": "Enter your password to confirm",
+    "deleteAccountConfirmButton": "Delete My Account",
+    "deleteAccountError": "Failed to delete account. Please check your password.",
+    "cancelButton": "Cancel"
   }
 }
