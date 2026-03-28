@@ -17,19 +17,18 @@ import { CategoryForm } from './components/category-form/CategoryForm';
 import { CategoryTree } from './components/category-tree/CategoryTree';
 import { CategoryTypeFilter } from './components/category-type-filter/CategoryTypeFilter';
 import { DeleteCategoryDialog } from './components/delete-category-dialog/DeleteCategoryDialog';
-import { useCategoryManagement } from './hooks/use-category-management';
+import { useCategoryDialogs } from './hooks/use-category-management';
 import styles from './page.module.scss';
 
 interface CategoriesPageContentProps {
-  initialCategoryList: CategoryResponseDto[];
+  categoryList: CategoryResponseDto[];
 }
 
-export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ initialCategoryList }) => {
+export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ categoryList }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
   const [activeFilter, setActiveFilter] = useState<FilterValue>('ALL');
 
   const {
-    categoryList,
     isFormOpen,
     editingCategory,
     deletingCategory,
@@ -38,9 +37,7 @@ export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ initialC
     handleDelete,
     handleFormClose,
     handleDeleteClose,
-    handleFormSuccess,
-    handleDeleteSuccess,
-  } = useCategoryManagement(initialCategoryList);
+  } = useCategoryDialogs();
 
   const filteredCategoryList = useMemo(
     () =>
@@ -78,13 +75,13 @@ export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ initialC
         category={editingCategory}
         parentCategoryList={parentCategoryList}
         onClose={handleFormClose}
-        onSuccess={handleFormSuccess}
+        onSuccess={handleFormClose}
       />
 
       <DeleteCategoryDialog
         category={deletingCategory}
         onClose={handleDeleteClose}
-        onSuccess={handleDeleteSuccess}
+        onSuccess={handleDeleteClose}
       />
     </div>
   );

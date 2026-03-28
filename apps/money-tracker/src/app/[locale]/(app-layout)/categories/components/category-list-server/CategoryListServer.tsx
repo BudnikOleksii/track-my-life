@@ -7,5 +7,5 @@ import { CategoriesPageContent } from '../../page.content';
 export const CategoryListServer: FC = async () => {
   const categoryList = await fetchCategoryList();
 
-  return <CategoriesPageContent initialCategoryList={categoryList} />;
+  return <CategoriesPageContent categoryList={categoryList} />;
 };

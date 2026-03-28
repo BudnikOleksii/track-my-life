@@ -34,14 +34,14 @@ interface TransactionFilters {
 }
 
 interface TransactionsPageContentProps {
-  initialTransactionList: TransactionResponseDto[];
+  transactionList: TransactionResponseDto[];
   total: number;
   filters: TransactionFilters;
   categoryList: CategoryResponseDto[];
 }
 
 export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
-  initialTransactionList,
+  transactionList,
   total,
   filters,
   categoryList,
@@ -50,8 +50,6 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
   const { handleFilterChange } = useTransactionFilters();
 
   const {
-    transactionList,
-    currentTotal,
     isFormOpen,
     editingTransaction,
     deletingTransaction,
@@ -60,9 +58,7 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
     handleDelete,
     handleFormClose,
     handleDeleteClose,
-    handleFormSuccess,
-    handleDeleteSuccess,
-  } = useTransactionDialogs(initialTransactionList, total);
+  } = useTransactionDialogs();
 
   return (
     <div className={styles.page}>
@@ -102,7 +98,7 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
       <Pagination
         page={filters.page}
         pageSize={filters.pageSize}
-        total={currentTotal}
+        total={total}
         onPageChange={(page) => {
           handleFilterChange({ page });
         }}
@@ -118,13 +114,13 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
         transaction={editingTransaction}
         categoryList={categoryList}
         onClose={handleFormClose}
-        onSuccess={handleFormSuccess}
+        onSuccess={handleFormClose}
       />
 
       <DeleteTransactionDialog
         transaction={deletingTransaction}
         onClose={handleDeleteClose}
-        onSuccess={handleDeleteSuccess}
+        onSuccess={handleDeleteClose}
       />
     </div>
   );
