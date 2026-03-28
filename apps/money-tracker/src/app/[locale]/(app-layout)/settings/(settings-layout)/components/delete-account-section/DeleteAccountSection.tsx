@@ -23,6 +23,7 @@ import {
 } from '@track-my-life/ui/src/components/molecules/field/field';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useTranslations } from 'next-intl';
+import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -57,7 +58,10 @@ export const DeleteAccountSection: FC = () => {
         if (!result) {
           toast.error(translations('content.deleteAccountError'));
         }
-      } catch {
+      } catch (error) {
+        if (isRedirectError(error)) {
+          throw error;
+        }
         toast.error(translations('content.deleteAccountError'));
       }
     },

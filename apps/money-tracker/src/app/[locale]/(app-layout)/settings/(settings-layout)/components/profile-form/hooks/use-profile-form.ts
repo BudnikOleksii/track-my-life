@@ -14,6 +14,8 @@ import type { ProfileFormValues } from '../../../constants/profile-form-schema';
 import { updateProfile } from '../../../actions/update-profile';
 import { profileFormSchema } from '../../../constants/profile-form-schema';
 
+const convertToString = (value: unknown): string => (typeof value === 'string' ? value : '');
+
 interface UseProfileFormParams {
   profile: ProfileResponseDto;
   translations: (key: string) => string;
@@ -38,8 +40,8 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
 
   useEffect(() => {
     reset({
-      firstName: (profile.firstName as unknown as string) ?? '',
-      lastName: (profile.lastName as unknown as string) ?? '',
+      firstName: convertToString(profile.firstName),
+      lastName: convertToString(profile.lastName),
       countryCode: profile.countryCode ?? '',
       baseCurrencyCode: profile.baseCurrencyCode ?? '',
     });
