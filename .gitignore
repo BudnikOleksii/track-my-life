@@ -51,3 +51,6 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# AI
+*/settings.local.json

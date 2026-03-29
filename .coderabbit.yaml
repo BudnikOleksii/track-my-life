@@ -7,7 +7,7 @@ reviews:
   review_status: true
   collapse_walkthrough: false
   path_filters:
-    - '!**/openspec/changes/archive/**'
+    - '!**/openspec/changes/**'
   path_instructions:
     - path: 'apps/money-tracker/**/*'
       instructions: |
