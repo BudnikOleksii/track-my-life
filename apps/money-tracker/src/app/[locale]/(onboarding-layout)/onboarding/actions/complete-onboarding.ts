@@ -3,7 +3,7 @@
 import { profileApiService } from '@track-my-life/shared/src/api/server-api';
 import { cookies } from 'next/headers';
 
-const ONBOARDING_COMPLETED_COOKIE = 'onboarding_completed';
+const ONBOARDING_COMPLETED_COOKIE_PREFIX = 'onboarding_completed';
 
 export const completeOnboarding = async () => {
   const { data, error } = await profileApiService.updateProfile({ onboardingCompleted: true });
@@ -13,11 +13,10 @@ export const completeOnboarding = async () => {
   }
 
   const cookieStore = await cookies();
-  cookieStore.set(ONBOARDING_COMPLETED_COOKIE, 'true', {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/',
+  cookieStore.getAll().forEach((cookie) => {
+    if (cookie.name.startsWith(ONBOARDING_COMPLETED_COOKIE_PREFIX)) {
+      cookieStore.delete(cookie.name);
+    }
   });
 
   return data;

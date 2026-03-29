@@ -88,7 +88,27 @@ const checkIsTokenExpired = (token: string): boolean => {
   }
 };
 
-const fetchOnboardingStatus = async (accessToken: string): Promise<boolean> => {
+const extractUserIdFromToken = (token: string): string | null => {
+  const [, payloadPart] = token.split('.');
+
+  if (!payloadPart) {
+    return null;
+  }
+
+  try {
+    const payload = JSON.parse(atob(payloadPart)) as { sub?: string };
+    return payload.sub ?? null;
+  } catch {
+    return null;
+  }
+};
+
+const getOnboardingCookieName = (accessToken: string): string => {
+  const userId = extractUserIdFromToken(accessToken);
+  return userId ? `${ONBOARDING_COMPLETED_COOKIE}_${userId}` : ONBOARDING_COMPLETED_COOKIE;
+};
+
+const fetchOnboardingStatus = async (accessToken: string): Promise<boolean | null> => {
   const profileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
   profileApiService.addRequestInterceptor((request) => {
     const authenticatedRequest = new Request(request, {
@@ -101,10 +121,22 @@ const fetchOnboardingStatus = async (accessToken: string): Promise<boolean> => {
   const { data, error } = await profileApiService.fetchProfile();
 
   if (error || !data) {
-    return true;
+    return null;
   }
 
   return data.onboardingCompleted;
+};
+
+const getCachedOnboardingStatus = (request: NextRequest, cookieName: string): boolean | null => {
+  const cachedStatus = request.cookies.get(cookieName)?.value;
+
+  if (cachedStatus === 'true') {
+    return true;
+  }
+  if (cachedStatus === 'false') {
+    return false;
+  }
+  return null;
 };
 
 const checkOnboardingStatus = async (
@@ -112,19 +144,20 @@ const checkOnboardingStatus = async (
   response: NextResponse,
   accessToken: string,
 ): Promise<boolean> => {
-  const cachedStatus = request.cookies.get(ONBOARDING_COMPLETED_COOKIE)?.value;
+  const cookieName = getOnboardingCookieName(accessToken);
+  const cached = getCachedOnboardingStatus(request, cookieName);
 
-  if (cachedStatus === 'true') {
-    return true;
-  }
-
-  if (cachedStatus === 'false') {
-    return false;
+  if (cached !== null) {
+    return cached;
   }
 
   const onboardingCompleted = await fetchOnboardingStatus(accessToken);
 
-  response.cookies.set(ONBOARDING_COMPLETED_COOKIE, String(onboardingCompleted), {
+  if (onboardingCompleted === null) {
+    return true;
+  }
+
+  response.cookies.set(cookieName, String(onboardingCompleted), {
     httpOnly: false,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
