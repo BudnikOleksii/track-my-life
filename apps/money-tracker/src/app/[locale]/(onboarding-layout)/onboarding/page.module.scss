@@ -1,0 +1,15 @@
+.card {
+  width: 100%;
+  max-width: 32rem;
+}
+
+.cardHeader {
+  text-align: center;
+}
+
+.cardContent {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-6);
+}

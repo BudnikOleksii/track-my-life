@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "title": "Welcome - Track My Money",
+    "description": "Set up your account to get started"
+  },
+  "content": {
+    "skipButton": "Skip",
+    "welcomeTitle": "Welcome to Money Tracker",
+    "welcomeDescription": "Let's set up your account so you can start tracking your finances. It only takes a minute.",
+    "getStartedButton": "Get Started",
+    "profileTitle": "Set Up Your Profile",
+    "profileDescription": "Tell us a bit about yourself so we can personalize your experience.",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "countryLabel": "Country",
+    "countryPlaceholder": "Select country",
+    "baseCurrencyLabel": "Base Currency",
+    "baseCurrencyPlaceholder": "Select currency",
+    "continueButton": "Continue",
+    "completeTitle": "You're All Set!",
+    "completeDescription": "Your account is ready. Start tracking your income and expenses to take control of your finances.",
+    "goToDashboardButton": "Go to Dashboard",
+    "profileUpdateError": "Failed to update profile. Please try again.",
+    "stepWelcome": "Welcome",
+    "stepProfile": "Profile",
+    "stepComplete": "Complete"
+  }
+}

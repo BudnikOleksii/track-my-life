@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "title": "Ласкаво просимо - Track My Money",
+    "description": "Налаштуйте свій обліковий запис, щоб почати"
+  },
+  "content": {
+    "skipButton": "Пропустити",
+    "welcomeTitle": "Ласкаво просимо до Money Tracker",
+    "welcomeDescription": "Давайте налаштуємо ваш обліковий запис, щоб ви могли почати відстежувати свої фінанси. Це займе лише хвилину.",
+    "getStartedButton": "Розпочати",
+    "profileTitle": "Налаштуйте свій профіль",
+    "profileDescription": "Розкажіть нам трохи про себе, щоб ми могли персоналізувати ваш досвід.",
+    "firstNameLabel": "Ім'я",
+    "firstNamePlaceholder": "Введіть ваше ім'я",
+    "lastNameLabel": "Прізвище",
+    "lastNamePlaceholder": "Введіть ваше прізвище",
+    "countryLabel": "Країна",
+    "countryPlaceholder": "Оберіть країну",
+    "baseCurrencyLabel": "Базова валюта",
+    "baseCurrencyPlaceholder": "Оберіть валюту",
+    "continueButton": "Продовжити",
+    "completeTitle": "Все готово!",
+    "completeDescription": "Ваш обліковий запис готовий. Почніть відстежувати свої доходи та витрати, щоб контролювати свої фінанси.",
+    "goToDashboardButton": "Перейти до панелі",
+    "profileUpdateError": "Не вдалося оновити профіль. Спробуйте ще раз.",
+    "stepWelcome": "Привітання",
+    "stepProfile": "Профіль",
+    "stepComplete": "Завершення"
+  }
+}
