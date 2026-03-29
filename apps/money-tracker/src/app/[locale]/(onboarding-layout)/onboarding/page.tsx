@@ -5,7 +5,9 @@ import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { ONBOARDING_STEP } from './constants/onboarding-step';
+import type { OnboardingStep } from './constants/onboarding-step';
+
+import { checkIsOnboardingStep, ONBOARDING_STEP } from './constants/onboarding-step';
 import { OnboardingPageContent } from './page.content';
 
 interface Props {
@@ -31,10 +33,11 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const parseOnboardingStep = (step?: string): string => {
-  if (step === ONBOARDING_STEP.profile || step === ONBOARDING_STEP.complete) {
+const parseOnboardingStep = (step?: string): OnboardingStep => {
+  if (step && checkIsOnboardingStep(step)) {
     return step;
   }
+
   return ONBOARDING_STEP.welcome;
 };
 
