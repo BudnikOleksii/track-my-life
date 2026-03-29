@@ -6,7 +6,7 @@ export const ONBOARDING_STEP = {
   complete: 'complete',
 } as const;
 
-export const ONBOARDING_STEP_LIST = Object.values(ONBOARDING_STEP) as const;
+export const ONBOARDING_STEP_LIST = Object.values(ONBOARDING_STEP);
 
 export type OnboardingStep = ObjectValuesUnion<typeof ONBOARDING_STEP>;
 

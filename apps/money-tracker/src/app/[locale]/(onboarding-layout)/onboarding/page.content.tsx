@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import {
   Card,
@@ -38,7 +38,7 @@ const STEP_DESCRIPTION_MAP: Record<OnboardingStep, string> = {
   [ONBOARDING_STEP.complete]: 'content.completeDescription',
 };
 
-const STEP_CONTENT_MAP: Record<OnboardingStep, FC> = {
+const STEP_CONTENT_MAP: Record<OnboardingStep, ReactNode> = {
   [ONBOARDING_STEP.welcome]: <WelcomeStep />,
   [ONBOARDING_STEP.profile]: <ProfileStep />,
   [ONBOARDING_STEP.complete]: <CompleteStep />,
