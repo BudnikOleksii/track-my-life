@@ -113,6 +113,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
                   value={field.value}
                   onValueChange={handleCategoryChange}
                   placeholder={translations('content.categoryPlaceholder')}
+                  error={Boolean(errors.categoryId)}
                 />
               );
             }}

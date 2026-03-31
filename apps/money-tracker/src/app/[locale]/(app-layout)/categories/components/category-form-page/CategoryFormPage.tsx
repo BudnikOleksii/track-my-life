@@ -70,7 +70,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
         isEditing && category
           ? await updateCategory(category.id, {
               name: values.name,
-              parentCategoryId: parentCategoryId ? { id: parentCategoryId } : undefined,
+              parentCategoryId,
             })
           : await createCategory({
               name: values.name,
