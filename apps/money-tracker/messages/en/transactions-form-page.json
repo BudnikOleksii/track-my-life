@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "createTitle": "Create Transaction - Track My Money",
+    "editTitle": "Edit Transaction - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Create Transaction",
+    "editPageTitle": "Edit Transaction",
+    "backToList": "Back to transactions",
+    "typeLabel": "Transaction Type",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select category",
+    "amountLabel": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "currencyLabel": "Currency",
+    "dateLabel": "Date",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "createButton": "Create Transaction",
+    "save": "Save",
+    "cancel": "Cancel",
+    "categoryRequired": "Category is required",
+    "typeRequired": "Transaction type is required",
+    "amountRequired": "Amount is required",
+    "currencyRequired": "Currency is required",
+    "dateRequired": "Date is required",
+    "amountInvalid": "Amount must be a valid number",
+    "createError": "Failed to create transaction",
+    "updateError": "Failed to update transaction"
+  }
+}

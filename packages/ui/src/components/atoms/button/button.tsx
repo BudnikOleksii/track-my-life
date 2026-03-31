@@ -1,6 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
-
-import { forwardRef } from 'react';
+import type { ButtonHTMLAttributes, ComponentProps, ElementType, Ref } from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './button.module.scss';
@@ -8,10 +6,25 @@ import styles from './button.module.scss';
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonBaseProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
 }
+
+type ButtonAsButtonProps = ButtonBaseProps &
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    component?: never;
+    ref?: Ref<HTMLButtonElement>;
+  };
+
+type ButtonAsComponentProps<Comp extends ElementType> = ButtonBaseProps &
+  Omit<ComponentProps<Comp>, keyof ButtonBaseProps | 'component'> & {
+    component: Comp;
+  };
+
+export type ButtonProps<Comp extends ElementType = 'button'> = Comp extends 'button'
+  ? ButtonAsButtonProps
+  : ButtonAsComponentProps<Comp>;
 
 const sizeToClass: Record<ButtonSize, string> = {
   sm: styles.sm ?? '',
@@ -29,22 +42,21 @@ const variantToClass: Record<ButtonVariant, string> = {
   destructive: styles.destructive ?? '',
 };
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', type = 'button', ...props }, ref) => {
-    const variantClass = variantToClass[variant];
-    const sizeClass = sizeToClass[size];
+const Button = <Comp extends ElementType = 'button'>(props: ButtonProps<Comp>) => {
+  const { className, variant = 'primary', size = 'md', component, ...rest } = props;
 
-    return (
-      <button
-        ref={ref}
-        type={type}
-        data-slot="button"
-        className={cn(styles.button, variantClass, sizeClass, className)}
-        {...props}
-      />
-    );
-  },
-);
+  const Component = component ?? 'button';
+  const variantClass = variantToClass[variant];
+  const sizeClass = sizeToClass[size];
+
+  return (
+    <Component
+      data-slot="button"
+      className={cn(styles.button, variantClass, sizeClass, className)}
+      {...rest}
+    />
+  );
+};
 
 Button.displayName = 'Button';
 

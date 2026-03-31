@@ -4,7 +4,6 @@ import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 
 import type { FilterValue } from '@/constants/transaction';
 
-import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { normalizeParam } from '@/constants/normalize-param';
 
 import { fetchTransactionList } from '../../actions/fetch-transaction-list';
@@ -34,17 +33,13 @@ export const TransactionListServer: FC<TransactionListServerProps> = async ({
     ...(dateTo && { dateTo }),
   };
 
-  const [result, categoryList] = await Promise.all([
-    fetchTransactionList(params),
-    fetchCategoryList(),
-  ]);
+  const result = await fetchTransactionList(params);
 
   return (
     <TransactionsPageContent
       transactionList={result?.data ?? []}
       total={result?.total ?? EMPTY_LIST_LENGTH}
       filters={{ page, pageSize, type, dateFrom, dateTo }}
-      categoryList={categoryList}
     />
   );
 };

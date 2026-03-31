@@ -6,10 +6,12 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 
 import type { TransactionFormValues } from '../../../constants/transaction-form-schema';
@@ -21,40 +23,36 @@ import { transactionFormSchema } from '../../../constants/transaction-form-schem
 const DEFAULT_CURRENCY = 'USD';
 const DATE_PART_INDEX = 0;
 
-interface UseTransactionFormParams {
-  isOpen: boolean;
+interface UseTransactionFormPageParams {
   transaction: TransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
-  onSuccess: (transaction: TransactionResponseDto) => void;
   translations: (key: string) => string;
 }
 
-export const useTransactionForm = ({
-  isOpen,
+export const useTransactionFormPage = ({
   transaction,
   categoryList,
-  onSuccess,
   translations,
-}: UseTransactionFormParams) => {
+}: UseTransactionFormPageParams) => {
+  const router = useRouter();
   const isEditing = Boolean(transaction);
 
   const {
     register,
     handleSubmit,
     control,
-    reset,
     watch,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
-      categoryId: '',
-      type: TRANSACTION_TYPE.EXPENSE,
-      amount: '',
-      currencyCode: DEFAULT_CURRENCY,
-      date: '',
-      description: '',
+      categoryId: transaction?.categoryId ?? '',
+      type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
+      amount: transaction?.amount ?? '',
+      currencyCode: transaction?.currencyCode ?? DEFAULT_CURRENCY,
+      date: transaction?.date ? transaction.date.split('T')[DATE_PART_INDEX] : '',
+      description: transaction?.description ?? '',
     },
   });
 
@@ -68,19 +66,6 @@ export const useTransactionForm = ({
     [categoryList, selectedType],
   );
 
-  useEffect(() => {
-    if (isOpen) {
-      reset({
-        categoryId: transaction?.categoryId ?? '',
-        type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
-        amount: transaction?.amount ?? '',
-        currencyCode: transaction?.currencyCode ?? DEFAULT_CURRENCY,
-        date: transaction?.date ? transaction.date.split('T')[DATE_PART_INDEX] : '',
-        description: transaction?.description ?? '',
-      });
-    }
-  }, [isOpen, transaction, reset]);
-
   const handleTypeChange = useCallback(
     (value: string) => {
       setValue('type', value as TransactionFormValues['type']);
@@ -89,53 +74,32 @@ export const useTransactionForm = ({
     [setValue],
   );
 
-  const handleUpdate = useCallback(
-    async (body: CreateTransactionDto, current: TransactionResponseDto) => {
-      try {
-        const result = await updateTransaction(current.id, body);
-        if (result) {
-          onSuccess({ ...current, ...result });
-        } else {
-          toast.error(translations('content.updateError'));
-        }
-      } catch {
-        toast.error(translations('content.updateError'));
-      }
-    },
-    [onSuccess, translations],
-  );
-
-  const handleCreate = useCallback(
-    async (body: CreateTransactionDto) => {
-      try {
-        const result = await createTransaction(body);
-        if (result) {
-          onSuccess(result as TransactionResponseDto);
-        } else {
-          toast.error(translations('content.createError'));
-        }
-      } catch {
-        toast.error(translations('content.createError'));
-      }
-    },
-    [onSuccess, translations],
-  );
-
   const handleFormSubmit = useCallback(
     async (values: TransactionFormValues) => {
-      const body = {
+      const body: CreateTransactionDto = {
         ...values,
         currencyCode: values.currencyCode as CurrencyCode,
         description: values.description || undefined,
       };
 
-      if (isEditing && transaction) {
-        await handleUpdate(body, transaction);
-      } else {
-        await handleCreate(body);
+      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+
+      try {
+        const result =
+          isEditing && transaction
+            ? await updateTransaction(transaction.id, body)
+            : await createTransaction(body);
+
+        if (result) {
+          router.push(PATHS.transactions);
+        } else {
+          toast.error(translations(errorKey));
+        }
+      } catch {
+        toast.error(translations(errorKey));
       }
     },
-    [isEditing, transaction, handleUpdate, handleCreate],
+    [isEditing, transaction, router, translations],
   );
 
   return {

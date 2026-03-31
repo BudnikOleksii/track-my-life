@@ -37,38 +37,23 @@ The system SHALL render a `CategoryTypeFilter` component that allows toggling be
 - **WHEN** the categories page loads
 - **THEN** the type filter SHALL default to ALL, showing both INCOME and EXPENSE categories
 
-### Requirement: Create category via modal form
+### Requirement: Create category via navigation
 
-The system SHALL render a `CategoryForm` inside a Radix `Dialog` modal for creating new categories. The form SHALL use react-hook-form with the Zod validation schema.
+The categories list page SHALL navigate to `/categories/create` when the user initiates category creation, instead of opening a modal dialog.
 
 #### Scenario: Open create form
 
-- **WHEN** the user clicks the "Add category" button
-- **THEN** a modal SHALL appear with an empty form containing fields for name, type, parent (optional), icon, and color
+- **WHEN** the user clicks the "Create Category" button on the categories page
+- **THEN** the system SHALL navigate to `/categories/create`
 
-#### Scenario: Submit valid category
+### Requirement: Edit category via navigation
 
-- **WHEN** the user fills in required fields and submits the form
-- **THEN** the system SHALL call the create server action, close the modal on success, and refresh the category tree
-
-#### Scenario: Submit invalid category
-
-- **WHEN** the user submits the form with validation errors (e.g., empty name)
-- **THEN** the form SHALL display inline error messages without closing the modal
-
-### Requirement: Edit category via modal form
-
-The system SHALL allow editing an existing category by opening the `CategoryForm` modal pre-filled with the category's current values.
+The categories list page SHALL navigate to `/categories/[id]/edit` when the user initiates category editing, instead of opening a modal dialog.
 
 #### Scenario: Open edit form
 
 - **WHEN** the user clicks the edit action on a category in the tree
-- **THEN** a modal SHALL appear with the form pre-filled with the category's name, type, parent, icon, and color
-
-#### Scenario: Submit edited category
-
-- **WHEN** the user modifies fields and submits the form
-- **THEN** the system SHALL call the update server action, close the modal on success, and refresh the category tree
+- **THEN** the system SHALL navigate to `/categories/[id]/edit`
 
 ### Requirement: Delete category with confirmation
 
