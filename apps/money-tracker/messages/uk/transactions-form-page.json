@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "createTitle": "Створити транзакцію - Track My Money",
+    "editTitle": "Редагувати транзакцію - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Створити транзакцію",
+    "editPageTitle": "Редагувати транзакцію",
+    "backToList": "Назад до транзакцій",
+    "typeLabel": "Тип транзакції",
+    "categoryLabel": "Категорія",
+    "categoryPlaceholder": "Виберіть категорію",
+    "amountLabel": "Сума",
+    "amountPlaceholder": "Введіть суму",
+    "currencyLabel": "Валюта",
+    "dateLabel": "Дата",
+    "descriptionLabel": "Опис",
+    "descriptionPlaceholder": "Введіть опис (необов'язково)",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "createButton": "Створити транзакцію",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "categoryRequired": "Категорія обов'язкова",
+    "typeRequired": "Тип транзакції обов'язковий",
+    "amountRequired": "Сума обов'язкова",
+    "currencyRequired": "Валюта обов'язкова",
+    "dateRequired": "Дата обов'язкова",
+    "amountInvalid": "Сума має бути дійсним числом",
+    "createError": "Не вдалося створити транзакцію",
+    "updateError": "Не вдалося оновити транзакцію"
+  }
+}

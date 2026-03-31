@@ -947,15 +947,11 @@ export type ProfileResponseDto = {
   /**
    * First name
    */
-  firstName: {
-    [key: string]: unknown;
-  } | null;
+  firstName: string | null;
   /**
    * Last name
    */
-  lastName: {
-    [key: string]: unknown;
-  } | null;
+  lastName: string | null;
   /**
    * Country code (ISO 3166-1 alpha-2)
    */
@@ -1071,9 +1067,7 @@ export type CreateCategoryDto = {
 
 export type UpdateCategoryDto = {
   name?: string;
-  parentCategoryId?: {
-    [key: string]: unknown;
-  } | null;
+  parentCategoryId?: string | null;
 };
 
 export type TransactionResponseDto = {

@@ -4,6 +4,7 @@ export const I18N_NAMESPACE = {
   all: 'all',
   authShared: 'authShared',
   budgetsPage: 'budgetsPage',
+  categoriesFormPage: 'categoriesFormPage',
   categoriesPage: 'categoriesPage',
   dashboardPage: 'dashboardPage',
   homePage: 'homePage',
@@ -12,6 +13,7 @@ export const I18N_NAMESPACE = {
   settingsPage: 'settingsPage',
   signInPage: 'signInPage',
   signUpPage: 'signUpPage',
+  transactionsFormPage: 'transactionsFormPage',
   transactionsPage: 'transactionsPage',
   verifyEmailPage: 'verifyEmailPage',
 } as const;

@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "createTitle": "Створити категорію - Track My Money",
+    "editTitle": "Редагувати категорію - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Створити категорію",
+    "editPageTitle": "Редагувати категорію",
+    "backToList": "Назад до категорій",
+    "nameLabel": "Назва категорії",
+    "namePlaceholder": "Введіть назву категорії",
+    "typeLabel": "Тип транзакції",
+    "parentCategoryLabel": "Батьківська категорія (необов'язково)",
+    "parentCategoryPlaceholder": "Виберіть батьківську категорію",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "nameRequired": "Назва категорії обов'язкова",
+    "typeRequired": "Тип транзакції обов'язковий",
+    "atLeastOneFieldRequired": "Необхідно заповнити принаймні одне поле",
+    "createButton": "Створити категорію",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "createSuccess": "Категорію успішно створено",
+    "updateSuccess": "Категорію успішно оновлено",
+    "createError": "Не вдалося створити категорію",
+    "updateError": "Не вдалося оновити категорію"
+  }
+}

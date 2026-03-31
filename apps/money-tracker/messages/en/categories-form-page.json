@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "createTitle": "Create Category - Track My Money",
+    "editTitle": "Edit Category - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Create Category",
+    "editPageTitle": "Edit Category",
+    "backToList": "Back to categories",
+    "nameLabel": "Category Name",
+    "namePlaceholder": "Enter category name",
+    "typeLabel": "Transaction Type",
+    "parentCategoryLabel": "Parent Category (Optional)",
+    "parentCategoryPlaceholder": "Select parent category",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "nameRequired": "Category name is required",
+    "typeRequired": "Transaction type is required",
+    "atLeastOneFieldRequired": "At least one field must be provided",
+    "createButton": "Create Category",
+    "save": "Save",
+    "cancel": "Cancel",
+    "createSuccess": "Category created successfully",
+    "updateSuccess": "Category updated successfully",
+    "createError": "Failed to create category",
+    "updateError": "Failed to update category"
+  }
+}

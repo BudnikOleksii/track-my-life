@@ -4,6 +4,7 @@ import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generate
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -17,13 +18,13 @@ import { FolderOpen, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
+import { getCategoriesEditPath } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './CategoryTree.module.scss';
 
 interface CategoryTreeProps {
   categoryList: CategoryResponseDto[];
-  onEdit: (category: CategoryResponseDto) => void;
   onDelete: (category: CategoryResponseDto) => void;
 }
 
@@ -42,7 +43,7 @@ const buildCategoryHierarchy = (categoryList: CategoryResponseDto[]) => {
   return { parentCategoryList: parentList, childrenMap: children };
 };
 
-export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDelete }) => {
+export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onDelete }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
 
   const { parentCategoryList, childrenMap } = useMemo(
@@ -81,11 +82,10 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
               </AccordionTrigger>
               <div className={styles.actions}>
                 <Button
+                  component={Link}
+                  href={getCategoriesEditPath(parent.id)}
                   variant="ghost"
                   size="icon"
-                  onClick={() => {
-                    onEdit(parent);
-                  }}
                   aria-label={translations('content.editButton')}
                 >
                   <Pencil size={16} />
@@ -114,11 +114,10 @@ export const CategoryTree: FC<CategoryTreeProps> = ({ categoryList, onEdit, onDe
                       <Typography variant="body-m">{child.name}</Typography>
                       <div className={styles.actions}>
                         <Button
+                          component={Link}
+                          href={getCategoriesEditPath(child.id)}
                           variant="ghost"
                           size="icon"
-                          onClick={() => {
-                            onEdit(child);
-                          }}
                           aria-label={translations('content.editButton')}
                         >
                           <Pencil size={14} />
