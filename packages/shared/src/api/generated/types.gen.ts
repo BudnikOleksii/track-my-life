@@ -1068,6 +1068,10 @@ export type UpdateCategoryDto = {
   parentCategoryId?: string | null;
 };
 
+export type TransactionSortBy = 'date' | 'amount' | 'createdAt';
+
+export type SortOrder = 'asc' | 'desc';
+
 export type TransactionResponseDto = {
   /**
    * Transaction ID
@@ -2402,11 +2406,11 @@ export type TransactionsControllerFindAllData = {
     /**
      * Field to sort by (default: date)
      */
-    sortBy?: 'date' | 'amount' | 'createdAt';
+    sortBy?: TransactionSortBy;
     /**
      * Sort direction (default: desc)
      */
-    sortOrder?: 'asc' | 'desc';
+    sortOrder?: SortOrder;
   };
   url: '/api/transactions';
 };
