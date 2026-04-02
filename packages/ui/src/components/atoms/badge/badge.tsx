@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import styles from './badge.module.scss';
 
-type BadgeVariant =
+export type BadgeVariant =
   | 'default'
   | 'secondary'
   | 'destructive'

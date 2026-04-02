@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "createTitle": "Create Recurring Transaction - Track My Money",
+    "editTitle": "Edit Recurring Transaction - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Create Recurring Transaction",
+    "editPageTitle": "Edit Recurring Transaction",
+    "backToList": "Back to recurring transactions",
+    "typeLabel": "Transaction Type",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select category",
+    "amountLabel": "Amount",
+    "amountPlaceholder": "Enter amount",
+    "currencyLabel": "Currency",
+    "frequencyLabel": "Frequency",
+    "intervalLabel": "Repeat Every",
+    "intervalPlaceholder": "1",
+    "startDateLabel": "Start Date",
+    "endDateLabel": "End Date (Optional)",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "incomeType": "Income",
+    "expenseType": "Expense",
+    "dailyFrequency": "Daily",
+    "weeklyFrequency": "Weekly",
+    "monthlyFrequency": "Monthly",
+    "yearlyFrequency": "Yearly",
+    "createButton": "Create Recurring Transaction",
+    "save": "Save",
+    "cancel": "Cancel",
+    "categoryRequired": "Category is required",
+    "typeRequired": "Transaction type is required",
+    "amountRequired": "Amount is required",
+    "currencyRequired": "Currency is required",
+    "frequencyRequired": "Frequency is required",
+    "startDateRequired": "Start date is required",
+    "amountInvalid": "Amount must be a valid number",
+    "intervalInvalid": "Interval must be a positive number",
+    "createError": "Failed to create recurring transaction",
+    "updateError": "Failed to update recurring transaction"
+  }
+}
