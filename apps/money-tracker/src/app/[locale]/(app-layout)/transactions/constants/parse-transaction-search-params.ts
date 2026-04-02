@@ -6,6 +6,7 @@ import { normalizeParam } from '@/constants/normalize-param';
 
 import type { TransactionFilters } from './transaction-filters';
 
+import { VALID_SORT_BY_SET, VALID_SORT_ORDER_SET } from './sort';
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from './transaction-list';
 
 export const parseTransactionSearchParams = (
@@ -21,10 +22,12 @@ export const parseTransactionSearchParams = (
   );
   const categoryId = normalizeParam(searchParams.categoryId);
   const currencyCode = normalizeParam(searchParams.currencyCode);
-  const { sortBy, sortOrder } = parseSortParams(
-    normalizeParam(searchParams.sortBy),
-    normalizeParam(searchParams.sortOrder),
-  );
+  const { sortBy, sortOrder } = parseSortParams({
+    rawSortBy: normalizeParam(searchParams.sortBy),
+    rawSortOrder: normalizeParam(searchParams.sortOrder),
+    validSortBySet: VALID_SORT_BY_SET,
+    validSortOrderSet: VALID_SORT_ORDER_SET,
+  });
 
   return { page, pageSize, type, dateFrom, dateTo, categoryId, currencyCode, sortBy, sortOrder };
 };

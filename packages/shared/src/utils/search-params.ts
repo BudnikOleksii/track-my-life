@@ -10,8 +10,12 @@ interface SortParams {
   sortOrder: string;
 }
 
-const VALID_SORT_BY_SET = new Set(['date', 'amount', 'createdAt']);
-const VALID_SORT_ORDER_SET = new Set(['asc', 'desc']);
+interface ParseSortParamsOptions {
+  rawSortBy: string;
+  rawSortOrder: string;
+  validSortBySet: Set<string>;
+  validSortOrderSet: Set<string>;
+}
 
 export const parseDateRange = (rawDateFrom: string, rawDateTo: string): DateRange => {
   if (rawDateFrom || rawDateTo) {
@@ -22,7 +26,12 @@ export const parseDateRange = (rawDateFrom: string, rawDateTo: string): DateRang
   return getMonthDateRange(year, month);
 };
 
-export const parseSortParams = (rawSortBy: string, rawSortOrder: string): SortParams => ({
-  sortBy: VALID_SORT_BY_SET.has(rawSortBy) ? rawSortBy : '',
-  sortOrder: VALID_SORT_ORDER_SET.has(rawSortOrder) ? rawSortOrder : '',
+export const parseSortParams = ({
+  rawSortBy,
+  rawSortOrder,
+  validSortBySet,
+  validSortOrderSet,
+}: ParseSortParamsOptions): SortParams => ({
+  sortBy: validSortBySet.has(rawSortBy) ? rawSortBy : '',
+  sortOrder: validSortOrderSet.has(rawSortOrder) ? rawSortOrder : '',
 });
