@@ -13,7 +13,7 @@ import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Pencil, Repeat, Trash2, Pause, Play } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import {
   getRecurringTransactionsDetailPath,
@@ -49,10 +49,32 @@ const STATUS_LABEL_KEY = {
   CANCELLED: 'content.cancelledStatus',
 } as const;
 
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+const DATE_PARTS_COUNT = 3;
+const YEAR_INDEX = 0;
+const MONTH_INDEX = 1;
+const DAY_INDEX = 2;
+const MONTH_OFFSET = 1;
+const DATE_PART_INDEX = 0;
+
+const parseDateString = (dateString: string): Date => {
+  const datePart = dateString.split('T')[DATE_PART_INDEX] ?? dateString;
+  const parts = datePart.split('-');
+  if (parts.length >= DATE_PARTS_COUNT) {
+    return new Date(
+      Number(parts[YEAR_INDEX]),
+      Number(parts[MONTH_INDEX]) - MONTH_OFFSET,
+      Number(parts[DAY_INDEX]),
+    );
+  }
+  return new Date(dateString);
 };
+
+const formatDate = (dateString: string, locale: string): string =>
+  parseDateString(dateString).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
 const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
@@ -63,6 +85,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   onResume,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsPage);
+  const locale = useLocale();
   const router = useRouter();
 
   if (recurringTransactionList.length === EMPTY_LIST_LENGTH) {
@@ -82,12 +105,8 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   return (
     <div className={styles.list}>
       {recurringTransactionList.map((item) => (
-        <Link
-          key={item.id}
-          href={getRecurringTransactionsDetailPath(item.id)}
-          className={styles.row}
-        >
-          <div className={styles.info}>
+        <div key={item.id} className={styles.row}>
+          <Link href={getRecurringTransactionsDetailPath(item.id)} className={styles.info}>
             <div className={styles.primary}>
               <Typography variant="body-m" className={styles.amount}>
                 {formatAmount(item.amount, item.currencyCode)}
@@ -105,7 +124,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               </Typography>
               <Typography variant="body-s" className={styles.nextDate}>
                 {translations('content.nextOccurrence', {
-                  date: formatDate(item.nextOccurrenceDate),
+                  date: formatDate(item.nextOccurrenceDate, locale),
                 })}
               </Typography>
             </div>
@@ -114,14 +133,13 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
                 {item.description}
               </Typography>
             )}
-          </div>
+          </Link>
           <div className={styles.actions}>
             {item.status === 'ACTIVE' && (
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(event) => {
-                  event.preventDefault();
+                onClick={() => {
                   onPause(item.id);
                 }}
                 aria-label={translations('content.pauseButton')}
@@ -133,8 +151,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={(event) => {
-                  event.preventDefault();
+                onClick={() => {
                   onResume(item.id);
                 }}
                 aria-label={translations('content.resumeButton')}
@@ -145,8 +162,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={(event) => {
-                event.stopPropagation();
+              onClick={() => {
                 router.push(getRecurringTransactionsEditPath(item.id));
               }}
               aria-label={translations('content.editButton')}
@@ -156,8 +172,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={(event) => {
-                event.stopPropagation();
+              onClick={() => {
                 onDelete(item);
               }}
               aria-label={translations('content.deleteButton')}
@@ -165,7 +180,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               <Trash2 size={14} />
             </Button>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );

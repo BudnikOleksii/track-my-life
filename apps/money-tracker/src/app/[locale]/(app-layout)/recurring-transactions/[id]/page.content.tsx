@@ -19,7 +19,7 @@ import {
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { ArrowLeft, Pause, Pencil, Play, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
 import { PATHS, getRecurringTransactionsEditPath } from '@/constants/paths';
@@ -53,26 +53,47 @@ const STATUS_LABEL_KEY = {
   CANCELLED: 'content.cancelledStatus',
 } as const;
 
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+const DATE_PARTS_COUNT = 3;
+const YEAR_INDEX = 0;
+const MONTH_INDEX = 1;
+const DAY_INDEX = 2;
+const MONTH_OFFSET = 1;
+const DATE_PART_INDEX = 0;
+
+const parseDateString = (dateString: string): Date => {
+  const datePart = dateString.split('T')[DATE_PART_INDEX] ?? dateString;
+  const parts = datePart.split('-');
+  if (parts.length >= DATE_PARTS_COUNT) {
+    return new Date(
+      Number(parts[YEAR_INDEX]),
+      Number(parts[MONTH_INDEX]) - MONTH_OFFSET,
+      Number(parts[DAY_INDEX]),
+    );
+  }
+  return new Date(dateString);
 };
 
-const formatDateTime = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleString(undefined, {
+const formatDate = (dateString: string, locale: string): string =>
+  parseDateString(dateString).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+const formatDateTime = (dateString: string, locale: string): string =>
+  new Date(dateString).toLocaleString(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   });
-};
 
 export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailContentProps> = ({
   recurringTransaction,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsPage);
+  const locale = useLocale();
   const router = useRouter();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -158,7 +179,9 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
             <Typography variant="body-s" className={styles.detailLabel}>
               {translations('content.startDateLabel')}
             </Typography>
-            <Typography variant="body-m">{formatDate(recurringTransaction.startDate)}</Typography>
+            <Typography variant="body-m">
+              {formatDate(recurringTransaction.startDate, locale)}
+            </Typography>
           </div>
 
           <div className={styles.detailRow}>
@@ -167,7 +190,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
             </Typography>
             <Typography variant="body-m">
               {recurringTransaction.endDate
-                ? formatDate(recurringTransaction.endDate)
+                ? formatDate(recurringTransaction.endDate, locale)
                 : translations('content.noEndDate')}
             </Typography>
           </div>
@@ -177,7 +200,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.nextOccurrenceLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDate(recurringTransaction.nextOccurrenceDate)}
+              {formatDate(recurringTransaction.nextOccurrenceDate, locale)}
             </Typography>
           </div>
 
@@ -195,7 +218,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.createdAtLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDateTime(recurringTransaction.createdAt)}
+              {formatDateTime(recurringTransaction.createdAt, locale)}
             </Typography>
           </div>
 
@@ -204,7 +227,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.updatedAtLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDateTime(recurringTransaction.updatedAt)}
+              {formatDateTime(recurringTransaction.updatedAt, locale)}
             </Typography>
           </div>
         </div>
