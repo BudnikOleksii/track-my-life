@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "createTitle": "Створити повторювану транзакцію - Track My Money",
+    "editTitle": "Редагувати повторювану транзакцію - Track My Money"
+  },
+  "content": {
+    "createPageTitle": "Створити повторювану транзакцію",
+    "editPageTitle": "Редагувати повторювану транзакцію",
+    "backToList": "Назад до повторюваних транзакцій",
+    "typeLabel": "Тип транзакції",
+    "categoryLabel": "Категорія",
+    "categoryPlaceholder": "Виберіть категорію",
+    "amountLabel": "Сума",
+    "amountPlaceholder": "Введіть суму",
+    "currencyLabel": "Валюта",
+    "frequencyLabel": "Частота",
+    "intervalLabel": "Повторювати кожні",
+    "intervalPlaceholder": "1",
+    "startDateLabel": "Дата початку",
+    "endDateLabel": "Дата завершення (необов'язково)",
+    "descriptionLabel": "Опис",
+    "descriptionPlaceholder": "Введіть опис (необов'язково)",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата",
+    "dailyFrequency": "Щоденно",
+    "weeklyFrequency": "Щотижня",
+    "monthlyFrequency": "Щомісяця",
+    "yearlyFrequency": "Щороку",
+    "createButton": "Створити повторювану транзакцію",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "categoryRequired": "Категорія обов'язкова",
+    "typeRequired": "Тип транзакції обов'язковий",
+    "amountRequired": "Сума обов'язкова",
+    "currencyRequired": "Валюта обов'язкова",
+    "frequencyRequired": "Частота обов'язкова",
+    "startDateRequired": "Дата початку обов'язкова",
+    "amountInvalid": "Сума має бути дійсним числом",
+    "intervalInvalid": "Інтервал має бути додатнім числом",
+    "createError": "Не вдалося створити повторювану транзакцію",
+    "updateError": "Не вдалося оновити повторювану транзакцію"
+  }
+}

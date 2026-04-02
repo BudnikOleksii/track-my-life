@@ -10,6 +10,8 @@ export const I18N_NAMESPACE = {
   homePage: 'homePage',
   navigation: 'navigation',
   onboardingPage: 'onboardingPage',
+  recurringTransactionsFormPage: 'recurringTransactionsFormPage',
+  recurringTransactionsPage: 'recurringTransactionsPage',
   settingsPage: 'settingsPage',
   signInPage: 'signInPage',
   signUpPage: 'signUpPage',
