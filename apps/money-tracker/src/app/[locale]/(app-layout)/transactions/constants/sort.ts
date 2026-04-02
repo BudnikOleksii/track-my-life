@@ -18,3 +18,9 @@ export const DEFAULT_SORT_ORDER: SortOrder = 'desc';
 
 export const VALID_SORT_BY_SET = new Set<string>(SORT_BY_OPTION_LIST);
 export const VALID_SORT_ORDER_SET = new Set<string>(SORT_ORDER_OPTION_LIST);
+
+export const checkIsSortBy = (value: string): value is TransactionSortBy =>
+  VALID_SORT_BY_SET.has(value);
+
+export const checkIsSortOrder = (value: string): value is SortOrder =>
+  VALID_SORT_ORDER_SET.has(value);
