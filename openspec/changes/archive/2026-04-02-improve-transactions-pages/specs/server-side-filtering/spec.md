@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Page server components read searchParams for filtering
 
@@ -14,6 +14,8 @@ The system SHALL have async page server components (`page.tsx`) read the `search
 - **WHEN** the page loads without searchParams or with missing filter values
 - **THEN** the server component SHALL apply default values (dateFrom = 1st of current month, dateTo = last day of current month, type = All, sortBy = date, sortOrder = desc, page = 1)
 
+## MODIFIED Requirements
+
 ### Requirement: Filter controls update URL to trigger server re-fetch
 
 The system SHALL use client-side filter control components that update URL searchParams (via `router.replace`) when the user changes filters, triggering a server-side navigation and data re-fetch. Filter keys SHALL include: type, dateFrom, dateTo, categoryId, currencyCode, sortBy, sortOrder, page, pageSize.
@@ -27,12 +29,3 @@ The system SHALL use client-side filter control components that update URL searc
 
 - **WHEN** the user changes a non-pagination filter (type, dateFrom, dateTo, categoryId, currencyCode, sortBy, sortOrder)
 - **THEN** the `page` searchParam SHALL reset to 1
-
-### Requirement: Suspense shows loading state during filter navigation
-
-The system SHALL display skeleton fallbacks via Suspense boundaries when filter changes trigger server-side re-rendering, providing visual feedback during navigation.
-
-#### Scenario: Filter change triggers loading state
-
-- **WHEN** the user changes a filter and the server component is re-rendering
-- **THEN** the Suspense boundaries SHALL show skeleton fallbacks until the new data streams in

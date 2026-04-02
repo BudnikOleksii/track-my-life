@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
+  Repeat,
   Settings,
   Tags,
   Wallet,
@@ -33,6 +34,11 @@ interface NavigationItem {
 const NAVIGATION_ITEM_LIST: NavigationItem[] = [
   { href: PATHS.dashboard, icon: <LayoutDashboard size={20} />, labelKey: 'labels.dashboard' },
   { href: PATHS.transactions, icon: <ArrowLeftRight size={20} />, labelKey: 'labels.transactions' },
+  {
+    href: PATHS.recurringTransactions,
+    icon: <Repeat size={20} />,
+    labelKey: 'labels.recurringTransactions',
+  },
   { href: PATHS.categories, icon: <Tags size={20} />, labelKey: 'labels.categories' },
   { href: PATHS.budgets, icon: <Wallet size={20} />, labelKey: 'labels.budgets' },
   { href: PATHS.settings, icon: <Settings size={20} />, labelKey: 'labels.settings' },

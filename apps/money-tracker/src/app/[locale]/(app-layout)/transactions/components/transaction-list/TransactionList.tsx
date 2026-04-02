@@ -33,6 +33,30 @@ const formatDate = (dateString: string): string => {
 
 const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
+const DATE_PART_INDEX = 0;
+
+const getDateKey = (dateString: string): string =>
+  dateString.split('T')[DATE_PART_INDEX] ?? dateString;
+
+const groupTransactionListByDate = (
+  transactionList: TransactionResponseDto[],
+): Map<string, TransactionResponseDto[]> => {
+  const groupMap = new Map<string, TransactionResponseDto[]>();
+
+  for (const transaction of transactionList) {
+    const key = getDateKey(transaction.date);
+    const group = groupMap.get(key);
+
+    if (group) {
+      group.push(transaction);
+    } else {
+      groupMap.set(key, [transaction]);
+    }
+  }
+
+  return groupMap;
+};
+
 export const TransactionList: FC<TransactionListProps> = ({ transactionList, onDelete }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
 
@@ -47,53 +71,61 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
     );
   }
 
+  const groupedTransactionMap = groupTransactionListByDate(transactionList);
+
   return (
     <div className={styles.list}>
-      {transactionList.map((transaction) => (
-        <div key={transaction.id} className={styles.row}>
-          <div className={styles.info}>
-            <div className={styles.primary}>
-              <Typography variant="body-m" className={styles.amount}>
-                {formatAmount(transaction.amount, transaction.currencyCode)}
-              </Typography>
-              <Badge variant={BADGE_VARIANT_MAP[transaction.type]}>
-                {translations(
-                  `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
-                )}
-              </Badge>
-            </div>
-            <div className={styles.secondary}>
-              <Typography variant="body-s" className={styles.date}>
-                {formatDate(transaction.date)}
-              </Typography>
-              {transaction.description && (
-                <Typography variant="body-s" className={styles.description}>
-                  {transaction.description}
-                </Typography>
-              )}
-            </div>
+      {[...groupedTransactionMap.entries()].map(([dateKey, groupTransactionList]) => (
+        <div key={dateKey} className={styles.dateGroup}>
+          <div className={styles.dateHeader}>
+            <Typography variant="body-s" fontWeight="semibold">
+              {formatDate(dateKey)}
+            </Typography>
           </div>
-          <div className={styles.actions}>
-            <Button
-              component={Link}
-              href={getTransactionsEditPath(transaction.id)}
-              variant="ghost"
-              size="sm"
-              aria-label={translations('content.editButton')}
-            >
-              <Pencil size={14} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                onDelete(transaction);
-              }}
-              aria-label={translations('content.deleteButton')}
-            >
-              <Trash2 size={14} />
-            </Button>
-          </div>
+          {groupTransactionList.map((transaction) => (
+            <div key={transaction.id} className={styles.row}>
+              <div className={styles.info}>
+                <div className={styles.primary}>
+                  <Typography variant="body-m" className={styles.amount}>
+                    {formatAmount(transaction.amount, transaction.currencyCode)}
+                  </Typography>
+                  <Badge variant={BADGE_VARIANT_MAP[transaction.type]}>
+                    {translations(
+                      `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
+                    )}
+                  </Badge>
+                </div>
+                <div className={styles.secondary}>
+                  {transaction.description && (
+                    <Typography variant="body-s" className={styles.description}>
+                      {transaction.description}
+                    </Typography>
+                  )}
+                </div>
+              </div>
+              <div className={styles.actions}>
+                <Button
+                  component={Link}
+                  href={getTransactionsEditPath(transaction.id)}
+                  variant="ghost"
+                  size="sm"
+                  aria-label={translations('content.editButton')}
+                >
+                  <Pencil size={14} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    onDelete(transaction);
+                  }}
+                  aria-label={translations('content.deleteButton')}
+                >
+                  <Trash2 size={14} />
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
       ))}
     </div>

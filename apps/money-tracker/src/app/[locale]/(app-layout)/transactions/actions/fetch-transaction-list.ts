@@ -1,4 +1,5 @@
 import type {
+  CurrencyCode,
   TransactionListResponseDto,
   TransactionType,
 } from '@track-my-life/shared/src/api/generated/types.gen';
@@ -11,6 +12,10 @@ interface FetchTransactionListParams {
   type?: TransactionType;
   dateFrom?: string;
   dateTo?: string;
+  categoryId?: string;
+  currencyCode?: CurrencyCode;
+  sortBy?: 'date' | 'amount' | 'createdAt';
+  sortOrder?: 'asc' | 'desc';
 }
 
 const checkIsTransactionListResponse = (value: unknown): value is TransactionListResponseDto =>

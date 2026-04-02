@@ -185,7 +185,7 @@ export type SummaryResponseDto = {
   /**
    * Currency code
    */
-  currencyCode: string;
+  currencyCode: CurrencyCode;
   /**
    * Period start date
    */
@@ -244,11 +244,6 @@ export type CategoryBreakdownResponseDto = {
 
 export type Granularity = 'weekly' | 'monthly';
 
-/**
- * Time granularity
- */
-export type TrendsGranularity = 'weekly' | 'monthly';
-
 export type TrendPeriodDto = {
   /**
    * Period start date
@@ -284,7 +279,7 @@ export type TrendsResponseDto = {
   /**
    * Time granularity
    */
-  granularity: TrendsGranularity;
+  granularity: Granularity;
   /**
    * Trend periods data
    */
@@ -322,7 +317,7 @@ export type TopCategoriesResponseDto = {
   /**
    * Currency code
    */
-  currencyCode: string;
+  currencyCode: CurrencyCode;
   /**
    * Top categories data
    */
@@ -348,7 +343,7 @@ export type DailySpendingResponseDto = {
   /**
    * Currency code
    */
-  currencyCode: string;
+  currencyCode: CurrencyCode;
   /**
    * Year
    */
@@ -446,6 +441,11 @@ export type RegisterDto = {
   lastName?: string;
 };
 
+/**
+ * User role
+ */
+export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+
 export type AuthUserDto = {
   /**
    * Unique user identifier
@@ -458,7 +458,7 @@ export type AuthUserDto = {
   /**
    * User role
    */
-  role: string;
+  role: UserRole;
 };
 
 export type AuthResponseDto = {
@@ -488,7 +488,7 @@ export type RefreshTokenUserDto = {
   /**
    * User role
    */
-  role: string;
+  role: UserRole;
 };
 
 export type RefreshTokenDetailDto = {
@@ -598,8 +598,6 @@ export type RevokeAllTokensResponseDto = {
    */
   message: string;
 };
-
-export type UserRole = 'USER' | 'ADMIN' | 'SUPER_ADMIN';
 
 export type UserResponseDto = {
   /**
@@ -1138,6 +1136,50 @@ export type TransactionListResponseDto = {
    * Whether more pages are available
    */
   hasMore: boolean;
+};
+
+export type SubcategoryInfoDto = {
+  /**
+   * Subcategory ID
+   */
+  id: string;
+  /**
+   * Subcategory name
+   */
+  name: string;
+};
+
+export type SubcategoryTotalDto = {
+  /**
+   * Currency code
+   */
+  currencyCode: CurrencyCode;
+  /**
+   * Total amount for this currency
+   */
+  total: string;
+};
+
+export type TransactionGroupDto = {
+  /**
+   * Subcategory info, or null for transactions directly under the parent category
+   */
+  subcategory: SubcategoryInfoDto | null;
+  /**
+   * Transactions in this group
+   */
+  transactions: Array<TransactionResponseDto>;
+  /**
+   * Totals per currency for this group
+   */
+  totals: Array<SubcategoryTotalDto>;
+};
+
+export type TransactionsByCategoryResponseDto = {
+  /**
+   * Transaction groups by subcategory
+   */
+  groups: Array<TransactionGroupDto>;
 };
 
 export type CreateTransactionDto = {
@@ -2357,6 +2399,14 @@ export type TransactionsControllerFindAllData = {
     currencyCode?: CurrencyCode;
     dateFrom?: string;
     dateTo?: string;
+    /**
+     * Field to sort by (default: date)
+     */
+    sortBy?: 'date' | 'amount' | 'createdAt';
+    /**
+     * Sort direction (default: desc)
+     */
+    sortOrder?: 'asc' | 'desc';
   };
   url: '/api/transactions';
 };
@@ -2409,6 +2459,40 @@ export type TransactionsControllerCreateResponses = {
 
 export type TransactionsControllerCreateResponse =
   TransactionsControllerCreateResponses[keyof TransactionsControllerCreateResponses];
+
+export type TransactionsControllerFindByCategoryData = {
+  body?: never;
+  path: {
+    categoryId: string;
+  };
+  query?: never;
+  url: '/api/transactions/by-category/{categoryId}';
+};
+
+export type TransactionsControllerFindByCategoryErrors = {
+  /**
+   * Category is a subcategory
+   */
+  400: unknown;
+  /**
+   * Category not found
+   */
+  404: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type TransactionsControllerFindByCategoryError =
+  TransactionsControllerFindByCategoryErrors[keyof TransactionsControllerFindByCategoryErrors];
+
+export type TransactionsControllerFindByCategoryResponses = {
+  200: TransactionsByCategoryResponseDto;
+};
+
+export type TransactionsControllerFindByCategoryResponse =
+  TransactionsControllerFindByCategoryResponses[keyof TransactionsControllerFindByCategoryResponses];
 
 export type TransactionsControllerDeleteData = {
   body?: never;

@@ -10,6 +10,24 @@
   border-radius: var(--radius-xl);
 }
 
+.dateGroup {
+  &:not(:first-child) {
+    border-top: 1px solid var(--outline-variant);
+  }
+}
+
+.dateHeader {
+  padding: var(--spacing-2) var(--spacing-4);
+
+  color: var(--on-surface-variant);
+
+  background-color: var(--surface-container);
+}
+
+.dateGroup:first-child .dateHeader {
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
 .row {
   display: flex;
 
