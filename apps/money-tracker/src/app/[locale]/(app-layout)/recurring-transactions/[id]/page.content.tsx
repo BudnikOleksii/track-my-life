@@ -102,15 +102,19 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
     const result = await pauseRecurringTransaction(recurringTransaction.id);
     if (!result?.success) {
       toast.error(translations('content.pauseError'));
+      return;
     }
-  }, [recurringTransaction.id, translations]);
+    router.refresh();
+  }, [recurringTransaction.id, router, translations]);
 
   const handleResume = useCallback(async () => {
     const result = await resumeRecurringTransaction(recurringTransaction.id);
     if (!result?.success) {
       toast.error(translations('content.resumeError'));
+      return;
     }
-  }, [recurringTransaction.id, translations]);
+    router.refresh();
+  }, [recurringTransaction.id, router, translations]);
 
   const handleDelete = useCallback(async () => {
     setIsDeleting(true);
