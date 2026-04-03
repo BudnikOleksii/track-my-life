@@ -47,7 +47,7 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
     <TransactionsPageContent
       transactionList={result?.data ?? []}
       total={result?.total ?? EMPTY_LIST_LENGTH}
-      categoryList={categoryList}
+      categoryList={categoryList ?? []}
       filters={{
         page,
         pageSize,

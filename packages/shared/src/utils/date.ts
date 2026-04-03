@@ -4,12 +4,12 @@ const DECEMBER = 12;
 const LAST_DAY_OFFSET = 0;
 const PAD_LENGTH = 2;
 
-interface YearMonth {
+export interface YearMonth {
   year: number;
   month: number;
 }
 
-interface MonthDateRange {
+export interface MonthDateRange {
   dateFrom: string;
   dateTo: string;
 }
