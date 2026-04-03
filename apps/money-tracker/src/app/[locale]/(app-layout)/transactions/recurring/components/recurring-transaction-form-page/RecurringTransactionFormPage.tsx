@@ -149,7 +149,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
           <FieldLabel htmlFor="recurring-transaction-currency">
             {translations('content.currencyLabel')}
           </FieldLabel>
-          <Input id="recurring-transaction-currency" disabled {...register('currencyCode')} />
+          <Input id="recurring-transaction-currency" readOnly {...register('currencyCode')} />
         </Field>
 
         <Field>

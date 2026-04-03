@@ -144,7 +144,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
           <FieldLabel htmlFor="transaction-currency">
             {translations('content.currencyLabel')}
           </FieldLabel>
-          <Input id="transaction-currency" disabled {...register('currencyCode')} />
+          <Input id="transaction-currency" readOnly {...register('currencyCode')} />
         </Field>
 
         <Field>
