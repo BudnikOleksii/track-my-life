@@ -2,8 +2,9 @@
   "labels": {
     "dashboard": "Панель керування",
     "transactions": "Транзакції",
+    "transactionsByDate": "За датою",
     "transactionsByCategory": "За категоріями",
-    "recurringTransactions": "Регулярні транзакції",
+    "recurringTransactions": "Регулярні",
     "categories": "Категорії",
     "budgets": "Бюджети",
     "settings": "Налаштування"

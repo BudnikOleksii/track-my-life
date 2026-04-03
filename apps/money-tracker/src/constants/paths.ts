@@ -10,8 +10,8 @@ export const PATHS = {
   categoriesCreate: '/categories/create',
   transactionsByCategory: '/transactions/by-category',
   budgets: '/budgets',
-  recurringTransactions: '/recurring-transactions',
-  recurringTransactionsCreate: '/recurring-transactions/create',
+  recurringTransactions: '/transactions/recurring',
+  recurringTransactionsCreate: '/transactions/recurring/create',
   settings: '/settings',
 } as const;
 

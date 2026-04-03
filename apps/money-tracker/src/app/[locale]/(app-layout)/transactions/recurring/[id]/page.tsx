@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { PageSkeleton } from '../../components/page-skeleton/PageSkeleton';
+import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
 import { fetchRecurringTransaction } from '../actions/fetch-recurring-transaction';
 import { RecurringTransactionDetailContent } from './page.content';
 
