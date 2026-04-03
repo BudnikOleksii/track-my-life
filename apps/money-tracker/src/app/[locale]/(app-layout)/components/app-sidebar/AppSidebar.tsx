@@ -2,6 +2,7 @@
 
 import type { FC, ReactNode } from 'react';
 
+import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { usePathname } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -21,7 +22,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
@@ -106,14 +107,21 @@ export const AppSidebar: FC = () => {
 
   const [openSubmenuList, setOpenSubmenuList] = useState<string[]>(parentItemWithActiveChildList);
 
+  useEffect(() => {
+    setOpenSubmenuList((prev) => {
+      const newItemList = parentItemWithActiveChildList.filter((href) => !prev.includes(href));
+
+      return newItemList.length > EMPTY_LIST_LENGTH ? [...prev, ...newItemList] : prev;
+    });
+  }, [parentItemWithActiveChildList]);
+
   const handleToggleSubmenu = (href: string) => {
     setOpenSubmenuList((prev) =>
       prev.includes(href) ? prev.filter((item) => item !== href) : [...prev, href],
     );
   };
 
-  const checkIsSubmenuOpen = (href: string): boolean =>
-    openSubmenuList.includes(href) || parentItemWithActiveChildList.includes(href);
+  const checkIsSubmenuOpen = (href: string): boolean => openSubmenuList.includes(href);
 
   return (
     <>
@@ -155,6 +163,8 @@ export const AppSidebar: FC = () => {
                 <div key={item.href}>
                   <button
                     type="button"
+                    aria-label={isCollapsed ? translations(item.labelKey) : undefined}
+                    aria-expanded={!isCollapsed ? isOpen : undefined}
                     className={cn(
                       styles.navItem,
                       styles.submenuToggle,
