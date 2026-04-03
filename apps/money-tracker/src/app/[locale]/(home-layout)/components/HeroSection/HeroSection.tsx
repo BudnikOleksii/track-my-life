@@ -1,3 +1,4 @@
+import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
 import type { FC } from 'react';
 
 import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
@@ -9,7 +10,7 @@ import { PATHS } from '@/constants/paths';
 import styles from './HeroSection.module.scss';
 
 interface HeroSectionProps {
-  translations: (key: string) => string;
+  translations: TranslateFn;
 }
 
 export const HeroSection: FC<HeroSectionProps> = ({ translations }) => (

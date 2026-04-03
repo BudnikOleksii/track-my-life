@@ -1,3 +1,4 @@
+import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
 import type { FC } from 'react';
 
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -11,7 +12,7 @@ import {
 import styles from './AdvantagesSection.module.scss';
 
 interface AdvantagesSectionProps {
-  translations: (key: string) => string;
+  translations: TranslateFn;
 }
 
 const ADVANTAGE_KEY_LIST = ['tracking', 'budgets', 'insights', 'recurring'] as const;

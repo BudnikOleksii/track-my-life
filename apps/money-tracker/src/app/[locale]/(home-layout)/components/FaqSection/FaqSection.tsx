@@ -1,5 +1,4 @@
-'use client';
-
+import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
 import type { FC } from 'react';
 
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -13,7 +12,7 @@ import {
 import styles from './FaqSection.module.scss';
 
 interface FaqSectionProps {
-  translations: (key: string) => string;
+  translations: TranslateFn;
 }
 
 const FAQ_KEY_LIST = ['q1', 'q2', 'q3', 'q4', 'q5'] as const;

@@ -1,3 +1,4 @@
+import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
 import type { FC } from 'react';
 
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -10,7 +11,7 @@ import {
 import styles from './ReviewsSection.module.scss';
 
 interface ReviewsSectionProps {
-  translations: (key: string) => string;
+  translations: TranslateFn;
 }
 
 const REVIEW_KEY_LIST = ['review1', 'review2', 'review3'] as const;
