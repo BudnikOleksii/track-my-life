@@ -23,6 +23,27 @@ export const getCurrentYearMonth = (): YearMonth => {
   return { year: now.getFullYear(), month: now.getMonth() + MONTH_INDEX_OFFSET };
 };
 
+export const getUtcYearMonth = (): YearMonth => {
+  const now = new Date();
+  return { year: now.getUTCFullYear(), month: now.getUTCMonth() + MONTH_INDEX_OFFSET };
+};
+
+export const getYearMonth = (dateString?: string): YearMonth => {
+  if (!dateString) {
+    return getUtcYearMonth();
+  }
+
+  const [yearStr, monthStr] = dateString.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+
+  if (!Number.isFinite(year) || month < JANUARY || month > DECEMBER) {
+    return getUtcYearMonth();
+  }
+
+  return { year, month };
+};
+
 export const getMonthDateRange = (year: number, month: number): MonthDateRange => {
   const lastDay = new Date(year, month, LAST_DAY_OFFSET).getDate();
   return {
