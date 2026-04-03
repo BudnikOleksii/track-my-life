@@ -22,6 +22,10 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
   sortBy,
   sortOrder,
 }) => {
+  const normalizedCurrencyCode = checkIsCurrencyCode(currencyCode) ? currencyCode : '';
+  const normalizedSortBy = checkIsSortBy(sortBy) ? sortBy : '';
+  const normalizedSortOrder = checkIsSortOrder(sortOrder) ? sortOrder : '';
+
   const params = {
     page,
     pageSize,
@@ -29,9 +33,9 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
     ...(dateFrom && { dateFrom }),
     ...(dateTo && { dateTo }),
     ...(categoryId && { categoryId }),
-    ...(checkIsCurrencyCode(currencyCode) && { currencyCode }),
-    ...(checkIsSortBy(sortBy) && { sortBy }),
-    ...(checkIsSortOrder(sortOrder) && { sortOrder }),
+    ...(normalizedCurrencyCode && { currencyCode: normalizedCurrencyCode }),
+    ...(normalizedSortBy && { sortBy: normalizedSortBy }),
+    ...(normalizedSortOrder && { sortOrder: normalizedSortOrder }),
   };
 
   const [result, categoryList] = await Promise.all([
@@ -51,9 +55,9 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
         dateFrom,
         dateTo,
         categoryId,
-        currencyCode,
-        sortBy,
-        sortOrder,
+        currencyCode: normalizedCurrencyCode,
+        sortBy: normalizedSortBy,
+        sortOrder: normalizedSortOrder,
       }}
     />
   );

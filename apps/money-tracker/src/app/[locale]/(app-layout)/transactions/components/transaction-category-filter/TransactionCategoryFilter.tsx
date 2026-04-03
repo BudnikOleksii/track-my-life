@@ -29,12 +29,15 @@ export const TransactionCategoryFilter: FC<TransactionCategoryFilterProps> = ({
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
 
+  const checkIsCategoryInList = categoryList.some((category) => category.id === categoryId);
+  const selectedValue = checkIsCategoryInList ? categoryId : ALL_CATEGORIES_VALUE;
+
   const handleValueChange = (value: string) => {
     onCategoryChange(value === ALL_CATEGORIES_VALUE ? '' : value);
   };
 
   return (
-    <Select value={categoryId || ALL_CATEGORIES_VALUE} onValueChange={handleValueChange}>
+    <Select value={selectedValue} onValueChange={handleValueChange}>
       <SelectTrigger>
         <SelectValue />
       </SelectTrigger>

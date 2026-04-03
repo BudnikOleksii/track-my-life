@@ -36,7 +36,7 @@ export const parseMonthFromDateRange = (dateFrom: string): YearMonth => {
   const year = Number(yearStr);
   const month = Number(monthStr);
 
-  if (Number.isNaN(year) || Number.isNaN(month)) {
+  if (Number.isNaN(year) || Number.isNaN(month) || month < JANUARY || month > DECEMBER) {
     return getCurrentYearMonth();
   }
 

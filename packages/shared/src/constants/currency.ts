@@ -1,4 +1,4 @@
-import type { CurrencyCode } from '../api/generated';
+import type { CurrencyCode } from '../api/generated/types.gen';
 
 export const CURRENCY_CODE_LIST: CurrencyCode[] = [
   'AED',

@@ -26,35 +26,48 @@ const BADGE_VARIANT_MAP = {
   EXPENSE: 'warning',
 } as const;
 
+const MONTH_INDEX_OFFSET = 1;
+
 const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
+  const partList = dateString.split('-').map(Number);
+  const year = partList[DATE_PART_INDEX] ?? DEFAULT_DATE_PART;
+  const month = partList[MONTH_PART_INDEX] ?? DEFAULT_DATE_PART;
+  const day = partList[DAY_PART_INDEX] ?? DEFAULT_DATE_PART;
+  const date = new Date(year, month - MONTH_INDEX_OFFSET, day);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
 const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
 const DATE_PART_INDEX = 0;
+const MONTH_PART_INDEX = 1;
+const DAY_PART_INDEX = 2;
+const DEFAULT_DATE_PART = 0;
 
 const getDateKey = (dateString: string): string =>
   dateString.split('T')[DATE_PART_INDEX] ?? dateString;
 
-const groupTransactionListByDate = (
-  transactionList: TransactionResponseDto[],
-): Map<string, TransactionResponseDto[]> => {
-  const groupMap = new Map<string, TransactionResponseDto[]>();
+interface DateGroup {
+  dateKey: string;
+  transactionList: TransactionResponseDto[];
+}
+
+const groupTransactionListByDate = (transactionList: TransactionResponseDto[]): DateGroup[] => {
+  const groupList: DateGroup[] = [];
+  let currentGroup: DateGroup | null = null;
 
   for (const transaction of transactionList) {
     const key = getDateKey(transaction.date);
-    const group = groupMap.get(key);
 
-    if (group) {
-      group.push(transaction);
+    if (currentGroup && currentGroup.dateKey === key) {
+      currentGroup.transactionList.push(transaction);
     } else {
-      groupMap.set(key, [transaction]);
+      currentGroup = { dateKey: key, transactionList: [transaction] };
+      groupList.push(currentGroup);
     }
   }
 
-  return groupMap;
+  return groupList;
 };
 
 export const TransactionList: FC<TransactionListProps> = ({ transactionList, onDelete }) => {
@@ -71,18 +84,18 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
     );
   }
 
-  const groupedTransactionMap = groupTransactionListByDate(transactionList);
+  const dateGroupList = groupTransactionListByDate(transactionList);
 
   return (
     <div className={styles.list}>
-      {[...groupedTransactionMap.entries()].map(([dateKey, groupTransactionList]) => (
-        <div key={dateKey} className={styles.dateGroup}>
+      {dateGroupList.map((group, groupIndex) => (
+        <div key={`${group.dateKey}-${String(groupIndex)}`} className={styles.dateGroup}>
           <div className={styles.dateHeader}>
             <Typography variant="body-s" fontWeight="semibold">
-              {formatDate(dateKey)}
+              {formatDate(group.dateKey)}
             </Typography>
           </div>
-          {groupTransactionList.map((transaction) => (
+          {group.transactionList.map((transaction) => (
             <div key={transaction.id} className={styles.row}>
               <div className={styles.info}>
                 <div className={styles.primary}>
