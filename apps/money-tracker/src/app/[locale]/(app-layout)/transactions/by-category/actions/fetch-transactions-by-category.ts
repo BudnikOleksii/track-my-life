@@ -7,7 +7,7 @@ export const fetchTransactionsByCategory = async (
 ): Promise<TransactionsByCategoryResponseDto | null> => {
   const { data } = await rscTransactionApiService.fetchTransactionsByCategory(categoryId);
 
-  if (data && typeof data === 'object' && 'groups' in data) {
+  if (data && typeof data === 'object' && 'groups' in data && Array.isArray(data.groups)) {
     return data as TransactionsByCategoryResponseDto;
   }
 

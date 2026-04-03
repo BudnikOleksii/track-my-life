@@ -70,7 +70,7 @@ export class TransactionApiService extends ApiClient {
   fetchTransactionsByCategory(categoryId: string) {
     return this.request<FindByCategoryResponse>({
       method: 'GET',
-      url: `${this.BASE_URL}/by-category/${categoryId}`,
+      url: `${this.BASE_URL}/by-category/${encodeURIComponent(categoryId)}`,
     });
   }
 }
