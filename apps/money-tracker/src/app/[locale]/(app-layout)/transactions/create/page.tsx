@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { fetchProfile } from '@/actions/fetch-profile';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../components/page-skeleton/PageSkeleton';
@@ -31,9 +32,15 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const createTransactionSkeletonFallback = <PageSkeleton count={6} height={48} />;
 
 const CreateTransactionContent = async () => {
-  const categoryList = await fetchCategoryList();
+  const [categoryList, profile] = await Promise.all([fetchCategoryList(), fetchProfile()]);
 
-  return <TransactionFormPage transaction={null} categoryList={categoryList} />;
+  return (
+    <TransactionFormPage
+      transaction={null}
+      categoryList={categoryList}
+      baseCurrencyCode={profile?.baseCurrencyCode ?? null}
+    />
+  );
 };
 
 const CreateTransactionPage = async () => (

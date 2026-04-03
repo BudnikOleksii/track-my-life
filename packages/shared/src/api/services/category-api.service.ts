@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   CreateCategoryDto,
   TransactionCategoriesControllerCreateResponses,
@@ -28,18 +29,20 @@ export class CategoryApiService extends ApiClient {
     return `${this.BASE_URL}/${id}`;
   }
 
-  fetchCategoryList(query?: FindAllQuery) {
+  fetchCategoryList(query?: FindAllQuery, next?: FetchCacheOptions) {
     return this.request<FindAllResponse>({
       method: 'GET',
       url: this.BASE_URL,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchCategoryById(id: string) {
+  fetchCategoryById(id: string, next?: FetchCacheOptions) {
     return this.request<FindByIdResponse>({
       method: 'GET',
       url: this.getByIdUrl(id),
+      next,
     });
   }
 

@@ -6,16 +6,11 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { getMonthDateRange, parseMonthFromDateRange } from '@track-my-life/shared/src/utils/date';
-import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Pagination } from '@track-my-life/ui/src/components/molecules/pagination/pagination';
-import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
-import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { TransactionFilters } from './constants/transaction-filters';
@@ -57,15 +52,7 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <Typography variant="title-l">{translations('content.title')}</Typography>
-        <Button component={Link} href={PATHS.transactionsCreate} size="sm">
-          <Plus size={16} />
-          {translations('content.createButton')}
-        </Button>
-      </div>
-
+    <>
       <div className={styles.filterSection}>
         <div className={styles.primaryFilterList}>
           <TransactionTypeFilter
@@ -128,6 +115,6 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
           setDeletingTransaction(null);
         }}
       />
-    </div>
+    </>
   );
 };

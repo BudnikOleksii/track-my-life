@@ -107,7 +107,19 @@ export class ApiClient {
       initialRequest,
     );
     const fetchRequestClone = fetchRequest.clone();
-    const rawResponse = await fetch(fetchRequest);
+    const fetchInit: RequestInit & { next?: unknown } = {
+      method: fetchRequest.method,
+      headers: fetchRequest.headers,
+      body: fetchRequest.body,
+      ...(fetchRequest.body ? { duplex: 'half' } : {}),
+    };
+    if (options.next) {
+      fetchInit.next = {
+        ...options.next,
+        tags: options.next.tags ? ([...options.next.tags] as string[]) : undefined,
+      };
+    }
+    const rawResponse = await fetch(fetchRequest.url, fetchInit as RequestInit);
     const response = await applyResponseInterceptorList(
       this.responseInterceptorList,
       rawResponse,

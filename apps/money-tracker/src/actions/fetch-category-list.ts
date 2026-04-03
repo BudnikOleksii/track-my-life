@@ -4,8 +4,13 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscCategoryApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { cache } from 'react';
+
+import { CACHE_TAG } from '@/constants/cache-tag';
 
 const MAX_PAGE_SIZE = 100;
+
+const CATEGORIES_CACHE = { revalidate: 3600, tags: [CACHE_TAG.CATEGORIES] } as const;
 
 const checkIsCategoryListResponse = (value: unknown): value is CategoryListResponseDto =>
   typeof value === 'object' &&
@@ -13,12 +18,15 @@ const checkIsCategoryListResponse = (value: unknown): value is CategoryListRespo
   'data' in value &&
   Array.isArray((value as Record<string, unknown>).data);
 
-export const fetchCategoryList = async (): Promise<CategoryResponseDto[]> => {
-  const { data } = await rscCategoryApiService.fetchCategoryList({ pageSize: MAX_PAGE_SIZE });
+export const fetchCategoryList = cache(async (): Promise<CategoryResponseDto[]> => {
+  const { data } = await rscCategoryApiService.fetchCategoryList(
+    { pageSize: MAX_PAGE_SIZE },
+    CATEGORIES_CACHE,
+  );
 
   if (checkIsCategoryListResponse(data)) {
     return data.data;
   }
 
   return [];
-};
+});

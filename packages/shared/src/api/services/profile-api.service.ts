@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   ChangePasswordDto,
   DeleteAccountDto,
@@ -22,10 +23,11 @@ export class ProfileApiService extends ApiClient {
     PASSWORD: `${this.BASE_URL}/password`,
   } as const;
 
-  fetchProfile() {
+  fetchProfile(next?: FetchCacheOptions) {
     return this.request<GetProfileResponse>({
       method: 'GET',
       url: this.BASE_URL,
+      next,
     });
   }
 

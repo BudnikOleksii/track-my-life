@@ -20,18 +20,20 @@ import { createTransaction } from '../../../actions/create-transaction';
 import { updateTransaction } from '../../../actions/update-transaction';
 import { transactionFormSchema } from '../../../constants/transaction-form-schema';
 
-const DEFAULT_CURRENCY = 'USD';
+const FALLBACK_CURRENCY = 'USD';
 const DATE_PART_INDEX = 0;
 
 interface UseTransactionFormPageParams {
   transaction: TransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
+  baseCurrencyCode: CurrencyCode | null;
   translations: (key: string) => string;
 }
 
 export const useTransactionFormPage = ({
   transaction,
   categoryList,
+  baseCurrencyCode,
   translations,
 }: UseTransactionFormPageParams) => {
   const router = useRouter();
@@ -50,7 +52,7 @@ export const useTransactionFormPage = ({
       categoryId: transaction?.categoryId ?? '',
       type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
       amount: transaction?.amount ?? '',
-      currencyCode: transaction?.currencyCode ?? DEFAULT_CURRENCY,
+      currencyCode: transaction?.currencyCode ?? baseCurrencyCode ?? FALLBACK_CURRENCY,
       date: transaction?.date ? transaction.date.split('T')[DATE_PART_INDEX] : '',
       description: transaction?.description ?? '',
     },

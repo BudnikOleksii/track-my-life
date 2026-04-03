@@ -3,16 +3,11 @@
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
-import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Pagination } from '@track-my-life/ui/src/components/molecules/pagination/pagination';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 
-import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { RecurringTransactionFilterStatus } from './constants/recurring-transaction-list';
@@ -68,15 +63,7 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
   );
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <Typography variant="title-l">{translations('content.title')}</Typography>
-        <Button component={Link} href={PATHS.recurringTransactionsCreate} size="sm">
-          <Plus size={16} />
-          {translations('content.createButton')}
-        </Button>
-      </div>
-
+    <>
       <div className={styles.filters}>
         <RecurringTransactionStatusFilter
           value={filters.status}
@@ -116,6 +103,6 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
           setDeletingTransaction(null);
         }}
       />
-    </div>
+    </>
   );
 };

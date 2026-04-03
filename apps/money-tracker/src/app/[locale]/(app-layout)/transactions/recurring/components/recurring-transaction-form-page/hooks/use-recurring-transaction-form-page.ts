@@ -21,7 +21,7 @@ import { createRecurringTransaction } from '../../../actions/create-recurring-tr
 import { updateRecurringTransaction } from '../../../actions/update-recurring-transaction';
 import { recurringTransactionFormSchema } from '../../../constants/recurring-transaction-form-schema';
 
-const DEFAULT_CURRENCY = 'USD';
+const FALLBACK_CURRENCY = 'USD';
 const DEFAULT_INTERVAL = 1;
 const DEFAULT_FREQUENCY = 'MONTHLY';
 const DATE_PART_INDEX = 0;
@@ -29,12 +29,14 @@ const DATE_PART_INDEX = 0;
 interface UseRecurringTransactionFormPageParams {
   recurringTransaction: RecurringTransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
+  baseCurrencyCode: CurrencyCode | null;
   translations: (key: string) => string;
 }
 
 export const useRecurringTransactionFormPage = ({
   recurringTransaction,
   categoryList,
+  baseCurrencyCode,
   translations,
 }: UseRecurringTransactionFormPageParams) => {
   const router = useRouter();
@@ -53,7 +55,7 @@ export const useRecurringTransactionFormPage = ({
       categoryId: recurringTransaction?.categoryId ?? '',
       type: recurringTransaction?.type ?? TRANSACTION_TYPE.EXPENSE,
       amount: recurringTransaction?.amount ?? '',
-      currencyCode: recurringTransaction?.currencyCode ?? DEFAULT_CURRENCY,
+      currencyCode: recurringTransaction?.currencyCode ?? baseCurrencyCode ?? FALLBACK_CURRENCY,
       frequency: recurringTransaction?.frequency ?? DEFAULT_FREQUENCY,
       interval: recurringTransaction?.interval ?? DEFAULT_INTERVAL,
       startDate: recurringTransaction?.startDate

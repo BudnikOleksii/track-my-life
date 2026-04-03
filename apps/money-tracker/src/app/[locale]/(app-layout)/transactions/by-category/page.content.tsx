@@ -26,11 +26,7 @@ export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageCon
   const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <Typography variant="title-l">{translations('content.title')}</Typography>
-      </div>
-
+    <>
       {categoryList.length === EMPTY_LIST_LENGTH ? (
         <div className={styles.empty}>
           <FolderOpen size={48} className={styles.emptyIcon} />
@@ -61,6 +57,6 @@ export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageCon
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };

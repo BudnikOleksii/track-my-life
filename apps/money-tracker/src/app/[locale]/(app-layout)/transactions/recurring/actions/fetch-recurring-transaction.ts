@@ -1,15 +1,26 @@
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscRecurringTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { cache } from 'react';
 
-export const fetchRecurringTransaction = async (
-  id: string,
-): Promise<RecurringTransactionResponseDto | null> => {
-  const { data } = await rscRecurringTransactionApiService.fetchRecurringTransactionById(id);
+import { CACHE_TAG } from '@/constants/cache-tag';
 
-  if (data && typeof data === 'object' && 'id' in data) {
-    return data as RecurringTransactionResponseDto;
-  }
+const RECURRING_TRANSACTIONS_CACHE = {
+  revalidate: 3600,
+  tags: [CACHE_TAG.RECURRING_TRANSACTIONS],
+} as const;
 
-  return null;
-};
+export const fetchRecurringTransaction = cache(
+  async (id: string): Promise<RecurringTransactionResponseDto | null> => {
+    const { data } = await rscRecurringTransactionApiService.fetchRecurringTransactionById(
+      id,
+      RECURRING_TRANSACTIONS_CACHE,
+    );
+
+    if (data && typeof data === 'object' && 'id' in data) {
+      return data as RecurringTransactionResponseDto;
+    }
+
+    return null;
+  },
+);

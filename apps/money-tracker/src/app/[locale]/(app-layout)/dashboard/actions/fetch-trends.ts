@@ -6,6 +6,11 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { cache } from 'react';
+
+import { CACHE_TAG } from '@/constants/cache-tag';
+
+const ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] } as const;
 
 interface FetchTrendsParams {
   currencyCode: CurrencyCode;
@@ -21,12 +26,14 @@ const checkIsTrendsResponse = (value: unknown): value is TrendsResponseDto =>
   'periods' in value &&
   Array.isArray((value as Record<string, unknown>).periods);
 
-export const fetchTrends = async (params: FetchTrendsParams): Promise<TrendsResponseDto | null> => {
-  const { data } = await rscTransactionsAnalyticsApiService.fetchTrends(params);
+export const fetchTrends = cache(
+  async (params: FetchTrendsParams): Promise<TrendsResponseDto | null> => {
+    const { data } = await rscTransactionsAnalyticsApiService.fetchTrends(params, ANALYTICS_CACHE);
 
-  if (checkIsTrendsResponse(data)) {
-    return data;
-  }
+    if (checkIsTrendsResponse(data)) {
+      return data;
+    }
 
-  return null;
-};
+    return null;
+  },
+);

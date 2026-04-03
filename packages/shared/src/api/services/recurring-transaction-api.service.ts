@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   CreateRecurringTransactionDto,
   RecurringTransactionsControllerCreateResponses,
@@ -32,18 +33,20 @@ export class RecurringTransactionApiService extends ApiClient {
     return `${this.BASE_URL}/${id}`;
   }
 
-  fetchRecurringTransactionList(query?: FindAllQuery) {
+  fetchRecurringTransactionList(query?: FindAllQuery, next?: FetchCacheOptions) {
     return this.request<FindAllResponse>({
       method: 'GET',
       url: this.BASE_URL,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchRecurringTransactionById(id: string) {
+  fetchRecurringTransactionById(id: string, next?: FetchCacheOptions) {
     return this.request<FindByIdResponse>({
       method: 'GET',
       url: this.getByIdUrl(id),
+      next,
     });
   }
 

@@ -1,8 +1,9 @@
 'use server';
 
 import { recurringTransactionApiService } from '@track-my-life/shared/src/api/server-api';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
+import { CACHE_TAG } from '@/constants/cache-tag';
 import { PATHS } from '@/constants/paths';
 
 export const pauseRecurringTransaction = async (id: string) => {
@@ -12,6 +13,7 @@ export const pauseRecurringTransaction = async (id: string) => {
     return null;
   }
 
+  revalidateTag(CACHE_TAG.RECURRING_TRANSACTIONS, 'max');
   revalidatePath(PATHS.recurringTransactions);
   return { success: true };
 };

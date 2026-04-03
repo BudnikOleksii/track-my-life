@@ -16,7 +16,6 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 import { ChangePasswordForm } from './components/change-password-form/ChangePasswordForm';
 import { DeleteAccountSection } from './components/delete-account-section/DeleteAccountSection';
 import { ProfileForm } from './components/profile-form/ProfileForm';
-import styles from './page.module.scss';
 
 interface SettingsPageContentProps {
   profile: ProfileResponseDto;
@@ -26,9 +25,7 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({ profile }) =
   const translations = useTranslations(I18N_NAMESPACE.settingsPage);
 
   return (
-    <div className={styles.container}>
-      <Typography variant="title-l">{translations('content.title')}</Typography>
-
+    <>
       <FieldSet>
         <FieldLegend variant="label">{translations('content.profileSection')}</FieldLegend>
         <FieldGroup>
@@ -50,6 +47,6 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({ profile }) =
           <DeleteAccountSection />
         </FieldGroup>
       </FieldSet>
-    </div>
+    </>
   );
 };
