@@ -1,5 +1,7 @@
 import type { FC } from 'react';
 
+import { getYearMonth } from '@track-my-life/shared/src/utils/date';
+
 import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchDailySpending } from '../../actions/fetch-daily-spending';
@@ -9,18 +11,8 @@ interface DailySpendingChartServerProps {
   filters: DashboardFilters;
 }
 
-const MONTH_OFFSET = 1;
-
-const extractYearMonth = (dateString: string): { year: number; month: number } => {
-  const date = dateString ? new Date(dateString) : new Date();
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth() + MONTH_OFFSET,
-  };
-};
-
 export const DailySpendingChartServer: FC<DailySpendingChartServerProps> = async ({ filters }) => {
-  const { year, month } = extractYearMonth(filters.dateTo);
+  const { year, month } = getYearMonth(filters.dateTo);
 
   const data = await fetchDailySpending({
     year,
