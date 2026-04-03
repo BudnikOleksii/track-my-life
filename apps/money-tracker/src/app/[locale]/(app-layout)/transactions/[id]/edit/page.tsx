@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { fetchProfile } from '@/actions/fetch-profile';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
@@ -34,16 +35,23 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const editTransactionSkeletonFallback = <PageSkeleton count={6} height={48} />;
 
 const EditTransactionContent = async ({ id }: { id: string }) => {
-  const [transaction, categoryList] = await Promise.all([
+  const [transaction, categoryList, profile] = await Promise.all([
     fetchTransaction(id),
     fetchCategoryList(),
+    fetchProfile(),
   ]);
 
   if (!transaction) {
     notFound();
   }
 
-  return <TransactionFormPage transaction={transaction} categoryList={categoryList} />;
+  return (
+    <TransactionFormPage
+      transaction={transaction}
+      categoryList={categoryList}
+      baseCurrencyCode={profile?.baseCurrencyCode ?? null}
+    />
+  );
 };
 
 const EditTransactionPage = async (props: Props) => {

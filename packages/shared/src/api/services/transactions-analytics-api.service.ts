@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   TransactionsAnalyticsControllerGetCategoryBreakdownData,
   TransactionsAnalyticsControllerGetCategoryBreakdownResponses,
@@ -43,43 +44,48 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     DAILY_SPENDING: `${this.BASE_URL}/daily-spending`,
   } as const;
 
-  fetchSummary(query: SummaryQuery) {
+  fetchSummary(query: SummaryQuery, next?: FetchCacheOptions) {
     return this.request<SummaryResponse>({
       method: 'GET',
       url: this.ENDPOINTS.SUMMARY,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchCategoryBreakdown(query: CategoryBreakdownQuery) {
+  fetchCategoryBreakdown(query: CategoryBreakdownQuery, next?: FetchCacheOptions) {
     return this.request<CategoryBreakdownResponse>({
       method: 'GET',
       url: this.ENDPOINTS.CATEGORY_BREAKDOWN,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchTrends(query: TrendsQuery) {
+  fetchTrends(query: TrendsQuery, next?: FetchCacheOptions) {
     return this.request<TrendsResponse>({
       method: 'GET',
       url: this.ENDPOINTS.TRENDS,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchTopCategories(query: TopCategoriesQuery) {
+  fetchTopCategories(query: TopCategoriesQuery, next?: FetchCacheOptions) {
     return this.request<TopCategoriesResponse>({
       method: 'GET',
       url: this.ENDPOINTS.TOP_CATEGORIES,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchDailySpending(query: DailySpendingQuery) {
+  fetchDailySpending(query: DailySpendingQuery, next?: FetchCacheOptions) {
     return this.request<DailySpendingResponse>({
       method: 'GET',
       url: this.ENDPOINTS.DAILY_SPENDING,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 }

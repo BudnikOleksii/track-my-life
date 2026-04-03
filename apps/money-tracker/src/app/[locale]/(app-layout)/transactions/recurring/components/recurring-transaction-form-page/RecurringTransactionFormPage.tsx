@@ -2,6 +2,7 @@
 
 import type {
   CategoryResponseDto,
+  CurrencyCode,
   RecurringTransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
@@ -37,11 +38,13 @@ import styles from './RecurringTransactionFormPage.module.scss';
 interface RecurringTransactionFormPageProps {
   recurringTransaction: RecurringTransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
+  baseCurrencyCode: CurrencyCode | null;
 }
 
 export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps> = ({
   recurringTransaction,
   categoryList,
+  baseCurrencyCode,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsFormPage);
   const router = useRouter();
@@ -56,7 +59,12 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
-  } = useRecurringTransactionFormPage({ recurringTransaction, categoryList, translations });
+  } = useRecurringTransactionFormPage({
+    recurringTransaction,
+    categoryList,
+    baseCurrencyCode,
+    translations,
+  });
 
   return (
     <div className={styles.page}>
@@ -138,28 +146,10 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
         </Field>
 
         <Field>
-          <FieldLabel>{translations('content.currencyLabel')}</FieldLabel>
-          <Controller
-            name="currencyCode"
-            control={control}
-            render={({ field }) => {
-              const handleCurrencyChange = field.onChange;
-              return (
-                <Select value={field.value} onValueChange={handleCurrencyChange}>
-                  <SelectTrigger error={Boolean(errors.currencyCode)}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                    <SelectItem value="UAH">UAH</SelectItem>
-                  </SelectContent>
-                </Select>
-              );
-            }}
-          />
-          <FieldError errors={errors.currencyCode ? [errors.currencyCode] : undefined} />
+          <FieldLabel htmlFor="recurring-transaction-currency">
+            {translations('content.currencyLabel')}
+          </FieldLabel>
+          <Input id="recurring-transaction-currency" disabled {...register('currencyCode')} />
         </Field>
 
         <Field>

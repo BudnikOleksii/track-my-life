@@ -2,6 +2,7 @@
 
 import type {
   CategoryResponseDto,
+  CurrencyCode,
   TransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
@@ -37,11 +38,13 @@ import styles from './TransactionFormPage.module.scss';
 interface TransactionFormPageProps {
   transaction: TransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
+  baseCurrencyCode: CurrencyCode | null;
 }
 
 export const TransactionFormPage: FC<TransactionFormPageProps> = ({
   transaction,
   categoryList,
+  baseCurrencyCode,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsFormPage);
   const router = useRouter();
@@ -56,7 +59,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
-  } = useTransactionFormPage({ transaction, categoryList, translations });
+  } = useTransactionFormPage({ transaction, categoryList, baseCurrencyCode, translations });
 
   return (
     <div className={styles.page}>
@@ -138,28 +141,10 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
         </Field>
 
         <Field>
-          <FieldLabel>{translations('content.currencyLabel')}</FieldLabel>
-          <Controller
-            name="currencyCode"
-            control={control}
-            render={({ field }) => {
-              const handleCurrencyChange = field.onChange;
-              return (
-                <Select value={field.value} onValueChange={handleCurrencyChange}>
-                  <SelectTrigger error={Boolean(errors.currencyCode)}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                    <SelectItem value="UAH">UAH</SelectItem>
-                  </SelectContent>
-                </Select>
-              );
-            }}
-          />
-          <FieldError errors={errors.currencyCode ? [errors.currencyCode] : undefined} />
+          <FieldLabel htmlFor="transaction-currency">
+            {translations('content.currencyLabel')}
+          </FieldLabel>
+          <Input id="transaction-currency" disabled {...register('currencyCode')} />
         </Field>
 
         <Field>

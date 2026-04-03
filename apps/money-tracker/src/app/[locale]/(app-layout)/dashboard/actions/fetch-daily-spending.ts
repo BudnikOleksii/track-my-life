@@ -5,6 +5,11 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { cache } from 'react';
+
+import { CACHE_TAG } from '@/constants/cache-tag';
+
+const ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] } as const;
 
 interface FetchDailySpendingParams {
   year: number;
@@ -19,14 +24,17 @@ const checkIsDailySpendingResponse = (value: unknown): value is DailySpendingRes
   'days' in value &&
   Array.isArray((value as Record<string, unknown>).days);
 
-export const fetchDailySpending = async (
-  params: FetchDailySpendingParams,
-): Promise<DailySpendingResponseDto | null> => {
-  const { data } = await rscTransactionsAnalyticsApiService.fetchDailySpending(params);
+export const fetchDailySpending = cache(
+  async (params: FetchDailySpendingParams): Promise<DailySpendingResponseDto | null> => {
+    const { data } = await rscTransactionsAnalyticsApiService.fetchDailySpending(
+      params,
+      ANALYTICS_CACHE,
+    );
 
-  if (checkIsDailySpendingResponse(data)) {
-    return data;
-  }
+    if (checkIsDailySpendingResponse(data)) {
+      return data;
+    }
 
-  return null;
-};
+    return null;
+  },
+);

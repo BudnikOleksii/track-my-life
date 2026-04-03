@@ -5,6 +5,11 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { cache } from 'react';
+
+import { CACHE_TAG } from '@/constants/cache-tag';
+
+const ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] } as const;
 
 interface FetchCategoryBreakdownParams {
   currencyCode: CurrencyCode;
@@ -19,14 +24,17 @@ const checkIsCategoryBreakdownResponse = (value: unknown): value is CategoryBrea
   'breakdown' in value &&
   Array.isArray((value as Record<string, unknown>).breakdown);
 
-export const fetchCategoryBreakdown = async (
-  params: FetchCategoryBreakdownParams,
-): Promise<CategoryBreakdownResponseDto | null> => {
-  const { data } = await rscTransactionsAnalyticsApiService.fetchCategoryBreakdown(params);
+export const fetchCategoryBreakdown = cache(
+  async (params: FetchCategoryBreakdownParams): Promise<CategoryBreakdownResponseDto | null> => {
+    const { data } = await rscTransactionsAnalyticsApiService.fetchCategoryBreakdown(
+      params,
+      ANALYTICS_CACHE,
+    );
 
-  if (checkIsCategoryBreakdownResponse(data)) {
-    return data;
-  }
+    if (checkIsCategoryBreakdownResponse(data)) {
+      return data;
+    }
 
-  return null;
-};
+    return null;
+  },
+);

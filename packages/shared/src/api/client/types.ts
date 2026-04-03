@@ -7,12 +7,18 @@ export interface ApiClientConfig {
   defaultHeaders?: Record<string, string>;
 }
 
+export interface FetchCacheOptions {
+  revalidate?: number;
+  tags?: readonly string[];
+}
+
 export interface RequestOptions {
   method: HttpMethod;
   url: string;
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, string>;
+  next?: FetchCacheOptions;
 }
 
 export interface ApiResponse<TData> {

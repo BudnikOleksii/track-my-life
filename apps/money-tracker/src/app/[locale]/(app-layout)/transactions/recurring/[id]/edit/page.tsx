@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { fetchProfile } from '@/actions/fetch-profile';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../../components/page-skeleton/PageSkeleton';
@@ -34,9 +35,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const editRecurringTransactionSkeletonFallback = <PageSkeleton count={9} height={48} />;
 
 const EditRecurringTransactionContent = async ({ id }: { id: string }) => {
-  const [recurringTransaction, categoryList] = await Promise.all([
+  const [recurringTransaction, categoryList, profile] = await Promise.all([
     fetchRecurringTransaction(id),
     fetchCategoryList(),
+    fetchProfile(),
   ]);
 
   if (!recurringTransaction) {
@@ -47,6 +49,7 @@ const EditRecurringTransactionContent = async ({ id }: { id: string }) => {
     <RecurringTransactionFormPage
       recurringTransaction={recurringTransaction}
       categoryList={categoryList}
+      baseCurrencyCode={profile?.baseCurrencyCode ?? null}
     />
   );
 };

@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   CreateTransactionDto,
   TransactionsControllerCreateResponses,
@@ -29,18 +30,20 @@ export class TransactionApiService extends ApiClient {
     return `${this.BASE_URL}/${id}`;
   }
 
-  fetchTransactionList(query?: FindAllQuery) {
+  fetchTransactionList(query?: FindAllQuery, next?: FetchCacheOptions) {
     return this.request<FindAllResponse>({
       method: 'GET',
       url: this.BASE_URL,
       query: query as Record<string, unknown>,
+      next,
     });
   }
 
-  fetchTransactionById(id: string) {
+  fetchTransactionById(id: string, next?: FetchCacheOptions) {
     return this.request<FindByIdResponse>({
       method: 'GET',
       url: this.getByIdUrl(id),
+      next,
     });
   }
 
@@ -67,10 +70,11 @@ export class TransactionApiService extends ApiClient {
     });
   }
 
-  fetchTransactionsByCategory(categoryId: string) {
+  fetchTransactionsByCategory(categoryId: string, next?: FetchCacheOptions) {
     return this.request<FindByCategoryResponse>({
       method: 'GET',
       url: `${this.BASE_URL}/by-category/${encodeURIComponent(categoryId)}`,
+      next,
     });
   }
 }

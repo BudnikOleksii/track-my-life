@@ -4,14 +4,12 @@ import type { TransactionGroupDto } from '@track-my-life/shared/src/api/generate
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { ArrowLeft, FolderOpen } from 'lucide-react';
+import { FolderOpen } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -43,16 +41,7 @@ export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupLis
   const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <Link href={PATHS.transactionsByCategory} className={styles.backLink}>
-          <ArrowLeft size={18} />
-          <Typography variant="body-m" fontWeight="medium" tag="span">
-            {translations('content.backToCategories')}
-          </Typography>
-        </Link>
-      </div>
-
+    <>
       {groupList.length === EMPTY_LIST_LENGTH ? (
         <div className={styles.empty}>
           <FolderOpen size={48} className={styles.emptyIcon} />
@@ -116,6 +105,6 @@ export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupLis
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };
