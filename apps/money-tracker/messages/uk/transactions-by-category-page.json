@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "title": "Транзакції за категоріями - Track My Money",
+    "detailTitle": "Транзакції категорії - Track My Money",
+    "description": "Перегляд транзакцій згрупованих за категоріями"
+  },
+  "content": {
+    "title": "Транзакції за категоріями",
+    "noCategories": "Категорії не знайдено",
+    "noTransactions": "Транзакції для цієї категорії не знайдено",
+    "directTransactions": "Прямі транзакції",
+    "backToCategories": "Назад до категорій",
+    "incomeType": "Дохід",
+    "expenseType": "Витрата"
+  }
+}
