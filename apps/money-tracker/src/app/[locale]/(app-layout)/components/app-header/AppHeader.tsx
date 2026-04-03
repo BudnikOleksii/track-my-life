@@ -17,7 +17,8 @@ import styles from './AppHeader.module.scss';
 
 const PATH_TO_LABEL_KEY: Record<string, string> = {
   [PATHS.dashboard]: 'labels.dashboard',
-  [PATHS.transactions]: 'labels.transactions',
+  [PATHS.transactions]: 'labels.transactionsByDate',
+  [PATHS.transactionsByCategory]: 'labels.transactionsByCategory',
   [PATHS.recurringTransactions]: 'labels.recurringTransactions',
   [PATHS.categories]: 'labels.categories',
   [PATHS.budgets]: 'labels.budgets',
@@ -29,9 +30,12 @@ export const AppHeader: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.navigation);
   const pathname = usePathname();
 
-  const matchedPath = Object.keys(PATH_TO_LABEL_KEY).find(
-    (path) => pathname === path || pathname.startsWith(`${path}/`),
-  );
+  const matchedPath = Object.keys(PATH_TO_LABEL_KEY)
+    .filter((path) => pathname === path || pathname.startsWith(`${path}/`))
+    .reduce<string | undefined>(
+      (longest, path) => (!longest || path.length > longest.length ? path : longest),
+      undefined,
+    );
   const labelKey = matchedPath ? PATH_TO_LABEL_KEY[matchedPath] : undefined;
   const pageTitle = labelKey ? translations(labelKey) : '';
 

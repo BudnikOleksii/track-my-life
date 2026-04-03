@@ -1,3 +1,5 @@
+## MODIFIED Requirements
+
 ### Requirement: Sidebar navigation links
 
 The sidebar SHALL display navigation links to: Dashboard, Transactions (collapsible group), Categories, Budgets, and Settings. The Transactions group SHALL contain three child links: By Date, By Category, and Recurring. Each link SHALL display an icon and a label (when sidebar is expanded). The Transactions parent item SHALL use the ArrowLeftRight icon. Child items: By Date SHALL use the CalendarDays icon, By Category SHALL use the LayoutList icon, Recurring SHALL use the Repeat icon.
@@ -79,50 +81,3 @@ Recurring transactions SHALL be accessible at `/transactions/recurring` instead 
 
 - **WHEN** user navigates to `/transactions/recurring/{id}/edit`
 - **THEN** the edit recurring transaction form page is displayed
-
-### Requirement: Sidebar collapse toggle
-
-The sidebar SHALL provide a toggle control to collapse/expand the sidebar on desktop viewports.
-
-#### Scenario: User collapses sidebar
-
-- **WHEN** user clicks the collapse toggle on desktop
-- **THEN** the sidebar transitions from expanded (240px with labels) to collapsed (64px icons-only) state
-
-#### Scenario: User expands sidebar
-
-- **WHEN** user clicks the expand toggle on a collapsed sidebar
-- **THEN** the sidebar transitions from collapsed to expanded state with labels visible
-
-### Requirement: Mobile navigation
-
-On mobile viewports (<768px), the sidebar SHALL be hidden by default and togglable via a hamburger button in the header.
-
-#### Scenario: Sidebar hidden on mobile
-
-- **WHEN** viewport width is <768px
-- **THEN** the sidebar is not visible and a hamburger menu button appears in the header
-
-#### Scenario: Mobile sidebar opens as overlay
-
-- **WHEN** user taps the hamburger button on mobile
-- **THEN** the sidebar opens as an overlay on top of the content with a backdrop
-
-#### Scenario: Mobile sidebar closes on navigation
-
-- **WHEN** user taps a navigation link in the mobile sidebar
-- **THEN** the sidebar closes and the user navigates to the selected page
-
-### Requirement: User menu in header
-
-The user menu dropdown SHALL provide a sign-out action.
-
-#### Scenario: User opens menu
-
-- **WHEN** user clicks the avatar in the header
-- **THEN** a dropdown menu appears with at least a "Sign out" option
-
-#### Scenario: User signs out
-
-- **WHEN** user clicks "Sign out" in the dropdown
-- **THEN** the user is logged out and redirected to the sign-in page
