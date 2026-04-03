@@ -15,15 +15,15 @@ export const PATHS = {
   settings: '/settings',
 } as const;
 
-export const getCategoriesEditPath = (id: string) => `/categories/${id}/edit` as const;
+export const getCategoriesEditPath = (id: string) => `${PATHS.categories}/${id}/edit` as const;
 
-export const getTransactionsEditPath = (id: string) => `/transactions/${id}/edit` as const;
+export const getTransactionsEditPath = (id: string) => `${PATHS.transactions}/${id}/edit` as const;
 
 export const getRecurringTransactionsEditPath = (id: string) =>
-  `/recurring-transactions/${id}/edit` as const;
+  `${PATHS.recurringTransactions}/${id}/edit` as const;
 
 export const getTransactionsByCategoryPath = (categoryId: string) =>
-  `/transactions/by-category/${categoryId}` as const;
+  `${PATHS.transactionsByCategory}/${categoryId}` as const;
 
 export const getRecurringTransactionsDetailPath = (id: string) =>
-  `/recurring-transactions/${id}` as const;
+  `${PATHS.recurringTransactions}/${id}` as const;

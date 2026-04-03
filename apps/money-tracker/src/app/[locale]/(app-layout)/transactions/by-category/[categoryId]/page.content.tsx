@@ -5,12 +5,14 @@ import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { ArrowLeft, FolderOpen } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { PATHS } from '@/constants/paths';
+import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './page.module.scss';
@@ -18,11 +20,6 @@ import styles from './page.module.scss';
 interface CategoryDetailContentProps {
   groupList: TransactionGroupDto[];
 }
-
-const BADGE_VARIANT_MAP = {
-  INCOME: 'success',
-  EXPENSE: 'warning',
-} as const;
 
 const MONTH_INDEX_OFFSET = 1;
 const DATE_PART_INDEX = 0;
@@ -41,8 +38,6 @@ const formatDate = (dateString: string): string => {
   const date = new Date(year, month - MONTH_INDEX_OFFSET, day);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
-
-const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
 export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupList }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
@@ -97,7 +92,7 @@ export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupLis
                         <Typography variant="body-m" className={styles.amount}>
                           {formatAmount(transaction.amount, transaction.currencyCode)}
                         </Typography>
-                        <Badge variant={BADGE_VARIANT_MAP[transaction.type]}>
+                        <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
                           {translations(
                             `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
                           )}

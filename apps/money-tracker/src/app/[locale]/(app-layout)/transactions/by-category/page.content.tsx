@@ -7,11 +7,11 @@ import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { cn } from '@track-my-life/ui/src/lib/utils';
 import { ChevronRight, FolderOpen } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { getTransactionsByCategoryPath } from '@/constants/paths';
+import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './page.module.scss';
@@ -19,11 +19,6 @@ import styles from './page.module.scss';
 interface TransactionsByCategoryPageContentProps {
   categoryList: CategoryResponseDto[];
 }
-
-const BADGE_VARIANT_MAP = {
-  INCOME: 'success',
-  EXPENSE: 'warning',
-} as const;
 
 export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageContentProps> = ({
   categoryList,
@@ -55,13 +50,13 @@ export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageCon
                 <Typography variant="body-m" fontWeight="medium">
                   {category.name}
                 </Typography>
-                <Badge variant={BADGE_VARIANT_MAP[category.type]}>
+                <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[category.type]}>
                   {translations(
                     `content.${category.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
                   )}
                 </Badge>
               </div>
-              <ChevronRight size={18} className={cn(styles.chevron)} />
+              <ChevronRight size={18} className={styles.chevron} />
             </Link>
           ))}
         </div>
