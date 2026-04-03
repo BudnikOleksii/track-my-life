@@ -10,17 +10,21 @@ interface DailySpendingChartServerProps {
 }
 
 const MONTH_OFFSET = 1;
+const YEAR_INDEX = 0;
+const MONTH_INDEX = 1;
 
-const extractYearMonth = (dateString: string): { year: number; month: number } => {
-  const date = dateString ? new Date(dateString) : new Date();
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth() + MONTH_OFFSET,
-  };
+const getYearMonth = (dateString?: string): { year: number; month: number } => {
+  if (!dateString) {
+    const now = new Date();
+    return { year: now.getUTCFullYear(), month: now.getUTCMonth() + MONTH_OFFSET };
+  }
+
+  const partList = dateString.split('-');
+  return { year: Number(partList[YEAR_INDEX]), month: Number(partList[MONTH_INDEX]) };
 };
 
 export const DailySpendingChartServer: FC<DailySpendingChartServerProps> = async ({ filters }) => {
-  const { year, month } = extractYearMonth(filters.dateTo);
+  const { year, month } = getYearMonth(filters.dateTo);
 
   const data = await fetchDailySpending({
     year,
