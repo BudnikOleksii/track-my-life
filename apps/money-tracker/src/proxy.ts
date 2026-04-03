@@ -13,7 +13,7 @@ const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:8080';
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
-const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail];
+const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail, PATHS.homePage];
 
 const ONBOARDING_COMPLETED_COOKIE = 'onboarding_completed';
 

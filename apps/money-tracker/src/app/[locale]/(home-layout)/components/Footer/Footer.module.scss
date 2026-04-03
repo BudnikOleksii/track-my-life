@@ -1,0 +1,47 @@
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.footer {
+  padding: var(--spacing-8) var(--spacing-6);
+
+  border-top: 1px solid var(--outline-variant);
+}
+
+.container {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+
+  max-width: 72rem;
+
+  margin: 0 auto;
+
+  @include media-m {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.nav {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-6);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--on-surface-variant);
+
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.copyright {
+  color: var(--on-surface-variant);
+}

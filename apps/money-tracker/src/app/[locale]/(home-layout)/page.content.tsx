@@ -1,31 +1,21 @@
+import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
 import type { FC } from 'react';
 
-import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@track-my-life/ui/src/components/molecules/card/card';
-
+import { AdvantagesSection } from './components/AdvantagesSection/AdvantagesSection';
+import { FaqSection } from './components/FaqSection/FaqSection';
+import { HeroSection } from './components/HeroSection/HeroSection';
+import { ReviewsSection } from './components/ReviewsSection/ReviewsSection';
 import styles from './page.module.scss';
 
 interface HomePageContentProps {
-  translations: (key: string) => string;
+  translations: TranslateFn;
 }
 
 export const HomePageContent: FC<HomePageContentProps> = ({ translations }) => (
   <main className={styles.main}>
-    <Card className={styles.card}>
-      <CardHeader>
-        <CardTitle>{translations('content.title')}</CardTitle>
-        <CardDescription>{translations('content.description')}</CardDescription>
-      </CardHeader>
-      <CardContent className={styles.cardContent}>
-        <Button>{translations('content.getStarted')}</Button>
-        <Button variant="outline">{translations('content.learnMore')}</Button>
-      </CardContent>
-    </Card>
+    <HeroSection translations={translations} />
+    <AdvantagesSection translations={translations} />
+    <ReviewsSection translations={translations} />
+    <FaqSection translations={translations} />
   </main>
 );

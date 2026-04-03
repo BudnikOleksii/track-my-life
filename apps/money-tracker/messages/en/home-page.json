@@ -1,12 +1,90 @@
 {
   "metadata": {
-    "title": "Home Page",
-    "description": "Welcome to your Track My Money home page"
+    "title": "Track My Money — Personal Finance Tracker",
+    "description": "Take control of your finances with smart tracking, budgeting, and insights"
   },
   "content": {
-    "title": "Home Page",
-    "description": "Welcome to Track My Money",
-    "getStarted": "Get Started",
-    "learnMore": "Learn More"
+    "hero": {
+      "title": "Take Control of Your Finances",
+      "subtitle": "Track expenses, manage budgets, and gain insights into your spending habits — all in one place.",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More"
+    },
+    "advantages": {
+      "title": "Why Track My Money?",
+      "items": {
+        "tracking": {
+          "icon": "📊",
+          "title": "Smart Tracking",
+          "description": "Automatically categorize and track every transaction with precision and ease."
+        },
+        "budgets": {
+          "icon": "💰",
+          "title": "Budget Planning",
+          "description": "Set monthly budgets by category and get notified before you overspend."
+        },
+        "insights": {
+          "icon": "📈",
+          "title": "Financial Insights",
+          "description": "Visualize your spending patterns and discover opportunities to save more."
+        },
+        "recurring": {
+          "icon": "🔄",
+          "title": "Recurring Transactions",
+          "description": "Never miss a subscription or bill — automate tracking for regular payments."
+        }
+      }
+    },
+    "reviews": {
+      "title": "What Our Users Say",
+      "items": {
+        "review1": {
+          "name": "Sarah M.",
+          "role": "Freelance Designer",
+          "quote": "Finally, a finance tracker that doesn't feel overwhelming. I can see exactly where my money goes each month."
+        },
+        "review2": {
+          "name": "James L.",
+          "role": "Software Engineer",
+          "quote": "The budget planning feature saved me hundreds. I never realized how much I was spending on subscriptions."
+        },
+        "review3": {
+          "name": "Olena K.",
+          "role": "Small Business Owner",
+          "quote": "Clean interface, great categories, and the recurring transactions feature is a game changer for managing bills."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": {
+        "q1": {
+          "question": "Is Track My Money free to use?",
+          "answer": "Yes! Track My Money is completely free for personal use. We believe everyone deserves access to quality financial tools."
+        },
+        "q2": {
+          "question": "How secure is my financial data?",
+          "answer": "Your data is encrypted and stored securely. We never share your information with third parties and follow industry-standard security practices."
+        },
+        "q3": {
+          "question": "Can I track expenses in multiple currencies?",
+          "answer": "Currently, Track My Money supports single-currency tracking per account. Multi-currency support is on our roadmap."
+        },
+        "q4": {
+          "question": "How do recurring transactions work?",
+          "answer": "You can set up recurring transactions for regular payments like subscriptions, rent, or salary. They are automatically tracked on the schedule you define."
+        },
+        "q5": {
+          "question": "Can I export my data?",
+          "answer": "Yes, you can export your transaction history and reports in CSV format at any time from the settings page."
+        }
+      }
+    },
+    "footer": {
+      "copyright": "© {year} Track My Money. All rights reserved.",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "contactUs": "Contact Us"
+    }
   }
 }
