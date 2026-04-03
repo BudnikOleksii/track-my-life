@@ -5,6 +5,7 @@ import type {
   TransactionsControllerDeleteResponses,
   TransactionsControllerFindAllData,
   TransactionsControllerFindAllResponses,
+  TransactionsControllerFindByCategoryResponses,
   TransactionsControllerFindByIdResponses,
   TransactionsControllerUpdateResponses,
   UpdateTransactionDto,
@@ -18,6 +19,8 @@ type FindByIdResponse = TransactionsControllerFindByIdResponses[typeof HTTP_STAT
 type CreateResponse = TransactionsControllerCreateResponses[typeof HTTP_STATUS_CODE.CREATED];
 type UpdateResponse = TransactionsControllerUpdateResponses[typeof HTTP_STATUS_CODE.OK];
 type DeleteResponse = TransactionsControllerDeleteResponses[typeof HTTP_STATUS_CODE.OK];
+type FindByCategoryResponse =
+  TransactionsControllerFindByCategoryResponses[typeof HTTP_STATUS_CODE.OK];
 
 export class TransactionApiService extends ApiClient {
   private BASE_URL = '/api/transactions' as const;
@@ -61,6 +64,13 @@ export class TransactionApiService extends ApiClient {
     return this.request<DeleteResponse>({
       method: 'DELETE',
       url: this.getByIdUrl(id),
+    });
+  }
+
+  fetchTransactionsByCategory(categoryId: string) {
+    return this.request<FindByCategoryResponse>({
+      method: 'GET',
+      url: `${this.BASE_URL}/by-category/${encodeURIComponent(categoryId)}`,
     });
   }
 }

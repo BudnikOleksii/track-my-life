@@ -5,11 +5,13 @@ import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
+import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { useTranslations } from 'next-intl';
 
 import { PATHS } from '@/constants/paths';
+import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { WidgetCard } from '../widget-card/WidgetCard';
@@ -19,17 +21,10 @@ interface RecentTransactionListProps {
   transactionList: TransactionResponseDto[];
 }
 
-const BADGE_VARIANT_MAP = {
-  INCOME: 'success',
-  EXPENSE: 'warning',
-} as const;
-
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
-
-const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
 export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transactionList }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
@@ -47,7 +42,9 @@ export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transact
               <Typography variant="body-m" className={styles.amount}>
                 {formatAmount(transaction.amount, transaction.currencyCode)}
               </Typography>
-              <Badge variant={BADGE_VARIANT_MAP[transaction.type]}>{transaction.type}</Badge>
+              <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
+                {transaction.type}
+              </Badge>
             </div>
             <div className={styles.meta}>
               <Typography variant="body-s" className={styles.date}>

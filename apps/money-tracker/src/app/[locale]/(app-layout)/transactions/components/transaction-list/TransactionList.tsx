@@ -5,6 +5,7 @@ import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -12,6 +13,7 @@ import { Receipt, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { getTransactionsEditPath } from '@/constants/paths';
+import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './TransactionList.module.scss';
@@ -20,11 +22,6 @@ interface TransactionListProps {
   transactionList: TransactionResponseDto[];
   onDelete: (transaction: TransactionResponseDto) => void;
 }
-
-const BADGE_VARIANT_MAP = {
-  INCOME: 'success',
-  EXPENSE: 'warning',
-} as const;
 
 const MONTH_INDEX_OFFSET = 1;
 
@@ -36,8 +33,6 @@ const formatDate = (dateString: string): string => {
   const date = new Date(year, month - MONTH_INDEX_OFFSET, day);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
-
-const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
 const DATE_PART_INDEX = 0;
 const MONTH_PART_INDEX = 1;
@@ -102,7 +97,7 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
                   <Typography variant="body-m" className={styles.amount}>
                     {formatAmount(transaction.amount, transaction.currencyCode)}
                   </Typography>
-                  <Badge variant={BADGE_VARIANT_MAP[transaction.type]}>
+                  <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
                     {translations(
                       `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
                     )}

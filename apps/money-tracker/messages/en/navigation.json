@@ -2,6 +2,7 @@
   "labels": {
     "dashboard": "Dashboard",
     "transactions": "Transactions",
+    "transactionsByCategory": "By Category",
     "recurringTransactions": "Recurring Transactions",
     "categories": "Categories",
     "budgets": "Budgets",

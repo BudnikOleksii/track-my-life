@@ -7,6 +7,7 @@ import type {
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { useTranslations } from 'next-intl';
 
@@ -20,8 +21,6 @@ interface SummaryWidgetProps {
   currencyCode: CurrencyCode;
   className?: string;
 }
-
-const formatAmount = (amount: string, currencyCode: string): string => `${currencyCode} ${amount}`;
 
 export const SummaryWidget: FC<SummaryWidgetProps> = ({ data, currencyCode, className }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);

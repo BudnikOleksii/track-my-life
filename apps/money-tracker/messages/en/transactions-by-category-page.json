@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "title": "Transactions by Category - Track My Money",
+    "detailTitle": "Category Transactions - Track My Money",
+    "description": "View transactions grouped by category"
+  },
+  "content": {
+    "title": "Transactions by Category",
+    "noCategories": "No categories found",
+    "noTransactions": "No transactions found for this category",
+    "directTransactions": "Direct transactions",
+    "backToCategories": "Back to categories",
+    "incomeType": "Income",
+    "expenseType": "Expense"
+  }
+}

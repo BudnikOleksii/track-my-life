@@ -1,0 +1,97 @@
+@use "@track-my-life/ui/src/styles/mixins";
+
+.page {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+}
+
+.list {
+  display: flex;
+
+  flex-direction: column;
+
+  background-color: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+}
+
+.categoryItem {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: var(--spacing-4);
+
+  text-decoration: none;
+  color: inherit;
+
+  border-bottom: 1px solid var(--outline-variant);
+
+  transition: background-color 0.15s ease;
+
+  &:first-child {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  }
+
+  &:only-child {
+    border-radius: var(--radius-xl);
+  }
+
+  @include mixins.hover {
+    background-color: var(--surface-container);
+  }
+}
+
+.categoryInfo {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.chevron {
+  flex-shrink: 0;
+
+  color: var(--on-surface-variant);
+}
+
+.empty {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+
+  padding: var(--spacing-12) var(--spacing-6);
+
+  background-color: var(--surface-container-lowest);
+  border: 2px dashed var(--outline-variant);
+  border-radius: var(--radius-xl);
+}
+
+.emptyIcon {
+  color: var(--on-surface-variant);
+
+  opacity: 0.4;
+}
+
+.emptyText {
+  color: var(--on-surface-variant);
+}

@@ -16,6 +16,7 @@ export const I18N_NAMESPACE = {
   signInPage: 'signInPage',
   signUpPage: 'signUpPage',
   transactionsFormPage: 'transactionsFormPage',
+  transactionsByCategoryPage: 'transactionsByCategoryPage',
   transactionsPage: 'transactionsPage',
   verifyEmailPage: 'verifyEmailPage',
 } as const;
