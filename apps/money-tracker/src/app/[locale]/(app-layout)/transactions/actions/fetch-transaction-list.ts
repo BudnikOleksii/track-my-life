@@ -1,17 +1,9 @@
 import type {
   TransactionListResponseDto,
-  TransactionType,
+  TransactionsControllerFindAllData,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
-
-interface FetchTransactionListParams {
-  page?: number;
-  pageSize?: number;
-  type?: TransactionType;
-  dateFrom?: string;
-  dateTo?: string;
-}
 
 const checkIsTransactionListResponse = (value: unknown): value is TransactionListResponseDto =>
   typeof value === 'object' &&
@@ -20,7 +12,7 @@ const checkIsTransactionListResponse = (value: unknown): value is TransactionLis
   Array.isArray((value as Record<string, unknown>).data);
 
 export const fetchTransactionList = async (
-  params?: FetchTransactionListParams,
+  params?: TransactionsControllerFindAllData['query'],
 ): Promise<TransactionListResponseDto | null> => {
   const { data } = await rscTransactionApiService.fetchTransactionList(params);
 

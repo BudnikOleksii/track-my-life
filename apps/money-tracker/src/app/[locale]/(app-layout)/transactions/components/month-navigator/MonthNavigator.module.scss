@@ -1,0 +1,31 @@
+.navigator {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing);
+}
+
+.center {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing);
+}
+
+.label {
+  min-width: 10rem;
+
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.yearControl {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.yearButton.yearButton {
+  width: 1.25rem;
+  height: 1.25rem;
+}

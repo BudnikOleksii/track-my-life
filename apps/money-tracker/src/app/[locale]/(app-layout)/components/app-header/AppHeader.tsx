@@ -18,6 +18,7 @@ import styles from './AppHeader.module.scss';
 const PATH_TO_LABEL_KEY: Record<string, string> = {
   [PATHS.dashboard]: 'labels.dashboard',
   [PATHS.transactions]: 'labels.transactions',
+  [PATHS.recurringTransactions]: 'labels.recurringTransactions',
   [PATHS.categories]: 'labels.categories',
   [PATHS.budgets]: 'labels.budgets',
   [PATHS.settings]: 'labels.settings',

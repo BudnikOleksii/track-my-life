@@ -2,6 +2,7 @@
   "labels": {
     "dashboard": "Панель керування",
     "transactions": "Транзакції",
+    "recurringTransactions": "Регулярні транзакції",
     "categories": "Категорії",
     "budgets": "Бюджети",
     "settings": "Налаштування"

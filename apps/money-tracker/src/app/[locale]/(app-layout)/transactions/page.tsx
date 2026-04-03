@@ -6,10 +6,8 @@ import { Suspense } from 'react';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../components/page-skeleton/PageSkeleton';
-import {
-  parseTransactionSearchParams,
-  TransactionListServer,
-} from './components/transaction-list-server/TransactionListServer';
+import { TransactionListServer } from './components/transaction-list-server/TransactionListServer';
+import { parseTransactionSearchParams } from './constants/parse-transaction-search-params';
 
 interface Props {
   params: Promise<{

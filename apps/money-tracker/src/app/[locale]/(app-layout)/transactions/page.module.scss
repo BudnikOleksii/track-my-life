@@ -13,7 +13,22 @@
   gap: var(--spacing-4);
 }
 
-.filters {
+.filterSection {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.primaryFilterList {
+  display: flex;
+
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.secondaryFilterList {
   display: flex;
 
   flex-wrap: wrap;

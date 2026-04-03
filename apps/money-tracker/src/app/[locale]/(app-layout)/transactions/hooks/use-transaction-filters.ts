@@ -12,6 +12,10 @@ interface TransactionFilterUpdate {
   type?: FilterValue;
   dateFrom?: string;
   dateTo?: string;
+  categoryId?: string;
+  currencyCode?: string;
+  sortBy?: string;
+  sortOrder?: string;
 }
 
 const SEARCH_PARAM_KEY = {
@@ -20,6 +24,10 @@ const SEARCH_PARAM_KEY = {
   TYPE: 'type',
   DATE_FROM: 'dateFrom',
   DATE_TO: 'dateTo',
+  CATEGORY_ID: 'categoryId',
+  CURRENCY_CODE: 'currencyCode',
+  SORT_BY: 'sortBy',
+  SORT_ORDER: 'sortOrder',
 } as const;
 
 const FILTER_KEY_TO_SEARCH_PARAM: Record<keyof TransactionFilterUpdate, string> = {
@@ -28,9 +36,22 @@ const FILTER_KEY_TO_SEARCH_PARAM: Record<keyof TransactionFilterUpdate, string> 
   type: SEARCH_PARAM_KEY.TYPE,
   dateFrom: SEARCH_PARAM_KEY.DATE_FROM,
   dateTo: SEARCH_PARAM_KEY.DATE_TO,
+  categoryId: SEARCH_PARAM_KEY.CATEGORY_ID,
+  currencyCode: SEARCH_PARAM_KEY.CURRENCY_CODE,
+  sortBy: SEARCH_PARAM_KEY.SORT_BY,
+  sortOrder: SEARCH_PARAM_KEY.SORT_ORDER,
 };
 
-const PAGE_RESET_KEY_SET = new Set<string>(['type', 'dateFrom', 'dateTo', 'pageSize']);
+const PAGE_RESET_KEY_SET = new Set<string>([
+  'type',
+  'dateFrom',
+  'dateTo',
+  'pageSize',
+  'categoryId',
+  'currencyCode',
+  'sortBy',
+  'sortOrder',
+]);
 
 const checkShouldResetPage = (update: TransactionFilterUpdate): boolean =>
   Object.keys(update).some((key) => PAGE_RESET_KEY_SET.has(key));
