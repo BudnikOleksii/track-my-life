@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 
+import { parseCookieString } from '@track-my-life/shared/src/api/client/token/forward-response-cookie-list';
 import { MiddlewareTokenProvider } from '@track-my-life/shared/src/api/client/token/middleware-token-provider';
 import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
 import { routing } from '@track-my-life/shared/src/i18n/navigation/navigation';
@@ -47,6 +48,36 @@ const createSameUrlRedirect = (request: NextRequest, response: NextResponse): Ne
   return redirectResponse;
 };
 
+const forwardResponseCookieListToRedirect = (source: Response, target: NextResponse): void => {
+  for (const setCookie of source.headers.getSetCookie()) {
+    const parsed = parseCookieString(setCookie);
+
+    if (parsed) {
+      target.cookies.set(parsed.name, parsed.value, { ...parsed.options, path: '/' });
+    }
+  }
+};
+
+const fetchRefreshToken = (cookieHeader: string): Promise<Response> =>
+  fetch(`${API_BASE_URL}/api/auth/refresh-token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Cookie: cookieHeader },
+  });
+
+const buildRefreshRedirect = async (
+  refreshResponse: Response,
+  tokenProvider: MiddlewareTokenProvider,
+  context: { request: NextRequest; response: NextResponse },
+): Promise<NextResponse> => {
+  const refreshData = (await refreshResponse.json()) as { accessToken: string };
+  tokenProvider.setAccessToken(refreshData.accessToken);
+
+  const redirectResponse = createSameUrlRedirect(context.request, context.response);
+  forwardResponseCookieListToRedirect(refreshResponse, redirectResponse);
+
+  return redirectResponse;
+};
+
 const attemptTokenRefresh = async (
   tokenProvider: MiddlewareTokenProvider,
   request: NextRequest,
@@ -58,24 +89,13 @@ const attemptTokenRefresh = async (
     return createSignInRedirect(request);
   }
 
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    Cookie: cookieHeader,
-  };
-
-  const refreshResponse = await fetch(`${API_BASE_URL}/api/auth/refresh-token`, {
-    method: 'POST',
-    headers,
-  });
+  const refreshResponse = await fetchRefreshToken(cookieHeader);
 
   if (!refreshResponse.ok) {
     return createSignInRedirect(request);
   }
 
-  const refreshData = (await refreshResponse.json()) as { accessToken: string };
-  tokenProvider.setAccessToken(refreshData.accessToken);
-
-  return createSameUrlRedirect(request, response);
+  return buildRefreshRedirect(refreshResponse, tokenProvider, { request, response });
 };
 
 const SECONDS_TO_MS = 1000;

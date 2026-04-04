@@ -9,12 +9,18 @@ interface AuthInterceptorConfig {
   tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider;
   refreshUrl: string;
   getRequestCookieHeader?: () => string | null | Promise<string | null>;
+  onRefreshResponse?: (response: Response) => void | Promise<void>;
+}
+
+interface RefreshResult {
+  tokenData: AuthResponseDto | null;
+  response: Response;
 }
 
 const fetchRefreshedToken = async (
   refreshUrl: string,
   cookieHeader: string | null,
-): Promise<AuthResponseDto | null> => {
+): Promise<RefreshResult> => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -30,10 +36,11 @@ const fetchRefreshedToken = async (
   });
 
   if (!refreshResponse.ok) {
-    return null;
+    return { tokenData: null, response: refreshResponse };
   }
 
-  return refreshResponse.json() as Promise<AuthResponseDto>;
+  const tokenData = (await refreshResponse.json()) as AuthResponseDto;
+  return { tokenData, response: refreshResponse };
 };
 
 const retryWithNewToken = (request: Request, accessToken: string): Promise<Response> => {
@@ -46,15 +53,17 @@ const retryWithNewToken = (request: Request, accessToken: string): Promise<Respo
 };
 
 export class AuthInterceptor {
-  private refreshPromise: Promise<AuthResponseDto | null> | null = null;
+  private refreshPromise: Promise<RefreshResult> | null = null;
   private tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider;
   private refreshUrl: string;
   private getRequestCookieHeader: (() => string | null | Promise<string | null>) | undefined;
+  private onRefreshResponse: ((response: Response) => void | Promise<void>) | undefined;
 
   constructor(config: AuthInterceptorConfig) {
     this.tokenProvider = config.tokenProvider;
     this.refreshUrl = config.refreshUrl;
     this.getRequestCookieHeader = config.getRequestCookieHeader;
+    this.onRefreshResponse = config.onRefreshResponse;
   }
 
   setupOn(client: ApiClient): void {
@@ -96,9 +105,11 @@ export class AuthInterceptor {
     fallbackResponse: Response,
     request: Request,
   ): Promise<Response> => {
-    const tokenData = await this.refreshPromise;
+    const result = await this.refreshPromise;
 
-    return tokenData ? retryWithNewToken(request, tokenData.accessToken) : fallbackResponse;
+    return result?.tokenData
+      ? retryWithNewToken(request, result.tokenData.accessToken)
+      : fallbackResponse;
   };
 
   private initiateTokenRefresh = async (
@@ -124,19 +135,21 @@ export class AuthInterceptor {
     fallbackResponse: Response,
     request: Request,
   ): Promise<Response> => {
-    const tokenData = await this.refreshPromise;
+    const result = await this.refreshPromise;
 
-    if (!tokenData) {
+    if (!result?.tokenData) {
       if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
         await this.tokenProvider.clearAccessToken();
       }
       return fallbackResponse;
     }
 
+    await this.onRefreshResponse?.(result.response);
+
     if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
-      await this.tokenProvider.setAccessToken(tokenData.accessToken);
+      await this.tokenProvider.setAccessToken(result.tokenData.accessToken);
     }
 
-    return retryWithNewToken(request, tokenData.accessToken);
+    return retryWithNewToken(request, result.tokenData.accessToken);
   };
 }

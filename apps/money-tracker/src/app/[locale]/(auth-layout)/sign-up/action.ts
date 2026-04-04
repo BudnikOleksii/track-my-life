@@ -1,5 +1,6 @@
 'use server';
 
+import { forwardResponseCookieList } from '@track-my-life/shared/src/api/client/token/forward-response-cookie-list';
 import {
   authApiService,
   serverActionTokenProvider,
@@ -22,7 +23,7 @@ export const signUp: AuthAction = async (credentials) => {
     };
   }
 
-  const { data, error } = await authApiService.register(validatedFields.data);
+  const { data, error, response } = await authApiService.register(validatedFields.data);
 
   if (error || !data) {
     return {
@@ -30,7 +31,10 @@ export const signUp: AuthAction = async (credentials) => {
     };
   }
 
-  await serverActionTokenProvider.setAccessToken(data.accessToken);
+  await Promise.all([
+    forwardResponseCookieList(response),
+    serverActionTokenProvider.setAccessToken(data.accessToken),
+  ]);
 
   redirect({ href: PATHS.verifyEmail, locale });
   return null;
