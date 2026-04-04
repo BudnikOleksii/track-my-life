@@ -1,4 +1,5 @@
 import { AuthInterceptor } from './client/interceptors/auth-interceptor';
+import { forwardResponseCookieList } from './client/token/forward-response-cookie-list';
 import { ServerActionTokenProvider } from './client/token/server-action-token-provider';
 import { AuthApiService } from './services/auth-api.service';
 import { CategoryApiService } from './services/category-api.service';
@@ -32,6 +33,7 @@ const authInterceptor = new AuthInterceptor({
   tokenProvider: serverActionTokenProvider,
   refreshUrl: `${API_BASE_URL}/api/auth/refresh-token`,
   getRequestCookieHeader,
+  onRefreshResponse: forwardResponseCookieList,
 });
 authInterceptor.setupOn(authApiService);
 authInterceptor.setupOn(categoryApiService);
