@@ -5,6 +5,7 @@
     "transactionsByDate": "За датою",
     "transactionsByCategory": "За категоріями",
     "recurringTransactions": "Регулярні",
+    "transactionsImport": "Імпорт",
     "categories": "Категорії",
     "budgets": "Бюджети",
     "settings": "Налаштування"

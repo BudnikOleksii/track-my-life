@@ -1,0 +1,20 @@
+.summary {
+  display: flex;
+
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+
+  padding: var(--spacing-4);
+
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.valid {
+  color: var(--color-success);
+}
+
+.invalid {
+  color: var(--color-error);
+}

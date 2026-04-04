@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "title": "Імпорт транзакцій - Track My Money"
+  },
+  "content": {
+    "pageTitle": "Імпорт транзакцій",
+    "backToList": "Назад до транзакцій",
+    "fileInputLabel": "Завантажити файл",
+    "fileInputDescription": "Оберіть JSON або CSV файл з транзакціями",
+    "fileInputAccept": "Підтримувані формати: .json, .csv",
+    "importButton": "Імпортувати {count} транзакцій",
+    "importing": "Імпортування...",
+    "summaryTotal": "Всього рядків: {total}",
+    "summaryValid": "Валідних: {valid}",
+    "summaryInvalid": "Невалідних: {invalid}",
+    "columnRow": "№",
+    "columnDate": "Дата",
+    "columnCategory": "Категорія",
+    "columnType": "Тип",
+    "columnAmount": "Сума",
+    "columnCurrency": "Валюта",
+    "columnSubcategory": "Підкатегорія",
+    "columnStatus": "Статус",
+    "statusValid": "Валідний",
+    "statusInvalid": "Невалідний",
+    "unsupportedFileType": "Непідтримуваний тип файлу. Приймаються лише .json та .csv файли.",
+    "jsonMalformed": "Файл містить невалідний JSON.",
+    "fileEmpty": "Файл не містить транзакцій.",
+    "fileNotArray": "JSON файл повинен містити масив транзакцій.",
+    "fileTooManyRows": "Файл містить більше 1000 рядків. Будь ласка, розділіть його на менші файли.",
+    "dateRequired": "Дата обовʼязкова",
+    "categoryRequired": "Категорія обовʼязкова",
+    "typeRequired": "Тип обовʼязковий",
+    "typeInvalid": "Тип повинен бути Expense або Income",
+    "amountInvalid": "Сума повинна бути додатнім числом",
+    "currencyRequired": "Валюта обовʼязкова",
+    "importSuccess": "Успішно імпортовано {count} транзакцій",
+    "importError": "Не вдалося імпортувати транзакції",
+    "noValidRows": "Немає валідних рядків для імпорту"
+  }
+}

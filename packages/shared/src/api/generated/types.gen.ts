@@ -1003,6 +1003,71 @@ export type DeleteAccountDto = {
   password: string;
 };
 
+export type DefaultTransactionCategoryResponseDto = {
+  /**
+   * Default transaction category ID
+   */
+  id: string;
+  /**
+   * Category name
+   */
+  name: string;
+  /**
+   * Category type
+   */
+  type: TransactionType;
+  /**
+   * Parent default transaction category ID
+   */
+  parentDefaultTransactionCategoryId: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type DefaultTransactionCategoryListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of default transaction categories
+   */
+  data: Array<DefaultTransactionCategoryResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
+
+export type CreateDefaultTransactionCategoryDto = {
+  name: string;
+  type: TransactionType;
+  parentDefaultTransactionCategoryId?: string;
+};
+
+export type UpdateDefaultTransactionCategoryDto = {
+  name?: string;
+  parentDefaultTransactionCategoryId?: string | null;
+};
+
 export type CategoryResponseDto = {
   /**
    * Category ID
@@ -1184,6 +1249,21 @@ export type TransactionsByCategoryResponseDto = {
    * Transaction groups by subcategory
    */
   groups: Array<TransactionGroupDto>;
+};
+
+export type ImportTransactionResponseDto = {
+  /**
+   * Number of transactions created
+   */
+  transactionsCreated: number;
+  /**
+   * Number of new parent categories created
+   */
+  categoriesCreated: number;
+  /**
+   * Number of new subcategories created
+   */
+  subcategoriesCreated: number;
 };
 
 export type CreateTransactionDto = {
@@ -2236,6 +2316,161 @@ export type ProfileControllerChangePasswordResponses = {
 export type ProfileControllerChangePasswordResponse =
   ProfileControllerChangePasswordResponses[keyof ProfileControllerChangePasswordResponses];
 
+export type DefaultTransactionCategoriesControllerFindAllData = {
+  body?: never;
+  path?: never;
+  query?: {
+    page?: number;
+    pageSize?: number;
+    type?: TransactionType;
+    root?: boolean;
+  };
+  url: '/api/default-transaction-categories';
+};
+
+export type DefaultTransactionCategoriesControllerFindAllErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type DefaultTransactionCategoriesControllerFindAllError =
+  DefaultTransactionCategoriesControllerFindAllErrors[keyof DefaultTransactionCategoriesControllerFindAllErrors];
+
+export type DefaultTransactionCategoriesControllerFindAllResponses = {
+  200: DefaultTransactionCategoryListResponseDto;
+};
+
+export type DefaultTransactionCategoriesControllerFindAllResponse =
+  DefaultTransactionCategoriesControllerFindAllResponses[keyof DefaultTransactionCategoriesControllerFindAllResponses];
+
+export type DefaultTransactionCategoriesControllerCreateData = {
+  body: CreateDefaultTransactionCategoryDto;
+  path?: never;
+  query?: never;
+  url: '/api/default-transaction-categories';
+};
+
+export type DefaultTransactionCategoriesControllerCreateErrors = {
+  /**
+   * Duplicate default transaction category
+   */
+  409: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type DefaultTransactionCategoriesControllerCreateError =
+  DefaultTransactionCategoriesControllerCreateErrors[keyof DefaultTransactionCategoriesControllerCreateErrors];
+
+export type DefaultTransactionCategoriesControllerCreateResponses = {
+  201: DefaultTransactionCategoryResponseDto;
+};
+
+export type DefaultTransactionCategoriesControllerCreateResponse =
+  DefaultTransactionCategoriesControllerCreateResponses[keyof DefaultTransactionCategoriesControllerCreateResponses];
+
+export type DefaultTransactionCategoriesControllerDeleteData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: '/api/default-transaction-categories/{id}';
+};
+
+export type DefaultTransactionCategoriesControllerDeleteErrors = {
+  /**
+   * Default transaction category not found
+   */
+  404: unknown;
+  /**
+   * Default transaction category has subcategories
+   */
+  409: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type DefaultTransactionCategoriesControllerDeleteError =
+  DefaultTransactionCategoriesControllerDeleteErrors[keyof DefaultTransactionCategoriesControllerDeleteErrors];
+
+export type DefaultTransactionCategoriesControllerDeleteResponses = {
+  200: MessageResponseDto;
+};
+
+export type DefaultTransactionCategoriesControllerDeleteResponse =
+  DefaultTransactionCategoriesControllerDeleteResponses[keyof DefaultTransactionCategoriesControllerDeleteResponses];
+
+export type DefaultTransactionCategoriesControllerFindByIdData = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: '/api/default-transaction-categories/{id}';
+};
+
+export type DefaultTransactionCategoriesControllerFindByIdErrors = {
+  /**
+   * Default transaction category not found
+   */
+  404: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type DefaultTransactionCategoriesControllerFindByIdError =
+  DefaultTransactionCategoriesControllerFindByIdErrors[keyof DefaultTransactionCategoriesControllerFindByIdErrors];
+
+export type DefaultTransactionCategoriesControllerFindByIdResponses = {
+  200: DefaultTransactionCategoryResponseDto;
+};
+
+export type DefaultTransactionCategoriesControllerFindByIdResponse =
+  DefaultTransactionCategoriesControllerFindByIdResponses[keyof DefaultTransactionCategoriesControllerFindByIdResponses];
+
+export type DefaultTransactionCategoriesControllerUpdateData = {
+  body: UpdateDefaultTransactionCategoryDto;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: '/api/default-transaction-categories/{id}';
+};
+
+export type DefaultTransactionCategoriesControllerUpdateErrors = {
+  /**
+   * Default transaction category not found
+   */
+  404: unknown;
+  /**
+   * Duplicate default transaction category
+   */
+  409: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type DefaultTransactionCategoriesControllerUpdateError =
+  DefaultTransactionCategoriesControllerUpdateErrors[keyof DefaultTransactionCategoriesControllerUpdateErrors];
+
+export type DefaultTransactionCategoriesControllerUpdateResponses = {
+  200: DefaultTransactionCategoryResponseDto;
+};
+
+export type DefaultTransactionCategoriesControllerUpdateResponse =
+  DefaultTransactionCategoriesControllerUpdateResponses[keyof DefaultTransactionCategoriesControllerUpdateResponses];
+
 export type TransactionCategoriesControllerFindAllData = {
   body?: never;
   path?: never;
@@ -2497,6 +2732,39 @@ export type TransactionsControllerFindByCategoryResponses = {
 
 export type TransactionsControllerFindByCategoryResponse =
   TransactionsControllerFindByCategoryResponses[keyof TransactionsControllerFindByCategoryResponses];
+
+export type TransactionsControllerImportTransactionsData = {
+  body: {
+    /**
+     * JSON or CSV file
+     */
+    file: Blob | File;
+  };
+  path?: never;
+  query?: never;
+  url: '/api/transactions/import';
+};
+
+export type TransactionsControllerImportTransactionsErrors = {
+  /**
+   * Invalid file format or data
+   */
+  400: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type TransactionsControllerImportTransactionsError =
+  TransactionsControllerImportTransactionsErrors[keyof TransactionsControllerImportTransactionsErrors];
+
+export type TransactionsControllerImportTransactionsResponses = {
+  201: ImportTransactionResponseDto;
+};
+
+export type TransactionsControllerImportTransactionsResponse =
+  TransactionsControllerImportTransactionsResponses[keyof TransactionsControllerImportTransactionsResponses];
 
 export type TransactionsControllerDeleteData = {
   body?: never;

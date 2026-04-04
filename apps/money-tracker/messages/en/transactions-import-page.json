@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "title": "Import Transactions - Track My Money"
+  },
+  "content": {
+    "pageTitle": "Import Transactions",
+    "backToList": "Back to transactions",
+    "fileInputLabel": "Upload file",
+    "fileInputDescription": "Select a JSON or CSV file with transactions",
+    "fileInputAccept": "Accepted formats: .json, .csv",
+    "importButton": "Import {count} transactions",
+    "importing": "Importing...",
+    "summaryTotal": "Total rows: {total}",
+    "summaryValid": "Valid: {valid}",
+    "summaryInvalid": "Invalid: {invalid}",
+    "columnRow": "#",
+    "columnDate": "Date",
+    "columnCategory": "Category",
+    "columnType": "Type",
+    "columnAmount": "Amount",
+    "columnCurrency": "Currency",
+    "columnSubcategory": "Subcategory",
+    "columnStatus": "Status",
+    "statusValid": "Valid",
+    "statusInvalid": "Invalid",
+    "unsupportedFileType": "Unsupported file type. Only .json and .csv files are accepted.",
+    "jsonMalformed": "The file contains invalid JSON.",
+    "fileEmpty": "The file contains no transactions.",
+    "fileNotArray": "The JSON file must contain an array of transactions.",
+    "fileTooManyRows": "The file contains more than 1000 rows. Please split it into smaller files.",
+    "dateRequired": "Date is required",
+    "categoryRequired": "Category is required",
+    "typeRequired": "Type is required",
+    "typeInvalid": "Type must be Expense or Income",
+    "amountInvalid": "Amount must be a positive number",
+    "currencyRequired": "Currency is required",
+    "importSuccess": "Successfully imported {count} transactions",
+    "importError": "Failed to import transactions",
+    "noValidRows": "No valid rows to import"
+  }
+}
