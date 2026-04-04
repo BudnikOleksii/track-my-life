@@ -19,10 +19,10 @@ export const rscTransactionsAnalyticsApiService = new TransactionsAnalyticsApiSe
 });
 
 const rscTokenProvider = new RscTokenProvider();
-const rscAuthInterceptor = new AuthInterceptor(
-  rscTokenProvider,
-  `${API_BASE_URL}/api/auth/refresh-token`,
-);
+const rscAuthInterceptor = new AuthInterceptor({
+  tokenProvider: rscTokenProvider,
+  refreshUrl: `${API_BASE_URL}/api/auth/refresh-token`,
+});
 rscAuthInterceptor.setupOn(rscCategoryApiService);
 rscAuthInterceptor.setupOn(rscProfileApiService);
 rscAuthInterceptor.setupOn(rscRecurringTransactionApiService);

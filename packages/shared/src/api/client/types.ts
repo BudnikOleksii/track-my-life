@@ -5,6 +5,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export interface ApiClientConfig {
   baseUrl: string;
   defaultHeaders?: Record<string, string>;
+  defaultCredentials?: RequestCredentials;
 }
 
 export interface FetchCacheOptions {
@@ -18,11 +19,18 @@ export interface RequestOptions {
   body?: unknown;
   query?: Record<string, unknown>;
   headers?: Record<string, string>;
+  credentials?: RequestCredentials;
   next?: FetchCacheOptions;
 }
 
 export interface ApiResponse<TData> {
   data: TData | null;
+  error: ProblemDetailsDto | null;
+  response: Response;
+}
+
+export interface BlobResponse {
+  blob: Blob | null;
   error: ProblemDetailsDto | null;
   response: Response;
 }

@@ -10,6 +10,7 @@ import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
+import { ExportTransactionButton } from '../../components/export-transaction-button/ExportTransactionButton';
 import { TransactionsByCategoryServer } from './components/transactions-by-category-server/TransactionsByCategoryServer';
 import styles from './page.module.scss';
 
@@ -53,6 +54,13 @@ const TransactionsByCategoryDetailPage = async (props: Props) => {
             {translations('content.backToCategories')}
           </Typography>
         </Link>
+        <ExportTransactionButton
+          categoryId={params.categoryId}
+          exportLabel={translations('content.exportButton')}
+          downloadCsvLabel={translations('content.downloadCsv')}
+          downloadJsonLabel={translations('content.downloadJson')}
+          errorLabel={translations('content.exportError')}
+        />
       </div>
       <Suspense fallback={detailSkeletonFallback}>
         <TransactionsByCategoryServer categoryId={params.categoryId} />

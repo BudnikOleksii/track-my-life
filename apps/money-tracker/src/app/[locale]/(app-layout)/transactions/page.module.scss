@@ -13,6 +13,13 @@
   gap: var(--spacing-4);
 }
 
+.actionList {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
 .filterSection {
   display: flex;
 

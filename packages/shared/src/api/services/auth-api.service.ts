@@ -1,10 +1,9 @@
 import type {
   AuthControllerLoginResponse,
+  AuthControllerLogoutResponse,
   AuthControllerRefreshTokenResponse,
   AuthControllerRegisterResponse,
   LoginDto,
-  LogoutDto,
-  RefreshTokenDto,
   RegisterDto,
   RevokeRefreshTokenDto,
 } from '../generated/types.gen';
@@ -27,6 +26,7 @@ export class AuthApiService extends ApiClient {
       method: 'POST',
       url: this.ENDPOINTS.REGISTER,
       body,
+      credentials: 'include',
     });
   }
 
@@ -35,22 +35,23 @@ export class AuthApiService extends ApiClient {
       method: 'POST',
       url: this.ENDPOINTS.LOGIN,
       body,
+      credentials: 'include',
     });
   }
 
-  refreshToken(body: RefreshTokenDto) {
+  refreshToken() {
     return this.request<AuthControllerRefreshTokenResponse>({
       method: 'POST',
       url: this.ENDPOINTS.REFRESH_TOKEN,
-      body,
+      credentials: 'include',
     });
   }
 
-  logout(body: LogoutDto) {
-    return this.request<void>({
+  logout() {
+    return this.request<AuthControllerLogoutResponse>({
       method: 'POST',
       url: this.ENDPOINTS.LOGOUT,
-      body,
+      credentials: 'include',
     });
   }
 

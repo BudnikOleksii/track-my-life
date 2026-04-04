@@ -4,6 +4,7 @@ import type {
   CreateTransactionDto,
   TransactionsControllerCreateResponses,
   TransactionsControllerDeleteResponses,
+  TransactionsControllerExportTransactionsData,
   TransactionsControllerFindAllData,
   TransactionsControllerFindAllResponses,
   TransactionsControllerFindByCategoryResponses,
@@ -15,6 +16,7 @@ import type {
 
 import { ApiClient } from '../client/api-client';
 
+type ExportQuery = TransactionsControllerExportTransactionsData['query'];
 type FindAllQuery = TransactionsControllerFindAllData['query'];
 type FindAllResponse = TransactionsControllerFindAllResponses[typeof HTTP_STATUS_CODE.OK];
 type FindByIdResponse = TransactionsControllerFindByIdResponses[typeof HTTP_STATUS_CODE.OK];
@@ -78,6 +80,14 @@ export class TransactionApiService extends ApiClient {
       method: 'GET',
       url: `${this.BASE_URL}/by-category/${encodeURIComponent(categoryId)}`,
       next,
+    });
+  }
+
+  exportTransactionList(query: ExportQuery) {
+    return this.requestBlob({
+      method: 'GET',
+      url: `${this.BASE_URL}/export`,
+      query: query as Record<string, unknown>,
     });
   }
 

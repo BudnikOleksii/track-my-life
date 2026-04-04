@@ -463,17 +463,12 @@ export type AuthUserDto = {
 
 export type AuthResponseDto = {
   accessToken: string;
-  refreshToken: string;
   user: AuthUserDto;
 };
 
 export type LoginDto = {
   email: string;
   password: string;
-};
-
-export type RefreshTokenDto = {
-  refreshToken: string;
 };
 
 export type RefreshTokenUserDto = {
@@ -553,13 +548,6 @@ export type RefreshTokenListDto = {
    * List of active refresh tokens
    */
   refreshTokens: Array<RefreshTokenItemDto>;
-};
-
-export type LogoutDto = {
-  /**
-   * Refresh Token
-   */
-  refreshToken: string;
 };
 
 export type LogoutResponseDto = {
@@ -1251,6 +1239,8 @@ export type TransactionsByCategoryResponseDto = {
   groups: Array<TransactionGroupDto>;
 };
 
+export type ExportFormat = 'json' | 'csv';
+
 export type ImportTransactionResponseDto = {
   /**
    * Number of transactions created
@@ -1873,7 +1863,7 @@ export type AuthControllerGetRefreshTokenResponse =
   AuthControllerGetRefreshTokenResponses[keyof AuthControllerGetRefreshTokenResponses];
 
 export type AuthControllerRefreshTokenData = {
-  body: RefreshTokenDto;
+  body?: never;
   path?: never;
   query?: never;
   url: '/api/auth/refresh-token';
@@ -1921,7 +1911,7 @@ export type AuthControllerListRefreshTokensResponse =
   AuthControllerListRefreshTokensResponses[keyof AuthControllerListRefreshTokensResponses];
 
 export type AuthControllerLogoutData = {
-  body: LogoutDto;
+  body?: never;
   path?: never;
   query?: never;
   url: '/api/auth/logout';
@@ -2732,6 +2722,42 @@ export type TransactionsControllerFindByCategoryResponses = {
 
 export type TransactionsControllerFindByCategoryResponse =
   TransactionsControllerFindByCategoryResponses[keyof TransactionsControllerFindByCategoryResponses];
+
+export type TransactionsControllerExportTransactionsData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Output file format
+     */
+    format: ExportFormat;
+    dateFrom?: string;
+    dateTo?: string;
+    categoryId?: string;
+  };
+  url: '/api/transactions/export';
+};
+
+export type TransactionsControllerExportTransactionsErrors = {
+  /**
+   * Invalid format or query parameters
+   */
+  400: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type TransactionsControllerExportTransactionsError =
+  TransactionsControllerExportTransactionsErrors[keyof TransactionsControllerExportTransactionsErrors];
+
+export type TransactionsControllerExportTransactionsResponses = {
+  /**
+   * File download
+   */
+  200: unknown;
+};
 
 export type TransactionsControllerImportTransactionsData = {
   body: {

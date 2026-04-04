@@ -11,15 +11,12 @@ import { PATHS } from '@/constants/paths';
 
 export const signOut = async () => {
   try {
-    const refreshToken = await serverActionTokenProvider.getRefreshToken();
-    if (refreshToken) {
-      await authApiService.logout({ refreshToken });
-    }
+    await authApiService.logout();
   } catch {
     // Sign-out failed server-side, still redirect to sign-in
   }
 
-  await serverActionTokenProvider.clearTokenPair();
+  await serverActionTokenProvider.clearAccessToken();
 
   const locale = await getLocale();
   redirect({ href: PATHS.signIn, locale });

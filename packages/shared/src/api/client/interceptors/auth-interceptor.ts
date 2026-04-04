@@ -5,14 +5,28 @@ import type { ReadOnlyTokenProvider, ReadWriteTokenProvider } from '../token/typ
 import { HTTP_STATUS_CODE } from '../../../constants/http-status-code';
 import { checkIsReadWriteTokenProvider } from '../token/types';
 
+interface AuthInterceptorConfig {
+  tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider;
+  refreshUrl: string;
+  getRequestCookieHeader?: () => string | null | Promise<string | null>;
+}
+
 const fetchRefreshedToken = async (
   refreshUrl: string,
-  refreshToken: string,
+  cookieHeader: string | null,
 ): Promise<AuthResponseDto | null> => {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (cookieHeader) {
+    headers['Cookie'] = cookieHeader;
+  }
+
   const refreshResponse = await fetch(refreshUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refreshToken }),
+    headers,
+    credentials: 'include',
   });
 
   if (!refreshResponse.ok) {
@@ -33,11 +47,15 @@ const retryWithNewToken = (request: Request, accessToken: string): Promise<Respo
 
 export class AuthInterceptor {
   private refreshPromise: Promise<AuthResponseDto | null> | null = null;
+  private tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider;
+  private refreshUrl: string;
+  private getRequestCookieHeader: (() => string | null | Promise<string | null>) | undefined;
 
-  constructor(
-    private tokenProvider: ReadOnlyTokenProvider | ReadWriteTokenProvider,
-    private refreshUrl: string,
-  ) {}
+  constructor(config: AuthInterceptorConfig) {
+    this.tokenProvider = config.tokenProvider;
+    this.refreshUrl = config.refreshUrl;
+    this.getRequestCookieHeader = config.getRequestCookieHeader;
+  }
 
   setupOn(client: ApiClient): void {
     client.addRequestInterceptor(this.handleRequest);
@@ -87,19 +105,14 @@ export class AuthInterceptor {
     fallbackResponse: Response,
     request: Request,
   ): Promise<Response> => {
-    const refreshToken = await this.tokenProvider.getRefreshToken();
-
-    if (!refreshToken) {
-      return fallbackResponse;
-    }
-
-    this.refreshPromise = fetchRefreshedToken(this.refreshUrl, refreshToken);
+    const cookieHeader = (await this.getRequestCookieHeader?.()) ?? null;
+    this.refreshPromise = fetchRefreshedToken(this.refreshUrl, cookieHeader);
 
     try {
       return await this.processRefreshResult(fallbackResponse, request);
     } catch {
       if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
-        await this.tokenProvider.clearTokenPair();
+        await this.tokenProvider.clearAccessToken();
       }
       return fallbackResponse;
     } finally {
@@ -115,13 +128,13 @@ export class AuthInterceptor {
 
     if (!tokenData) {
       if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
-        await this.tokenProvider.clearTokenPair();
+        await this.tokenProvider.clearAccessToken();
       }
       return fallbackResponse;
     }
 
     if (checkIsReadWriteTokenProvider(this.tokenProvider)) {
-      await this.tokenProvider.setTokenPair(tokenData.accessToken, tokenData.refreshToken);
+      await this.tokenProvider.setAccessToken(tokenData.accessToken);
     }
 
     return retryWithNewToken(request, tokenData.accessToken);

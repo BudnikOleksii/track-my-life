@@ -2,6 +2,7 @@ import type { ProblemDetailsDto } from '../generated/types.gen';
 import type {
   ApiClientConfig,
   ApiResponse,
+  BlobResponse,
   RequestInterceptorFn,
   RequestOptions,
   ResponseInterceptorFn,
@@ -78,12 +79,14 @@ const removeFromList = <T>(list: T[], item: T): T[] => list.filter((entry) => en
 export class ApiClient {
   private baseUrl: string;
   private defaultHeaders: Record<string, string>;
+  private defaultCredentials: RequestCredentials | undefined;
   private requestInterceptorList: RequestInterceptorFn[] = [];
   private responseInterceptorList: ResponseInterceptorFn[] = [];
 
   constructor(config: ApiClientConfig) {
     this.baseUrl = config.baseUrl;
     this.defaultHeaders = config.defaultHeaders ?? {};
+    this.defaultCredentials = config.defaultCredentials;
   }
 
   addRequestInterceptor(fn: RequestInterceptorFn): () => void {
@@ -100,34 +103,61 @@ export class ApiClient {
     };
   }
 
-  protected async request<TData>(options: RequestOptions): Promise<ApiResponse<TData>> {
-    const initialRequest = this.buildRequest(options);
-    const fetchRequest = await applyRequestInterceptorList(
-      this.requestInterceptorList,
-      initialRequest,
-    );
-    const fetchRequestClone = fetchRequest.clone();
+  private buildFetchInit(
+    fetchRequest: Request,
+    options: RequestOptions,
+  ): RequestInit & { next?: unknown } {
     const fetchInit: RequestInit & { next?: unknown } = {
       method: fetchRequest.method,
       headers: fetchRequest.headers,
       body: fetchRequest.body,
       ...(fetchRequest.body ? { duplex: 'half' } : {}),
     };
+    const credentials = options.credentials ?? this.defaultCredentials;
+    if (credentials) {
+      fetchInit.credentials = credentials;
+    }
     if (options.next) {
       fetchInit.next = {
         ...options.next,
         tags: options.next.tags ? ([...options.next.tags] as string[]) : undefined,
       };
     }
+    return fetchInit;
+  }
+
+  private async executeFetch(options: RequestOptions): Promise<Response> {
+    const initialRequest = this.buildRequest(options);
+    const fetchRequest = await applyRequestInterceptorList(
+      this.requestInterceptorList,
+      initialRequest,
+    );
+    const fetchRequestClone = fetchRequest.clone();
+    const fetchInit = this.buildFetchInit(fetchRequest, options);
     const rawResponse = await fetch(fetchRequest.url, fetchInit as RequestInit);
-    const response = await applyResponseInterceptorList(
+    return applyResponseInterceptorList(
       this.responseInterceptorList,
       rawResponse,
       fetchRequestClone,
     );
-    const { data, error } = await parseResponseBody<TData>(response);
+  }
 
+  protected async request<TData>(options: RequestOptions): Promise<ApiResponse<TData>> {
+    const response = await this.executeFetch(options);
+    const { data, error } = await parseResponseBody<TData>(response);
     return { data, error, response };
+  }
+
+  protected async requestBlob(options: RequestOptions): Promise<BlobResponse> {
+    const response = await this.executeFetch(options);
+
+    if (!response.ok) {
+      const { error } = await parseResponseBody<never>(response);
+      return { blob: null, error, response };
+    }
+
+    const blob = await response.blob();
+    return { blob, error: null, response };
   }
 
   protected async requestFormData<TData>(
