@@ -30,7 +30,7 @@ export const signUp: AuthAction = async (credentials) => {
     };
   }
 
-  await serverActionTokenProvider.setTokenPair(data.accessToken, data.refreshToken);
+  await serverActionTokenProvider.setAccessToken(data.accessToken);
 
   redirect({ href: PATHS.verifyEmail, locale });
   return null;

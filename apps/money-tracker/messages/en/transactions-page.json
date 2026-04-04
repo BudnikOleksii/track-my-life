@@ -29,6 +29,11 @@
     "previousPage": "Previous page",
     "nextPage": "Next page",
     "pageInfo": "Page {page} of {total}",
-    "deleteError": "Failed to delete transaction"
+    "deleteError": "Failed to delete transaction",
+    "exportAllButton": "Export All",
+    "exportButton": "Export",
+    "downloadCsv": "Download CSV",
+    "downloadJson": "Download JSON",
+    "exportError": "Failed to export transactions"
   }
 }

@@ -2,11 +2,10 @@ import type { NextRequest, NextResponse } from 'next/server';
 
 import type { ReadWriteTokenProvider } from './types';
 
-const ACCESS_TOKEN_COOKIE = 'access_token';
-const REFRESH_TOKEN_COOKIE = 'refresh_token';
+import { ACCESS_TOKEN_COOKIE } from '../../../constants/cookie';
 
-const TOKEN_COOKIE_OPTIONS = {
-  httpOnly: true,
+const ACCESS_TOKEN_COOKIE_OPTIONS = {
+  httpOnly: false,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax' as const,
   path: '/',
@@ -22,17 +21,15 @@ export class MiddlewareTokenProvider implements ReadWriteTokenProvider {
     return this.request.cookies.get(ACCESS_TOKEN_COOKIE)?.value ?? null;
   }
 
-  getRefreshToken(): string | null {
-    return this.request.cookies.get(REFRESH_TOKEN_COOKIE)?.value ?? null;
+  getRequestCookieHeader(): string | null {
+    return this.request.headers.get('cookie');
   }
 
-  setTokenPair(accessToken: string, refreshToken: string): void {
-    this.response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, TOKEN_COOKIE_OPTIONS);
-    this.response.cookies.set(REFRESH_TOKEN_COOKIE, refreshToken, TOKEN_COOKIE_OPTIONS);
+  setAccessToken(accessToken: string): void {
+    this.response.cookies.set(ACCESS_TOKEN_COOKIE, accessToken, ACCESS_TOKEN_COOKIE_OPTIONS);
   }
 
-  clearTokenPair(): void {
+  clearAccessToken(): void {
     this.response.cookies.delete(ACCESS_TOKEN_COOKIE);
-    this.response.cookies.delete(REFRESH_TOKEN_COOKIE);
   }
 }

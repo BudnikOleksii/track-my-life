@@ -26,7 +26,7 @@ export const deleteAccount = async (input: DeleteAccountDto) => {
     return null;
   }
 
-  await serverActionTokenProvider.clearTokenPair();
+  await serverActionTokenProvider.clearAccessToken();
 
   const locale = await getLocale();
   return redirect({ href: PATHS.signIn, locale });

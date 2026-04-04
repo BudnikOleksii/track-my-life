@@ -11,6 +11,10 @@
     "directTransactions": "Прямі транзакції",
     "backToCategories": "Назад до категорій",
     "incomeType": "Дохід",
-    "expenseType": "Витрата"
+    "expenseType": "Витрата",
+    "exportButton": "Експорт",
+    "downloadCsv": "Завантажити CSV",
+    "downloadJson": "Завантажити JSON",
+    "exportError": "Не вдалося експортувати транзакції"
   }
 }

@@ -29,6 +29,11 @@
     "previousPage": "Попередня сторінка",
     "nextPage": "Наступна сторінка",
     "pageInfo": "Сторінка {page} з {total}",
-    "deleteError": "Не вдалося видалити транзакцію"
+    "deleteError": "Не вдалося видалити транзакцію",
+    "exportAllButton": "Експорт усіх",
+    "exportButton": "Експорт",
+    "downloadCsv": "Завантажити CSV",
+    "downloadJson": "Завантажити JSON",
+    "exportError": "Не вдалося експортувати транзакції"
   }
 }

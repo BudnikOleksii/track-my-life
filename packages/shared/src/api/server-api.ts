@@ -11,6 +11,12 @@ const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:8080';
 
 export const serverActionTokenProvider = new ServerActionTokenProvider();
 
+const getRequestCookieHeader = async (): Promise<string | null> => {
+  const { cookies } = await import('next/headers');
+  const cookieStore = await cookies();
+  return cookieStore.toString();
+};
+
 export const authApiService = new AuthApiService({ baseUrl: API_BASE_URL });
 export const categoryApiService = new CategoryApiService({ baseUrl: API_BASE_URL });
 export const profileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
@@ -22,10 +28,11 @@ export const transactionsAnalyticsApiService = new TransactionsAnalyticsApiServi
   baseUrl: API_BASE_URL,
 });
 
-const authInterceptor = new AuthInterceptor(
-  serverActionTokenProvider,
-  `${API_BASE_URL}/api/auth/refresh-token`,
-);
+const authInterceptor = new AuthInterceptor({
+  tokenProvider: serverActionTokenProvider,
+  refreshUrl: `${API_BASE_URL}/api/auth/refresh-token`,
+  getRequestCookieHeader,
+});
 authInterceptor.setupOn(authApiService);
 authInterceptor.setupOn(categoryApiService);
 authInterceptor.setupOn(profileApiService);

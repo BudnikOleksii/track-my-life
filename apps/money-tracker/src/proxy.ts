@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 
 import { MiddlewareTokenProvider } from '@track-my-life/shared/src/api/client/token/middleware-token-provider';
-import { AuthApiService } from '@track-my-life/shared/src/api/services/auth-api.service';
 import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
 import { routing } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import createIntlMiddleware from 'next-intl/middleware';
@@ -36,7 +35,7 @@ const checkIsOnboardingPath = (pathname: string): boolean => {
 const createSignInRedirect = (request: NextRequest): NextResponse => {
   const signInUrl = new URL(PATHS.signIn, request.url);
   const redirectResponse = NextResponse.redirect(signInUrl);
-  new MiddlewareTokenProvider(request, redirectResponse).clearTokenPair();
+  new MiddlewareTokenProvider(request, redirectResponse).clearAccessToken();
   return redirectResponse;
 };
 
@@ -53,20 +52,28 @@ const attemptTokenRefresh = async (
   request: NextRequest,
   response: NextResponse,
 ): Promise<NextResponse> => {
-  const refreshToken = tokenProvider.getRefreshToken();
+  const cookieHeader = tokenProvider.getRequestCookieHeader();
 
-  if (!refreshToken) {
+  if (!cookieHeader) {
     return createSignInRedirect(request);
   }
 
-  const authApiService = new AuthApiService({ baseUrl: API_BASE_URL });
-  const refreshResult = await authApiService.refreshToken({ refreshToken });
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    Cookie: cookieHeader,
+  };
 
-  if (refreshResult.error || !refreshResult.data) {
+  const refreshResponse = await fetch(`${API_BASE_URL}/api/auth/refresh-token`, {
+    method: 'POST',
+    headers,
+  });
+
+  if (!refreshResponse.ok) {
     return createSignInRedirect(request);
   }
 
-  tokenProvider.setTokenPair(refreshResult.data.accessToken, refreshResult.data.refreshToken);
+  const refreshData = (await refreshResponse.json()) as { accessToken: string };
+  tokenProvider.setAccessToken(refreshData.accessToken);
 
   return createSameUrlRedirect(request, response);
 };

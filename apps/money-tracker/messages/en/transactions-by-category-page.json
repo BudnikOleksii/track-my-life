@@ -11,6 +11,10 @@
     "directTransactions": "Direct transactions",
     "backToCategories": "Back to categories",
     "incomeType": "Income",
-    "expenseType": "Expense"
+    "expenseType": "Expense",
+    "exportButton": "Export",
+    "downloadCsv": "Download CSV",
+    "downloadJson": "Download JSON",
+    "exportError": "Failed to export transactions"
   }
 }
