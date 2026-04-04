@@ -48,8 +48,12 @@ const parseCsv = (text: string): ParseResult => {
   const result = Papa.parse<Record<string, unknown>>(text, {
     header: true,
     skipEmptyLines: true,
-    dynamicTyping: true,
+    dynamicTyping: { Amount: true },
   });
+
+  if (result.errors.length > EMPTY_LIST_LENGTH) {
+    return { ok: false, error: 'csvMalformed' };
+  }
 
   if (result.data.length === EMPTY_LIST_LENGTH) {
     return { ok: false, error: 'fileEmpty' };

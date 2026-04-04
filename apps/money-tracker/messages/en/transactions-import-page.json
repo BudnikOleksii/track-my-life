@@ -25,6 +25,7 @@
     "statusInvalid": "Invalid",
     "unsupportedFileType": "Unsupported file type. Only .json and .csv files are accepted.",
     "jsonMalformed": "The file contains invalid JSON.",
+    "csvMalformed": "The CSV file contains formatting errors.",
     "fileEmpty": "The file contains no transactions.",
     "fileNotArray": "The JSON file must contain an array of transactions.",
     "fileTooManyRows": "The file contains more than 1000 rows. Please split it into smaller files.",

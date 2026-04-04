@@ -54,15 +54,19 @@ export const ImportPreviewTable: FC<ImportPreviewTableProps> = ({ rowList }) => 
                   <div className={styles.errorCell}>
                     <Badge variant="destructive">{translations('content.statusInvalid')}</Badge>
                     <div className={styles.errorList}>
-                      {row.errorList.map((issue) => (
-                        <Typography
-                          key={issue.path.join('.')}
-                          variant="body-s"
-                          className={styles.errorText}
-                        >
-                          {translations(`content.${issue.message}`)}
-                        </Typography>
-                      ))}
+                      {row.errorList.map((issue, issueIndex) => {
+                        const i18nKey = `content.${issue.message}`;
+
+                        return (
+                          <Typography
+                            key={`${issue.path.join('.')}-${issueIndex}`}
+                            variant="body-s"
+                            className={styles.errorText}
+                          >
+                            {translations.has(i18nKey) ? translations(i18nKey) : issue.message}
+                          </Typography>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
