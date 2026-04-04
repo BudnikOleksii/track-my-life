@@ -18,6 +18,8 @@ Follow these steps in order:
 8. Create a pull request against `main` using GitHub MCP tools or `gh` CLI:
    - Title: the commit message
    - Body: generate a summary of changes with a test plan, using this format:
+   - Add relevant labels from: `bug`, `enhancement`, `documentation`, `refactor`, `performance`, `UI and storybook`, `CI/CD`, `ai improvements`
+   - Assign the current user as assignee
 
 ```
 ## Summary
