@@ -130,6 +130,39 @@ export class ApiClient {
     return { data, error, response };
   }
 
+  protected async requestFormData<TData>(
+    options: Omit<RequestOptions, 'body'> & { formData: FormData },
+  ): Promise<ApiResponse<TData>> {
+    const url = buildUrl(this.baseUrl, options.url, options.query);
+    const headers = new Headers({ ...this.defaultHeaders, ...options.headers });
+
+    const initialRequest = new Request(url, {
+      method: options.method,
+      headers,
+      body: options.formData,
+    });
+
+    const fetchRequest = await applyRequestInterceptorList(
+      this.requestInterceptorList,
+      initialRequest,
+    );
+    const fetchRequestClone = fetchRequest.clone();
+    const rawResponse = await fetch(fetchRequest.url, {
+      method: fetchRequest.method,
+      headers: fetchRequest.headers,
+      body: fetchRequest.body,
+      duplex: 'half',
+    } as RequestInit);
+    const response = await applyResponseInterceptorList(
+      this.responseInterceptorList,
+      rawResponse,
+      fetchRequestClone,
+    );
+    const { data, error } = await parseResponseBody<TData>(response);
+
+    return { data, error, response };
+  }
+
   private buildRequest(options: RequestOptions): Request {
     const url = buildUrl(this.baseUrl, options.url, options.query);
     const headers = new Headers({ ...this.defaultHeaders, ...options.headers });

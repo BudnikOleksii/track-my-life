@@ -11,6 +11,7 @@ export const PATHS = {
   categoriesCreate: '/categories/create',
   transactionsByCategory: '/transactions/by-category',
   budgets: '/budgets',
+  transactionsImport: '/transactions/import',
   recurringTransactions: '/transactions/recurring',
   recurringTransactionsCreate: '/transactions/recurring/create',
   settings: '/settings',

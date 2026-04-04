@@ -19,6 +19,7 @@ export const LOCALIZATION_MESSAGES_FILE_NAME_BY_NAMESPACE: Record<I18Namespace, 
   [I18N_NAMESPACE.signUpPage]: 'sign-up-page',
   [I18N_NAMESPACE.transactionsByCategoryPage]: 'transactions-by-category-page',
   [I18N_NAMESPACE.transactionsFormPage]: 'transactions-form-page',
+  [I18N_NAMESPACE.transactionsImportPage]: 'transactions-import-page',
   [I18N_NAMESPACE.transactionsPage]: 'transactions-page',
   [I18N_NAMESPACE.verifyEmailPage]: 'verify-email-page',
 };

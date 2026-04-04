@@ -5,6 +5,7 @@
     "transactionsByDate": "By Date",
     "transactionsByCategory": "By Category",
     "recurringTransactions": "Recurring",
+    "transactionsImport": "Import",
     "categories": "Categories",
     "budgets": "Budgets",
     "settings": "Settings"

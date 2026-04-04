@@ -8,6 +8,7 @@ import type {
   TransactionsControllerFindAllResponses,
   TransactionsControllerFindByCategoryResponses,
   TransactionsControllerFindByIdResponses,
+  TransactionsControllerImportTransactionsResponses,
   TransactionsControllerUpdateResponses,
   UpdateTransactionDto,
 } from '../generated/types.gen';
@@ -22,6 +23,8 @@ type UpdateResponse = TransactionsControllerUpdateResponses[typeof HTTP_STATUS_C
 type DeleteResponse = TransactionsControllerDeleteResponses[typeof HTTP_STATUS_CODE.OK];
 type FindByCategoryResponse =
   TransactionsControllerFindByCategoryResponses[typeof HTTP_STATUS_CODE.OK];
+type ImportResponse =
+  TransactionsControllerImportTransactionsResponses[typeof HTTP_STATUS_CODE.CREATED];
 
 export class TransactionApiService extends ApiClient {
   private BASE_URL = '/api/transactions' as const;
@@ -75,6 +78,17 @@ export class TransactionApiService extends ApiClient {
       method: 'GET',
       url: `${this.BASE_URL}/by-category/${encodeURIComponent(categoryId)}`,
       next,
+    });
+  }
+
+  importTransactionList(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.requestFormData<ImportResponse>({
+      method: 'POST',
+      url: `${this.BASE_URL}/import`,
+      formData,
     });
   }
 }
