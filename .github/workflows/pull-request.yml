@@ -77,3 +77,37 @@ jobs:
       - name: Run stylelint
         run: |
           pnpm stylelint
+
+  build:
+    needs: [init-env]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up environment
+        uses: ./.github/actions/setup-pnpm-node-deps
+        with:
+          node_version: ${{ needs.init-env.outputs.node_version }}
+          pnpm_version: ${{ needs.init-env.outputs.pnpm_version }}
+
+      - name: Run build
+        run: |
+          pnpm build
+
+  fmt-check:
+    needs: [init-env]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up environment
+        uses: ./.github/actions/setup-pnpm-node-deps
+        with:
+          node_version: ${{ needs.init-env.outputs.node_version }}
+          pnpm_version: ${{ needs.init-env.outputs.pnpm_version }}
+
+      - name: Run fmt check
+        run: |
+          pnpm fmt:check

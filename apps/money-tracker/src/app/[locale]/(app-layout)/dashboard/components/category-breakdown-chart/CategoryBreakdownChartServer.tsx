@@ -1,9 +1,15 @@
 import type { FC } from 'react';
 
+import dynamic from 'next/dynamic';
+
 import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchCategoryBreakdown } from '../../actions/fetch-category-breakdown';
-import { CategoryBreakdownChart } from './CategoryBreakdownChart';
+
+const CategoryBreakdownChart = dynamic(
+  () => import('./CategoryBreakdownChart').then((mod) => mod.CategoryBreakdownChart),
+  { ssr: false },
+);
 
 interface CategoryBreakdownChartServerProps {
   filters: DashboardFilters;

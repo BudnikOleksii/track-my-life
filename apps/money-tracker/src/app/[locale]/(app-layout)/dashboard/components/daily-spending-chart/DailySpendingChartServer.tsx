@@ -1,11 +1,16 @@
 import type { FC } from 'react';
 
 import { getYearMonth } from '@track-my-life/shared/src/utils/date';
+import dynamic from 'next/dynamic';
 
 import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchDailySpending } from '../../actions/fetch-daily-spending';
-import { DailySpendingChart } from './DailySpendingChart';
+
+const DailySpendingChart = dynamic(
+  () => import('./DailySpendingChart').then((mod) => mod.DailySpendingChart),
+  { ssr: false },
+);
 
 interface DailySpendingChartServerProps {
   filters: DashboardFilters;
