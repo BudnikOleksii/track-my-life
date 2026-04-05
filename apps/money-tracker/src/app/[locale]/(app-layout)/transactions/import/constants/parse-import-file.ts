@@ -1,5 +1,4 @@
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import Papa from 'papaparse';
 
 const ACCEPTED_EXTENSION_LIST = ['.json', '.csv'] as const;
 const MAX_ROW_COUNT = 1000;
@@ -44,7 +43,8 @@ const parseJson = (text: string): ParseResult => {
   }
 };
 
-const parseCsv = (text: string): ParseResult => {
+const parseCsv = async (text: string): Promise<ParseResult> => {
+  const Papa = await import('papaparse').then((mod) => mod.default);
   const result = Papa.parse<Record<string, unknown>>(text, {
     header: true,
     skipEmptyLines: true,
@@ -79,5 +79,5 @@ export const parseImportFile = async (file: File): Promise<ParseResult> => {
     return parseJson(text);
   }
 
-  return parseCsv(text);
+  return await parseCsv(text);
 };

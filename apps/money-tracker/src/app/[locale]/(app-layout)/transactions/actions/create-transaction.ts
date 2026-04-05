@@ -6,12 +6,9 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
-import { revalidatePath, revalidateTag } from 'next/cache';
-
-import { CACHE_TAG } from '@/constants/cache-tag';
-import { PATHS } from '@/constants/paths';
 
 import { transactionFormSchema } from '../constants/transaction-form-schema';
+import { revalidateTransactionCaches } from './revalidate-transaction-caches';
 
 export const createTransaction = async (input: CreateTransactionDto) => {
   const validated = transactionFormSchema.safeParse(input);
@@ -29,8 +26,6 @@ export const createTransaction = async (input: CreateTransactionDto) => {
     return null;
   }
 
-  revalidateTag(CACHE_TAG.TRANSACTIONS, 'max');
-  revalidateTag(CACHE_TAG.ANALYTICS, 'max');
-  revalidatePath(PATHS.transactions);
+  revalidateTransactionCaches();
   return data;
 };

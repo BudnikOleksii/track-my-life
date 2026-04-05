@@ -1,10 +1,13 @@
 import type { FC } from 'react';
 
+import dynamic from 'next/dynamic';
+
 import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchTrends } from '../../actions/fetch-trends';
 import { TRENDS_GRANULARITY } from '../../constants/dashboard';
-import { TrendsChart } from './TrendsChart';
+
+const TrendsChart = dynamic(() => import('./TrendsChart').then((mod) => mod.TrendsChart));
 
 interface TrendsChartServerProps {
   filters: DashboardFilters;

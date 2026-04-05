@@ -16,17 +16,13 @@
       "outputs": ["storybook-static/**"]
     },
     "type-check": {
-      "cache": false
+      "dependsOn": ["^build"]
     },
-    "lint": {
-      "cache": false
-    },
+    "lint": {},
     "lint:fix": {
       "cache": false
     },
-    "stylelint": {
-      "cache": false
-    },
+    "stylelint": {},
     "stylelint:fix": {
       "cache": false
     },
