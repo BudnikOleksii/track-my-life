@@ -7,9 +7,8 @@ import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchDailySpending } from '../../actions/fetch-daily-spending';
 
-const DailySpendingChart = dynamic(
-  () => import('./DailySpendingChart').then((mod) => mod.DailySpendingChart),
-  { ssr: false },
+const DailySpendingChart = dynamic(() =>
+  import('./DailySpendingChart').then((mod) => mod.DailySpendingChart),
 );
 
 interface DailySpendingChartServerProps {

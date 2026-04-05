@@ -7,9 +7,7 @@ import type { DashboardFilters } from '../../constants/dashboard';
 import { fetchTrends } from '../../actions/fetch-trends';
 import { TRENDS_GRANULARITY } from '../../constants/dashboard';
 
-const TrendsChart = dynamic(() => import('./TrendsChart').then((mod) => mod.TrendsChart), {
-  ssr: false,
-});
+const TrendsChart = dynamic(() => import('./TrendsChart').then((mod) => mod.TrendsChart));
 
 interface TrendsChartServerProps {
   filters: DashboardFilters;
