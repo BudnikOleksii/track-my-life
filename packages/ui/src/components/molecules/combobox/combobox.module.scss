@@ -159,6 +159,10 @@
   font-weight: var(--font-weight-medium);
 }
 
+.highlighted {
+  background-color: var(--surface-container-highest);
+}
+
 .checkIcon {
   flex-shrink: 0;
 }

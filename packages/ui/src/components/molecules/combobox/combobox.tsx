@@ -2,10 +2,14 @@
 
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as React from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './combobox.module.scss';
+import { FIRST_INDEX, useComboboxHighlight } from './hooks/use-combobox-highlight';
+import { useComboboxIds } from './hooks/use-combobox-ids';
+import { useComboboxKeyboard } from './hooks/use-combobox-keyboard';
+import { useComboboxSearch } from './hooks/use-combobox-search';
 
 const EMPTY_LIST_LENGTH = 0;
 
@@ -20,6 +24,7 @@ export interface ComboboxProps {
   onValueChange?: (value: string) => void;
   placeholder?: string;
   emptyMessage?: string;
+  searchLabel?: string;
   className?: string;
   error?: boolean;
   disabled?: boolean;
@@ -32,57 +37,66 @@ const Combobox: React.FC<ComboboxProps> = ({
   onValueChange,
   placeholder = 'Search...',
   emptyMessage = 'No results',
+  searchLabel = 'Search options',
   className,
   error,
   disabled,
   container,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { listboxId, getOptionId } = useComboboxIds();
+  const highlight = useComboboxHighlight();
+  const comboboxSearch = useComboboxSearch({
+    onClose: highlight.resetHighlight,
+    onSearchChange: highlight.resetHighlight,
+  });
 
-  const selectedOption = useMemo(
-    () => optionList.find((option) => option.value === value),
+  const selectedLabel = useMemo(
+    () => optionList.find((option) => option.value === value)?.label,
     [optionList, value],
   );
 
   const filteredOptionList = useMemo(() => {
-    if (!search) {
+    if (!comboboxSearch.search) {
       return optionList;
     }
-    const lowerSearch = search.toLowerCase();
+    const lowerSearch = comboboxSearch.search.toLowerCase();
     return optionList.filter((option) => option.label.toLowerCase().includes(lowerSearch));
-  }, [optionList, search]);
+  }, [optionList, comboboxSearch.search]);
 
   const handleSelect = useCallback(
     (optionValue: string) => {
       onValueChange?.(optionValue === value ? '' : optionValue);
-      setSearch('');
-      setIsOpen(false);
+      comboboxSearch.setSearch('');
+      comboboxSearch.setIsOpen(false);
     },
-    [onValueChange, value],
+    [onValueChange, value, comboboxSearch],
   );
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsOpen(open);
-    if (!open) {
-      setSearch('');
-    }
-  }, []);
+  const handleKeyDown = useComboboxKeyboard({
+    filteredOptionList,
+    highlightedIndex: highlight.highlightedIndex,
+    setHighlightedIndex: highlight.setHighlightedIndex,
+    handleSelect,
+    setIsOpen: comboboxSearch.setIsOpen,
+  });
 
   return (
-    <PopoverPrimitive.Root open={isOpen} onOpenChange={handleOpenChange}>
+    <PopoverPrimitive.Root
+      open={comboboxSearch.isOpen}
+      onOpenChange={comboboxSearch.handleOpenChange}
+    >
       <PopoverPrimitive.Trigger asChild disabled={disabled}>
         <button
           type="button"
           role="combobox"
-          aria-expanded={isOpen}
+          aria-expanded={comboboxSearch.isOpen}
+          aria-controls={listboxId}
           data-slot="combobox-trigger"
           className={cn(styles.trigger, error && styles.error, className)}
           disabled={disabled}
         >
-          <span className={cn(styles.triggerText, !selectedOption && styles.placeholder)}>
-            {selectedOption?.label ?? placeholder}
+          <span className={cn(styles.triggerText, !selectedLabel && styles.placeholder)}>
+            {selectedLabel ?? placeholder}
           </span>
           <span className={styles.icon} aria-hidden>
             ▼
@@ -97,29 +111,46 @@ const Combobox: React.FC<ComboboxProps> = ({
           align="start"
           onOpenAutoFocus={(event) => {
             event.preventDefault();
-            inputRef.current?.focus();
+            comboboxSearch.inputRef.current?.focus();
           }}
         >
           <div className={styles.searchWrapper}>
             <input
-              ref={inputRef}
+              ref={comboboxSearch.inputRef}
               data-slot="combobox-input"
+              role="combobox"
+              aria-expanded={comboboxSearch.isOpen}
+              aria-controls={listboxId}
+              aria-activedescendant={
+                highlight.highlightedIndex >= FIRST_INDEX
+                  ? getOptionId(highlight.highlightedIndex)
+                  : undefined
+              }
+              aria-autocomplete="list"
+              aria-label={searchLabel}
               className={styles.searchInput}
               placeholder={placeholder}
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              value={comboboxSearch.search}
+              onChange={(event) => comboboxSearch.setSearch(event.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
-          <div className={styles.list}>
+          <div ref={highlight.listRef} id={listboxId} role="listbox" className={styles.list}>
             {filteredOptionList.length === EMPTY_LIST_LENGTH ? (
               <div className={styles.empty}>{emptyMessage}</div>
             ) : (
-              filteredOptionList.map((option) => (
-                <button
+              filteredOptionList.map((option, index) => (
+                <div
                   key={option.value}
-                  type="button"
+                  id={getOptionId(index)}
+                  role="option"
+                  aria-selected={option.value === value}
                   data-slot="combobox-item"
-                  className={cn(styles.item, option.value === value && styles.selected)}
+                  className={cn(
+                    styles.item,
+                    option.value === value && styles.selected,
+                    index === highlight.highlightedIndex && styles.highlighted,
+                  )}
                   onClick={() => handleSelect(option.value)}
                 >
                   <span>{option.label}</span>
@@ -141,7 +172,7 @@ const Combobox: React.FC<ComboboxProps> = ({
                       />
                     </svg>
                   )}
-                </button>
+                </div>
               ))
             )}
           </div>
