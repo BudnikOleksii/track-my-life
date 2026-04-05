@@ -46,9 +46,9 @@ Items moved to backlog for now — not top priority since the app is not in prod
 
 ## Recommended Execution Order
 
-**Sprint 1 (Quick Wins):** Items 1, 5, 7, 8, 16, 21, 24, 28 — all S effort, high impact
+**Sprint 1 (Quick Wins):** Items 1, 5, 7, 8, 16, 21, 24, 28 — all S effort
 **Sprint 2 (Security):** Items 6, 14 — address auth vulnerabilities
 **Sprint 3 (Stability):** Items 3 — error handling and loading states
 **Sprint 4 (Type Safety):** Items 9, 13, 20 — strengthen the type system
 **Sprint 5 (DX & Polish):** Items 10, 11, 12, 17-19 — architecture and DX improvements
-**Backlog:** Items 22-23, 26-27 — low-priority refinements
+**Low Priority:** Items 22-23, 26-27 — refinements
