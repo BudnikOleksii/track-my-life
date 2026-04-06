@@ -59,10 +59,10 @@ export const useRecurringTransactionFormPage = ({
       frequency: recurringTransaction?.frequency ?? DEFAULT_FREQUENCY,
       interval: recurringTransaction?.interval ?? DEFAULT_INTERVAL,
       startDate: recurringTransaction?.startDate
-        ? recurringTransaction.startDate.split('T')[DATE_PART_INDEX]
+        ? (recurringTransaction.startDate.split('T')[DATE_PART_INDEX] ?? '')
         : '',
       endDate: recurringTransaction?.endDate
-        ? recurringTransaction.endDate.split('T')[DATE_PART_INDEX]
+        ? (recurringTransaction.endDate.split('T')[DATE_PART_INDEX] ?? '')
         : '',
       description: recurringTransaction?.description ?? '',
     },
@@ -88,12 +88,13 @@ export const useRecurringTransactionFormPage = ({
 
   const handleFormSubmit = useCallback(
     async (values: RecurringTransactionFormValues) => {
+      const { description, endDate, ...rest } = values;
       const body: CreateRecurringTransactionDto = {
-        ...values,
-        currencyCode: values.currencyCode as CurrencyCode,
+        ...rest,
+        currencyCode: values.currencyCode,
         frequency: values.frequency as RecurringFrequency,
-        description: values.description || undefined,
-        endDate: values.endDate || undefined,
+        ...(description !== undefined && { description }),
+        ...(endDate !== undefined && { endDate }),
       };
 
       const errorKey = isEditing ? 'content.updateError' : 'content.createError';

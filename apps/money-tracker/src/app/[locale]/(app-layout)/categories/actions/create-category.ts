@@ -20,7 +20,13 @@ export const createCategory = async (input: CreateCategoryDto) => {
     return null;
   }
 
-  const { data, error } = await categoryApiService.createCategory(validated.data);
+  const { data, error } = await categoryApiService.createCategory({
+    name: validated.data.name,
+    type: validated.data.type,
+    ...(validated.data.parentCategoryId !== undefined && {
+      parentCategoryId: validated.data.parentCategoryId,
+    }),
+  });
 
   if (error) {
     return null;
@@ -28,5 +34,6 @@ export const createCategory = async (input: CreateCategoryDto) => {
 
   revalidateTag(CACHE_TAG.CATEGORIES, 'max');
   revalidatePath(PATHS.categories);
+
   return data;
 };

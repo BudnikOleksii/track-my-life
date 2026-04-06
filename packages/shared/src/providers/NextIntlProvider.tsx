@@ -15,9 +15,9 @@ export const NextIntlProvider: FC<ComponentProps<typeof NextIntlClientProvider>>
 }) => (
   <NextIntlClientProvider
     getMessageFallback={getTranslationMessageFallback}
-    locale={locale}
-    messages={messages}
     onError={onTranslateError}
+    {...(locale !== undefined && { locale })}
+    {...(messages !== undefined && { messages })}
     {...props}
   >
     {children}

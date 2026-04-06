@@ -19,7 +19,7 @@ import styles from './SummaryWidget.module.scss';
 interface SummaryWidgetProps {
   data: SummaryResponseDto | null;
   currencyCode: CurrencyCode;
-  className?: string;
+  className?: string | undefined;
 }
 
 export const SummaryWidget: FC<SummaryWidgetProps> = ({ data, currencyCode, className }) => {

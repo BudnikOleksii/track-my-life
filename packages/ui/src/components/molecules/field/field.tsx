@@ -87,7 +87,7 @@ const FIRST_ARRAY_ELEMENT = 0;
 
 const FieldError: FC<
   React.ComponentProps<'div'> & {
-    errors?: ({ message?: string } | undefined)[];
+    errors?: ({ message?: string } | undefined)[] | undefined;
   }
 > = ({ className, children, errors, ...props }) => {
   const content = useMemo(() => {

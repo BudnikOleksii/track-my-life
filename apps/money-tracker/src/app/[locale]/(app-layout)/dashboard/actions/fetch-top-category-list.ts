@@ -5,6 +5,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -20,10 +21,7 @@ interface FetchTopCategoryListParams {
 }
 
 const checkIsTopCategoriesResponse = (value: unknown): value is TopCategoriesResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'categories' in value &&
-  Array.isArray((value as Record<string, unknown>).categories);
+  checkIsObject(value) && 'categories' in value && Array.isArray(value.categories);
 
 export const fetchTopCategoryList = cache(
   async (params: FetchTopCategoryListParams): Promise<TopCategoriesResponseDto | null> => {

@@ -1,21 +1,20 @@
+import { CURRENCY_CODE_LIST } from '@track-my-life/shared/src/constants/currency';
 import { z } from 'zod';
 
-import { TRANSACTION_TYPE } from '@/constants/transaction';
+import { transactionTypeSchema } from '@/constants/transaction';
 
 const MIN_AMOUNT_LENGTH = 1;
 const MIN_FIELD_LENGTH = 1;
 
 export const transactionFormSchema = z.object({
   categoryId: z.string().min(MIN_FIELD_LENGTH, 'categoryRequired'),
-  type: z.enum([TRANSACTION_TYPE.INCOME, TRANSACTION_TYPE.EXPENSE], {
-    error: 'typeRequired',
-  }),
+  type: z.enum(transactionTypeSchema.options, { error: 'typeRequired' }),
   amount: z
     .string()
     .trim()
     .min(MIN_AMOUNT_LENGTH, 'amountRequired')
     .regex(/^\d+([.,]\d{1,2})?$/, 'amountInvalid'),
-  currencyCode: z.string().min(MIN_FIELD_LENGTH, 'currencyRequired'),
+  currencyCode: z.enum(CURRENCY_CODE_LIST, { error: 'currencyRequired' }),
   date: z.string().min(MIN_FIELD_LENGTH, 'dateRequired'),
   description: z.string().optional(),
 });

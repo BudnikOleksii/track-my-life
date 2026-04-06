@@ -3,6 +3,7 @@
 import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
+import { CURRENCY_CODE_LIST } from '@track-my-life/shared/src/constants/currency';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {
@@ -21,7 +22,6 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { DashboardFilters } from '../../constants/dashboard';
 
-import { CURRENCY_CODE_LIST } from '../../constants/dashboard';
 import styles from './DashboardFilterBar.module.scss';
 
 interface DashboardFilterBarProps {
@@ -76,8 +76,8 @@ export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFil
 
       <Select
         value={filters.currencyCode}
-        onValueChange={(value: string) => {
-          onFilterChange({ currencyCode: value as CurrencyCode });
+        onValueChange={(value: CurrencyCode) => {
+          onFilterChange({ currencyCode: value });
         }}
       >
         <SelectTrigger

@@ -48,7 +48,7 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     return this.request<SummaryResponse>({
       method: 'GET',
       url: this.ENDPOINTS.SUMMARY,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }
@@ -57,7 +57,7 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     return this.request<CategoryBreakdownResponse>({
       method: 'GET',
       url: this.ENDPOINTS.CATEGORY_BREAKDOWN,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }
@@ -66,7 +66,7 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     return this.request<TrendsResponse>({
       method: 'GET',
       url: this.ENDPOINTS.TRENDS,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }
@@ -75,7 +75,7 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     return this.request<TopCategoriesResponse>({
       method: 'GET',
       url: this.ENDPOINTS.TOP_CATEGORIES,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }
@@ -84,7 +84,7 @@ export class TransactionsAnalyticsApiService extends ApiClient {
     return this.request<DailySpendingResponse>({
       method: 'GET',
       url: this.ENDPOINTS.DAILY_SPENDING,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }

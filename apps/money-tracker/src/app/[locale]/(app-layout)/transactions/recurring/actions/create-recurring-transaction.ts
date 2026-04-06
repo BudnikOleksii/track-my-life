@@ -2,7 +2,6 @@
 
 import type {
   CreateRecurringTransactionDto,
-  CurrencyCode,
   RecurringFrequency,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
@@ -25,11 +24,15 @@ export const createRecurringTransaction = async (input: CreateRecurringTransacti
   }
 
   const { data, error } = await recurringTransactionApiService.createRecurringTransaction({
-    ...validated.data,
-    currencyCode: validated.data.currencyCode as CurrencyCode,
+    categoryId: validated.data.categoryId,
+    type: validated.data.type,
+    amount: validated.data.amount,
+    currencyCode: validated.data.currencyCode,
     frequency: validated.data.frequency as RecurringFrequency,
-    endDate: validated.data.endDate || undefined,
-    description: validated.data.description || undefined,
+    interval: validated.data.interval,
+    startDate: validated.data.startDate,
+    ...(validated.data.endDate !== undefined && { endDate: validated.data.endDate }),
+    ...(validated.data.description !== undefined && { description: validated.data.description }),
   });
 
   if (error) {

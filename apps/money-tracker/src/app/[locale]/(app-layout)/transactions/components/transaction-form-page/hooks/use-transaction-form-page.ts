@@ -53,7 +53,7 @@ export const useTransactionFormPage = ({
       type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
       amount: transaction?.amount ?? '',
       currencyCode: transaction?.currencyCode ?? baseCurrencyCode ?? FALLBACK_CURRENCY,
-      date: transaction?.date ? transaction.date.split('T')[DATE_PART_INDEX] : '',
+      date: transaction?.date ? (transaction.date.split('T')[DATE_PART_INDEX] ?? '') : '',
       description: transaction?.description ?? '',
     },
   });
@@ -78,10 +78,11 @@ export const useTransactionFormPage = ({
 
   const handleFormSubmit = useCallback(
     async (values: TransactionFormValues) => {
+      const { description, ...rest } = values;
       const body: CreateTransactionDto = {
-        ...values,
-        currencyCode: values.currencyCode as CurrencyCode,
-        description: values.description || undefined,
+        ...rest,
+        currencyCode: values.currencyCode,
+        ...(description !== undefined && { description }),
       };
 
       const errorKey = isEditing ? 'content.updateError' : 'content.createError';

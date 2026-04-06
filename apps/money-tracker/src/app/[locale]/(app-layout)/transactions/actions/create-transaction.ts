@@ -1,9 +1,6 @@
 'use server';
 
-import type {
-  CreateTransactionDto,
-  CurrencyCode,
-} from '@track-my-life/shared/src/api/generated/types.gen';
+import type { CreateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
 
@@ -21,9 +18,11 @@ export const createTransaction = async (input: CreateTransactionDto) => {
     return null;
   }
 
+  const { description, ...rest } = validated.data;
   const { data, error } = await transactionApiService.createTransaction({
-    ...validated.data,
-    currencyCode: validated.data.currencyCode as CurrencyCode,
+    ...rest,
+    currencyCode: rest.currencyCode,
+    ...(description !== undefined && { description }),
   });
 
   if (error) {

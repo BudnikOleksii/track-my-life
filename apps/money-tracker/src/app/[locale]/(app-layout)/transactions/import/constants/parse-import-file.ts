@@ -1,4 +1,5 @@
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 
 const ACCEPTED_EXTENSION_LIST = ['.json', '.csv'] as const;
 const MAX_ROW_COUNT = 1000;
@@ -37,7 +38,7 @@ const parseJson = (text: string): ParseResult => {
       return { ok: false, error: 'fileTooManyRows' };
     }
 
-    return { ok: true, rowList: parsed as Record<string, unknown>[] };
+    return { ok: true, rowList: (parsed as unknown[]).filter(checkIsObject) };
   } catch {
     return { ok: false, error: 'jsonMalformed' };
   }

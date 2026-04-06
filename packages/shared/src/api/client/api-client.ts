@@ -105,7 +105,7 @@ export class ApiClient {
 
   private buildFetchInit(
     fetchRequest: Request,
-    options: RequestOptions,
+    options: RequestOptions<Record<string, unknown>>,
   ): RequestInit & { next?: unknown } {
     const fetchInit: RequestInit & { next?: unknown } = {
       method: fetchRequest.method,
@@ -119,14 +119,14 @@ export class ApiClient {
     }
     if (options.next) {
       fetchInit.next = {
-        ...options.next,
-        tags: options.next.tags ? ([...options.next.tags] as string[]) : undefined,
-      };
+        ...(options.next.revalidate !== undefined && { revalidate: options.next.revalidate }),
+        ...(options.next.tags && { tags: [...options.next.tags] as string[] }),
+      } as Record<string, unknown>;
     }
     return fetchInit;
   }
 
-  private async executeFetch(options: RequestOptions): Promise<Response> {
+  private async executeFetch(options: RequestOptions<Record<string, unknown>>): Promise<Response> {
     const initialRequest = this.buildRequest(options);
     const fetchRequest = await applyRequestInterceptorList(
       this.requestInterceptorList,
@@ -142,13 +142,17 @@ export class ApiClient {
     );
   }
 
-  protected async request<TData>(options: RequestOptions): Promise<ApiResponse<TData>> {
+  protected async request<TData, TQuery extends Record<string, unknown> = Record<string, unknown>>(
+    options: RequestOptions<TQuery>,
+  ): Promise<ApiResponse<TData>> {
     const response = await this.executeFetch(options);
     const { data, error } = await parseResponseBody<TData>(response);
     return { data, error, response };
   }
 
-  protected async requestBlob(options: RequestOptions): Promise<BlobResponse> {
+  protected async requestBlob<TQuery extends Record<string, unknown> = Record<string, unknown>>(
+    options: RequestOptions<TQuery>,
+  ): Promise<BlobResponse> {
     const response = await this.executeFetch(options);
 
     if (!response.ok) {
@@ -193,7 +197,7 @@ export class ApiClient {
     return { data, error, response };
   }
 
-  private buildRequest(options: RequestOptions): Request {
+  private buildRequest(options: RequestOptions<Record<string, unknown>>): Request {
     const url = buildUrl(this.baseUrl, options.url, options.query);
     const headers = new Headers({ ...this.defaultHeaders, ...options.headers });
 
@@ -204,7 +208,7 @@ export class ApiClient {
     return new Request(url, {
       method: options.method,
       headers,
-      body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+      ...(options.body !== undefined && { body: JSON.stringify(options.body) }),
     });
   }
 }

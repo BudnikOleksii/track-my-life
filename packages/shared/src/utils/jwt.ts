@@ -2,25 +2,7 @@ import type { JWTPayload, JWTVerifyOptions } from 'jose';
 
 import { jwtVerify } from 'jose';
 
-import { SECONDS_TO_MS } from '../constants/time';
-
 export type { JWTPayload } from 'jose';
-
-const checkIsTokenExpiredOnly = (token: string): boolean => {
-  const [, payloadPart] = token.split('.');
-
-  if (!payloadPart) {
-    return true;
-  }
-
-  try {
-    const base64 = payloadPart.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(atob(base64)) as { exp?: number };
-    return typeof payload.exp === 'number' && payload.exp * SECONDS_TO_MS < Date.now();
-  } catch {
-    return true;
-  }
-};
 
 const extractUserIdFromPayload = (token: string): string | null => {
   const [, payloadPart] = token.split('.');
@@ -42,22 +24,23 @@ interface VerifyTokenConfig extends Pick<JWTVerifyOptions, 'audience' | 'issuer'
   secret: string | undefined;
 }
 
+const verifyTokenWithoutSecret = (_token: string): null => {
+  console.warn('[middleware] JWT_SECRET is not set — rejecting authentication');
+  return null;
+};
+
 export const verifyToken = async (
   token: string,
   config: VerifyTokenConfig,
 ): Promise<JWTPayload | null> => {
   if (!config.secret) {
-    console.warn('[middleware] JWT_SECRET is not set — falling back to expiration-only validation');
-    return checkIsTokenExpiredOnly(token)
-      ? null
-      : { sub: extractUserIdFromPayload(token) ?? undefined };
+    return verifyTokenWithoutSecret(token);
   }
 
   const { secret, ...options } = config;
 
   try {
-    const encodedSecret = new TextEncoder().encode(secret);
-    const { payload } = await jwtVerify(token, encodedSecret, options);
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(secret), options);
     return payload;
   } catch {
     return null;

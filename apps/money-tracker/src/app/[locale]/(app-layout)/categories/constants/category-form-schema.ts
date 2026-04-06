@@ -1,14 +1,12 @@
 import { z } from 'zod';
 
-import { TRANSACTION_TYPE } from '@/constants/transaction';
+import { transactionTypeSchema } from '@/constants/transaction';
 
 const MIN_NAME_LENGTH = 1;
 
 export const categoryFormSchema = z.object({
   name: z.string().trim().min(MIN_NAME_LENGTH, 'nameRequired'),
-  type: z.enum([TRANSACTION_TYPE.INCOME, TRANSACTION_TYPE.EXPENSE], {
-    error: 'typeRequired',
-  }),
+  type: z.enum(transactionTypeSchema.options, { error: 'typeRequired' }),
   parentCategoryId: z.string().optional(),
 });
 
