@@ -42,18 +42,18 @@ export const useCategoryFormPage = ({
 
   const handleFormSubmit = useCallback(
     async (values: CategoryFormValues) => {
-      const parentCategoryId = values.parentCategoryId || undefined;
+      const parentCategoryId = values.parentCategoryId || null;
 
       const result =
         isEditing && category
           ? await updateCategory(category.id, {
               name: values.name,
-              ...(parentCategoryId !== undefined && { parentCategoryId }),
+              parentCategoryId,
             })
           : await createCategory({
               name: values.name,
               type: values.type,
-              ...(parentCategoryId !== undefined && { parentCategoryId }),
+              ...(parentCategoryId && { parentCategoryId }),
             });
 
       if (result) {
