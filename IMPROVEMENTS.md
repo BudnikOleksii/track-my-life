@@ -7,7 +7,7 @@
 | #   | Task                                                    | Impact | Effort | Status |
 | --- | ------------------------------------------------------- | ------ | ------ | ------ |
 | 1   | Add Security Headers                                    | 5      | S      | Done   |
-| 3   | Add Error Boundaries and Loading States                 | 5      | M      | Todo   |
+| 3   | Add Error Boundaries and Loading States                 | 5      | M      | Done   |
 | 5   | Add Build and Format Check to CI                        | 5      | S      | Done   |
 | 6   | Fix JWT Validation in Middleware                        | 4      | M      | Done   |
 | 7   | Add File Upload Validation                              | 4      | S      | Done   |
