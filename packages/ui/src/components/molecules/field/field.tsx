@@ -130,6 +130,21 @@ const FieldError: FC<
   );
 };
 
+const FormField: FC<
+  React.ComponentProps<'div'> & {
+    label: string;
+    htmlFor?: string;
+    error?: { message?: string } | undefined;
+    orientation?: FieldOrientation | undefined;
+  }
+> = ({ label, htmlFor, error, orientation = 'vertical', children, ...props }) => (
+  <Field orientation={orientation} {...props}>
+    <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
+    {children}
+    <FieldError errors={error ? [error] : undefined} />
+  </Field>
+);
+
 export {
   Field,
   FieldLabel,
@@ -141,4 +156,5 @@ export {
   FieldSet,
   FieldContent,
   FieldTitle,
+  FormField,
 };

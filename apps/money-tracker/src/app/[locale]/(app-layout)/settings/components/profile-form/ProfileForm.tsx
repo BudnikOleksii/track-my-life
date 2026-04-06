@@ -6,11 +6,7 @@ import type { FC } from 'react';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from '@track-my-life/ui/src/components/molecules/field/field';
+import { FormField } from '@track-my-life/ui/src/components/molecules/field/field';
 import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
 
@@ -33,32 +29,33 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile }) => {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-      <Field>
-        <FieldLabel htmlFor="profile-first-name">
-          {translations('content.firstNameLabel')}
-        </FieldLabel>
+      <FormField
+        label={translations('content.firstNameLabel')}
+        htmlFor="profile-first-name"
+        error={errors.firstName}
+      >
         <Input
           id="profile-first-name"
           placeholder={translations('content.firstNamePlaceholder')}
           error={Boolean(errors.firstName)}
           {...register('firstName')}
         />
-        <FieldError errors={errors.firstName ? [errors.firstName] : undefined} />
-      </Field>
+      </FormField>
 
-      <Field>
-        <FieldLabel htmlFor="profile-last-name">{translations('content.lastNameLabel')}</FieldLabel>
+      <FormField
+        label={translations('content.lastNameLabel')}
+        htmlFor="profile-last-name"
+        error={errors.lastName}
+      >
         <Input
           id="profile-last-name"
           placeholder={translations('content.lastNamePlaceholder')}
           error={Boolean(errors.lastName)}
           {...register('lastName')}
         />
-        <FieldError errors={errors.lastName ? [errors.lastName] : undefined} />
-      </Field>
+      </FormField>
 
-      <Field>
-        <FieldLabel>{translations('content.countryLabel')}</FieldLabel>
+      <FormField label={translations('content.countryLabel')} error={errors.countryCode}>
         <Controller
           name="countryCode"
           control={control}
@@ -75,11 +72,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile }) => {
             );
           }}
         />
-        <FieldError errors={errors.countryCode ? [errors.countryCode] : undefined} />
-      </Field>
+      </FormField>
 
-      <Field>
-        <FieldLabel>{translations('content.baseCurrencyLabel')}</FieldLabel>
+      <FormField label={translations('content.baseCurrencyLabel')} error={errors.baseCurrencyCode}>
         <Controller
           name="baseCurrencyCode"
           control={control}
@@ -96,8 +91,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile }) => {
             );
           }}
         />
-        <FieldError errors={errors.baseCurrencyCode ? [errors.baseCurrencyCode] : undefined} />
-      </Field>
+      </FormField>
 
       <div className={styles.actions}>
         <Button type="submit" disabled={isSubmitting}>
