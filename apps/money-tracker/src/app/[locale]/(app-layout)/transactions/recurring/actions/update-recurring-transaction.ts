@@ -1,7 +1,6 @@
 'use server';
 
 import type {
-  CurrencyCode,
   RecurringFrequency,
   UpdateRecurringTransactionDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
@@ -32,7 +31,7 @@ export const updateRecurringTransaction = async (
     ...(validated.data.type !== undefined && { type: validated.data.type }),
     ...(validated.data.amount !== undefined && { amount: validated.data.amount }),
     ...(validated.data.currencyCode !== undefined && {
-      currencyCode: validated.data.currencyCode as CurrencyCode,
+      currencyCode: validated.data.currencyCode,
     }),
     ...(validated.data.frequency !== undefined && {
       frequency: validated.data.frequency as RecurringFrequency,

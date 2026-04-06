@@ -1,6 +1,5 @@
 import type {
   CountryCode,
-  CurrencyCode,
   ProfileResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
@@ -34,7 +33,6 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
       firstName: '',
       lastName: '',
       countryCode: '',
-      baseCurrencyCode: '',
     },
   });
 
@@ -43,7 +41,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
       firstName: convertToString(profile.firstName),
       lastName: convertToString(profile.lastName),
       countryCode: profile.countryCode ?? '',
-      baseCurrencyCode: profile.baseCurrencyCode ?? '',
+      ...(profile.baseCurrencyCode && { baseCurrencyCode: profile.baseCurrencyCode }),
     });
   }, [profile, reset]);
 
@@ -53,9 +51,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
         ...(values.firstName && { firstName: values.firstName }),
         ...(values.lastName && { lastName: values.lastName }),
         ...(values.countryCode && { countryCode: values.countryCode as CountryCode }),
-        ...(values.baseCurrencyCode && {
-          baseCurrencyCode: values.baseCurrencyCode as CurrencyCode,
-        }),
+        ...(values.baseCurrencyCode && { baseCurrencyCode: values.baseCurrencyCode }),
       };
 
       try {

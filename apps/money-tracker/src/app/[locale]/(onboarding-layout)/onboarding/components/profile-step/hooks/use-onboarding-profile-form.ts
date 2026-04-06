@@ -1,4 +1,4 @@
-import type { CountryCode, CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { CountryCode } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
@@ -32,7 +32,6 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
       firstName: '',
       lastName: '',
       countryCode: '',
-      baseCurrencyCode: '',
     },
   });
 
@@ -42,9 +41,7 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
         ...(values.firstName && { firstName: values.firstName }),
         ...(values.lastName && { lastName: values.lastName }),
         ...(values.countryCode && { countryCode: values.countryCode as CountryCode }),
-        ...(values.baseCurrencyCode && {
-          baseCurrencyCode: values.baseCurrencyCode as CurrencyCode,
-        }),
+        ...(values.baseCurrencyCode && { baseCurrencyCode: values.baseCurrencyCode }),
       };
 
       try {

@@ -91,7 +91,7 @@ export const useRecurringTransactionFormPage = ({
       const { description, endDate, ...rest } = values;
       const body: CreateRecurringTransactionDto = {
         ...rest,
-        currencyCode: values.currencyCode as CurrencyCode,
+        currencyCode: values.currencyCode,
         frequency: values.frequency as RecurringFrequency,
         ...(description !== undefined && { description }),
         ...(endDate !== undefined && { endDate }),

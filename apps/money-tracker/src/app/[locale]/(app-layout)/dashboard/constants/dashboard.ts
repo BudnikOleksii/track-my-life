@@ -1,5 +1,7 @@
 import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 
+import { checkIsCurrencyCode } from '@track-my-life/shared/src/constants/currency';
+
 import type { FilterValue } from '@/constants/transaction';
 
 import { normalizeParam } from '@/constants/normalize-param';
@@ -9,8 +11,6 @@ export const DEFAULT_CURRENCY_CODE: CurrencyCode = 'UAH';
 export const TOP_CATEGORY_LIST_LIMIT = 5;
 export const TRENDS_GRANULARITY = 'monthly' as const;
 export const RECENT_TRANSACTION_LIST_LIMIT = 5;
-
-export const CURRENCY_CODE_LIST: CurrencyCode[] = ['USD', 'EUR', 'GBP', 'UAH'];
 
 export const CHART_COLOR_LIST = [
   '#6366f1',
@@ -39,9 +39,6 @@ export interface DashboardFilters {
 
 const VALID_TYPE_SET = new Set<FilterValue>(FILTER_OPTION_LIST);
 
-const checkIsValidCurrencyCode = (value: string): value is CurrencyCode =>
-  CURRENCY_CODE_LIST.includes(value as CurrencyCode);
-
 const checkIsValidFilterType = (value: string): value is FilterValue =>
   VALID_TYPE_SET.has(value as FilterValue);
 
@@ -55,6 +52,6 @@ export const parseDashboardSearchParams = (
     dateFrom: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_FROM]),
     dateTo: normalizeParam(searchParams[SEARCH_PARAM_KEY.DATE_TO]),
     type: checkIsValidFilterType(rawType) ? rawType : 'ALL',
-    currencyCode: checkIsValidCurrencyCode(rawCurrency) ? rawCurrency : DEFAULT_CURRENCY_CODE,
+    currencyCode: checkIsCurrencyCode(rawCurrency) ? rawCurrency : DEFAULT_CURRENCY_CODE,
   };
 };

@@ -1,9 +1,6 @@
 'use server';
 
-import type {
-  CurrencyCode,
-  UpdateTransactionDto,
-} from '@track-my-life/shared/src/api/generated/types.gen';
+import type { UpdateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
 
@@ -26,7 +23,7 @@ export const updateTransaction = async (id: string, body: UpdateTransactionDto) 
     ...(categoryId !== undefined && { categoryId }),
     ...(type !== undefined && { type }),
     ...(amount !== undefined && { amount }),
-    ...(currencyCode !== undefined && { currencyCode: currencyCode as CurrencyCode }),
+    ...(currencyCode !== undefined && { currencyCode }),
     ...(date !== undefined && { date }),
     ...(description !== undefined && { description }),
   });

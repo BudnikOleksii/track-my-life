@@ -1,6 +1,6 @@
 import type { CurrencyCode } from '../api/generated/types.gen';
 
-export const CURRENCY_CODE_LIST: CurrencyCode[] = [
+export const CURRENCY_CODE_LIST = [
   'AED',
   'AFN',
   'ALL',
@@ -158,7 +158,7 @@ export const CURRENCY_CODE_LIST: CurrencyCode[] = [
   'ZAR',
   'ZMW',
   'ZWL',
-];
+] as const;
 
 const CURRENCY_CODE_SET = new Set<string>(CURRENCY_CODE_LIST);
 

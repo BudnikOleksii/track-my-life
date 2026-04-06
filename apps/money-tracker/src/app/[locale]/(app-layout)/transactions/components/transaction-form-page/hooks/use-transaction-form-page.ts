@@ -81,7 +81,7 @@ export const useTransactionFormPage = ({
       const { description, ...rest } = values;
       const body: CreateTransactionDto = {
         ...rest,
-        currencyCode: values.currencyCode as CurrencyCode,
+        currencyCode: values.currencyCode,
         ...(description !== undefined && { description }),
       };
 
