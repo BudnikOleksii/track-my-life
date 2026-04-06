@@ -6,7 +6,6 @@ import type {
   RecurringTransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 
 import { Link, useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -32,8 +31,6 @@ import { Controller } from 'react-hook-form';
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
-
-import type { RecurringTransactionFormValues } from '../../constants/recurring-transaction-form-schema';
 
 import { useRecurringTransactionFormPage } from './hooks/use-recurring-transaction-form-page';
 import styles from './RecurringTransactionFormPage.module.scss';
@@ -86,10 +83,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
         </Typography>
       </div>
 
-      <form
-        onSubmit={handleSubmit(handleFormSubmit as SubmitHandler<RecurringTransactionFormValues>)}
-        className={styles.form}
-      >
+      <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
         <Field>
           <FieldLabel>{translations('content.typeLabel')}</FieldLabel>
           <Controller
