@@ -4,9 +4,13 @@ import type { ChangePasswordDto } from '@track-my-life/shared/src/api/generated/
 
 import { profileApiService } from '@track-my-life/shared/src/api/server-api';
 
+import { requireAuth } from '@/actions/require-auth';
+
 import { changePasswordFormSchema } from '../constants/change-password-form-schema';
 
 export const changePassword = async (input: ChangePasswordDto) => {
+  await requireAuth();
+
   const validated = changePasswordFormSchema.safeParse(input);
 
   if (!validated.success) {

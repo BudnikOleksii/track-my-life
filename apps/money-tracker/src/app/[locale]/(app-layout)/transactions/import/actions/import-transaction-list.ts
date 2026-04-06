@@ -3,6 +3,7 @@
 import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
+import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { PATHS } from '@/constants/paths';
 
@@ -38,6 +39,8 @@ const revalidateImportCaches = () => {
 };
 
 export const importTransactionList = async (formData: FormData) => {
+  await requireAuth();
+
   const fileResult = getValidatedImportFile(formData);
 
   if (!fileResult.ok) {

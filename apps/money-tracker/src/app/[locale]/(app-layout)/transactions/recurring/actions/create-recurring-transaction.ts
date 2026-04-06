@@ -9,12 +9,15 @@ import type {
 import { recurringTransactionApiService } from '@track-my-life/shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
+import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { PATHS } from '@/constants/paths';
 
 import { recurringTransactionFormSchema } from '../constants/recurring-transaction-form-schema';
 
 export const createRecurringTransaction = async (input: CreateRecurringTransactionDto) => {
+  await requireAuth();
+
   const validated = recurringTransactionFormSchema.safeParse(input);
 
   if (!validated.success) {

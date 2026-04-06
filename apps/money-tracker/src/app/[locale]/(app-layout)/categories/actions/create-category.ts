@@ -5,12 +5,15 @@ import type { CreateCategoryDto } from '@track-my-life/shared/src/api/generated/
 import { categoryApiService } from '@track-my-life/shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
+import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { PATHS } from '@/constants/paths';
 
 import { categoryFormSchema } from '../constants/category-form-schema';
 
 export const createCategory = async (input: CreateCategoryDto) => {
+  await requireAuth();
+
   const validated = categoryFormSchema.safeParse(input);
 
   if (!validated.success) {

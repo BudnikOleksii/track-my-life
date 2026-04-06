@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Middleware proactively refreshes tokens before RSC rendering
 
@@ -48,12 +48,3 @@ The system SHALL wire the existing `proxy.ts` as Next.js middleware so that toke
 
 - **WHEN** the `JWT_SECRET` environment variable is not set
 - **THEN** the middleware SHALL fall back to expiration-only validation (current behavior) and log a warning
-
-### Requirement: Middleware uses ReadWriteTokenProvider for cookie management
-
-The middleware SHALL use `MiddlewareTokenProvider` (implementing `ReadWriteTokenProvider`) to read and write token cookies on the middleware request/response objects.
-
-#### Scenario: Refreshed tokens persisted via middleware cookies
-
-- **WHEN** the middleware successfully refreshes a token pair
-- **THEN** it SHALL call `setTokenPair` on the `MiddlewareTokenProvider` to set `access_token` and `refresh_token` as httpOnly cookies on the response
