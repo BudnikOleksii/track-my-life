@@ -24,10 +24,10 @@
 | 19  | Extract CategoryFormPage Logic to Hook                  | 2      | S      | Done     |
 | 20  | Enable `exactOptionalPropertyTypes`                     | 2      | M      | Done     |
 | 21  | Lazy-Load papaparse                                     | 2      | S      | Done     |
-| 22  | Enable PPR for Dashboard                                | 2      | S      | Invalide |
+| 22  | Enable PPR for Dashboard                                | 2      | S      | Invalid  |
 | 23  | Deduplicate `lucide-react`                              | 1      | S      | Done     |
 | 24  | Enable Turborepo Cache for Lint/Type-Check              | 1      | S      | Done     |
-| 26  | Add Exhaustive Union Checking Pattern                   | 1 --   | S      | Done     |
+| 26  | Add Exhaustive Union Checking Pattern                   | 1      | S      | Done     |
 | 27  | Adopt React 19 APIs (useActionState, useFormStatus)     | 1      | M      | Todo     |
 | 28  | Fix Font Class Composition                              | 1      | S      | Done     |
 

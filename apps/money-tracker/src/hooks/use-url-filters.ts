@@ -70,7 +70,7 @@ export const useUrlFilters = <TUpdate extends object>({
     (update: TUpdate) => {
       const params = buildSearchParams(searchParams, update, filterKeyToSearchParam);
 
-      if (pageResetKeySet && defaultPage) {
+      if (pageResetKeySet && defaultPage !== undefined) {
         applyPageReset({ params, update, pageResetKeySet, defaultPage, pageParamKey });
       }
 
