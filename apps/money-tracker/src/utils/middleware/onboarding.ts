@@ -14,9 +14,9 @@ import { createRedirectWithCookies } from './redirect';
 const getOnboardingCookieName = (
   accessToken: string,
   verifiedPayload?: JWTPayload | null,
-): string => {
+): string | null => {
   const userId = extractUserIdFromToken(accessToken, verifiedPayload);
-  return userId ? `${COOKIE.ONBOARDING_COMPLETED}_${userId}` : COOKIE.ONBOARDING_COMPLETED;
+  return userId ? `${COOKIE.ONBOARDING_COMPLETED}_${userId}` : null;
 };
 
 const fetchOnboardingStatus = async (accessToken: string): Promise<boolean | null> => {
@@ -50,19 +50,12 @@ const getCachedOnboardingStatus = (request: NextRequest, cookieName: string): bo
   return null;
 };
 
-export const checkOnboardingStatus = async (
-  request: NextRequest,
+const fetchAndCacheOnboardingStatus = async (
+  accessToken: string,
+  cookieName: string,
   response: NextResponse,
-  tokenResult: { accessToken: string; payload: JWTPayload | null },
 ): Promise<boolean> => {
-  const cookieName = getOnboardingCookieName(tokenResult.accessToken, tokenResult.payload);
-  const cached = getCachedOnboardingStatus(request, cookieName);
-
-  if (cached !== null) {
-    return cached;
-  }
-
-  const onboardingCompleted = await fetchOnboardingStatus(tokenResult.accessToken);
+  const onboardingCompleted = await fetchOnboardingStatus(accessToken);
 
   if (onboardingCompleted === null) {
     return true;
@@ -76,6 +69,27 @@ export const checkOnboardingStatus = async (
   });
 
   return onboardingCompleted;
+};
+
+export const checkOnboardingStatus = async (
+  request: NextRequest,
+  response: NextResponse,
+  tokenResult: { accessToken: string; payload: JWTPayload | null },
+): Promise<boolean> => {
+  const cookieName = getOnboardingCookieName(tokenResult.accessToken, tokenResult.payload);
+
+  if (!cookieName) {
+    const onboardingCompleted = await fetchOnboardingStatus(tokenResult.accessToken);
+    return onboardingCompleted ?? true;
+  }
+
+  const cached = getCachedOnboardingStatus(request, cookieName);
+
+  if (cached !== null) {
+    return cached;
+  }
+
+  return fetchAndCacheOnboardingStatus(tokenResult.accessToken, cookieName, response);
 };
 
 export const handleOnboardingRedirect = (

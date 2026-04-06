@@ -14,7 +14,8 @@ const checkIsTokenExpiredOnly = (token: string): boolean => {
   }
 
   try {
-    const payload = JSON.parse(atob(payloadPart)) as { exp?: number };
+    const base64 = payloadPart.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(base64)) as { exp?: number };
     return typeof payload.exp === 'number' && payload.exp * SECONDS_TO_MS < Date.now();
   } catch {
     return true;
@@ -29,7 +30,8 @@ const extractUserIdFromPayload = (token: string): string | null => {
   }
 
   try {
-    const payload = JSON.parse(atob(payloadPart)) as { sub?: string };
+    const base64 = payloadPart.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(base64)) as { sub?: string };
     return payload.sub ?? null;
   } catch {
     return null;
