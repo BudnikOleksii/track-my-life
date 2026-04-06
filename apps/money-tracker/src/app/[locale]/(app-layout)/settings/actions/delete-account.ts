@@ -9,11 +9,14 @@ import {
 import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { getLocale } from 'next-intl/server';
 
+import { requireAuth } from '@/actions/require-auth';
 import { PATHS } from '@/constants/paths';
 
 import { deleteAccountFormSchema } from '../constants/delete-account-form-schema';
 
 export const deleteAccount = async (input: DeleteAccountDto) => {
+  await requireAuth();
+
   const validated = deleteAccountFormSchema.safeParse(input);
 
   if (!validated.success) {

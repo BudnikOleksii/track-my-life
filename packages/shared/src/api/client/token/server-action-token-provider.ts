@@ -1,13 +1,6 @@
 import type { ReadWriteTokenProvider } from './types';
 
-import { ACCESS_TOKEN_COOKIE } from '../../../constants/cookie';
-
-const ACCESS_TOKEN_COOKIE_OPTIONS = {
-  httpOnly: false,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
-  path: '/',
-};
+import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_COOKIE_OPTIONS } from '../../../constants/cookie';
 
 export class ServerActionTokenProvider implements ReadWriteTokenProvider {
   async getAccessToken(): Promise<string | null> {

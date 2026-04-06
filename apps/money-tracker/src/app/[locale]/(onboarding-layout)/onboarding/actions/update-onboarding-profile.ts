@@ -4,9 +4,13 @@ import type { UpdateProfileDto } from '@track-my-life/shared/src/api/generated/t
 
 import { profileApiService } from '@track-my-life/shared/src/api/server-api';
 
+import { requireAuth } from '@/actions/require-auth';
+
 import { profileFormSchema } from '../../../(app-layout)/settings/constants/profile-form-schema';
 
 export const updateOnboardingProfile = async (input: UpdateProfileDto) => {
+  await requireAuth();
+
   const validated = profileFormSchema.safeParse(input);
 
   if (!validated.success) {

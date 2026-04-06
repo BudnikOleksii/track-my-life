@@ -1,3 +1,4 @@
+import { API_BASE_URL, ENDPOINTS } from './api-config';
 import { AuthInterceptor } from './client/interceptors/auth-interceptor';
 import { forwardResponseCookieList } from './client/token/forward-response-cookie-list';
 import { ServerActionTokenProvider } from './client/token/server-action-token-provider';
@@ -7,8 +8,6 @@ import { ProfileApiService } from './services/profile-api.service';
 import { RecurringTransactionApiService } from './services/recurring-transaction-api.service';
 import { TransactionApiService } from './services/transaction-api.service';
 import { TransactionsAnalyticsApiService } from './services/transactions-analytics-api.service';
-
-const API_BASE_URL = process.env.API_BASE_URL ?? 'http://localhost:8080';
 
 export const serverActionTokenProvider = new ServerActionTokenProvider();
 
@@ -31,7 +30,7 @@ export const transactionsAnalyticsApiService = new TransactionsAnalyticsApiServi
 
 const authInterceptor = new AuthInterceptor({
   tokenProvider: serverActionTokenProvider,
-  refreshUrl: `${API_BASE_URL}/api/auth/refresh-token`,
+  refreshUrl: ENDPOINTS.REFRESH_TOKEN,
   getRequestCookieHeader,
   onRefreshResponse: forwardResponseCookieList,
 });

@@ -9,15 +9,15 @@
 | 1   | Add Security Headers                                    | 5      | S      | Done   |
 | 3   | Add Error Boundaries and Loading States                 | 5      | M      | Todo   |
 | 5   | Add Build and Format Check to CI                        | 5      | S      | Done   |
-| 6   | Fix JWT Validation in Middleware                        | 4      | M      | Todo   |
+| 6   | Fix JWT Validation in Middleware                        | 4      | M      | Done   |
 | 7   | Add File Upload Validation                              | 4      | S      | Done   |
 | 8   | Lazy-Load Recharts                                      | 4      | S      | Done   |
 | 9   | Use Zod Enums Instead of Strings for Union Types        | 4      | M      | Todo   |
-| 10  | Fix Combobox Accessibility                              | 4      | M      | Todo   |
+| 10  | Fix Combobox Accessibility                              | 4      | M      | Done   |
 | 11  | Decouple `packages/shared` from Next.js                 | 4      | L      | Todo   |
 | 12  | Add SEO Essentials                                      | 3      | M      | Todo   |
 | 13  | Fix Unsafe `query as Record<string, unknown>` Casts     | 3      | M      | Todo   |
-| 14  | Add Auth Guards to Server Actions                       | 3      | M      | Todo   |
+| 14  | Add Auth Guards to Server Actions                       | 3      | M      | Done   |
 | 16  | Add Dashboard `revalidatePath` to Transaction Mutations | 3      | S      | Done   |
 | 17  | Extract `useUrlFilters` Shared Hook                     | 2      | S      | Todo   |
 | 18  | Create `FormField` Wrapper for FieldError               | 2      | S      | Todo   |

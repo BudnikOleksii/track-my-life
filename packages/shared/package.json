@@ -10,6 +10,7 @@
     "generate:api": "openapi-ts"
   },
   "dependencies": {
+    "jose": "6.2.2",
     "next": "16.1.5",
     "next-intl": "4.8.2",
     "react": "19.2.3",

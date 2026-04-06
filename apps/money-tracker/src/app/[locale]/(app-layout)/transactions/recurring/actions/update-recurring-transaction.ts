@@ -9,6 +9,7 @@ import type {
 import { recurringTransactionApiService } from '@track-my-life/shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
+import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { PATHS } from '@/constants/paths';
 
@@ -18,6 +19,8 @@ export const updateRecurringTransaction = async (
   id: string,
   body: UpdateRecurringTransactionDto,
 ) => {
+  await requireAuth();
+
   const validated = recurringTransactionFormSchema.partial().safeParse(body);
 
   if (!validated.success) {
