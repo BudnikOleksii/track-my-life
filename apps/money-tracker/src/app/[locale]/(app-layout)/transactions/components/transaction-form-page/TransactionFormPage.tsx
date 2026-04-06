@@ -21,8 +21,8 @@ import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Ty
 import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
 import {
   Field,
-  FieldError,
   FieldLabel,
+  FormField,
 } from '@track-my-life/ui/src/components/molecules/field/field';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -79,8 +79,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-        <Field>
-          <FieldLabel>{translations('content.typeLabel')}</FieldLabel>
+        <FormField label={translations('content.typeLabel')} error={errors.type}>
           <Controller
             name="type"
             control={control}
@@ -100,11 +99,9 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
               </Select>
             )}
           />
-          <FieldError errors={errors.type ? [errors.type] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel>{translations('content.categoryLabel')}</FieldLabel>
+        <FormField label={translations('content.categoryLabel')} error={errors.categoryId}>
           <Controller
             name="categoryId"
             control={control}
@@ -121,13 +118,13 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
               );
             }}
           />
-          <FieldError errors={errors.categoryId ? [errors.categoryId] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel htmlFor="transaction-amount">
-            {translations('content.amountLabel')}
-          </FieldLabel>
+        <FormField
+          label={translations('content.amountLabel')}
+          htmlFor="transaction-amount"
+          error={errors.amount}
+        >
           <Input
             id="transaction-amount"
             type="number"
@@ -137,8 +134,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
             error={Boolean(errors.amount)}
             {...register('amount')}
           />
-          <FieldError errors={errors.amount ? [errors.amount] : undefined} />
-        </Field>
+        </FormField>
 
         <Field>
           <FieldLabel htmlFor="transaction-currency">
@@ -147,16 +143,18 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
           <Input id="transaction-currency" readOnly {...register('currencyCode')} />
         </Field>
 
-        <Field>
-          <FieldLabel htmlFor="transaction-date">{translations('content.dateLabel')}</FieldLabel>
+        <FormField
+          label={translations('content.dateLabel')}
+          htmlFor="transaction-date"
+          error={errors.date}
+        >
           <Input
             id="transaction-date"
             type="date"
             error={Boolean(errors.date)}
             {...register('date')}
           />
-          <FieldError errors={errors.date ? [errors.date] : undefined} />
-        </Field>
+        </FormField>
 
         <Field>
           <FieldLabel htmlFor="transaction-description">

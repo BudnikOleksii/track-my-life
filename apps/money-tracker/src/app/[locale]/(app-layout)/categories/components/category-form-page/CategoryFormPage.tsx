@@ -3,9 +3,8 @@
 import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { Link, useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {
@@ -19,24 +18,19 @@ import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Ty
 import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
 import {
   Field,
-  FieldError,
   FieldLabel,
+  FormField,
 } from '@track-my-life/ui/src/components/molecules/field/field';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useCallback } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import type { CategoryFormValues } from '../../constants/category-form-schema';
-
-import { createCategory } from '../../actions/create-category';
-import { updateCategory } from '../../actions/update-category';
-import { categoryFormSchema } from '../../constants/category-form-schema';
 import styles from './CategoryFormPage.module.scss';
+import { useCategoryFormPage } from './hooks/use-category-form-page';
 
 interface CategoryFormPageProps {
   category: CategoryResponseDto | null;
@@ -45,49 +39,18 @@ interface CategoryFormPageProps {
 
 export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCategoryList }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesFormPage);
-  const router = useRouter();
-  const isEditing = Boolean(category);
 
   const {
+    isEditing,
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
-  } = useForm<CategoryFormValues>({
-    resolver: zodResolver(categoryFormSchema),
-    defaultValues: {
-      name: category?.name ?? '',
-      type: category?.type ?? TRANSACTION_TYPE.EXPENSE,
-      parentCategoryId: category?.parentCategoryId ?? '',
-    },
-  });
-
-  const handleFormSubmit = useCallback(
-    async (values: CategoryFormValues) => {
-      const parentCategoryId = values.parentCategoryId || undefined;
-
-      const result =
-        isEditing && category
-          ? await updateCategory(category.id, {
-              name: values.name,
-              ...(parentCategoryId !== undefined && { parentCategoryId }),
-            })
-          : await createCategory({
-              name: values.name,
-              type: values.type,
-              ...(parentCategoryId !== undefined && { parentCategoryId }),
-            });
-
-      if (result) {
-        router.push(PATHS.categories);
-      }
-    },
-    [isEditing, category, router],
-  );
-
-  const parentOptionList = parentCategoryList
-    .filter((item) => item.id !== category?.id)
-    .map((item) => ({ value: item.id, label: item.name }));
+    errors,
+    isSubmitting,
+    parentOptionList,
+    handleFormSubmit,
+    handleCancel,
+  } = useCategoryFormPage({ category, parentCategoryList });
 
   return (
     <div className={styles.page}>
@@ -107,19 +70,20 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-        <Field>
-          <FieldLabel htmlFor="category-name">{translations('content.nameLabel')}</FieldLabel>
+        <FormField
+          label={translations('content.nameLabel')}
+          htmlFor="category-name"
+          error={errors.name}
+        >
           <Input
             id="category-name"
             placeholder={translations('content.namePlaceholder')}
             error={Boolean(errors.name)}
             {...register('name')}
           />
-          <FieldError errors={errors.name ? [errors.name] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel>{translations('content.typeLabel')}</FieldLabel>
+        <FormField label={translations('content.typeLabel')} error={errors.type}>
           <Controller
             name="type"
             control={control}
@@ -142,8 +106,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
               );
             }}
           />
-          <FieldError errors={errors.type ? [errors.type] : undefined} />
-        </Field>
+        </FormField>
 
         {parentOptionList.length > EMPTY_LIST_LENGTH && (
           <Field>
@@ -167,13 +130,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
         )}
 
         <div className={styles.actions}>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => {
-              router.push(PATHS.categories);
-            }}
-          >
+          <Button variant="outline" type="button" onClick={handleCancel}>
             {translations('content.cancel')}
           </Button>
           <Button type="submit" disabled={isSubmitting}>

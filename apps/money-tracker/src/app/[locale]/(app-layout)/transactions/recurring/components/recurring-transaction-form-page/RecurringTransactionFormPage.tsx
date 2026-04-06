@@ -21,8 +21,8 @@ import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Ty
 import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
 import {
   Field,
-  FieldError,
   FieldLabel,
+  FormField,
 } from '@track-my-life/ui/src/components/molecules/field/field';
 import { ArrowLeft } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -84,8 +84,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-        <Field>
-          <FieldLabel>{translations('content.typeLabel')}</FieldLabel>
+        <FormField label={translations('content.typeLabel')} error={errors.type}>
           <Controller
             name="type"
             control={control}
@@ -105,11 +104,9 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
               </Select>
             )}
           />
-          <FieldError errors={errors.type ? [errors.type] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel>{translations('content.categoryLabel')}</FieldLabel>
+        <FormField label={translations('content.categoryLabel')} error={errors.categoryId}>
           <Controller
             name="categoryId"
             control={control}
@@ -126,13 +123,13 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
               );
             }}
           />
-          <FieldError errors={errors.categoryId ? [errors.categoryId] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel htmlFor="recurring-transaction-amount">
-            {translations('content.amountLabel')}
-          </FieldLabel>
+        <FormField
+          label={translations('content.amountLabel')}
+          htmlFor="recurring-transaction-amount"
+          error={errors.amount}
+        >
           <Input
             id="recurring-transaction-amount"
             type="number"
@@ -142,8 +139,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
             error={Boolean(errors.amount)}
             {...register('amount')}
           />
-          <FieldError errors={errors.amount ? [errors.amount] : undefined} />
-        </Field>
+        </FormField>
 
         <Field>
           <FieldLabel htmlFor="recurring-transaction-currency">
@@ -152,8 +148,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
           <Input id="recurring-transaction-currency" readOnly {...register('currencyCode')} />
         </Field>
 
-        <Field>
-          <FieldLabel>{translations('content.frequencyLabel')}</FieldLabel>
+        <FormField label={translations('content.frequencyLabel')} error={errors.frequency}>
           <Controller
             name="frequency"
             control={control}
@@ -180,13 +175,13 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
               );
             }}
           />
-          <FieldError errors={errors.frequency ? [errors.frequency] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel htmlFor="recurring-transaction-interval">
-            {translations('content.intervalLabel')}
-          </FieldLabel>
+        <FormField
+          label={translations('content.intervalLabel')}
+          htmlFor="recurring-transaction-interval"
+          error={errors.interval}
+        >
           <Input
             id="recurring-transaction-interval"
             type="number"
@@ -196,21 +191,20 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
             error={Boolean(errors.interval)}
             {...register('interval', { valueAsNumber: true })}
           />
-          <FieldError errors={errors.interval ? [errors.interval] : undefined} />
-        </Field>
+        </FormField>
 
-        <Field>
-          <FieldLabel htmlFor="recurring-transaction-start-date">
-            {translations('content.startDateLabel')}
-          </FieldLabel>
+        <FormField
+          label={translations('content.startDateLabel')}
+          htmlFor="recurring-transaction-start-date"
+          error={errors.startDate}
+        >
           <Input
             id="recurring-transaction-start-date"
             type="date"
             error={Boolean(errors.startDate)}
             {...register('startDate')}
           />
-          <FieldError errors={errors.startDate ? [errors.startDate] : undefined} />
-        </Field>
+        </FormField>
 
         <Field>
           <FieldLabel htmlFor="recurring-transaction-end-date">

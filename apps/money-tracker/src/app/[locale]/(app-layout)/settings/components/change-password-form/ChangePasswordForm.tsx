@@ -4,11 +4,7 @@ import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from '@track-my-life/ui/src/components/molecules/field/field';
+import { FormField } from '@track-my-life/ui/src/components/molecules/field/field';
 import { useTranslations } from 'next-intl';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
@@ -26,10 +22,15 @@ export const ChangePasswordForm: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-      <Field>
-        <FieldLabel htmlFor="current-password">
-          {translations('content.currentPasswordLabel')}
-        </FieldLabel>
+      <FormField
+        label={translations('content.currentPasswordLabel')}
+        htmlFor="current-password"
+        error={
+          errors.currentPassword?.message
+            ? { message: tErrors(errors.currentPassword.message) }
+            : undefined
+        }
+      >
         <Input
           id="current-password"
           type="password"
@@ -37,17 +38,15 @@ export const ChangePasswordForm: FC = () => {
           error={Boolean(errors.currentPassword)}
           {...register('currentPassword')}
         />
-        <FieldError
-          errors={
-            errors.currentPassword?.message
-              ? [{ message: tErrors(errors.currentPassword.message) }]
-              : undefined
-          }
-        />
-      </Field>
+      </FormField>
 
-      <Field>
-        <FieldLabel htmlFor="new-password">{translations('content.newPasswordLabel')}</FieldLabel>
+      <FormField
+        label={translations('content.newPasswordLabel')}
+        htmlFor="new-password"
+        error={
+          errors.newPassword?.message ? { message: tErrors(errors.newPassword.message) } : undefined
+        }
+      >
         <Input
           id="new-password"
           type="password"
@@ -55,14 +54,7 @@ export const ChangePasswordForm: FC = () => {
           error={Boolean(errors.newPassword)}
           {...register('newPassword')}
         />
-        <FieldError
-          errors={
-            errors.newPassword?.message
-              ? [{ message: tErrors(errors.newPassword.message) }]
-              : undefined
-          }
-        />
-      </Field>
+      </FormField>
 
       <div className={styles.actions}>
         <Button type="submit" disabled={isSubmitting}>
