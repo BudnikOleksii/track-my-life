@@ -1,0 +1,51 @@
+@use "@track-my-life/ui/src/styles/breakpoints" as *;
+
+.page {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filterBar {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.grid {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: var(--spacing-4);
+
+  @include media-m {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-xl {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.summary {
+  grid-column: 1 / -1;
+}
+
+.widgetSkeleton {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-2);
+
+  padding: var(--spacing-4);
+}

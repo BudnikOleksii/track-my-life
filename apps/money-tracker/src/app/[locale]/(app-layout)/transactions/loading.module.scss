@@ -1,0 +1,21 @@
+.page {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+}
+
+.actionList {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-2);
+}

@@ -5,5 +5,15 @@
     "error": "Error",
     "success": "Success",
     "invalidUuid": "Invalid UUID format"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retryButton": "Try again",
+    "goHomeButton": "Go to homepage",
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you're looking for doesn't exist or has been moved."
+    }
   }
 }
