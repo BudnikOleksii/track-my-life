@@ -50,10 +50,12 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
   const handleFormSubmit = useCallback(
     async (values: ProfileFormValues) => {
       const body = {
-        firstName: values.firstName || undefined,
-        lastName: values.lastName || undefined,
-        countryCode: (values.countryCode as CountryCode) || undefined,
-        baseCurrencyCode: (values.baseCurrencyCode as CurrencyCode) || undefined,
+        ...(values.firstName && { firstName: values.firstName }),
+        ...(values.lastName && { lastName: values.lastName }),
+        ...(values.countryCode && { countryCode: values.countryCode as CountryCode }),
+        ...(values.baseCurrencyCode && {
+          baseCurrencyCode: values.baseCurrencyCode as CurrencyCode,
+        }),
       };
 
       try {

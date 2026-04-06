@@ -33,7 +33,7 @@ export class CategoryApiService extends ApiClient {
     return this.request<FindAllResponse>({
       method: 'GET',
       url: this.BASE_URL,
-      query: query as Record<string, unknown>,
+      query,
       next,
     });
   }

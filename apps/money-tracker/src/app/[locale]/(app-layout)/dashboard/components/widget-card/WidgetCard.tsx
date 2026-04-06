@@ -21,7 +21,7 @@ interface WidgetCardProps {
   title: string;
   isLoading: boolean;
   isEmpty?: boolean;
-  className?: string;
+  className?: string | undefined;
   children: ReactNode;
 }
 

@@ -21,9 +21,14 @@ export const updateTransaction = async (id: string, body: UpdateTransactionDto) 
     return null;
   }
 
+  const { categoryId, type, amount, currencyCode, date, description } = validated.data;
   const { data, error } = await transactionApiService.updateTransaction(id, {
-    ...validated.data,
-    currencyCode: validated.data.currencyCode as CurrencyCode,
+    ...(categoryId !== undefined && { categoryId }),
+    ...(type !== undefined && { type }),
+    ...(amount !== undefined && { amount }),
+    ...(currencyCode !== undefined && { currencyCode: currencyCode as CurrencyCode }),
+    ...(date !== undefined && { date }),
+    ...(description !== undefined && { description }),
   });
 
   if (error) {

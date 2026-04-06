@@ -4,6 +4,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscCategoryApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -13,10 +14,7 @@ const MAX_PAGE_SIZE = 100;
 const CATEGORIES_CACHE = { revalidate: 3600, tags: [CACHE_TAG.CATEGORIES] } as const;
 
 const checkIsCategoryListResponse = (value: unknown): value is CategoryListResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'data' in value &&
-  Array.isArray((value as Record<string, unknown>).data);
+  checkIsObject(value) && 'data' in value && Array.isArray(value.data);
 
 export const fetchCategoryList = cache(async (): Promise<CategoryResponseDto[]> => {
   const { data } = await rscCategoryApiService.fetchCategoryList(

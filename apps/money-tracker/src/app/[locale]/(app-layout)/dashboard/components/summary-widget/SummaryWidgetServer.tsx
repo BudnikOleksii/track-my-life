@@ -7,7 +7,7 @@ import { SummaryWidget } from './SummaryWidget';
 
 interface SummaryWidgetServerProps {
   filters: DashboardFilters;
-  className?: string;
+  className?: string | undefined;
 }
 
 export const SummaryWidgetServer: FC<SummaryWidgetServerProps> = async ({ filters, className }) => {

@@ -17,7 +17,7 @@
     "no-ternary": "off",
     "prefer-const": "error",
     "curly": ["error", "all"],
-    "eqeqeq": ["error", "always"],
+    "eqeqeq": "error",
     "no-multiple-empty-lines": ["error", { "max": 1 }],
     "no-unexpected-multiline": "error",
     "no-duplicate-imports": ["error", { "allowSeparateTypeImports": true }],

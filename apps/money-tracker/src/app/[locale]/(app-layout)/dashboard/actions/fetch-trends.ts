@@ -6,6 +6,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -21,10 +22,7 @@ interface FetchTrendsParams {
 }
 
 const checkIsTrendsResponse = (value: unknown): value is TrendsResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'periods' in value &&
-  Array.isArray((value as Record<string, unknown>).periods);
+  checkIsObject(value) && 'periods' in value && Array.isArray(value.periods);
 
 export const fetchTrends = cache(
   async (params: FetchTrendsParams): Promise<TrendsResponseDto | null> => {

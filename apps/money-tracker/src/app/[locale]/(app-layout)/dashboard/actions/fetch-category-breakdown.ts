@@ -5,6 +5,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -19,10 +20,7 @@ interface FetchCategoryBreakdownParams {
 }
 
 const checkIsCategoryBreakdownResponse = (value: unknown): value is CategoryBreakdownResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'breakdown' in value &&
-  Array.isArray((value as Record<string, unknown>).breakdown);
+  checkIsObject(value) && 'breakdown' in value && Array.isArray(value.breakdown);
 
 export const fetchCategoryBreakdown = cache(
   async (params: FetchCategoryBreakdownParams): Promise<CategoryBreakdownResponseDto | null> => {

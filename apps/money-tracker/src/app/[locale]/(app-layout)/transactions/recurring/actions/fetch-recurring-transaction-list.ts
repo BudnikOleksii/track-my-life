@@ -5,6 +5,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscRecurringTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -24,10 +25,7 @@ interface FetchRecurringTransactionListParams {
 const checkIsRecurringTransactionListResponse = (
   value: unknown,
 ): value is RecurringTransactionListResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'data' in value &&
-  Array.isArray((value as Record<string, unknown>).data);
+  checkIsObject(value) && 'data' in value && Array.isArray(value.data);
 
 export const fetchRecurringTransactionList = cache(
   async (

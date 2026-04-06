@@ -91,7 +91,11 @@ export const ExportTransactionButton: FC<ExportTransactionButtonProps> = ({
       setIsLoading(true);
 
       try {
-        const success = await fetchAndDownload(format, { categoryId, dateFrom, dateTo });
+        const success = await fetchAndDownload(format, {
+          ...(categoryId !== undefined && { categoryId }),
+          ...(dateFrom !== undefined && { dateFrom }),
+          ...(dateTo !== undefined && { dateTo }),
+        });
 
         if (!success) {
           toast.error(errorLabel);

@@ -44,12 +44,10 @@ export const CategoryBreakdownChart: FC<CategoryBreakdownChartProps> = ({ data }
               outerRadius={OUTER_RADIUS}
               innerRadius={INNER_RADIUS}
             >
-              {breakdownList.map((item, index) => (
-                <Cell
-                  key={item.categoryId}
-                  fill={CHART_COLOR_LIST[index % CHART_COLOR_LIST.length]}
-                />
-              ))}
+              {breakdownList.map((item, index) => {
+                const fill = CHART_COLOR_LIST[index % CHART_COLOR_LIST.length];
+                return <Cell key={item.categoryId} {...(fill && { fill })} />;
+              })}
             </Pie>
             <Tooltip formatter={(value, name) => [`${data?.currencyCode ?? ''} ${value}`, name]} />
             <Legend />

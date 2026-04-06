@@ -13,14 +13,14 @@ export interface FetchCacheOptions {
   tags?: readonly string[];
 }
 
-export interface RequestOptions {
+export interface RequestOptions<TQuery extends Record<string, unknown> = Record<string, unknown>> {
   method: HttpMethod;
   url: string;
-  body?: unknown;
-  query?: Record<string, unknown>;
-  headers?: Record<string, string>;
-  credentials?: RequestCredentials;
-  next?: FetchCacheOptions;
+  body?: unknown | undefined;
+  query?: TQuery | undefined;
+  headers?: Record<string, string> | undefined;
+  credentials?: RequestCredentials | undefined;
+  next?: FetchCacheOptions | undefined;
 }
 
 export interface ApiResponse<TData> {

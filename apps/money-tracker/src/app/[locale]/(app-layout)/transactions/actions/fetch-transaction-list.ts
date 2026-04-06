@@ -4,6 +4,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { rscTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -11,10 +12,7 @@ import { CACHE_TAG } from '@/constants/cache-tag';
 const TRANSACTIONS_CACHE = { revalidate: 300, tags: [CACHE_TAG.TRANSACTIONS] } as const;
 
 const checkIsTransactionListResponse = (value: unknown): value is TransactionListResponseDto =>
-  typeof value === 'object' &&
-  value !== null &&
-  'data' in value &&
-  Array.isArray((value as Record<string, unknown>).data);
+  checkIsObject(value) && 'data' in value && Array.isArray(value.data);
 
 export const fetchTransactionList = cache(
   async (

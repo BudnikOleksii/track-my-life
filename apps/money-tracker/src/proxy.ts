@@ -28,8 +28,8 @@ const validateAccessToken = async (
 
   const payload = await verifyToken(accessToken, {
     secret: JWT_SECRET,
-    issuer: JWT_ISSUER,
-    audience: JWT_AUDIENCE,
+    ...(JWT_ISSUER !== undefined && { issuer: JWT_ISSUER }),
+    ...(JWT_AUDIENCE !== undefined && { audience: JWT_AUDIENCE }),
   });
 
   if (!payload) {

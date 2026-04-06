@@ -42,22 +42,28 @@ interface VerifyTokenConfig extends Pick<JWTVerifyOptions, 'audience' | 'issuer'
   secret: string | undefined;
 }
 
+const verifyTokenWithoutSecret = (token: string): JWTPayload | null => {
+  console.warn('[middleware] JWT_SECRET is not set — falling back to expiration-only validation');
+  if (checkIsTokenExpiredOnly(token)) {
+    return null;
+  }
+
+  const sub = extractUserIdFromPayload(token);
+  return sub !== null ? { sub } : {};
+};
+
 export const verifyToken = async (
   token: string,
   config: VerifyTokenConfig,
 ): Promise<JWTPayload | null> => {
   if (!config.secret) {
-    console.warn('[middleware] JWT_SECRET is not set — falling back to expiration-only validation');
-    return checkIsTokenExpiredOnly(token)
-      ? null
-      : { sub: extractUserIdFromPayload(token) ?? undefined };
+    return verifyTokenWithoutSecret(token);
   }
 
   const { secret, ...options } = config;
 
   try {
-    const encodedSecret = new TextEncoder().encode(secret);
-    const { payload } = await jwtVerify(token, encodedSecret, options);
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(secret), options);
     return payload;
   } catch {
     return null;
