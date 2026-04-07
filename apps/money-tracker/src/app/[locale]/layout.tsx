@@ -13,6 +13,8 @@ import '../globals.css';
 import { ThemeProvider } from 'next-themes';
 import { Outfit, Poppins } from 'next/font/google';
 
+import { TimezoneOffsetSetter } from './components/timezone-offset-setter/TimezoneOffsetSetter';
+
 const poppins = Poppins({
   subsets: ['latin'],
   variable: '--default-font-family',
@@ -51,6 +53,7 @@ const RootLayout: FC<Props> = async (props) => {
       <body className={cn(poppins.variable, outfit.variable)}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
           <ThemeProvider>
+            <TimezoneOffsetSetter />
             {children}
 
             <Toaster />

@@ -50,28 +50,8 @@ const STATUS_LABEL_KEY = {
   CANCELLED: 'content.cancelledStatus',
 } as const;
 
-const DATE_PARTS_COUNT = 3;
-const YEAR_INDEX = 0;
-const MONTH_INDEX = 1;
-const DAY_INDEX = 2;
-const MONTH_OFFSET = 1;
-const DATE_PART_INDEX = 0;
-
-const parseDateString = (dateString: string): Date => {
-  const datePart = dateString.split('T')[DATE_PART_INDEX] ?? dateString;
-  const parts = datePart.split('-');
-  if (parts.length >= DATE_PARTS_COUNT) {
-    return new Date(
-      Number(parts[YEAR_INDEX]),
-      Number(parts[MONTH_INDEX]) - MONTH_OFFSET,
-      Number(parts[DAY_INDEX]),
-    );
-  }
-  return new Date(dateString);
-};
-
 const formatDate = (dateString: string, locale: string): string =>
-  parseDateString(dateString).toLocaleDateString(locale, {
+  new Date(dateString).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

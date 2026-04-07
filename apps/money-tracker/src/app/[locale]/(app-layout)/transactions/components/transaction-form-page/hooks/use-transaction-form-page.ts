@@ -7,6 +7,11 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import {
+  convertLocalDateToUTCISO,
+  formatLocalDate,
+  parseLocalDate,
+} from '@track-my-life/shared/src/utils/date';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,7 +29,6 @@ import { updateTransaction } from '../../../actions/update-transaction';
 import { transactionFormSchema } from '../../../constants/transaction-form-schema';
 
 const FALLBACK_CURRENCY = 'USD';
-const DATE_PART_INDEX = 0;
 
 interface UseTransactionFormPageParams {
   transaction: TransactionResponseDto | null;
@@ -56,7 +60,7 @@ export const useTransactionFormPage = ({
       type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
       amount: transaction?.amount ?? '',
       currencyCode: transaction?.currencyCode ?? baseCurrencyCode ?? FALLBACK_CURRENCY,
-      date: transaction?.date ? (transaction.date.split('T')[DATE_PART_INDEX] ?? '') : '',
+      date: transaction?.date ? formatLocalDate(transaction.date) : '',
       description: transaction?.description ?? '',
     },
   });
@@ -82,9 +86,10 @@ export const useTransactionFormPage = ({
   const [isPending, startTransition] = useTransition();
   const [, submitAction] = useActionState(
     async (_prev: ActionState, values: TransactionFormValues): Promise<ActionState> => {
-      const { description, ...rest } = values;
+      const { description, date, ...rest } = values;
       const body: CreateTransactionDto = {
         ...rest,
+        date: convertLocalDateToUTCISO(parseLocalDate(date)),
         currencyCode: values.currencyCode,
         ...(description !== undefined && { description }),
       };

@@ -2,8 +2,10 @@ import type { FC } from 'react';
 
 import { checkIsCurrencyCode } from '@track-my-life/shared/src/constants/currency';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { getTimezoneOffset } from '@/utils/get-timezone-offset';
 
 import type { TransactionFilters } from '../../constants/transaction-filters';
 
@@ -26,12 +28,14 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
   const normalizedSortBy = checkIsSortBy(sortBy) ? sortBy : '';
   const normalizedSortOrder = checkIsSortOrder(sortOrder) ? sortOrder : '';
 
+  const offset = await getTimezoneOffset();
+  const convertedDateRange = convertFilterDateList({ dateFrom, dateTo }, offset);
+
   const params = {
     page,
     pageSize,
     ...(type !== 'ALL' && { type }),
-    ...(dateFrom && { dateFrom }),
-    ...(dateTo && { dateTo }),
+    ...convertedDateRange,
     ...(categoryId && { categoryId }),
     ...(normalizedCurrencyCode && { currencyCode: normalizedCurrencyCode }),
     ...(normalizedSortBy && { sortBy: normalizedSortBy }),
