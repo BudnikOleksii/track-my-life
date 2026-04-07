@@ -7,8 +7,8 @@ import type {
 import type { BadgeVariant } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import type { FC } from 'react';
 
+import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { Link, useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';

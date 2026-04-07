@@ -1,6 +1,9 @@
-import type { ReadWriteTokenProvider } from './types';
+import type { ReadWriteTokenProvider } from '@track-my-life/shared/src/api/client/token/types';
 
-import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_COOKIE_OPTIONS } from '../../../constants/cookie';
+import {
+  ACCESS_TOKEN_COOKIE,
+  ACCESS_TOKEN_COOKIE_OPTIONS,
+} from '@track-my-life/shared/src/constants/cookie';
 
 export class ServerActionTokenProvider implements ReadWriteTokenProvider {
   async getAccessToken(): Promise<string | null> {

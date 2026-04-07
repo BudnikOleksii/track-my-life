@@ -2,8 +2,8 @@
 
 import type { FC } from 'react';
 
+import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';

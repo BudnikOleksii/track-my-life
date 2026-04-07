@@ -1,0 +1,27 @@
+{
+  "name": "@track-my-life/next-shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js specific shared code for track-my-life monorepo",
+  "scripts": {
+    "type-check": "tsc --noEmit --incremental false",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix ."
+  },
+  "dependencies": {
+    "@track-my-life/shared": "workspace:*",
+    "next": "16.2.2",
+    "next-intl": "4.8.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@track-my-life/lint-config": "workspace:*",
+    "@track-my-life/typescript-config": "workspace:*",
+    "@types/node": "24.10.0",
+    "@types/react": "19.2.9",
+    "@types/react-dom": "19.2.3",
+    "oxlint": "1.42.0",
+    "typescript": "5.9.3"
+  }
+}

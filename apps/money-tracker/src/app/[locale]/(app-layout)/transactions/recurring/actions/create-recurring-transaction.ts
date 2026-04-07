@@ -5,7 +5,7 @@ import type {
   RecurringFrequency,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { recurringTransactionApiService } from '@track-my-life/shared/src/api/server-api';
+import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';

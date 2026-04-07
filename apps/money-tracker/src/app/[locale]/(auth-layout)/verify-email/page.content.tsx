@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
+import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {
   Card,

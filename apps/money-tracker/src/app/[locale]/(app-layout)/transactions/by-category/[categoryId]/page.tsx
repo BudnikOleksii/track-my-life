@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { ArrowLeft } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';

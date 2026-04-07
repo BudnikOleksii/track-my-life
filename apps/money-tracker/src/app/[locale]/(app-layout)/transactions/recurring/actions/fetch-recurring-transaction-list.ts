@@ -4,7 +4,7 @@ import type {
   RecurringTransactionStatus,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { rscRecurringTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { rscRecurringTransactionApiService } from '@track-my-life/next-shared/src/api/rsc-api';
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 

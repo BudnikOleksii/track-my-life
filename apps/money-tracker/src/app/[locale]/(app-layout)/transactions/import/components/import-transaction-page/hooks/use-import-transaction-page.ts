@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 
+import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';

@@ -1,11 +1,11 @@
 'use server';
 
-import { forwardResponseCookieList } from '@track-my-life/shared/src/api/client/token/forward-response-cookie-list';
+import { forwardResponseCookieList } from '@track-my-life/next-shared/src/api/client/token/forward-response-cookie-list';
 import {
   authApiService,
   serverActionTokenProvider,
-} from '@track-my-life/shared/src/api/server-api';
-import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
+} from '@track-my-life/next-shared/src/api/server-api';
+import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { getLocale } from 'next-intl/server';
 
 import type { AuthAction } from '@/app/[locale]/(auth-layout)/types/auth-action';

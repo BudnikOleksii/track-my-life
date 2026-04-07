@@ -28,6 +28,11 @@ The system SHALL define a `ReadWriteTokenProvider` interface that extends `ReadO
 - **WHEN** `MiddlewareTokenProvider` is instantiated
 - **THEN** it SHALL implement `ReadWriteTokenProvider` with full cookie read/write capability via middleware request/response objects
 
+#### Scenario: MiddlewareTokenProvider import source
+
+- **WHEN** middleware code imports `MiddlewareTokenProvider`
+- **THEN** the import source SHALL be `@track-my-life/next-shared`, not `@track-my-life/shared`
+
 ### Requirement: Type guard distinguishes provider capabilities at runtime
 
 The system SHALL provide a `checkIsReadWriteTokenProvider` function that acts as a TypeScript type guard, returning `true` when the provider has `setTokenPair` and `clearTokenPair` methods.
@@ -60,3 +65,26 @@ The system SHALL configure `AuthInterceptor` to accept `ReadOnlyTokenProvider | 
 
 - **WHEN** a request is made with either provider type
 - **THEN** the interceptor SHALL inject the `Authorization: Bearer {accessToken}` header if an access token is available
+
+### Requirement: Token provider interfaces and BrowserTokenProvider stay in shared
+
+The `ReadWriteTokenProvider` and `ReadOnlyTokenProvider` interfaces, along with `BrowserTokenProvider`, SHALL remain in `@track-my-life/shared` as they have no Next.js dependencies.
+
+#### Scenario: BrowserTokenProvider unchanged
+
+- **WHEN** code imports `BrowserTokenProvider`, `ReadWriteTokenProvider`, or `ReadOnlyTokenProvider`
+- **THEN** the import source SHALL remain `@track-my-life/shared`
+
+### Requirement: RscTokenProvider and ServerActionTokenProvider move to next-shared
+
+`RscTokenProvider` and `ServerActionTokenProvider` SHALL be imported from `@track-my-life/next-shared` instead of `@track-my-life/shared` because they use dynamic `import('next/headers')`.
+
+#### Scenario: RscTokenProvider import source
+
+- **WHEN** code imports `RscTokenProvider`
+- **THEN** the import source SHALL be `@track-my-life/next-shared`, not `@track-my-life/shared`
+
+#### Scenario: ServerActionTokenProvider import source
+
+- **WHEN** code imports `ServerActionTokenProvider`
+- **THEN** the import source SHALL be `@track-my-life/next-shared`, not `@track-my-life/shared`

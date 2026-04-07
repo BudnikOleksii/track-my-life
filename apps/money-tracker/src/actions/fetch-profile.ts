@@ -1,6 +1,6 @@
 import type { ProfileResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { rscProfileApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { rscProfileApiService } from '@track-my-life/next-shared/src/api/rsc-api';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';

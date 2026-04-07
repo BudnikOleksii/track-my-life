@@ -2,7 +2,7 @@
 
 import type { CreateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { transactionApiService } from '@track-my-life/shared/src/api/server-api';
+import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 
 import { requireAuth } from '@/actions/require-auth';
 

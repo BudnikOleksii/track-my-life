@@ -50,6 +50,9 @@ importers:
       '@hookform/resolvers':
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.71.1(react@19.2.3))
+      '@track-my-life/next-shared':
+        specifier: workspace:*
+        version: link:../../packages/next-shared
       '@track-my-life/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -215,17 +218,51 @@ importers:
         specifier: 1.42.0
         version: 1.42.0
 
-  packages/shared:
+  packages/next-shared:
     dependencies:
-      jose:
-        specifier: 6.2.2
-        version: 6.2.2
+      '@track-my-life/shared':
+        specifier: workspace:*
+        version: link:../shared
       next:
         specifier: 16.2.2
         version: 16.2.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.93.3)
       next-intl:
         specifier: 4.8.2
         version: 4.8.2(next@16.2.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.93.3))(react@19.2.3)(typescript@5.9.3)
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: 19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@track-my-life/lint-config':
+        specifier: workspace:*
+        version: link:../lint-config
+      '@track-my-life/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 24.10.0
+        version: 24.10.0
+      '@types/react':
+        specifier: 19.2.9
+        version: 19.2.9
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.9)
+      oxlint:
+        specifier: 1.42.0
+        version: 1.42.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/shared:
+    dependencies:
+      jose:
+        specifier: 6.2.2
+        version: 6.2.2
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -2284,10 +2321,6 @@ packages:
   baseline-browser-mapping@2.10.15:
     resolution: {integrity: sha512-1nfKCq9wuAZFTkA2ey/3OXXx7GzFjLdkTiFVNwlJ9WqdI706CZRIhEqjuwanjMIja+84jDLa9rcyZDPDiVkASQ==}
     engines: {node: '>=6.0.0'}
-    hasBin: true
-
-  baseline-browser-mapping@2.9.18:
-    resolution: {integrity: sha512-e23vBV1ZLfjb9apvfPk4rHVu2ry6RIr2Wfs+O324okSidrX7pTAnEJPCh/O5BtRlr7QtZI7ktOP3vsqr7Z5XoA==}
     hasBin: true
 
   brace-expansion@2.0.2:
@@ -5813,8 +5846,6 @@ snapshots:
 
   baseline-browser-mapping@2.10.15: {}
 
-  baseline-browser-mapping@2.9.18: {}
-
   brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
@@ -5825,7 +5856,7 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.18
+      baseline-browser-mapping: 2.10.15
       caniuse-lite: 1.0.30001766
       electron-to-chromium: 1.5.286
       node-releases: 2.0.27

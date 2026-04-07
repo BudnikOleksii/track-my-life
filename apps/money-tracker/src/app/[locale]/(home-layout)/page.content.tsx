@@ -1,4 +1,4 @@
-import type { TranslateFn } from '@track-my-life/shared/src/types/translate-fn';
+import type { TranslateFn } from '@track-my-life/next-shared/src/types/translate-fn';
 import type { FC } from 'react';
 
 import { AdvantagesSection } from './components/AdvantagesSection/AdvantagesSection';

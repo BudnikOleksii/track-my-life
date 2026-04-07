@@ -2,7 +2,7 @@
 
 import type { ChangePasswordDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { profileApiService } from '@track-my-life/shared/src/api/server-api';
+import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
 
 import { requireAuth } from '@/actions/require-auth';
 

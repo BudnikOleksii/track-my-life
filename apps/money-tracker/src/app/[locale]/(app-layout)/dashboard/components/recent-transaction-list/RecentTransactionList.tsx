@@ -3,8 +3,8 @@
 import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
+import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';

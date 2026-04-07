@@ -2,9 +2,9 @@
 
 import type { FC, ReactNode } from 'react';
 
+import { usePathname } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { usePathname } from '@track-my-life/shared/src/i18n/navigation/navigation';
-import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { cn } from '@track-my-life/ui/src/lib/utils';

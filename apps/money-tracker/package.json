@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
+    "@track-my-life/next-shared": "workspace:*",
     "@track-my-life/shared": "workspace:*",
     "@track-my-life/ui": "workspace:*",
     "deepmerge": "4.3.1",

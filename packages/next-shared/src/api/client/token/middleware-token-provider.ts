@@ -1,8 +1,10 @@
+import type { ReadWriteTokenProvider } from '@track-my-life/shared/src/api/client/token/types';
 import type { NextRequest, NextResponse } from 'next/server';
 
-import type { ReadWriteTokenProvider } from './types';
-
-import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_COOKIE_OPTIONS } from '../../../constants/cookie';
+import {
+  ACCESS_TOKEN_COOKIE,
+  ACCESS_TOKEN_COOKIE_OPTIONS,
+} from '@track-my-life/shared/src/constants/cookie';
 
 export class MiddlewareTokenProvider implements ReadWriteTokenProvider {
   constructor(

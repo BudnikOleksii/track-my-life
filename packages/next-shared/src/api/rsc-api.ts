@@ -1,11 +1,12 @@
-import { API_BASE_URL, ENDPOINTS } from './api-config';
-import { AuthInterceptor } from './client/interceptors/auth-interceptor';
+import { API_BASE_URL, ENDPOINTS } from '@track-my-life/shared/src/api/api-config';
+import { AuthInterceptor } from '@track-my-life/shared/src/api/client/interceptors/auth-interceptor';
+import { CategoryApiService } from '@track-my-life/shared/src/api/services/category-api.service';
+import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
+import { RecurringTransactionApiService } from '@track-my-life/shared/src/api/services/recurring-transaction-api.service';
+import { TransactionApiService } from '@track-my-life/shared/src/api/services/transaction-api.service';
+import { TransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/services/transactions-analytics-api.service';
+
 import { RscTokenProvider } from './client/token/rsc-token-provider';
-import { CategoryApiService } from './services/category-api.service';
-import { ProfileApiService } from './services/profile-api.service';
-import { RecurringTransactionApiService } from './services/recurring-transaction-api.service';
-import { TransactionApiService } from './services/transaction-api.service';
-import { TransactionsAnalyticsApiService } from './services/transactions-analytics-api.service';
 
 export const rscCategoryApiService = new CategoryApiService({ baseUrl: API_BASE_URL });
 export const rscProfileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
