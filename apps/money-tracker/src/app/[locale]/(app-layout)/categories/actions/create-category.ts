@@ -23,7 +23,7 @@ export const createCategory = async (input: CreateCategoryDto) => {
   const { data, error } = await categoryApiService.createCategory({
     name: validated.data.name,
     type: validated.data.type,
-    ...(validated.data.parentCategoryId !== undefined && {
+    ...(validated.data.parentCategoryId && {
       parentCategoryId: validated.data.parentCategoryId,
     }),
   });
