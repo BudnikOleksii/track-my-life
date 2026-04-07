@@ -24,7 +24,7 @@ import styles from './ProfileStep.module.scss';
 export const ProfileStep: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
 
-  const { register, handleSubmit, control, errors, isSubmitting, handleFormSubmit } =
+  const { register, handleSubmit, control, errors, isPending, handleFormSubmit } =
     useOnboardingProfileForm({ translations });
 
   return (
@@ -98,7 +98,7 @@ export const ProfileStep: FC = () => {
       </Field>
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isPending}>
           {translations('content.continueButton')}
         </Button>
         <SkipButton />

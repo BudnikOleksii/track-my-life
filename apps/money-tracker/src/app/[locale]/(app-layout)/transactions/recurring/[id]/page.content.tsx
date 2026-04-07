@@ -3,7 +3,7 @@
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -17,17 +17,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
-import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { ArrowLeft, Pause, Pencil, Play, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import { PATHS, getRecurringTransactionsEditPath } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { deleteRecurringTransaction } from '../actions/delete-recurring-transaction';
-import { pauseRecurringTransaction } from '../actions/pause-recurring-transaction';
-import { resumeRecurringTransaction } from '../actions/resume-recurring-transaction';
+import { useRecurringTransactionActions } from './hooks/use-recurring-transaction-actions';
 import styles from './page.module.scss';
 
 interface RecurringTransactionDetailContentProps {
@@ -94,41 +91,10 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsPage);
   const locale = useLocale();
-  const router = useRouter();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handlePause = useCallback(async () => {
-    const result = await pauseRecurringTransaction(recurringTransaction.id);
-    if (!result?.success) {
-      toast.error(translations('content.pauseError'));
-      return;
-    }
-    router.refresh();
-  }, [recurringTransaction.id, router, translations]);
-
-  const handleResume = useCallback(async () => {
-    const result = await resumeRecurringTransaction(recurringTransaction.id);
-    if (!result?.success) {
-      toast.error(translations('content.resumeError'));
-      return;
-    }
-    router.refresh();
-  }, [recurringTransaction.id, router, translations]);
-
-  const handleDelete = useCallback(async () => {
-    setIsDeleting(true);
-    try {
-      const result = await deleteRecurringTransaction(recurringTransaction.id);
-      if (result?.success) {
-        router.push(PATHS.recurringTransactions);
-      } else {
-        toast.error(translations('content.deleteError'));
-      }
-    } finally {
-      setIsDeleting(false);
-    }
-  }, [recurringTransaction.id, router, translations]);
+  const { optimisticTransaction, isPending, handlePause, handleResume, handleDelete } =
+    useRecurringTransactionActions({ recurringTransaction, translations });
 
   return (
     <div className={styles.page}>
@@ -146,10 +112,10 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <Typography variant="title-m">
-            {recurringTransaction.currencyCode} {recurringTransaction.amount}
+            {optimisticTransaction.currencyCode} {optimisticTransaction.amount}
           </Typography>
-          <Badge variant={STATUS_BADGE_VARIANT_MAP[recurringTransaction.status]}>
-            {translations(STATUS_LABEL_KEY[recurringTransaction.status])}
+          <Badge variant={STATUS_BADGE_VARIANT_MAP[optimisticTransaction.status]}>
+            {translations(STATUS_LABEL_KEY[optimisticTransaction.status])}
           </Badge>
         </div>
 
@@ -160,7 +126,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
             </Typography>
             <Typography variant="body-m">
               {translations(
-                `content.${recurringTransaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
+                `content.${optimisticTransaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
               )}
             </Typography>
           </div>
@@ -171,9 +137,9 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
             </Typography>
             <Typography variant="body-m">
               {translations('content.every', {
-                interval: recurringTransaction.interval,
+                interval: optimisticTransaction.interval,
                 frequency: translations(
-                  FREQUENCY_LABEL_KEY[recurringTransaction.frequency],
+                  FREQUENCY_LABEL_KEY[optimisticTransaction.frequency],
                 ).toLowerCase(),
               })}
             </Typography>
@@ -184,7 +150,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.startDateLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDate(recurringTransaction.startDate, locale)}
+              {formatDate(optimisticTransaction.startDate, locale)}
             </Typography>
           </div>
 
@@ -193,8 +159,8 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.endDateLabel')}
             </Typography>
             <Typography variant="body-m">
-              {recurringTransaction.endDate
-                ? formatDate(recurringTransaction.endDate, locale)
+              {optimisticTransaction.endDate
+                ? formatDate(optimisticTransaction.endDate, locale)
                 : translations('content.noEndDate')}
             </Typography>
           </div>
@@ -204,7 +170,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.nextOccurrenceLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDate(recurringTransaction.nextOccurrenceDate, locale)}
+              {formatDate(optimisticTransaction.nextOccurrenceDate, locale)}
             </Typography>
           </div>
 
@@ -213,7 +179,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.descriptionLabel')}
             </Typography>
             <Typography variant="body-m">
-              {recurringTransaction.description || translations('content.noDescription')}
+              {optimisticTransaction.description || translations('content.noDescription')}
             </Typography>
           </div>
 
@@ -222,7 +188,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.createdAtLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDateTime(recurringTransaction.createdAt, locale)}
+              {formatDateTime(optimisticTransaction.createdAt, locale)}
             </Typography>
           </div>
 
@@ -231,28 +197,28 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
               {translations('content.updatedAtLabel')}
             </Typography>
             <Typography variant="body-m">
-              {formatDateTime(recurringTransaction.updatedAt, locale)}
+              {formatDateTime(optimisticTransaction.updatedAt, locale)}
             </Typography>
           </div>
         </div>
       </div>
 
       <div className={styles.actions}>
-        {recurringTransaction.status === 'ACTIVE' && (
-          <Button variant="outline" onClick={handlePause}>
+        {optimisticTransaction.status === 'ACTIVE' && (
+          <Button variant="outline" onClick={handlePause} disabled={isPending}>
             <Pause size={16} />
             {translations('content.pauseButton')}
           </Button>
         )}
-        {recurringTransaction.status === 'PAUSED' && (
-          <Button variant="outline" onClick={handleResume}>
+        {optimisticTransaction.status === 'PAUSED' && (
+          <Button variant="outline" onClick={handleResume} disabled={isPending}>
             <Play size={16} />
             {translations('content.resumeButton')}
           </Button>
         )}
         <Button
           component={Link}
-          href={getRecurringTransactionsEditPath(recurringTransaction.id)}
+          href={getRecurringTransactionsEditPath(optimisticTransaction.id)}
           variant="outline"
         >
           <Pencil size={16} />
@@ -290,9 +256,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
                 await handleDelete();
               }}
             >
-              <Button variant="destructive" disabled={isDeleting}>
-                {translations('content.deleteButton')}
-              </Button>
+              <Button variant="destructive">{translations('content.deleteButton')}</Button>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

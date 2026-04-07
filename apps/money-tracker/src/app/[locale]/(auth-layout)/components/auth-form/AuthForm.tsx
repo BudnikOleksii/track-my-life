@@ -17,7 +17,7 @@ import {
   FieldTitle,
 } from '@track-my-life/ui/src/components/molecules/field/field';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useActionState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import type { AuthFormValues } from '@/app/[locale]/(auth-layout)/constants/auth-form-schema';
@@ -28,6 +28,12 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './AuthForm.module.scss';
 
+interface AuthFormState {
+  errors: FieldErrorList | null;
+}
+
+const INITIAL_AUTH_STATE: AuthFormState = { errors: null };
+
 interface Props {
   action: AuthAction;
   submitText: string;
@@ -36,8 +42,22 @@ interface Props {
 export const AuthForm: FC<Props> = ({ action, submitText }) => {
   const tAuthShared = useTranslations(I18N_NAMESPACE.authShared);
   const tAuthErrors = useTranslations(`${I18N_NAMESPACE.authShared}.errors`);
-  const [serverErrorList, setServerErrorList] = useState<FieldErrorList | null>(null);
-  const [isPending, setIsPending] = useState(false);
+
+  const [isPending, startTransition] = useTransition();
+  const [actionState, submitAction] = useActionState(
+    async (_prev: AuthFormState, credentials: AuthFormValues): Promise<AuthFormState> => {
+      const res = await action(credentials);
+      if (res?.errors) {
+        return {
+          errors: res.errors.map((error) => ({
+            message: tAuthErrors(error.message),
+          })),
+        };
+      }
+      return { errors: null };
+    },
+    INITIAL_AUTH_STATE,
+  );
 
   const {
     register,
@@ -49,24 +69,15 @@ export const AuthForm: FC<Props> = ({ action, submitText }) => {
     mode: 'onBlur',
   });
 
-  const onSubmit = async (data: AuthFormValues) => {
-    setServerErrorList(null);
-    setIsPending(true);
-    const res = await action(data);
-
-    if (res?.errors) {
-      setServerErrorList(
-        res.errors.map((error) => ({
-          message: tAuthErrors(error.message),
-        })),
-      );
-    }
-
-    setIsPending(false);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        startTransition(() => {
+          submitAction(data);
+        });
+      })}
+      className={styles.form}
+    >
       <FieldSet>
         <FieldGroup>
           <Field>
@@ -109,7 +120,7 @@ export const AuthForm: FC<Props> = ({ action, submitText }) => {
           </Field>
         </FieldGroup>
       </FieldSet>
-      {serverErrorList && <FieldError errors={serverErrorList} />}
+      {actionState.errors && <FieldError errors={actionState.errors} />}
 
       <Button type="submit" className={styles.submitButton} disabled={isPending}>
         {submitText}

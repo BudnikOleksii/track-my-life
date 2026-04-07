@@ -55,7 +55,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
@@ -234,7 +234,7 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
           >
             {translations('content.cancel')}
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isPending}>
             {isEditing ? translations('content.save') : translations('content.createButton')}
           </Button>
         </div>

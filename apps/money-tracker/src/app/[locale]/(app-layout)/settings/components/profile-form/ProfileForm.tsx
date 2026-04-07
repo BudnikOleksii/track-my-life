@@ -24,8 +24,10 @@ interface ProfileFormProps {
 export const ProfileForm: FC<ProfileFormProps> = ({ profile }) => {
   const translations = useTranslations(I18N_NAMESPACE.settingsPage);
 
-  const { register, handleSubmit, control, errors, isSubmitting, handleFormSubmit } =
-    useProfileForm({ profile, translations });
+  const { register, handleSubmit, control, errors, isPending, handleFormSubmit } = useProfileForm({
+    profile,
+    translations,
+  });
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
@@ -94,7 +96,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile }) => {
       </FormField>
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isPending}>
           {translations('content.saveButton')}
         </Button>
       </div>

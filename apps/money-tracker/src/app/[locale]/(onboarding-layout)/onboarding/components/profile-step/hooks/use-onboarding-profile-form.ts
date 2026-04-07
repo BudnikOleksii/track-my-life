@@ -3,9 +3,12 @@ import type { CountryCode } from '@track-my-life/shared/src/api/generated/types.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback } from 'react';
+import { useActionState, useCallback, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { ActionState } from '@/constants/action-state';
+
+import { INITIAL_ACTION_STATE } from '@/constants/action-state';
 import { PATHS } from '@/constants/paths';
 
 import type { ProfileFormValues } from '../../../../../(app-layout)/settings/constants/profile-form-schema';
@@ -25,7 +28,7 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -35,8 +38,9 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
     },
   });
 
-  const handleFormSubmit = useCallback(
-    async (values: ProfileFormValues) => {
+  const [isPending, startTransition] = useTransition();
+  const [, submitAction] = useActionState(
+    async (_prev: ActionState, values: ProfileFormValues): Promise<ActionState> => {
       const body = {
         ...(values.firstName && { firstName: values.firstName }),
         ...(values.lastName && { lastName: values.lastName }),
@@ -49,14 +53,25 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
 
         if (result) {
           router.replace(`${PATHS.onboarding}?step=${ONBOARDING_STEP.complete}`);
-        } else {
-          toast.error(translations('content.profileUpdateError'));
+          return { success: true, error: null };
         }
+        toast.error(translations('content.profileUpdateError'));
+        return { success: false, error: 'content.profileUpdateError' };
       } catch {
         toast.error(translations('content.profileUpdateError'));
+        return { success: false, error: 'content.profileUpdateError' };
       }
     },
-    [translations, router],
+    INITIAL_ACTION_STATE,
+  );
+
+  const handleFormSubmit = useCallback(
+    (values: ProfileFormValues) => {
+      startTransition(() => {
+        submitAction(values);
+      });
+    },
+    [submitAction],
   );
 
   return {
@@ -64,7 +79,7 @@ export const useOnboardingProfileForm = ({ translations }: UseOnboardingProfileF
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     handleFormSubmit,
   };
 };

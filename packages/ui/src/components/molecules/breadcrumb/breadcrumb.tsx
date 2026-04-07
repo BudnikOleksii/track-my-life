@@ -1,9 +1,9 @@
-import * as React from 'react';
+import type { AnchorHTMLAttributes, ComponentProps, HTMLAttributes, Ref } from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './breadcrumb.module.scss';
 
-const Breadcrumb: React.FC<React.ComponentProps<'nav'>> = ({ className, ...props }) => (
+const Breadcrumb = ({ className, ...props }: ComponentProps<'nav'>) => (
   <nav
     data-slot="breadcrumb"
     aria-label="Breadcrumb"
@@ -12,27 +12,23 @@ const Breadcrumb: React.FC<React.ComponentProps<'nav'>> = ({ className, ...props
   />
 );
 
-const BreadcrumbList: React.FC<React.HTMLAttributes<HTMLOListElement>> = ({
-  className,
-  ...props
-}) => <ol className={cn(styles.list, className)} {...props} />;
+const BreadcrumbList = ({ className, ...props }: HTMLAttributes<HTMLOListElement>) => (
+  <ol className={cn(styles.list, className)} {...props} />
+);
 
-const BreadcrumbItem: React.FC<React.HTMLAttributes<HTMLLIElement>> = ({ className, ...props }) => (
+const BreadcrumbItem = ({ className, ...props }: HTMLAttributes<HTMLLIElement>) => (
   <li className={cn(styles.item, className)} {...props} />
 );
 
-const BreadcrumbLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement>
->(({ className, ...props }, ref) => (
-  <a ref={ref} data-slot="breadcrumb-link" className={cn(styles.link, className)} {...props} />
-));
-BreadcrumbLink.displayName = 'BreadcrumbLink';
+interface BreadcrumbLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  ref?: Ref<HTMLAnchorElement>;
+}
 
-const BreadcrumbPage: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
-  className,
-  ...props
-}) => (
+const BreadcrumbLink = ({ className, ref, ...props }: BreadcrumbLinkProps) => (
+  <a ref={ref} data-slot="breadcrumb-link" className={cn(styles.link, className)} {...props} />
+);
+
+const BreadcrumbPage = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => (
   <span
     data-slot="breadcrumb-page"
     role="link"
@@ -43,11 +39,11 @@ const BreadcrumbPage: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
   />
 );
 
-const BreadcrumbSeparator: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
+const BreadcrumbSeparator = ({
   className,
   children,
   ...props
-}) => (
+}: HTMLAttributes<HTMLSpanElement>) => (
   <span
     data-slot="breadcrumb-separator"
     role="presentation"
@@ -59,10 +55,7 @@ const BreadcrumbSeparator: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
   </span>
 );
 
-const BreadcrumbEllipsis: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({
-  className,
-  ...props
-}) => (
+const BreadcrumbEllipsis = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => (
   <span
     data-slot="breadcrumb-ellipsis"
     role="presentation"

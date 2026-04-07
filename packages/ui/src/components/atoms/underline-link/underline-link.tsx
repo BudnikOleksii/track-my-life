@@ -1,36 +1,29 @@
-import * as React from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef, ElementType, JSX, Ref } from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './underline-link.module.scss';
 
-export type UnderlineLinkProps<Comp extends React.ElementType = 'a'> = {
+export type UnderlineLinkProps<Comp extends ElementType = 'a'> = {
   component?: Comp;
   className?: string;
-} & Omit<React.ComponentPropsWithoutRef<Comp>, 'component' | 'className'>;
+  ref?: Ref<ComponentRef<Comp>>;
+} & Omit<ComponentPropsWithoutRef<Comp>, 'component' | 'className'>;
 
-interface UnderlineLinkComponent {
-  <Comp extends React.ElementType = 'a'>(
-    props: UnderlineLinkProps<Comp> & { ref?: React.Ref<React.ComponentRef<Comp>> },
-  ): React.JSX.Element;
-  displayName?: string;
-}
+type UnderlineLinkComponent = <Comp extends ElementType = 'a'>(
+  props: UnderlineLinkProps<Comp>,
+) => JSX.Element;
 
-const UnderlineLinkInner: React.ForwardRefRenderFunction<
-  unknown,
-  UnderlineLinkProps<React.ElementType>
-> = (props, ref) => {
-  const { component: Component = 'a', className, ...rest } = props;
+const UnderlineLink: UnderlineLinkComponent = (props) => {
+  const { component: Component = 'a', className, ref, ...rest } = props;
   return (
     <Component
-      ref={ref}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- polymorphic ref type cannot be narrowed without forwardRef
+      ref={ref as any}
       data-slot="underline-link"
       className={cn(styles.link, className)}
       {...rest}
     />
   );
 };
-
-const UnderlineLink = React.forwardRef(UnderlineLinkInner) as UnderlineLinkComponent;
-UnderlineLink.displayName = 'UnderlineLink';
 
 export { UnderlineLink };

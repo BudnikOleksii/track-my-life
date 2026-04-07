@@ -9,9 +9,12 @@ import type {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useMemo } from 'react';
+import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { ActionState } from '@/constants/action-state';
+
+import { INITIAL_ACTION_STATE } from '@/constants/action-state';
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 
@@ -48,7 +51,7 @@ export const useRecurringTransactionFormPage = ({
     control,
     watch,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RecurringTransactionFormValues>({
     resolver: zodResolver(recurringTransactionFormSchema),
     defaultValues: {
@@ -86,8 +89,9 @@ export const useRecurringTransactionFormPage = ({
     [setValue],
   );
 
-  const handleFormSubmit = useCallback(
-    async (values: RecurringTransactionFormValues) => {
+  const [isPending, startTransition] = useTransition();
+  const [, submitAction] = useActionState(
+    async (_prev: ActionState, values: RecurringTransactionFormValues): Promise<ActionState> => {
       const { description, endDate, ...rest } = values;
       const body: CreateRecurringTransactionDto = {
         ...rest,
@@ -97,24 +101,29 @@ export const useRecurringTransactionFormPage = ({
         ...(endDate !== undefined && { endDate }),
       };
 
-      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+      const result =
+        isEditing && recurringTransaction
+          ? await updateRecurringTransaction(recurringTransaction.id, body)
+          : await createRecurringTransaction(body);
 
-      try {
-        const result =
-          isEditing && recurringTransaction
-            ? await updateRecurringTransaction(recurringTransaction.id, body)
-            : await createRecurringTransaction(body);
-
-        if (result) {
-          router.push(PATHS.recurringTransactions);
-        } else {
-          toast.error(translations(errorKey));
-        }
-      } catch {
-        toast.error(translations(errorKey));
+      if (result) {
+        router.push(PATHS.recurringTransactions);
+        return { success: true, error: null };
       }
+      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+      toast.error(translations(errorKey));
+      return { success: false, error: errorKey };
     },
-    [isEditing, recurringTransaction, router, translations],
+    INITIAL_ACTION_STATE,
+  );
+
+  const handleFormSubmit = useCallback(
+    (values: RecurringTransactionFormValues) => {
+      startTransition(() => {
+        submitAction(values);
+      });
+    },
+    [submitAction, startTransition],
   );
 
   return {
@@ -123,7 +132,7 @@ export const useRecurringTransactionFormPage = ({
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,
