@@ -2,7 +2,7 @@
 
 import type { FC } from 'react';
 
-import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { useTranslations } from 'next-intl';
 

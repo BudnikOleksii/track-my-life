@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
-import { NextIntlProvider } from '@track-my-life/shared/src/providers/NextIntlProvider';
+import { NextIntlProvider } from '@track-my-life/next-shared/src/providers/NextIntlProvider';
 import { Toaster } from '@track-my-life/ui/src/components/molecules/toaster/toaster';
 import { cn } from '@track-my-life/ui/src/lib/utils';
 import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';

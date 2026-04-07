@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
-import { parseCookieString } from '@track-my-life/shared/src/api/client/token/forward-response-cookie-list';
-import { MiddlewareTokenProvider } from '@track-my-life/shared/src/api/client/token/middleware-token-provider';
+import { parseCookieString } from '@track-my-life/next-shared/src/api/client/token/forward-response-cookie-list';
+import { MiddlewareTokenProvider } from '@track-my-life/next-shared/src/api/client/token/middleware-token-provider';
 import { fetchRefreshToken } from '@track-my-life/shared/src/api/fetch-refresh-token';
 import { NextResponse } from 'next/server';
 

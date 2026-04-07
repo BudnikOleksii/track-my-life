@@ -3,7 +3,7 @@
 import type { ErrorInfo } from 'next/error';
 import type { FC } from 'react';
 
-import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { ErrorState } from '@track-my-life/ui/src/components/molecules/error-state/ErrorState';
 import { useTranslations } from 'next-intl';
 

@@ -2,7 +2,7 @@
 
 import type { CreateCategoryDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { categoryApiService } from '@track-my-life/shared/src/api/server-api';
+import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';

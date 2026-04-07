@@ -3,8 +3,8 @@
 import {
   authApiService,
   serverActionTokenProvider,
-} from '@track-my-life/shared/src/api/server-api';
-import { redirect } from '@track-my-life/shared/src/i18n/navigation/navigation';
+} from '@track-my-life/next-shared/src/api/server-api';
+import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { getLocale } from 'next-intl/server';
 
 import { PATHS } from '@/constants/paths';

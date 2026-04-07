@@ -6,7 +6,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';

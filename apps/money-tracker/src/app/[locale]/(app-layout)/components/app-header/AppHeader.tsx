@@ -2,7 +2,7 @@
 
 import type { FC } from 'react';
 
-import { usePathname } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { usePathname } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Menu } from 'lucide-react';

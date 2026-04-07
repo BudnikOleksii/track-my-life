@@ -1,4 +1,4 @@
-import { NavigationLink } from '@track-my-life/shared/src/i18n/navigation/NavigationLink';
+import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {

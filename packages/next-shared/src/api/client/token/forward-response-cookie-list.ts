@@ -1,4 +1,4 @@
-import { EMPTY_LIST_LENGTH, NOT_FOUND_INDEX } from '../../../constants/list';
+import { EMPTY_LIST_LENGTH, NOT_FOUND_INDEX } from '@track-my-life/shared/src/constants/list';
 
 export interface ParsedCookie {
   name: string;

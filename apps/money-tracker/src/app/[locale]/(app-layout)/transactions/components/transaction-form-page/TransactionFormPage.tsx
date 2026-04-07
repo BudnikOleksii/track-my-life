@@ -7,7 +7,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { Link, useRouter } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {

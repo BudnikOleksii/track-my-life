@@ -1,5 +1,5 @@
 {
-  "extends": "@track-my-life/typescript-config/nextjs.json",
+  "extends": "@track-my-life/typescript-config/react-library.json",
   "compilerOptions": {},
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

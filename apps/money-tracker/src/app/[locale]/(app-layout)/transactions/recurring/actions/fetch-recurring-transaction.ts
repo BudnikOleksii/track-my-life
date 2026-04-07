@@ -1,6 +1,6 @@
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
-import { rscRecurringTransactionApiService } from '@track-my-life/shared/src/api/rsc-api';
+import { rscRecurringTransactionApiService } from '@track-my-life/next-shared/src/api/rsc-api';
 import { cache } from 'react';
 
 import { CACHE_TAG } from '@/constants/cache-tag';

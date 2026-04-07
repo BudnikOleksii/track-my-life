@@ -1,6 +1,6 @@
-import type { ReadOnlyTokenProvider } from './types';
+import type { ReadOnlyTokenProvider } from '@track-my-life/shared/src/api/client/token/types';
 
-import { ACCESS_TOKEN_COOKIE } from '../../../constants/cookie';
+import { ACCESS_TOKEN_COOKIE } from '@track-my-life/shared/src/constants/cookie';
 
 export class RscTokenProvider implements ReadOnlyTokenProvider {
   async getAccessToken(): Promise<string | null> {

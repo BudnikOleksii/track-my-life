@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Link } from '@track-my-life/shared/src/i18n/navigation/navigation';
+import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Plus } from 'lucide-react';

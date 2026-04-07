@@ -1,6 +1,6 @@
 'use server';
 
-import { profileApiService } from '@track-my-life/shared/src/api/server-api';
+import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { cookies } from 'next/headers';
 
 import { requireAuth } from '@/actions/require-auth';

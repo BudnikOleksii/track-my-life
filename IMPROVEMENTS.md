@@ -14,7 +14,7 @@
 | 8   | Lazy-Load Recharts                                      | 4      | S      | Done    |
 | 9   | Use Zod Enums Instead of Strings for Union Types        | 4      | M      | Done    |
 | 10  | Fix Combobox Accessibility                              | 4      | M      | Done    |
-| 11  | Decouple `packages/shared` from Next.js                 | 4      | L      | Todo    |
+| 11  | Decouple `packages/shared` from Next.js                 | 4      | L      | Done    |
 | 12  | Add SEO Essentials                                      | 3      | M      | Todo    |
 | 13  | Fix Unsafe `query as Record<string, unknown>` Casts     | 3      | M      | Done    |
 | 14  | Add Auth Guards to Server Actions                       | 3      | M      | Done    |
