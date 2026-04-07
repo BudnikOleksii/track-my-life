@@ -3,7 +3,7 @@
 import type { UpdateCategoryDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -26,7 +26,8 @@ export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
     return null;
   }
 
-  revalidateTag(CACHE_TAG.CATEGORIES, 'max');
+  updateTag(CACHE_TAG.CATEGORIES);
   revalidatePath(PATHS.categories);
+
   return data;
 };

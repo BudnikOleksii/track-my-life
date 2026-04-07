@@ -22,7 +22,6 @@ export const fetchTransactionList = cache(
       params,
       TRANSACTIONS_CACHE,
     );
-
     if (checkIsTransactionListResponse(data)) {
       return data;
     }

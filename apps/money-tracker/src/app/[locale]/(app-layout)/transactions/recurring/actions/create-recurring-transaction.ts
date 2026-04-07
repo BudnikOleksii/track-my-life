@@ -6,7 +6,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -39,7 +39,8 @@ export const createRecurringTransaction = async (input: CreateRecurringTransacti
     return null;
   }
 
-  revalidateTag(CACHE_TAG.RECURRING_TRANSACTIONS, 'max');
+  updateTag(CACHE_TAG.RECURRING_TRANSACTIONS);
   revalidatePath(PATHS.recurringTransactions);
+
   return data;
 };
