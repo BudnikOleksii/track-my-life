@@ -4,6 +4,7 @@ import type { ExportFormat } from '@track-my-life/shared/src/api/generated/types
 import type { FC } from 'react';
 
 import { clientTransactionApiService } from '@track-my-life/shared/src/api/client-api';
+import { convertLocalDateToUTCISO, parseLocalDate } from '@track-my-life/shared/src/utils/date';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
@@ -93,8 +94,12 @@ export const ExportTransactionButton: FC<ExportTransactionButtonProps> = ({
       try {
         const success = await fetchAndDownload(format, {
           ...(categoryId !== undefined && { categoryId }),
-          ...(dateFrom !== undefined && { dateFrom }),
-          ...(dateTo !== undefined && { dateTo }),
+          ...(dateFrom !== undefined && {
+            dateFrom: convertLocalDateToUTCISO(parseLocalDate(dateFrom)),
+          }),
+          ...(dateTo !== undefined && {
+            dateTo: convertLocalDateToUTCISO(parseLocalDate(dateTo)),
+          }),
         });
 
         if (!success) {

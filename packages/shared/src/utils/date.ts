@@ -82,3 +82,29 @@ export const formatMonthYear = (year: number, month: number, locale: string): st
   const date = new Date(year, month - MONTH_INDEX_OFFSET);
   return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' }).format(date);
 };
+
+const MS_PER_MINUTE = 60_000;
+
+export const convertLocalDateToUTCISO = (date: Date): string => date.toISOString();
+
+export const parseLocalDate = (dateString: string): Date => {
+  const [yearStr, monthStr, dayStr] = dateString.split('-');
+  return new Date(Number(yearStr), Number(monthStr) - MONTH_INDEX_OFFSET, Number(dayStr));
+};
+
+export const convertDateStringToUTCISO = (
+  dateString: string,
+  timezoneOffsetMinutes: number,
+): string => {
+  const utcDate = new Date(`${dateString}T00:00:00.000Z`);
+  const utcMs = utcDate.getTime() + timezoneOffsetMinutes * MS_PER_MINUTE;
+  return new Date(utcMs).toISOString();
+};
+
+export const formatLocalDate = (isoString: string): string => {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = padMonth(date.getMonth() + MONTH_INDEX_OFFSET);
+  const day = padDay(date.getDate());
+  return `${year}-${month}-${day}`;
+};

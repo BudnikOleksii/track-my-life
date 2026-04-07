@@ -28,7 +28,7 @@
 | 23  | Deduplicate `lucide-react`                              | 1      | S      | Done    |
 | 24  | Enable Turborepo Cache for Lint/Type-Check              | 1      | S      | Done    |
 | 26  | Add Exhaustive Union Checking Pattern                   | 1      | S      | Done    |
-| 27  | Adopt React 19 APIs (useActionState, useFormStatus)     | 1      | M      | Todo    |
+| 27  | Adopt React 19 APIs (useActionState, useFormStatus)     | 1      | M      | Done    |
 | 28  | Fix Font Class Composition                              | 1      | S      | Done    |
 
 ## Backlog

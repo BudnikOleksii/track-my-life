@@ -5,6 +5,7 @@ import type { FC } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { formatLocalDate, parseLocalDate } from '@track-my-life/shared/src/utils/date';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -23,24 +24,12 @@ interface TransactionListProps {
   onDelete: (transaction: TransactionResponseDto) => void;
 }
 
-const MONTH_INDEX_OFFSET = 1;
-
 const formatDate = (dateString: string): string => {
-  const partList = dateString.split('-').map(Number);
-  const year = partList[DATE_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const month = partList[MONTH_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const day = partList[DAY_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const date = new Date(year, month - MONTH_INDEX_OFFSET, day);
+  const date = parseLocalDate(dateString);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const DATE_PART_INDEX = 0;
-const MONTH_PART_INDEX = 1;
-const DAY_PART_INDEX = 2;
-const DEFAULT_DATE_PART = 0;
-
-const getDateKey = (dateString: string): string =>
-  dateString.split('T')[DATE_PART_INDEX] ?? dateString;
+const getDateKey = (dateString: string): string => formatLocalDate(dateString);
 
 interface DateGroup {
   dateKey: string;

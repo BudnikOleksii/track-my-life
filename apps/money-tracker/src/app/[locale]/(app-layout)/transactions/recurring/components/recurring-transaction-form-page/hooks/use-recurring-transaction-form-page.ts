@@ -8,6 +8,11 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import {
+  convertLocalDateToUTCISO,
+  formatLocalDate,
+  parseLocalDate,
+} from '@track-my-life/shared/src/utils/date';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,7 +32,6 @@ import { recurringTransactionFormSchema } from '../../../constants/recurring-tra
 const FALLBACK_CURRENCY = 'USD';
 const DEFAULT_INTERVAL = 1;
 const DEFAULT_FREQUENCY = 'MONTHLY';
-const DATE_PART_INDEX = 0;
 
 interface UseRecurringTransactionFormPageParams {
   recurringTransaction: RecurringTransactionResponseDto | null;
@@ -62,11 +66,9 @@ export const useRecurringTransactionFormPage = ({
       frequency: recurringTransaction?.frequency ?? DEFAULT_FREQUENCY,
       interval: recurringTransaction?.interval ?? DEFAULT_INTERVAL,
       startDate: recurringTransaction?.startDate
-        ? (recurringTransaction.startDate.split('T')[DATE_PART_INDEX] ?? '')
+        ? formatLocalDate(recurringTransaction.startDate)
         : '',
-      endDate: recurringTransaction?.endDate
-        ? (recurringTransaction.endDate.split('T')[DATE_PART_INDEX] ?? '')
-        : '',
+      endDate: recurringTransaction?.endDate ? formatLocalDate(recurringTransaction.endDate) : '',
       description: recurringTransaction?.description ?? '',
     },
   });
@@ -92,13 +94,16 @@ export const useRecurringTransactionFormPage = ({
   const [isPending, startTransition] = useTransition();
   const [, submitAction] = useActionState(
     async (_prev: ActionState, values: RecurringTransactionFormValues): Promise<ActionState> => {
-      const { description, endDate, ...rest } = values;
+      const { description, endDate, startDate, ...rest } = values;
       const body: CreateRecurringTransactionDto = {
         ...rest,
+        startDate: convertLocalDateToUTCISO(parseLocalDate(startDate)),
         currencyCode: values.currencyCode,
         frequency: values.frequency as RecurringFrequency,
         ...(description !== undefined && { description }),
-        ...(endDate !== undefined && { endDate }),
+        ...(endDate && {
+          endDate: convertLocalDateToUTCISO(parseLocalDate(endDate)),
+        }),
       };
 
       const result =

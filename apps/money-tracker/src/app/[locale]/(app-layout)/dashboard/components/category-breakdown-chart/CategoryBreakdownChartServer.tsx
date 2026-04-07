@@ -1,6 +1,9 @@
 import type { FC } from 'react';
 
+import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
 import dynamic from 'next/dynamic';
+
+import { getTimezoneOffset } from '@/utils/get-timezone-offset';
 
 import type { DashboardFilters } from '../../constants/dashboard';
 
@@ -17,10 +20,10 @@ interface CategoryBreakdownChartServerProps {
 export const CategoryBreakdownChartServer: FC<CategoryBreakdownChartServerProps> = async ({
   filters,
 }) => {
+  const offset = await getTimezoneOffset();
   const data = await fetchCategoryBreakdown({
     currencyCode: filters.currencyCode,
-    ...(filters.dateFrom && { dateFrom: filters.dateFrom }),
-    ...(filters.dateTo && { dateTo: filters.dateTo }),
+    ...convertFilterDateList(filters, offset),
     ...(filters.type !== 'ALL' && { type: filters.type }),
   });
 

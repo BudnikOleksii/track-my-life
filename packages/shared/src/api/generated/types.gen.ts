@@ -358,6 +358,10 @@ export type DailySpendingResponseDto = {
   days: Array<DailySpendingItemDto>;
 };
 
+export type AuditLogSortBy = 'createdAt';
+
+export type SortOrder = 'asc' | 'desc';
+
 export type AuditLogResponseDto = {
   /**
    * Audit log entry ID
@@ -586,6 +590,8 @@ export type RevokeAllTokensResponseDto = {
    */
   message: string;
 };
+
+export type UserSortBy = 'email' | 'createdAt';
 
 export type UserResponseDto = {
   /**
@@ -991,6 +997,8 @@ export type DeleteAccountDto = {
   password: string;
 };
 
+export type DefaultCategorySortBy = 'name' | 'createdAt';
+
 export type DefaultTransactionCategoryResponseDto = {
   /**
    * Default transaction category ID
@@ -1055,6 +1063,8 @@ export type UpdateDefaultTransactionCategoryDto = {
   name?: string;
   parentDefaultTransactionCategoryId?: string | null;
 };
+
+export type CategorySortBy = 'name' | 'createdAt';
 
 export type CategoryResponseDto = {
   /**
@@ -1122,8 +1132,6 @@ export type UpdateCategoryDto = {
 };
 
 export type TransactionSortBy = 'date' | 'amount' | 'createdAt';
-
-export type SortOrder = 'asc' | 'desc';
 
 export type TransactionResponseDto = {
   /**
@@ -1278,6 +1286,12 @@ export type RecurringTransactionStatus = 'ACTIVE' | 'PAUSED' | 'CANCELLED';
 
 export type RecurringFrequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 
+export type RecurringTransactionSortBy =
+  | 'amount'
+  | 'startDate'
+  | 'nextOccurrenceDate'
+  | 'createdAt';
+
 export type RecurringTransactionResponseDto = {
   /**
    * Recurring transaction ID
@@ -1406,6 +1420,8 @@ export type ProcessResultResponseDto = {
 export type BudgetStatus = 'ACTIVE' | 'EXCEEDED';
 
 export type BudgetPeriod = 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'CUSTOM';
+
+export type BudgetSortBy = 'amount' | 'startDate' | 'endDate' | 'createdAt';
 
 export type BudgetResponseDto = {
   /**
@@ -1770,6 +1786,14 @@ export type AuditLogControllerFindAllData = {
     pageSize?: number;
     actorId?: string;
     action?: string;
+    /**
+     * Field to sort by (default: createdAt)
+     */
+    sortBy?: AuditLogSortBy;
+    /**
+     * Sort direction (default: desc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/audit-logs';
 };
@@ -1990,6 +2014,14 @@ export type UserControllerFindAllData = {
     pageSize?: number;
     search?: string;
     role?: UserRole;
+    /**
+     * Field to sort by (default: createdAt)
+     */
+    sortBy?: UserSortBy;
+    /**
+     * Sort direction (default: desc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/users';
 };
@@ -2314,6 +2346,14 @@ export type DefaultTransactionCategoriesControllerFindAllData = {
     pageSize?: number;
     type?: TransactionType;
     root?: boolean;
+    /**
+     * Field to sort by (default: name)
+     */
+    sortBy?: DefaultCategorySortBy;
+    /**
+     * Sort direction (default: asc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/default-transaction-categories';
 };
@@ -2470,6 +2510,14 @@ export type TransactionCategoriesControllerFindAllData = {
     type?: TransactionType;
     parentCategoryId?: string;
     root?: boolean;
+    /**
+     * Field to sort by (default: name)
+     */
+    sortBy?: CategorySortBy;
+    /**
+     * Sort direction (default: asc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/transaction-categories';
 };
@@ -2897,6 +2945,14 @@ export type RecurringTransactionsControllerFindAllData = {
     categoryId?: string;
     currencyCode?: CurrencyCode;
     frequency?: RecurringFrequency;
+    /**
+     * Field to sort by (default: createdAt)
+     */
+    sortBy?: RecurringTransactionSortBy;
+    /**
+     * Sort direction (default: desc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/recurring-transactions';
 };
@@ -3121,6 +3177,10 @@ export type RecurringTransactionsControllerProcessData = {
 
 export type RecurringTransactionsControllerProcessErrors = {
   /**
+   * Insufficient permissions
+   */
+  403: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -3146,6 +3206,14 @@ export type BudgetsControllerFindAllData = {
     period?: BudgetPeriod;
     categoryId?: string;
     currencyCode?: CurrencyCode;
+    /**
+     * Field to sort by (default: createdAt)
+     */
+    sortBy?: BudgetSortBy;
+    /**
+     * Sort direction (default: desc)
+     */
+    sortOrder?: SortOrder;
   };
   url: '/api/budgets';
 };
