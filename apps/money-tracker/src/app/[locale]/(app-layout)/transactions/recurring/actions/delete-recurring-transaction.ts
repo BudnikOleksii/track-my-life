@@ -1,7 +1,7 @@
 'use server';
 
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -16,7 +16,8 @@ export const deleteRecurringTransaction = async (id: string) => {
     return null;
   }
 
-  revalidateTag(CACHE_TAG.RECURRING_TRANSACTIONS, 'max');
+  updateTag(CACHE_TAG.RECURRING_TRANSACTIONS);
   revalidatePath(PATHS.recurringTransactions);
+
   return { success: true };
 };

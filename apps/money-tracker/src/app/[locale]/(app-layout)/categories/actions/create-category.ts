@@ -3,7 +3,7 @@
 import type { CreateCategoryDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
@@ -23,7 +23,7 @@ export const createCategory = async (input: CreateCategoryDto) => {
   const { data, error } = await categoryApiService.createCategory({
     name: validated.data.name,
     type: validated.data.type,
-    ...(validated.data.parentCategoryId !== undefined && {
+    ...(validated.data.parentCategoryId && {
       parentCategoryId: validated.data.parentCategoryId,
     }),
   });
@@ -32,7 +32,7 @@ export const createCategory = async (input: CreateCategoryDto) => {
     return null;
   }
 
-  revalidateTag(CACHE_TAG.CATEGORIES, 'max');
+  updateTag(CACHE_TAG.CATEGORIES);
   revalidatePath(PATHS.categories);
 
   return data;
