@@ -65,13 +65,15 @@ export const useRecurringTransactionActions = ({
     });
   }, [recurringTransaction.id, router, translations, applyOptimistic]);
 
-  const handleDelete = useCallback(async () => {
-    const result = await deleteRecurringTransaction(recurringTransaction.id);
-    if (result?.success) {
-      router.push(PATHS.recurringTransactions);
-    } else {
-      toast.error(translations('content.deleteError'));
-    }
+  const handleDelete = useCallback(() => {
+    startTransition(async () => {
+      const result = await deleteRecurringTransaction(recurringTransaction.id);
+      if (result?.success) {
+        router.push(PATHS.recurringTransactions);
+      } else {
+        toast.error(translations('content.deleteError'));
+      }
+    });
   }, [recurringTransaction.id, router, translations]);
 
   return {

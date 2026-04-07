@@ -2,6 +2,7 @@ import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generate
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -20,11 +21,13 @@ import { categoryFormSchema } from '../../../constants/category-form-schema';
 interface UseCategoryFormPageParams {
   category: CategoryResponseDto | null;
   parentCategoryList: CategoryResponseDto[];
+  translations: (key: string) => string;
 }
 
 export const useCategoryFormPage = ({
   category,
   parentCategoryList,
+  translations,
 }: UseCategoryFormPageParams) => {
   const router = useRouter();
   const isEditing = Boolean(category);
@@ -64,7 +67,9 @@ export const useCategoryFormPage = ({
         router.push(PATHS.categories);
         return { success: true, error: null };
       }
-      return { success: false, error: null };
+      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+      toast.error(translations(errorKey));
+      return { success: false, error: errorKey };
     },
     INITIAL_ACTION_STATE,
   );

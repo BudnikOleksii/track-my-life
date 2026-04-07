@@ -50,7 +50,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
     parentOptionList,
     handleFormSubmit,
     handleCancel,
-  } = useCategoryFormPage({ category, parentCategoryList });
+  } = useCategoryFormPage({ category, parentCategoryList, translations });
 
   return (
     <div className={styles.page}>
