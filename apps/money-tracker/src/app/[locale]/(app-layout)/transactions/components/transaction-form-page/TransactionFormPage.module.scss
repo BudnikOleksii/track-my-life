@@ -3,6 +3,10 @@
 
   flex-direction: column;
   gap: var(--spacing-6);
+
+  max-width: 600px;
+
+  margin: 0 auto;
 }
 
 .header {
@@ -31,6 +35,14 @@
 
   flex-direction: column;
   gap: var(--spacing-4);
+}
+
+.dateTimeRow {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  gap: var(--spacing-3);
 }
 
 .actions {

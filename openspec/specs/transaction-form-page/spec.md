@@ -42,29 +42,49 @@ The transaction form page component SHALL display a page header with back naviga
 - **WHEN** the user clicks the back link on the form page
 - **THEN** the system SHALL navigate to `/transactions`
 
-#### Scenario: Form fields
+### Requirement: Form fields
 
 - **WHEN** the form page renders
-- **THEN** it SHALL display fields for: type (select), category (combobox filtered by type), amount (number input), currency (read-only display of user's baseCurrencyCode), date (date input), and description (optional text input)
+- **THEN** it SHALL display fields for: type (RadioGroup with pill buttons), category (hierarchical CategoryPicker), amount (number input with currency symbol prefix from user's baseCurrencyCode), date (date input), time (TimePicker defaulting to current time), and description (optional text input)
+
+#### Scenario: Type field uses RadioGroup
+
+- **WHEN** the form renders
+- **THEN** the type selector SHALL be a RadioGroup with "Income" and "Expense" options displayed as pill-style buttons
+
+#### Scenario: Amount field shows currency prefix
+
+- **WHEN** the form renders
+- **THEN** the amount input SHALL display the user's base currency code as an inline prefix (e.g., "UAH" or "$") and SHALL NOT have a separate currency field
+
+#### Scenario: Category field uses hierarchical picker
+
+- **WHEN** the user clicks the category field
+- **THEN** a two-panel CategoryPicker SHALL expand showing main categories on the left and subcategories on the right
+
+#### Scenario: Date and time fields
+
+- **WHEN** the form renders for a new transaction
+- **THEN** the date field SHALL default to today's date and the time field SHALL default to the current time
+
+#### Scenario: Date and time on edit
+
+- **WHEN** the form renders for an existing transaction
+- **THEN** the date field SHALL show the transaction's date and the time field SHALL show the transaction's time
 
 ### Requirement: Transaction form receives baseCurrencyCode prop
 
-The `TransactionFormPage` component SHALL accept a `baseCurrencyCode` prop of type `CurrencyCode` and use it as the fixed currency value for the transaction.
+The `TransactionFormPage` component SHALL accept a `baseCurrencyCode` prop of type `CurrencyCode` and use it to display the currency prefix in the amount field.
 
-#### Scenario: New transaction defaults to baseCurrencyCode
+#### Scenario: New transaction shows currency prefix
 
-- **WHEN** the form renders for a new transaction
-- **THEN** the `currencyCode` form field SHALL be initialized to the `baseCurrencyCode` prop value
+- **WHEN** the form renders for a new transaction with `baseCurrencyCode="UAH"`
+- **THEN** the amount input SHALL show "UAH" as a prefix
 
-#### Scenario: Existing transaction displays its currency as read-only
+#### Scenario: Edit transaction shows currency prefix
 
 - **WHEN** the form renders for an existing transaction
-- **THEN** the `currencyCode` form field SHALL display the transaction's existing currency code as read-only
-
-#### Scenario: Currency displayed as read-only text
-
-- **WHEN** the form renders in either create or edit mode
-- **THEN** the currency field SHALL display as a read-only Input (disabled) showing the currency code, replacing the previous Select dropdown
+- **THEN** the amount input SHALL show the `baseCurrencyCode` as a prefix
 
 ### Requirement: Transaction form submission with redirect
 
