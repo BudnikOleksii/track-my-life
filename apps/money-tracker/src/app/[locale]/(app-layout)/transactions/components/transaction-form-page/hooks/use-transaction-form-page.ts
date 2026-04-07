@@ -8,9 +8,12 @@ import type {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useMemo } from 'react';
+import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { ActionState } from '@/constants/action-state';
+
+import { INITIAL_ACTION_STATE } from '@/constants/action-state';
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 
@@ -45,7 +48,7 @@ export const useTransactionFormPage = ({
     control,
     watch,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
@@ -76,8 +79,9 @@ export const useTransactionFormPage = ({
     [setValue],
   );
 
-  const handleFormSubmit = useCallback(
-    async (values: TransactionFormValues) => {
+  const [isPending, startTransition] = useTransition();
+  const [, submitAction] = useActionState(
+    async (_prev: ActionState, values: TransactionFormValues): Promise<ActionState> => {
       const { description, ...rest } = values;
       const body: CreateTransactionDto = {
         ...rest,
@@ -85,24 +89,29 @@ export const useTransactionFormPage = ({
         ...(description !== undefined && { description }),
       };
 
-      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+      const result =
+        isEditing && transaction
+          ? await updateTransaction(transaction.id, body)
+          : await createTransaction(body);
 
-      try {
-        const result =
-          isEditing && transaction
-            ? await updateTransaction(transaction.id, body)
-            : await createTransaction(body);
-
-        if (result) {
-          router.push(PATHS.transactions);
-        } else {
-          toast.error(translations(errorKey));
-        }
-      } catch {
-        toast.error(translations(errorKey));
+      if (result) {
+        router.push(PATHS.transactions);
+        return { success: true, error: null };
       }
+      const errorKey = isEditing ? 'content.updateError' : 'content.createError';
+      toast.error(translations(errorKey));
+      return { success: false, error: errorKey };
     },
-    [isEditing, transaction, router, translations],
+    INITIAL_ACTION_STATE,
+  );
+
+  const handleFormSubmit = useCallback(
+    (values: TransactionFormValues) => {
+      startTransition(() => {
+        submitAction(values);
+      });
+    },
+    [submitAction, startTransition],
   );
 
   return {
@@ -111,7 +120,7 @@ export const useTransactionFormPage = ({
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     categoryOptionList,
     handleTypeChange,
     handleFormSubmit,

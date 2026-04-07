@@ -2,7 +2,7 @@
 
 import type { FC, PropsWithChildren } from 'react';
 
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, use, useCallback, useState } from 'react';
 
 interface SidebarContextValue {
   isCollapsed: boolean;
@@ -15,7 +15,7 @@ interface SidebarContextValue {
 const SidebarContext = createContext<SidebarContextValue | null>(null);
 
 export const useSidebar = (): SidebarContextValue => {
-  const context = useContext(SidebarContext);
+  const context = use(SidebarContext);
   if (!context) {
     throw new Error('useSidebar must be used within SidebarProvider');
   }

@@ -1,7 +1,8 @@
 'use client';
 
+import type { ComponentPropsWithoutRef, ComponentRef, Ref } from 'react';
+
 import * as SelectPrimitive from '@radix-ui/react-select';
-import * as React from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './select.module.scss';
@@ -10,16 +11,14 @@ const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
-export interface SelectTriggerProps extends React.ComponentPropsWithoutRef<
+export interface SelectTriggerProps extends ComponentPropsWithoutRef<
   typeof SelectPrimitive.Trigger
 > {
   error?: boolean;
+  ref?: Ref<ComponentRef<typeof SelectPrimitive.Trigger>>;
 }
 
-const SelectTrigger = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Trigger>,
-  SelectTriggerProps
->(({ className, error, children, ...props }, ref) => (
+const SelectTrigger = ({ className, error, children, ref, ...props }: SelectTriggerProps) => (
   <SelectPrimitive.Trigger
     ref={ref}
     data-slot="select-trigger"
@@ -34,13 +33,19 @@ const SelectTrigger = React.forwardRef<
       </span>
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
-));
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
+);
 
-const SelectContent = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
+interface SelectContentProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Content> {
+  ref?: Ref<ComponentRef<typeof SelectPrimitive.Content>>;
+}
+
+const SelectContent = ({
+  className,
+  children,
+  position = 'popper',
+  ref,
+  ...props
+}: SelectContentProps) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
@@ -63,26 +68,26 @@ const SelectContent = React.forwardRef<
       </SelectPrimitive.ScrollDownButton>
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
-));
-SelectContent.displayName = SelectPrimitive.Content.displayName;
+);
 
-const SelectLabel = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ className, ...props }, ref) => (
+interface SelectLabelProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Label> {
+  ref?: Ref<ComponentRef<typeof SelectPrimitive.Label>>;
+}
+
+const SelectLabel = ({ className, ref, ...props }: SelectLabelProps) => (
   <SelectPrimitive.Label
     ref={ref}
     data-slot="select-label"
     className={cn(styles.label, className)}
     {...props}
   />
-));
-SelectLabel.displayName = SelectPrimitive.Label.displayName;
+);
 
-const SelectItem = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
+interface SelectItemProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  ref?: Ref<ComponentRef<typeof SelectPrimitive.Item>>;
+}
+
+const SelectItem = ({ className, children, ref, ...props }: SelectItemProps) => (
   <SelectPrimitive.Item
     ref={ref}
     data-slot="select-item"
@@ -102,21 +107,20 @@ const SelectItem = React.forwardRef<
       </svg>
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
-));
-SelectItem.displayName = SelectPrimitive.Item.displayName;
+);
 
-const SelectSeparator = React.forwardRef<
-  React.ComponentRef<typeof SelectPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ className, ...props }, ref) => (
+interface SelectSeparatorProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Separator> {
+  ref?: Ref<ComponentRef<typeof SelectPrimitive.Separator>>;
+}
+
+const SelectSeparator = ({ className, ref, ...props }: SelectSeparatorProps) => (
   <SelectPrimitive.Separator
     ref={ref}
     data-slot="select-separator"
     className={cn(styles.separator, className)}
     {...props}
   />
-));
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
+);
 
 export {
   Select,

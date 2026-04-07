@@ -16,7 +16,7 @@ export const ChangePasswordForm: FC = () => {
   const translations = useTranslations(I18N_NAMESPACE.settingsPage);
   const tErrors = useTranslations(`${I18N_NAMESPACE.settingsPage}.errors`);
 
-  const { register, handleSubmit, errors, isSubmitting, handleFormSubmit } = useChangePasswordForm({
+  const { register, handleSubmit, errors, isPending, handleFormSubmit } = useChangePasswordForm({
     translations,
   });
 
@@ -57,7 +57,7 @@ export const ChangePasswordForm: FC = () => {
       </FormField>
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isPending}>
           {translations('content.changePasswordButton')}
         </Button>
       </div>

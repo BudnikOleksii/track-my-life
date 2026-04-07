@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type { HTMLAttributes, Ref } from 'react';
 
 import { cn } from '../../../lib/utils';
 import styles from './badge.module.scss';
@@ -22,23 +22,21 @@ const variantToClass: Record<BadgeVariant, string> = {
   warning: styles.warning ?? '',
 };
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
+  ref?: Ref<HTMLSpanElement>;
 }
 
-const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant = 'default', ...props }, ref) => {
-    const variantClass = variantToClass[variant];
-    return (
-      <span
-        ref={ref}
-        data-slot="badge"
-        className={cn(styles.badge, variantClass, className)}
-        {...props}
-      />
-    );
-  },
-);
-Badge.displayName = 'Badge';
+const Badge = ({ className, variant = 'default', ref, ...props }: BadgeProps) => {
+  const variantClass = variantToClass[variant];
+  return (
+    <span
+      ref={ref}
+      data-slot="badge"
+      className={cn(styles.badge, variantClass, className)}
+      {...props}
+    />
+  );
+};
 
 export { Badge };

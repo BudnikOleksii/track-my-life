@@ -5,8 +5,12 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useCallback, useEffect } from 'react';
+import { useActionState, useCallback, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+
+import type { ActionState } from '@/constants/action-state';
+
+import { INITIAL_ACTION_STATE } from '@/constants/action-state';
 
 import type { ProfileFormValues } from '../../../constants/profile-form-schema';
 
@@ -26,7 +30,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -45,8 +49,9 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
     });
   }, [profile, reset]);
 
-  const handleFormSubmit = useCallback(
-    async (values: ProfileFormValues) => {
+  const [isPending, startTransition] = useTransition();
+  const [, submitAction] = useActionState(
+    async (_prev: ActionState, values: ProfileFormValues): Promise<ActionState> => {
       const body = {
         ...(values.firstName && { firstName: values.firstName }),
         ...(values.lastName && { lastName: values.lastName }),
@@ -58,14 +63,25 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
         const result = await updateProfile(body);
         if (result) {
           toast.success(translations('content.profileUpdateSuccess'));
-        } else {
-          toast.error(translations('content.profileUpdateError'));
+          return { success: true, error: null };
         }
+        toast.error(translations('content.profileUpdateError'));
+        return { success: false, error: 'content.profileUpdateError' };
       } catch {
         toast.error(translations('content.profileUpdateError'));
+        return { success: false, error: 'content.profileUpdateError' };
       }
     },
-    [translations],
+    INITIAL_ACTION_STATE,
+  );
+
+  const handleFormSubmit = useCallback(
+    (values: ProfileFormValues) => {
+      startTransition(() => {
+        submitAction(values);
+      });
+    },
+    [submitAction],
   );
 
   return {
@@ -73,7 +89,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     handleFormSubmit,
   };
 };

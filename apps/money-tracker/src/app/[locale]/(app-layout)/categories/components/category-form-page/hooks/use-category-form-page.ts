@@ -2,9 +2,12 @@ import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generate
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
-import { useCallback, useMemo } from 'react';
+import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
+import type { ActionState } from '@/constants/action-state';
+
+import { INITIAL_ACTION_STATE } from '@/constants/action-state';
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 
@@ -30,7 +33,7 @@ export const useCategoryFormPage = ({
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<CategoryFormValues>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -40,8 +43,9 @@ export const useCategoryFormPage = ({
     },
   });
 
-  const handleFormSubmit = useCallback(
-    async (values: CategoryFormValues) => {
+  const [isPending, startTransition] = useTransition();
+  const [, submitAction] = useActionState(
+    async (_prev: ActionState, values: CategoryFormValues): Promise<ActionState> => {
       const parentCategoryId = values.parentCategoryId || null;
 
       const result =
@@ -58,9 +62,20 @@ export const useCategoryFormPage = ({
 
       if (result) {
         router.push(PATHS.categories);
+        return { success: true, error: null };
       }
+      return { success: false, error: null };
     },
-    [isEditing, category, router],
+    INITIAL_ACTION_STATE,
+  );
+
+  const handleFormSubmit = useCallback(
+    (values: CategoryFormValues) => {
+      startTransition(() => {
+        submitAction(values);
+      });
+    },
+    [submitAction],
   );
 
   const parentOptionList = useMemo(
@@ -81,7 +96,7 @@ export const useCategoryFormPage = ({
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     parentOptionList,
     handleFormSubmit,
     handleCancel,

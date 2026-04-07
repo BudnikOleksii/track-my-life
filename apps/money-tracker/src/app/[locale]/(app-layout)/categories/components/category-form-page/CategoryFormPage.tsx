@@ -46,7 +46,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
     handleSubmit,
     control,
     errors,
-    isSubmitting,
+    isPending,
     parentOptionList,
     handleFormSubmit,
     handleCancel,
@@ -133,7 +133,7 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
           <Button variant="outline" type="button" onClick={handleCancel}>
             {translations('content.cancel')}
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isPending}>
             {isEditing ? translations('content.save') : translations('content.createButton')}
           </Button>
         </div>
