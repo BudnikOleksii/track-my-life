@@ -101,7 +101,7 @@ export const useRecurringTransactionFormPage = ({
         currencyCode: values.currencyCode,
         frequency: values.frequency as RecurringFrequency,
         ...(description !== undefined && { description }),
-        ...(endDate !== undefined && {
+        ...(endDate && {
           endDate: convertLocalDateToUTCISO(parseLocalDate(endDate)),
         }),
       };

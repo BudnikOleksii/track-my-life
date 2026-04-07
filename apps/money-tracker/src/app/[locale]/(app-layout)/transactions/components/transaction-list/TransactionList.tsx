@@ -5,7 +5,7 @@ import type { FC } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { formatLocalDate } from '@track-my-life/shared/src/utils/date';
+import { formatLocalDate, parseLocalDate } from '@track-my-life/shared/src/utils/date';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -25,7 +25,7 @@ interface TransactionListProps {
 }
 
 const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
+  const date = parseLocalDate(dateString);
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
