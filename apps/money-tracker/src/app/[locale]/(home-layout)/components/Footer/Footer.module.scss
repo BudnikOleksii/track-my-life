@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .footer {
   padding: var(--spacing-8) var(--spacing-6);
@@ -17,7 +17,7 @@
 
   margin: 0 auto;
 
-  @include media-m {
+  @include breakpoints.media-m {
     flex-direction: row;
     justify-content: space-between;
   }

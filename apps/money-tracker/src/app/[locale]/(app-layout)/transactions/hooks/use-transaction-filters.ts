@@ -11,7 +11,6 @@ interface TransactionFilterUpdate {
   dateFrom?: string;
   dateTo?: string;
   categoryId?: string;
-  currencyCode?: string;
   sortBy?: string;
   sortOrder?: string;
 }
@@ -23,7 +22,6 @@ const FILTER_KEY_TO_SEARCH_PARAM: Record<keyof TransactionFilterUpdate, string> 
   dateFrom: 'dateFrom',
   dateTo: 'dateTo',
   categoryId: 'categoryId',
-  currencyCode: 'currencyCode',
   sortBy: 'sortBy',
   sortOrder: 'sortOrder',
 };
@@ -34,7 +32,6 @@ const PAGE_RESET_KEY_SET = new Set<string>([
   'dateTo',
   'pageSize',
   'categoryId',
-  'currencyCode',
   'sortBy',
   'sortOrder',
 ]);

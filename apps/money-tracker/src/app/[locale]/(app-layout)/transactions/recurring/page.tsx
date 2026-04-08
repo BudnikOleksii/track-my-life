@@ -53,9 +53,14 @@ const RecurringTransactionsPage = async (props: Props) => {
     <div className={styles.page}>
       <div className={styles.header}>
         <Typography variant="title-l">{translations('content.title')}</Typography>
-        <Button component={Link} href={PATHS.recurringTransactionsCreate} size="sm">
+        <Button
+          component={Link}
+          href={PATHS.recurringTransactionsCreate}
+          size="sm"
+          aria-label={translations('content.createButton')}
+        >
           <Plus size={16} />
-          {translations('content.createButton')}
+          <span className={styles.buttonLabel}>{translations('content.createButton')}</span>
         </Button>
       </div>
       <Suspense key={JSON.stringify(filters)} fallback={recurringTransactionsSkeletonFallback}>

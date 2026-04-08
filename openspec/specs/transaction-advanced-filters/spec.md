@@ -28,37 +28,28 @@ The system SHALL display a sort order toggle button that switches between ascend
 
 ### Requirement: Category filter
 
-The system SHALL display a category dropdown populated with the user's categories (fetched server-side). The selected value SHALL be stored in the `categoryId` URL search param. An "All categories" option SHALL clear the filter.
+The system SHALL display a hierarchical CategoryPicker (instead of a flat select dropdown) for filtering transactions by category. The CategoryPicker SHALL show the `showAllOption` to allow selecting "All Categories" (clears filter) and selecting a parent category directly via "All [Parent Name]". The selected value SHALL be stored in the `categoryId` URL search param.
 
 #### Scenario: Filter by category
 
-- **WHEN** the user selects a category from the dropdown
+- **WHEN** the user selects a category from the CategoryPicker
 - **THEN** the URL categoryId param SHALL update, the server SHALL re-fetch with the category filter, and pagination SHALL reset to page 1
+
+#### Scenario: Filter by parent category
+
+- **WHEN** the user selects "All [Parent Name]" in the CategoryPicker subcategory panel
+- **THEN** the URL categoryId param SHALL update to the parent category's ID and the server SHALL filter to show all transactions under that parent (including subcategories)
 
 #### Scenario: Clear category filter
 
-- **WHEN** the user selects "All categories"
+- **WHEN** the user selects "All Categories" in the CategoryPicker
 - **THEN** the categoryId param SHALL be removed from the URL and all categories SHALL be shown
-
-### Requirement: Currency filter
-
-The system SHALL display a currency dropdown with available currency codes. The selected value SHALL be stored in the `currencyCode` URL search param. An "All currencies" option SHALL clear the filter.
-
-#### Scenario: Filter by currency
-
-- **WHEN** the user selects a currency (e.g., "USD")
-- **THEN** the URL currencyCode param SHALL update and the server SHALL re-fetch with the currency filter
-
-#### Scenario: Clear currency filter
-
-- **WHEN** the user selects "All currencies"
-- **THEN** the currencyCode param SHALL be removed from the URL
 
 ### Requirement: Filter layout
 
-Sort controls SHALL appear in the primary filter row alongside the type filter and month navigator. Category and currency filters SHALL appear in a secondary filter row below the primary row.
+Sort controls SHALL appear in the primary filter row alongside the type filter and month navigator. The category filter SHALL appear in the secondary filter row below the primary row, without a currency filter.
 
-#### Scenario: Both filter rows visible
+#### Scenario: Secondary filter row
 
 - **WHEN** the user views the transactions page
-- **THEN** the primary row SHALL contain type filter, month navigator, and sort controls, and the secondary row SHALL contain category and currency filters
+- **THEN** the secondary row SHALL contain only the category filter (CategoryPicker)

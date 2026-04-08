@@ -62,6 +62,7 @@ const getCurrentDate = (): string => {
 
 interface UseTransactionFormPageParams {
   transaction: TransactionResponseDto | null;
+  sourceTransaction: TransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
   baseCurrencyCode: CurrencyCode | null;
   translations: (key: string) => string;
@@ -69,12 +70,14 @@ interface UseTransactionFormPageParams {
 
 export const useTransactionFormPage = ({
   transaction,
+  sourceTransaction,
   categoryList,
   baseCurrencyCode,
   translations,
 }: UseTransactionFormPageParams) => {
   const router = useRouter();
   const isEditing = Boolean(transaction);
+  const prefillSource = !transaction && sourceTransaction ? sourceTransaction : null;
 
   const {
     register,
@@ -86,12 +89,12 @@ export const useTransactionFormPage = ({
   } = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
-      categoryId: transaction?.categoryId ?? '',
-      type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
-      amount: transaction?.amount ?? '',
+      categoryId: transaction?.categoryId ?? prefillSource?.categoryId ?? '',
+      type: transaction?.type ?? prefillSource?.type ?? TRANSACTION_TYPE.EXPENSE,
+      amount: transaction?.amount ?? prefillSource?.amount ?? '',
       date: transaction?.date ? formatLocalDate(transaction.date) : getCurrentDate(),
       time: transaction?.date ? extractTimeFromISO(transaction.date) : getCurrentTime(),
-      description: transaction?.description ?? '',
+      description: transaction?.description ?? prefillSource?.description ?? '',
     },
   });
 

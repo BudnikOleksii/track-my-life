@@ -67,9 +67,14 @@ const TransactionsPage = async (props: Props) => {
             downloadJsonLabel={translations('content.downloadJson')}
             errorLabel={translations('content.exportError')}
           />
-          <Button component={Link} href={PATHS.transactionsCreate} size="sm">
+          <Button
+            component={Link}
+            href={PATHS.transactionsCreate}
+            size="sm"
+            aria-label={translations('content.createButton')}
+          >
             <Plus size={16} />
-            {translations('content.createButton')}
+            <span className={styles.buttonLabel}>{translations('content.createButton')}</span>
           </Button>
         </div>
       </div>

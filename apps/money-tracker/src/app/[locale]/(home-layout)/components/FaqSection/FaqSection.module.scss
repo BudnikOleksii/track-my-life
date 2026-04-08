@@ -1,9 +1,9 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .section {
   padding: var(--spacing-16) var(--spacing-6);
 
-  @include media-m {
+  @include breakpoints.media-m {
     padding: var(--spacing-24) var(--spacing-8);
   }
 }

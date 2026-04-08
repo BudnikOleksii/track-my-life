@@ -1133,6 +1133,32 @@ export type UpdateCategoryDto = {
 
 export type TransactionSortBy = 'date' | 'amount' | 'createdAt';
 
+export type ParentCategoryInfoDto = {
+  /**
+   * Parent category ID
+   */
+  id: string;
+  /**
+   * Parent category name
+   */
+  name: string;
+};
+
+export type CategoryInfoDto = {
+  /**
+   * Category ID
+   */
+  id: string;
+  /**
+   * Category name
+   */
+  name: string;
+  /**
+   * Parent category details, null if this is a top-level category
+   */
+  parentCategory: ParentCategoryInfoDto | null;
+};
+
 export type TransactionResponseDto = {
   /**
    * Transaction ID
@@ -1142,6 +1168,10 @@ export type TransactionResponseDto = {
    * Category ID
    */
   categoryId: string;
+  /**
+   * Category details
+   */
+  category: CategoryInfoDto;
   /**
    * Transaction type
    */
@@ -1305,6 +1335,10 @@ export type RecurringTransactionResponseDto = {
    * Category ID
    */
   categoryId: string;
+  /**
+   * Category details
+   */
+  category: CategoryInfoDto;
   /**
    * Transaction type
    */

@@ -15,10 +15,9 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { TransactionFilters } from './constants/transaction-filters';
 
+import { CategoryPicker } from './components/category-picker/CategoryPicker';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog/DeleteTransactionDialog';
 import { MonthNavigator } from './components/month-navigator/MonthNavigator';
-import { TransactionCategoryFilter } from './components/transaction-category-filter/TransactionCategoryFilter';
-import { TransactionCurrencyFilter } from './components/transaction-currency-filter/TransactionCurrencyFilter';
 import { TransactionList } from './components/transaction-list/TransactionList';
 import { TransactionSortFilter } from './components/transaction-sort-filter/TransactionSortFilter';
 import { TransactionTypeFilter } from './components/transaction-type-filter/TransactionTypeFilter';
@@ -58,7 +57,7 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
           <TransactionTypeFilter
             value={filters.type}
             onValueChange={(type) => {
-              handleFilterChange({ type });
+              handleFilterChange({ type, categoryId: '' });
             }}
           />
           <MonthNavigator year={year} month={month} onMonthChange={handleMonthChange} />
@@ -74,18 +73,16 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
           />
         </div>
         <div className={styles.secondaryFilterList}>
-          <TransactionCategoryFilter
-            categoryId={filters.categoryId}
+          <CategoryPicker
             categoryList={categoryList}
-            onCategoryChange={(categoryId) => {
+            transactionType={filters.type === 'ALL' ? '' : filters.type}
+            value={filters.categoryId}
+            onValueChange={(categoryId) => {
               handleFilterChange({ categoryId });
             }}
-          />
-          <TransactionCurrencyFilter
-            currencyCode={filters.currencyCode}
-            onCurrencyChange={(currencyCode) => {
-              handleFilterChange({ currencyCode });
-            }}
+            showAllOption
+            allCategoriesLabel={translations('content.allCategories')}
+            allParentLabel={translations('content.allParentCategory')}
           />
         </div>
       </div>

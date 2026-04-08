@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .hero {
   display: flex;
@@ -10,7 +10,7 @@
 
   background: var(--surface-container-lowest);
 
-  @include media-m {
+  @include breakpoints.media-m {
     padding: var(--spacing-32) var(--spacing-8);
   }
 }
@@ -35,7 +35,7 @@
 
   color: var(--on-surface-variant);
 
-  @include media-m {
+  @include breakpoints.media-m {
     margin-top: var(--spacing-6);
   }
 }
@@ -50,7 +50,7 @@
 
   margin-top: var(--spacing-8);
 
-  @include media-m {
+  @include breakpoints.media-m {
     flex-direction: row;
     justify-content: center;
 

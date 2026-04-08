@@ -21,7 +21,6 @@ export const parseTransactionSearchParams = (
     normalizeParam(searchParams.dateTo),
   );
   const categoryId = normalizeParam(searchParams.categoryId);
-  const currencyCode = normalizeParam(searchParams.currencyCode);
   const { sortBy, sortOrder } = parseSortParams({
     rawSortBy: normalizeParam(searchParams.sortBy),
     rawSortOrder: normalizeParam(searchParams.sortOrder),
@@ -29,5 +28,5 @@ export const parseTransactionSearchParams = (
     validSortOrderSet: VALID_SORT_ORDER_SET,
   });
 
-  return { page, pageSize, type, dateFrom, dateTo, categoryId, currencyCode, sortBy, sortOrder };
+  return { page, pageSize, type, dateFrom, dateTo, categoryId, sortBy, sortOrder };
 };

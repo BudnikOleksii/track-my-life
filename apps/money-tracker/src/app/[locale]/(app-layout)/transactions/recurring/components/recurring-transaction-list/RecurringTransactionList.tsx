@@ -1,6 +1,7 @@
 'use client';
 
 import type {
+  CategoryInfoDto,
   RecurringTransactionResponseDto,
   RecurringTransactionStatus,
 } from '@track-my-life/shared/src/api/generated/types.gen';
@@ -57,6 +58,9 @@ const formatDate = (dateString: string, locale: string): string =>
     day: 'numeric',
   });
 
+const formatCategoryDisplayName = (category: CategoryInfoDto): string =>
+  category.parentCategory ? `${category.parentCategory.name} / ${category.name}` : category.name;
+
 export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   recurringTransactionList,
   onDelete,
@@ -95,6 +99,9 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               </Badge>
             </div>
             <div className={styles.secondary}>
+              <Typography variant="body-s" className={styles.category}>
+                {formatCategoryDisplayName(item.category)}
+              </Typography>
               <Typography variant="body-s" className={styles.frequency}>
                 {translations('content.every', {
                   interval: item.interval,

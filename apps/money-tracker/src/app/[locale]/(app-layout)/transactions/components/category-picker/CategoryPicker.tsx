@@ -16,11 +16,14 @@ const CHEVRON_SMALL_SIZE = 14;
 
 interface CategoryPickerProps {
   categoryList: CategoryResponseDto[];
-  transactionType: TransactionType;
+  transactionType: TransactionType | '';
   value: string;
   onValueChange: (categoryId: string) => void;
   placeholder?: string;
   error?: boolean;
+  showAllOption?: boolean;
+  allCategoriesLabel?: string;
+  allParentLabel?: string;
 }
 
 const CategoryPicker: FC<CategoryPickerProps> = ({
@@ -30,6 +33,9 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
   onValueChange,
   placeholder,
   error,
+  showAllOption,
+  allCategoriesLabel,
+  allParentLabel,
 }) => {
   const {
     isOpen,
@@ -43,7 +49,16 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
     handleToggle,
     handleMainCategoryClick,
     handleSubcategoryClick,
-  } = useCategoryPicker({ categoryList, transactionType, value, onValueChange });
+    handleAllCategoriesClick,
+    handleAllParentClick,
+  } = useCategoryPicker({
+    categoryList,
+    transactionType,
+    value,
+    onValueChange,
+    showAllOption,
+    allCategoriesLabel,
+  });
 
   return (
     <div className={styles.root}>
@@ -65,6 +80,18 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
       {isOpen && (
         <div className={styles.picker}>
           <div className={styles.mainList}>
+            {showAllOption && allCategoriesLabel && (
+              <button
+                type="button"
+                aria-pressed={value === ''}
+                className={cn(styles.categoryItem, value === '' && styles.categoryItemSelected)}
+                onClick={() => {
+                  handleAllCategoriesClick('');
+                }}
+              >
+                <span className={styles.categoryName}>{allCategoriesLabel}</span>
+              </button>
+            )}
             {mainCategoryList.map((category) => {
               const hasSubcategories = subcategoryMap.has(category.id);
               const isActive = activeCategoryId === category.id;
@@ -95,6 +122,22 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
 
           {hasActiveSubcategories && (
             <div className={styles.subList}>
+              {showAllOption && activeCategoryId && allParentLabel && (
+                <button
+                  type="button"
+                  aria-pressed={value === activeCategoryId}
+                  className={cn(
+                    styles.categoryItem,
+                    value === activeCategoryId && styles.categoryItemSelected,
+                  )}
+                  onClick={handleAllParentClick}
+                >
+                  <span className={styles.categoryName}>
+                    {allParentLabel}{' '}
+                    {mainCategoryList.find((cat) => cat.id === activeCategoryId)?.name}
+                  </span>
+                </button>
+              )}
               {activeSubcategoryList.map((subcategory) => (
                 <button
                   key={subcategory.id}

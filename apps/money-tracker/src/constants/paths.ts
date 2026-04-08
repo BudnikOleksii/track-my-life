@@ -27,5 +27,8 @@ export const getRecurringTransactionsEditPath = (id: string) =>
 export const getTransactionsByCategoryPath = (categoryId: string) =>
   `${PATHS.transactionsByCategory}/${categoryId}` as const;
 
+export const getTransactionsCopyPath = (id: string) =>
+  `${PATHS.transactionsCreate}?copyFrom=${id}` as const;
+
 export const getRecurringTransactionsDetailPath = (id: string) =>
   `${PATHS.recurringTransactions}/${id}` as const;

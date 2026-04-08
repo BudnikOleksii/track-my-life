@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .page {
   display: flex;
@@ -21,11 +21,11 @@
 
   gap: var(--spacing-4);
 
-  @include media-m {
+  @include breakpoints.media-m {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @include media-xl {
+  @include breakpoints.media-xl {
     grid-template-columns: repeat(3, 1fr);
   }
 }

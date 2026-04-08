@@ -35,12 +35,14 @@ import styles from './TransactionFormPage.module.scss';
 
 interface TransactionFormPageProps {
   transaction: TransactionResponseDto | null;
+  sourceTransaction?: TransactionResponseDto | null;
   categoryList: CategoryResponseDto[];
   baseCurrencyCode: CurrencyCode | null;
 }
 
 export const TransactionFormPage: FC<TransactionFormPageProps> = ({
   transaction,
+  sourceTransaction,
   categoryList,
   baseCurrencyCode,
 }) => {
@@ -57,7 +59,13 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
     selectedType,
     handleTypeChange,
     handleFormSubmit,
-  } = useTransactionFormPage({ transaction, categoryList, baseCurrencyCode, translations });
+  } = useTransactionFormPage({
+    transaction,
+    sourceTransaction: sourceTransaction ?? null,
+    categoryList,
+    baseCurrencyCode,
+    translations,
+  });
 
   return (
     <div className={styles.page}>
