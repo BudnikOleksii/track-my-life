@@ -4,7 +4,10 @@ import type { ExportFormat } from '@track-my-life/shared/src/api/generated/types
 import type { FC } from 'react';
 
 import { clientTransactionApiService } from '@track-my-life/shared/src/api/client-api';
-import { convertLocalDateToUTCISO, parseLocalDate } from '@track-my-life/shared/src/utils/date';
+import {
+  convertLocalDateToUTCISO,
+  parseLocalDate,
+} from '@track-my-life/shared/src/utils/date/parse';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';

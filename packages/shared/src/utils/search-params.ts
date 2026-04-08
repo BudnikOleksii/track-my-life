@@ -1,4 +1,4 @@
-import { getCurrentYearMonth, getMonthDateRange, parseMonthFromDateRange } from './date';
+import { getCurrentYearMonth, getMonthDateRange, parseMonthFromDateRange } from './date/year-month';
 
 interface DateRange {
   dateFrom: string;

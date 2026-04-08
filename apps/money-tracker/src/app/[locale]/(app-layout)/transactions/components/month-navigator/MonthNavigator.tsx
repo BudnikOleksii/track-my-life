@@ -6,7 +6,7 @@ import {
   formatMonthYear,
   getNextMonth,
   getPreviousMonth,
-} from '@track-my-life/shared/src/utils/date';
+} from '@track-my-life/shared/src/utils/date/year-month';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react';

@@ -4,6 +4,7 @@ import type { TransactionGroupDto } from '@track-my-life/shared/src/api/generate
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -14,7 +15,7 @@ import {
   AccordionTrigger,
 } from '@track-my-life/ui/src/components/molecules/accordion/accordion';
 import { FolderOpen } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
@@ -25,26 +26,9 @@ interface CategoryDetailContentProps {
   groupList: TransactionGroupDto[];
 }
 
-const MONTH_INDEX_OFFSET = 1;
-const DATE_PART_INDEX = 0;
-const MONTH_PART_INDEX = 1;
-const DAY_PART_INDEX = 2;
-const DEFAULT_DATE_PART = 0;
-
-const getDateOnly = (dateString: string): string =>
-  dateString.split('T')[DATE_PART_INDEX] ?? dateString;
-
-const formatDate = (dateString: string): string => {
-  const partList = getDateOnly(dateString).split('-').map(Number);
-  const year = partList[DATE_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const month = partList[MONTH_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const day = partList[DAY_PART_INDEX] ?? DEFAULT_DATE_PART;
-  const date = new Date(year, month - MONTH_INDEX_OFFSET, day);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
 export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupList }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
+  const locale = useLocale();
 
   return (
     <>
@@ -96,7 +80,7 @@ export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupLis
                           </div>
                           <div className={styles.transactionSecondary}>
                             <Typography variant="body-s" className={styles.date}>
-                              {formatDate(transaction.date)}
+                              {formatDate(transaction.date, locale)}
                             </Typography>
                             {transaction.description && (
                               <Typography variant="body-s" className={styles.description}>

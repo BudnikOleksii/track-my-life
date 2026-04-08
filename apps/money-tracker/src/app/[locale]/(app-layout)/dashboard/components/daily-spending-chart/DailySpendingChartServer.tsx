@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import { getYearMonth } from '@track-my-life/shared/src/utils/date';
+import { getYearMonth } from '@track-my-life/shared/src/utils/date/year-month';
 import dynamic from 'next/dynamic';
 
 import type { DashboardFilters } from '../../constants/dashboard';

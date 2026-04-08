@@ -4,6 +4,7 @@ import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/
 import type { FC } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { formatDate, formatDateTime } from '@track-my-life/shared/src/utils/date/format';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -49,42 +50,6 @@ const STATUS_LABEL_KEY = {
   PAUSED: 'content.pausedStatus',
   CANCELLED: 'content.cancelledStatus',
 } as const;
-
-const DATE_PARTS_COUNT = 3;
-const YEAR_INDEX = 0;
-const MONTH_INDEX = 1;
-const DAY_INDEX = 2;
-const MONTH_OFFSET = 1;
-const DATE_PART_INDEX = 0;
-
-const parseDateString = (dateString: string): Date => {
-  const datePart = dateString.split('T')[DATE_PART_INDEX] ?? dateString;
-  const parts = datePart.split('-');
-  if (parts.length >= DATE_PARTS_COUNT) {
-    return new Date(
-      Number(parts[YEAR_INDEX]),
-      Number(parts[MONTH_INDEX]) - MONTH_OFFSET,
-      Number(parts[DAY_INDEX]),
-    );
-  }
-  return new Date(dateString);
-};
-
-const formatDate = (dateString: string, locale: string): string =>
-  parseDateString(dateString).toLocaleDateString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-const formatDateTime = (dateString: string, locale: string): string =>
-  new Date(dateString).toLocaleString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
 export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailContentProps> = ({
   recurringTransaction,

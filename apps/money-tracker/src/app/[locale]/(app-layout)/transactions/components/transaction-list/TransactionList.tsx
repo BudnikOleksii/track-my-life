@@ -1,24 +1,23 @@
 'use client';
 
-import type {
-  CategoryInfoDto,
-  TransactionResponseDto,
-} from '@track-my-life/shared/src/api/generated/types.gen';
+import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { formatLocalDate, parseLocalDate } from '@track-my-life/shared/src/utils/date';
+import { formatDate } from '@track-my-life/shared/src/utils/date/format';
+import { formatLocalDate } from '@track-my-life/shared/src/utils/date/parse';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Copy, Receipt, Pencil, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { getTransactionsCopyPath, getTransactionsEditPath } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+import { formatCategoryDisplayName } from '@/utils/format-category-display-name';
 
 import styles from './TransactionList.module.scss';
 
@@ -27,15 +26,7 @@ interface TransactionListProps {
   onDelete: (transaction: TransactionResponseDto) => void;
 }
 
-const formatDate = (dateString: string): string => {
-  const date = parseLocalDate(dateString);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
 const getDateKey = (dateString: string): string => formatLocalDate(dateString);
-
-const formatCategoryDisplayName = (category: CategoryInfoDto): string =>
-  category.parentCategory ? `${category.parentCategory.name} / ${category.name}` : category.name;
 
 interface DateGroup {
   dateKey: string;
@@ -62,6 +53,7 @@ const groupTransactionListByDate = (transactionList: TransactionResponseDto[]): 
 
 export const TransactionList: FC<TransactionListProps> = ({ transactionList, onDelete }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
+  const locale = useLocale();
 
   if (transactionList.length === EMPTY_LIST_LENGTH) {
     return (
@@ -82,7 +74,7 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
         <div key={`${group.dateKey}-${String(groupIndex)}`} className={styles.dateGroup}>
           <div className={styles.dateHeader}>
             <Typography variant="body-s" fontWeight="semibold">
-              {formatDate(group.dateKey)}
+              {formatDate(group.dateKey, locale)}
             </Typography>
           </div>
           {group.transactionList.map((transaction) => (
