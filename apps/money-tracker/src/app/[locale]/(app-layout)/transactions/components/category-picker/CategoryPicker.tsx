@@ -74,6 +74,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
                 <button
                   key={category.id}
                   type="button"
+                  aria-pressed={isSelected}
                   className={cn(
                     styles.categoryItem,
                     isActive && styles.categoryItemActive,
@@ -98,6 +99,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
                 <button
                   key={subcategory.id}
                   type="button"
+                  aria-pressed={value === subcategory.id}
                   className={cn(
                     styles.categoryItem,
                     value === subcategory.id && styles.categoryItemSelected,

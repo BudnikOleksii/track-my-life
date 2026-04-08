@@ -1,7 +1,7 @@
 import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { TransactionType } from '@/constants/transaction';
 
@@ -76,6 +76,12 @@ export const useCategoryPicker = ({
   );
 
   const hasActiveSubcategories = activeSubcategoryList.length > EMPTY_LIST_LENGTH;
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveCategoryId(selectedMainCategoryId);
+    }
+  }, [isOpen, selectedMainCategoryId]);
 
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev);

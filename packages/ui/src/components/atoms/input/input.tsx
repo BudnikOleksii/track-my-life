@@ -12,13 +12,13 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = ({ className, error, type, ref, startAdornment, ...props }: InputProps) => {
   if (startAdornment) {
     return (
-      <div className={cn(styles.wrapper, error && styles.wrapperError, className)}>
+      <div className={cn(styles.wrapper, error && styles.wrapperError)}>
         <span className={styles.adornment}>{startAdornment}</span>
         <input
           ref={ref}
           type={type}
           data-slot="input"
-          className={styles.adornmentInput}
+          className={cn(styles.adornmentInput, className)}
           {...props}
         />
       </div>

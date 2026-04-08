@@ -11,9 +11,13 @@ import { revalidateTransactionCaches } from './revalidate-transaction-caches';
 export const createTransaction = async (input: CreateTransactionDto) => {
   await requireAuth();
 
-  const { description, ...rest } = input;
+  const { categoryId, type, amount, currencyCode, date, description } = input;
   const { data, error } = await transactionApiService.createTransaction({
-    ...rest,
+    categoryId,
+    type,
+    amount,
+    currencyCode,
+    date,
     ...(description !== undefined && { description }),
   });
 
