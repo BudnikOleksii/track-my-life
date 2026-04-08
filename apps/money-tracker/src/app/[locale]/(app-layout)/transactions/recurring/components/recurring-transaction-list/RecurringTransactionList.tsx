@@ -1,7 +1,6 @@
 'use client';
 
 import type {
-  CategoryInfoDto,
   RecurringTransactionResponseDto,
   RecurringTransactionStatus,
 } from '@track-my-life/shared/src/api/generated/types.gen';
@@ -10,6 +9,7 @@ import type { FC } from 'react';
 
 import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
@@ -22,6 +22,7 @@ import {
   getRecurringTransactionsEditPath,
 } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+import { formatCategoryDisplayName } from '@/utils/format-category-display-name';
 
 import styles from './RecurringTransactionList.module.scss';
 
@@ -50,16 +51,6 @@ const STATUS_LABEL_KEY = {
   PAUSED: 'content.pausedStatus',
   CANCELLED: 'content.cancelledStatus',
 } as const;
-
-const formatDate = (dateString: string, locale: string): string =>
-  new Date(dateString).toLocaleDateString(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-const formatCategoryDisplayName = (category: CategoryInfoDto): string =>
-  category.parentCategory ? `${category.parentCategory.name} / ${category.name}` : category.name;
 
 export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   recurringTransactionList,

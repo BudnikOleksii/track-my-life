@@ -7,7 +7,7 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
-import { formatLocalDate } from '@track-my-life/shared/src/utils/date';
+import { formatLocalDate } from '@track-my-life/shared/src/utils/date/parse';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useActionState, useCallback, useTransition } from 'react';
 import { useForm } from 'react-hook-form';

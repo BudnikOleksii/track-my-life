@@ -12,7 +12,7 @@ import {
   convertLocalDateToUTCISO,
   formatLocalDate,
   parseLocalDate,
-} from '@track-my-life/shared/src/utils/date';
+} from '@track-my-life/shared/src/utils/date/parse';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useActionState, useCallback, useMemo, useTransition } from 'react';
 import { useForm } from 'react-hook-form';

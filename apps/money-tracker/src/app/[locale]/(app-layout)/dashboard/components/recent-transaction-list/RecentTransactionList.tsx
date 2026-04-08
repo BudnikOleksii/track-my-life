@@ -5,10 +5,11 @@ import type { FC } from 'react';
 
 import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
@@ -21,13 +22,9 @@ interface RecentTransactionListProps {
   transactionList: TransactionResponseDto[];
 }
 
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
 export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transactionList }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
+  const locale = useLocale();
 
   return (
     <WidgetCard
@@ -48,7 +45,7 @@ export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transact
             </div>
             <div className={styles.meta}>
               <Typography variant="body-s" className={styles.date}>
-                {formatDate(transaction.date)}
+                {formatDate(transaction.date, locale)}
               </Typography>
               {transaction.description && (
                 <Typography variant="body-s" className={styles.description}>

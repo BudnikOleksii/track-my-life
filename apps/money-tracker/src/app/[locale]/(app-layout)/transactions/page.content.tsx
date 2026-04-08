@@ -6,7 +6,10 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { getMonthDateRange, parseMonthFromDateRange } from '@track-my-life/shared/src/utils/date';
+import {
+  getMonthDateRange,
+  parseMonthFromDateRange,
+} from '@track-my-life/shared/src/utils/date/year-month';
 import { Pagination } from '@track-my-life/ui/src/components/molecules/pagination/pagination';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

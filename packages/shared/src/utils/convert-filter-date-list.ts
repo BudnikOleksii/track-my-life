@@ -1,4 +1,4 @@
-import { convertDateStringToUTCISO } from './date';
+import { convertDateStringToUTCISO } from './date/parse';
 
 interface DateFilterParams {
   dateFrom?: string;
