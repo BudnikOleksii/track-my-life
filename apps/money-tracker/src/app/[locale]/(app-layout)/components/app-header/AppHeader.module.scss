@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .header {
   position: sticky;
@@ -26,7 +26,7 @@
 }
 
 .menuButton.menuButton {
-  @include media-m {
+  @include breakpoints.media-m {
     display: none;
   }
 }

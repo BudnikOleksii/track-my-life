@@ -57,7 +57,7 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
           <TransactionTypeFilter
             value={filters.type}
             onValueChange={(type) => {
-              handleFilterChange({ type });
+              handleFilterChange({ type, categoryId: '' });
             }}
           />
           <MonthNavigator year={year} month={month} onMonthChange={handleMonthChange} />

@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .bar {
   display: flex;
@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: var(--spacing-3);
 
-  @include media-m {
+  @include breakpoints.media-m {
     flex-flow: row wrap;
     align-items: center;
   }

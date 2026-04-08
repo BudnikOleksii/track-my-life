@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 @use "@track-my-life/ui/src/styles/mixins";
 
 .sidebar {
@@ -25,13 +25,13 @@
     width 0.2s ease,
     transform 0.2s ease;
 
-  @include media-m {
+  @include breakpoints.media-m {
     transform: translateX(0);
   }
 }
 
 .collapsed {
-  @include media-m {
+  @include breakpoints.media-m {
     width: var(--spacing-16);
   }
 }
@@ -47,7 +47,7 @@
 
   background-color: rgb(0 0 0 / 40%);
 
-  @include media-m {
+  @include breakpoints.media-m {
     display: none;
   }
 }
@@ -184,7 +184,7 @@
 
   width: 100%;
 
-  @include media-m {
+  @include breakpoints.media-m {
     display: inline-flex;
   }
 }

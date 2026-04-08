@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/mixins";
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .page {
   display: flex;
@@ -15,7 +15,7 @@
   justify-content: space-between;
   gap: var(--spacing-3);
 
-  @include media-m {
+  @include breakpoints.media-m {
     gap: var(--spacing-4);
   }
 }
@@ -31,7 +31,7 @@
 .buttonLabel {
   display: none;
 
-  @include media-m {
+  @include breakpoints.media-m {
     display: inline;
   }
 }

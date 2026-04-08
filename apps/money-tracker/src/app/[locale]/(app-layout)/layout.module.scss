@@ -1,4 +1,4 @@
-@use "@track-my-life/ui/src/styles/breakpoints" as *;
+@use "@track-my-life/ui/src/styles/breakpoints";
 
 .layout {
   display: flex;
@@ -18,7 +18,7 @@
 
   transition: margin-left 0.2s ease;
 
-  @include media-m {
+  @include breakpoints.media-m {
     margin-left: 240px;
 
     [data-sidebar-collapsed] & {
@@ -32,7 +32,7 @@
 
   padding: var(--spacing-5) var(--spacing-4);
 
-  @include media-m {
+  @include breakpoints.media-m {
     padding: var(--spacing-6);
   }
 }
