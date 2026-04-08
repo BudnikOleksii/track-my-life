@@ -7,13 +7,9 @@ import type {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
-import {
-  convertLocalDateToUTCISO,
-  formatLocalDate,
-  parseLocalDate,
-} from '@track-my-life/shared/src/utils/date';
+import { formatLocalDate } from '@track-my-life/shared/src/utils/date';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useActionState, useCallback, useMemo, useTransition } from 'react';
+import { useActionState, useCallback, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import type { ActionState } from '@/constants/action-state';
@@ -28,7 +24,41 @@ import { createTransaction } from '../../../actions/create-transaction';
 import { updateTransaction } from '../../../actions/update-transaction';
 import { transactionFormSchema } from '../../../constants/transaction-form-schema';
 
-const FALLBACK_CURRENCY = 'USD';
+const PAD_LENGTH = 2;
+const MONTH_INDEX_OFFSET = 1;
+
+const formatPadded = (value: number): string => String(value).padStart(PAD_LENGTH, '0');
+
+const getCurrentTime = (): string => {
+  const now = new Date();
+  return `${formatPadded(now.getHours())}:${formatPadded(now.getMinutes())}`;
+};
+
+const extractTimeFromISO = (isoString: string): string => {
+  const date = new Date(isoString);
+  return `${formatPadded(date.getHours())}:${formatPadded(date.getMinutes())}`;
+};
+
+const combineDateAndTime = (dateStr: string, timeStr: string): string => {
+  const [yearStr, monthStr, dayStr] = dateStr.split('-');
+  const [hoursStr, minutesStr] = timeStr.split(':');
+  const date = new Date(
+    Number(yearStr),
+    Number(monthStr) - MONTH_INDEX_OFFSET,
+    Number(dayStr),
+    Number(hoursStr),
+    Number(minutesStr),
+  );
+  return date.toISOString();
+};
+
+const getCurrentDate = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = formatPadded(now.getMonth() + MONTH_INDEX_OFFSET);
+  const day = formatPadded(now.getDate());
+  return `${year}-${month}-${day}`;
+};
 
 interface UseTransactionFormPageParams {
   transaction: TransactionResponseDto | null;
@@ -59,21 +89,13 @@ export const useTransactionFormPage = ({
       categoryId: transaction?.categoryId ?? '',
       type: transaction?.type ?? TRANSACTION_TYPE.EXPENSE,
       amount: transaction?.amount ?? '',
-      currencyCode: transaction?.currencyCode ?? baseCurrencyCode ?? FALLBACK_CURRENCY,
-      date: transaction?.date ? formatLocalDate(transaction.date) : '',
+      date: transaction?.date ? formatLocalDate(transaction.date) : getCurrentDate(),
+      time: transaction?.date ? extractTimeFromISO(transaction.date) : getCurrentTime(),
       description: transaction?.description ?? '',
     },
   });
 
   const selectedType = watch('type');
-
-  const categoryOptionList = useMemo(
-    () =>
-      categoryList
-        .filter((item) => item.type === selectedType)
-        .map((item) => ({ value: item.id, label: item.name })),
-    [categoryList, selectedType],
-  );
 
   const handleTypeChange = useCallback(
     (value: string) => {
@@ -86,11 +108,11 @@ export const useTransactionFormPage = ({
   const [isPending, startTransition] = useTransition();
   const [, submitAction] = useActionState(
     async (_prev: ActionState, values: TransactionFormValues): Promise<ActionState> => {
-      const { description, date, ...rest } = values;
+      const { description, date, time, ...rest } = values;
       const body: CreateTransactionDto = {
         ...rest,
-        date: convertLocalDateToUTCISO(parseLocalDate(date)),
-        currencyCode: values.currencyCode,
+        date: combineDateAndTime(date, time),
+        currencyCode: baseCurrencyCode ?? 'USD',
         ...(description !== undefined && { description }),
       };
 
@@ -126,7 +148,8 @@ export const useTransactionFormPage = ({
     control,
     errors,
     isPending,
-    categoryOptionList,
+    selectedType,
+    categoryList,
     handleTypeChange,
     handleFormSubmit,
   };

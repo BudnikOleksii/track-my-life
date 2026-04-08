@@ -1,13 +1,4 @@
-## ADDED Requirements
-
-### Requirement: Category filtering by transaction type
-
-The category combobox SHALL only show categories matching the selected transaction type.
-
-#### Scenario: Switch transaction type
-
-- **WHEN** the user changes the transaction type from Income to Expense (or vice versa)
-- **THEN** the category combobox SHALL clear its selection and update to show only categories of the new type
+## MODIFIED Requirements
 
 ### Requirement: Form validation
 
@@ -33,14 +24,7 @@ The form SHALL validate all required fields before submission using the Zod sche
 - **WHEN** the form submits
 - **THEN** the `currencyCode` SHALL NOT be part of the form values — it SHALL be injected by the server action from the user's profile
 
-### Requirement: Form error handling
-
-The form SHALL handle API errors gracefully.
-
-#### Scenario: API error on submit
-
-- **WHEN** the server action returns null (API error)
-- **THEN** the form SHALL display a toast notification with an error message
+## ADDED Requirements
 
 ### Requirement: Time field default value
 

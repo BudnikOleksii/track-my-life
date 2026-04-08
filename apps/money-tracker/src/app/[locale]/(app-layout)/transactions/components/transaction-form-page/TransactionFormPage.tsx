@@ -11,14 +11,11 @@ import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Input } from '@track-my-life/ui/src/components/atoms/input/input';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@track-my-life/ui/src/components/atoms/select/select';
+  RadioGroup,
+  RadioGroupItem,
+} from '@track-my-life/ui/src/components/atoms/radio-group/radio-group';
+import { TimePicker } from '@track-my-life/ui/src/components/atoms/time-picker/time-picker';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
 import {
   Field,
   FieldLabel,
@@ -32,6 +29,7 @@ import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import { CategoryPicker } from '../category-picker/CategoryPicker';
 import { useTransactionFormPage } from './hooks/use-transaction-form-page';
 import styles from './TransactionFormPage.module.scss';
 
@@ -56,7 +54,7 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
     control,
     errors,
     isPending,
-    categoryOptionList,
+    selectedType,
     handleTypeChange,
     handleFormSubmit,
   } = useTransactionFormPage({ transaction, categoryList, baseCurrencyCode, translations });
@@ -84,19 +82,14 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
             name="type"
             control={control}
             render={({ field }) => (
-              <Select value={field.value} onValueChange={handleTypeChange}>
-                <SelectTrigger error={Boolean(errors.type)}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={TRANSACTION_TYPE.EXPENSE}>
-                    {translations('content.expenseType')}
-                  </SelectItem>
-                  <SelectItem value={TRANSACTION_TYPE.INCOME}>
-                    {translations('content.incomeType')}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <RadioGroup value={field.value} onValueChange={handleTypeChange}>
+                <RadioGroupItem value={TRANSACTION_TYPE.INCOME}>
+                  {translations('content.incomeType')}
+                </RadioGroupItem>
+                <RadioGroupItem value={TRANSACTION_TYPE.EXPENSE}>
+                  {translations('content.expenseType')}
+                </RadioGroupItem>
+              </RadioGroup>
             )}
           />
         </FormField>
@@ -108,8 +101,9 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
             render={({ field }) => {
               const handleCategoryChange = field.onChange;
               return (
-                <Combobox
-                  optionList={categoryOptionList}
+                <CategoryPicker
+                  categoryList={categoryList}
+                  transactionType={selectedType}
                   value={field.value}
                   onValueChange={handleCategoryChange}
                   placeholder={translations('content.categoryPlaceholder')}
@@ -132,29 +126,36 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
             min="0"
             placeholder={translations('content.amountPlaceholder')}
             error={Boolean(errors.amount)}
+            startAdornment={baseCurrencyCode}
             {...register('amount')}
           />
         </FormField>
 
-        <Field>
-          <FieldLabel htmlFor="transaction-currency">
-            {translations('content.currencyLabel')}
-          </FieldLabel>
-          <Input id="transaction-currency" readOnly {...register('currencyCode')} />
-        </Field>
+        <div className={styles.dateTimeRow}>
+          <FormField
+            label={translations('content.dateLabel')}
+            htmlFor="transaction-date"
+            error={errors.date}
+          >
+            <Input
+              id="transaction-date"
+              type="date"
+              error={Boolean(errors.date)}
+              {...register('date')}
+            />
+          </FormField>
 
-        <FormField
-          label={translations('content.dateLabel')}
-          htmlFor="transaction-date"
-          error={errors.date}
-        >
-          <Input
-            id="transaction-date"
-            type="date"
-            error={Boolean(errors.date)}
-            {...register('date')}
-          />
-        </FormField>
+          <FormField label={translations('content.timeLabel')} error={errors.time}>
+            <Controller
+              name="time"
+              control={control}
+              render={({ field }) => {
+                const handleTimeChange = field.onChange;
+                return <TimePicker value={field.value} onChange={handleTimeChange} />;
+              }}
+            />
+          </FormField>
+        </div>
 
         <Field>
           <FieldLabel htmlFor="transaction-description">
