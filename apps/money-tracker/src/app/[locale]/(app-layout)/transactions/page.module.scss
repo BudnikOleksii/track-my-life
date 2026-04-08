@@ -1,3 +1,5 @@
+@use "@track-my-life/ui/src/styles/mixins";
+
 .page {
   display: flex;
 
@@ -8,16 +10,30 @@
 .header {
   display: flex;
 
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-4);
+  gap: var(--spacing-3);
+
+  @include media-m {
+    gap: var(--spacing-4);
+  }
 }
 
 .actionList {
   display: flex;
 
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-2);
+}
+
+.buttonLabel {
+  display: none;
+
+  @include media-m {
+    display: inline;
+  }
 }
 
 .filterSection {

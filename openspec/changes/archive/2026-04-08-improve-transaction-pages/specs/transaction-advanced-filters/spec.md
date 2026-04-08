@@ -1,30 +1,11 @@
-### Requirement: Sort by filter
+## REMOVED Requirements
 
-The system SHALL display a sort-by dropdown with options: Date, Amount, Created At. The selected value SHALL be stored in the `sortBy` URL search param.
+### Requirement: Currency filter
 
-#### Scenario: Default sort
+**Reason**: Multi-currency is not planned. The currency filter adds unnecessary UI complexity.
+**Migration**: Remove `currencyCode` from `TransactionFilters` interface, URL search params parsing, filter hook reset keys, and server component params. Delete `TransactionCurrencyFilter` component.
 
-- **WHEN** the user loads the transactions page without a sortBy param
-- **THEN** the sort-by dropdown SHALL show "Date" as the default
-
-#### Scenario: Change sort field
-
-- **WHEN** the user selects "Amount" from the sort-by dropdown
-- **THEN** the URL sortBy param SHALL update to "amount", the server SHALL re-fetch with the new sort, and pagination SHALL reset to page 1
-
-### Requirement: Sort order toggle
-
-The system SHALL display a sort order toggle button that switches between ascending and descending. The value SHALL be stored in the `sortOrder` URL search param.
-
-#### Scenario: Default sort order
-
-- **WHEN** the user loads the transactions page without a sortOrder param
-- **THEN** the sort order SHALL default to descending (newest/largest first)
-
-#### Scenario: Toggle sort order
-
-- **WHEN** the user clicks the sort order toggle
-- **THEN** the sortOrder param SHALL flip between "asc" and "desc", the server SHALL re-fetch, and pagination SHALL reset to page 1
+## MODIFIED Requirements
 
 ### Requirement: Category filter
 

@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 
-import { checkIsCurrencyCode } from '@track-my-life/shared/src/constants/currency';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
 
@@ -20,11 +19,9 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
   dateFrom,
   dateTo,
   categoryId,
-  currencyCode,
   sortBy,
   sortOrder,
 }) => {
-  const normalizedCurrencyCode = checkIsCurrencyCode(currencyCode) ? currencyCode : '';
   const normalizedSortBy = checkIsSortBy(sortBy) ? sortBy : '';
   const normalizedSortOrder = checkIsSortOrder(sortOrder) ? sortOrder : '';
 
@@ -37,7 +34,6 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
     ...(type !== 'ALL' && { type }),
     ...convertedDateRange,
     ...(categoryId && { categoryId }),
-    ...(normalizedCurrencyCode && { currencyCode: normalizedCurrencyCode }),
     ...(normalizedSortBy && { sortBy: normalizedSortBy }),
     ...(normalizedSortOrder && { sortOrder: normalizedSortOrder }),
   };
@@ -59,7 +55,6 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
         dateFrom,
         dateTo,
         categoryId,
-        currencyCode: normalizedCurrencyCode,
         sortBy: normalizedSortBy,
         sortOrder: normalizedSortOrder,
       }}

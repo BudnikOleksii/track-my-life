@@ -7,6 +7,12 @@ import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@track-my-life/ui/src/components/molecules/accordion/accordion';
 import { FolderOpen } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -50,60 +56,63 @@ export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupLis
           </Typography>
         </div>
       ) : (
-        <div className={styles.groupList}>
-          {groupList.map((group, groupIndex) => (
-            <div
-              key={group.subcategory?.id ?? `direct-${String(groupIndex)}`}
-              className={styles.group}
-            >
-              <div className={styles.groupHeader}>
-                <Typography variant="body-m" fontWeight="semibold">
-                  {group.subcategory?.name ?? translations('content.directTransactions')}
-                </Typography>
-                <div className={styles.totalList}>
-                  {group.totals.map((total) => (
-                    <Typography
-                      key={total.currencyCode}
-                      variant="body-s"
-                      fontWeight="semibold"
-                      className={styles.total}
-                    >
-                      {formatAmount(total.total, total.currencyCode)}
-                    </Typography>
-                  ))}
-                </div>
-              </div>
-              <div className={styles.transactionList}>
-                {group.transactions.map((transaction) => (
-                  <div key={transaction.id} className={styles.transactionRow}>
-                    <div className={styles.transactionInfo}>
-                      <div className={styles.transactionPrimary}>
-                        <Typography variant="body-m" className={styles.amount}>
-                          {formatAmount(transaction.amount, transaction.currencyCode)}
-                        </Typography>
-                        <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
-                          {translations(
-                            `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
-                          )}
-                        </Badge>
-                      </div>
-                      <div className={styles.transactionSecondary}>
-                        <Typography variant="body-s" className={styles.date}>
-                          {formatDate(transaction.date)}
-                        </Typography>
-                        {transaction.description && (
-                          <Typography variant="body-s" className={styles.description}>
-                            {transaction.description}
-                          </Typography>
-                        )}
-                      </div>
-                    </div>
+        <Accordion type="multiple" className={styles.groupList}>
+          {groupList.map((group, groupIndex) => {
+            const groupKey = group.subcategory?.id ?? `direct-${String(groupIndex)}`;
+
+            return (
+              <AccordionItem key={groupKey} value={groupKey} className={styles.group}>
+                <AccordionTrigger className={styles.groupHeader}>
+                  <Typography variant="body-m" fontWeight="semibold">
+                    {group.subcategory?.name ?? translations('content.directTransactions')}
+                  </Typography>
+                  <div className={styles.totalList}>
+                    {group.totals.map((total) => (
+                      <Typography
+                        key={total.currencyCode}
+                        variant="body-s"
+                        fontWeight="semibold"
+                        className={styles.total}
+                      >
+                        {formatAmount(total.total, total.currencyCode)}
+                      </Typography>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className={styles.transactionList}>
+                    {group.transactions.map((transaction) => (
+                      <div key={transaction.id} className={styles.transactionRow}>
+                        <div className={styles.transactionInfo}>
+                          <div className={styles.transactionPrimary}>
+                            <Typography variant="body-m" className={styles.amount}>
+                              {formatAmount(transaction.amount, transaction.currencyCode)}
+                            </Typography>
+                            <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
+                              {translations(
+                                `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
+                              )}
+                            </Badge>
+                          </div>
+                          <div className={styles.transactionSecondary}>
+                            <Typography variant="body-s" className={styles.date}>
+                              {formatDate(transaction.date)}
+                            </Typography>
+                            {transaction.description && (
+                              <Typography variant="body-s" className={styles.description}>
+                                {transaction.description}
+                              </Typography>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       )}
     </>
   );

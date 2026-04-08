@@ -1,6 +1,9 @@
 'use client';
 
-import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type {
+  CategoryInfoDto,
+  TransactionResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
@@ -10,10 +13,10 @@ import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { Receipt, Pencil, Trash2 } from 'lucide-react';
+import { Copy, Receipt, Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { getTransactionsEditPath } from '@/constants/paths';
+import { getTransactionsCopyPath, getTransactionsEditPath } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -30,6 +33,9 @@ const formatDate = (dateString: string): string => {
 };
 
 const getDateKey = (dateString: string): string => formatLocalDate(dateString);
+
+const formatCategoryDisplayName = (category: CategoryInfoDto): string =>
+  category.parentCategory ? `${category.parentCategory.name} / ${category.name}` : category.name;
 
 interface DateGroup {
   dateKey: string;
@@ -93,6 +99,9 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
                   </Badge>
                 </div>
                 <div className={styles.secondary}>
+                  <Typography variant="body-s" className={styles.category}>
+                    {formatCategoryDisplayName(transaction.category)}
+                  </Typography>
                   {transaction.description && (
                     <Typography variant="body-s" className={styles.description}>
                       {transaction.description}
@@ -101,6 +110,15 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
                 </div>
               </div>
               <div className={styles.actions}>
+                <Button
+                  component={Link}
+                  href={getTransactionsCopyPath(transaction.id)}
+                  variant="ghost"
+                  size="sm"
+                  aria-label={translations('content.copyButton')}
+                >
+                  <Copy size={14} />
+                </Button>
                 <Button
                   component={Link}
                   href={getTransactionsEditPath(transaction.id)}

@@ -7,7 +7,6 @@ export interface TransactionFilters {
   dateFrom: string;
   dateTo: string;
   categoryId: string;
-  currencyCode: string;
   sortBy: string;
   sortOrder: string;
 }

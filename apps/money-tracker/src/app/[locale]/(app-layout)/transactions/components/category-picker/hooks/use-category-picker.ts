@@ -7,42 +7,59 @@ import type { TransactionType } from '@/constants/transaction';
 
 interface UseCategoryPickerParams {
   categoryList: CategoryResponseDto[];
-  transactionType: TransactionType;
+  transactionType: TransactionType | '';
   value: string;
   onValueChange: (categoryId: string) => void;
+  showAllOption?: boolean | undefined;
+  allCategoriesLabel?: string | undefined;
 }
 
-const useCategoryData = (
-  categoryList: CategoryResponseDto[],
-  transactionType: TransactionType,
-  value: string,
-) => {
+interface UseCategoryDataParams {
+  categoryList: CategoryResponseDto[];
+  transactionType: TransactionType | '';
+  value: string;
+  showAllOption?: boolean | undefined;
+  allCategoriesLabel?: string | undefined;
+}
+
+const useCategoryData = ({
+  categoryList,
+  transactionType,
+  value,
+  showAllOption,
+  allCategoriesLabel,
+}: UseCategoryDataParams) => {
+  const checkMatchesType = useCallback(
+    (item: CategoryResponseDto) => !transactionType || item.type === transactionType,
+    [transactionType],
+  );
+
   const mainCategoryList = useMemo(
-    () =>
-      categoryList.filter(
-        (item) => item.parentCategoryId === null && item.type === transactionType,
-      ),
-    [categoryList, transactionType],
+    () => categoryList.filter((item) => item.parentCategoryId === null && checkMatchesType(item)),
+    [categoryList, checkMatchesType],
   );
 
   const subcategoryMap = useMemo(() => {
     const map = new Map<string, CategoryResponseDto[]>();
     for (const category of categoryList) {
-      if (category.parentCategoryId !== null && category.type === transactionType) {
+      if (category.parentCategoryId !== null && checkMatchesType(category)) {
         const existing = map.get(category.parentCategoryId) ?? [];
         existing.push(category);
         map.set(category.parentCategoryId, existing);
       }
     }
     return map;
-  }, [categoryList, transactionType]);
+  }, [categoryList, checkMatchesType]);
 
   const selectedCategory = useMemo(
-    () => categoryList.find((item) => item.id === value && item.type === transactionType) ?? null,
-    [categoryList, value, transactionType],
+    () => categoryList.find((item) => item.id === value && checkMatchesType(item)) ?? null,
+    [categoryList, value, checkMatchesType],
   );
 
   const selectedDisplayName = useMemo(() => {
+    if (showAllOption && value === '' && allCategoriesLabel) {
+      return allCategoriesLabel;
+    }
     if (!selectedCategory) {
       return '';
     }
@@ -51,7 +68,7 @@ const useCategoryData = (
       return parent ? `${parent.name} / ${selectedCategory.name}` : selectedCategory.name;
     }
     return selectedCategory.name;
-  }, [selectedCategory, categoryList]);
+  }, [selectedCategory, categoryList, value, showAllOption, allCategoriesLabel]);
 
   const selectedMainCategoryId = selectedCategory?.parentCategoryId ?? selectedCategory?.id ?? null;
 
@@ -63,19 +80,19 @@ export const useCategoryPicker = ({
   transactionType,
   value,
   onValueChange,
+  showAllOption,
+  allCategoriesLabel,
 }: UseCategoryPickerParams) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
 
   const { mainCategoryList, subcategoryMap, selectedDisplayName, selectedMainCategoryId } =
-    useCategoryData(categoryList, transactionType, value);
+    useCategoryData({ categoryList, transactionType, value, showAllOption, allCategoriesLabel });
 
   const activeSubcategoryList = useMemo(
     () => (activeCategoryId ? (subcategoryMap.get(activeCategoryId) ?? []) : []),
     [activeCategoryId, subcategoryMap],
   );
-
-  const hasActiveSubcategories = activeSubcategoryList.length > EMPTY_LIST_LENGTH;
 
   useEffect(() => {
     if (isOpen) {
@@ -87,19 +104,7 @@ export const useCategoryPicker = ({
     setIsOpen((prev) => !prev);
   }, []);
 
-  const handleMainCategoryClick = useCallback(
-    (categoryId: string) => {
-      setActiveCategoryId(categoryId);
-      const hasSubcategories = subcategoryMap.has(categoryId);
-      if (!hasSubcategories) {
-        onValueChange(categoryId);
-        setIsOpen(false);
-      }
-    },
-    [subcategoryMap, onValueChange],
-  );
-
-  const handleSubcategoryClick = useCallback(
+  const handleSelectAndClose = useCallback(
     (categoryId: string) => {
       onValueChange(categoryId);
       setIsOpen(false);
@@ -107,17 +112,35 @@ export const useCategoryPicker = ({
     [onValueChange],
   );
 
+  const handleMainCategoryClick = useCallback(
+    (categoryId: string) => {
+      setActiveCategoryId(categoryId);
+      if (!subcategoryMap.has(categoryId)) {
+        handleSelectAndClose(categoryId);
+      }
+    },
+    [subcategoryMap, handleSelectAndClose],
+  );
+
+  const handleAllParentClick = useCallback(() => {
+    if (activeCategoryId) {
+      handleSelectAndClose(activeCategoryId);
+    }
+  }, [activeCategoryId, handleSelectAndClose]);
+
   return {
     isOpen,
     mainCategoryList,
     subcategoryMap,
     activeSubcategoryList,
-    hasActiveSubcategories,
+    hasActiveSubcategories: activeSubcategoryList.length > EMPTY_LIST_LENGTH,
     activeCategoryId,
     selectedDisplayName,
     selectedMainCategoryId,
     handleToggle,
     handleMainCategoryClick,
-    handleSubcategoryClick,
+    handleSubcategoryClick: handleSelectAndClose,
+    handleAllCategoriesClick: handleSelectAndClose,
+    handleAllParentClick,
   };
 };

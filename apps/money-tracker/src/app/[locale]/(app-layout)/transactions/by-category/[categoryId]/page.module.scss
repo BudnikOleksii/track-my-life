@@ -38,23 +38,25 @@
   gap: var(--spacing-4);
 }
 
-.group {
+.group.group {
   background-color: var(--surface-container-lowest);
   border: 1px solid var(--outline-variant);
+  border-bottom: 1px solid var(--outline-variant);
   border-radius: var(--radius-xl);
 }
 
-.groupHeader {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-4);
-
+.groupHeader.groupHeader {
   padding: var(--spacing-3) var(--spacing-4);
 
+  font-size: inherit;
+  font-weight: inherit;
+
   background-color: var(--surface-container);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-radius: var(--radius-xl);
+
+  &[data-state="open"] {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
 }
 
 .totalList {
