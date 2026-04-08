@@ -38,8 +38,8 @@ const useCategoryData = (
   }, [categoryList, transactionType]);
 
   const selectedCategory = useMemo(
-    () => categoryList.find((item) => item.id === value) ?? null,
-    [categoryList, value],
+    () => categoryList.find((item) => item.id === value && item.type === transactionType) ?? null,
+    [categoryList, value, transactionType],
   );
 
   const selectedDisplayName = useMemo(() => {
