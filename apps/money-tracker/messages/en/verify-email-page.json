@@ -3,6 +3,10 @@
   "content": {
     "title": "Check your email",
     "subtitle": "We sent a verification link to your email address. Click the link to verify your account and sign in.",
+    "successTitle": "Email verified",
+    "successSubtitle": "Your email has been successfully verified. You can now sign in to continue setting up your account.",
+    "errorTitle": "Verification failed",
+    "errorSubtitle": "The verification link is invalid or has expired. Please sign in and request a new verification email.",
     "signInLink": "Back to Sign In"
   }
 }

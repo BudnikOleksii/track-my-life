@@ -1,3 +1,27 @@
+## REMOVED Requirements
+
+### Requirement: Welcome step
+
+**Reason**: The onboarding wizard no longer starts with a welcome step. Users go directly to the currency step.
+**Migration**: Remove `WelcomeStep` component and `?step=welcome` handling.
+
+### Requirement: Profile setup step
+
+**Reason**: Replaced by dedicated currency step. First name, last name, and country are no longer collected during onboarding (available in settings).
+**Migration**: Remove `ProfileStep` component. Currency selection moves to the new currency step.
+
+### Requirement: Completion step
+
+**Reason**: Onboarding completion is now automatic after the final step (categories or password). No separate confirmation screen needed.
+**Migration**: Remove `CompleteStep` component. Completion logic moves to the server action triggered by the final step.
+
+### Requirement: Skip onboarding
+
+**Reason**: Onboarding is now mandatory — users must set a currency and categories before accessing the app.
+**Migration**: Remove `SkipButton` component and skip logic from all steps.
+
+## MODIFIED Requirements
+
 ### Requirement: Onboarding wizard route and layout
 
 The system SHALL render the onboarding wizard at the `/onboarding` route under a dedicated `(onboarding-layout)` route group. The layout SHALL NOT include the app sidebar or header. The layout SHALL center the wizard card vertically and horizontally on the page.
@@ -29,6 +53,8 @@ All onboarding wizard text (headings, descriptions, buttons, validation messages
 
 - **WHEN** the user's locale is set to UK (Ukrainian)
 - **THEN** all wizard text is displayed in Ukrainian
+
+## ADDED Requirements
 
 ### Requirement: Currency step as the first onboarding step
 

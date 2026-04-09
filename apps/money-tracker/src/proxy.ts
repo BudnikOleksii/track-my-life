@@ -49,9 +49,9 @@ const handleAuthenticatedRoute = async (
     return tokenResult;
   }
 
-  const onboardingCompleted = await checkOnboardingStatus(request, response, tokenResult);
+  const onboardingStatus = await checkOnboardingStatus(request, response, tokenResult);
 
-  return handleOnboardingRedirect(request, response, onboardingCompleted) ?? response;
+  return handleOnboardingRedirect(request, response, onboardingStatus) ?? response;
 };
 
 export const proxy = async (request: NextRequest): Promise<NextResponse> => {

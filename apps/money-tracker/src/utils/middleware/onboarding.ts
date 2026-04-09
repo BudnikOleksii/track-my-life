@@ -2,26 +2,33 @@ import type { JWTPayload } from '@track-my-life/shared/src/utils/jwt';
 import type { NextRequest, NextResponse } from 'next/server';
 
 import { API_BASE_URL } from '@track-my-life/shared/src/api/api-config';
-import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
+import { OnboardingApiService } from '@track-my-life/shared/src/api/services/onboarding-api.service';
 import { extractUserIdFromToken } from '@track-my-life/shared/src/utils/jwt';
 
 import { COOKIE } from '@/constants/cookie';
 import { PATHS } from '@/constants/paths';
 
-import { checkIsOnboardingPath } from './path';
+import { checkIsOnboardingPath, checkIsVerifyEmailPath } from './path';
 import { createRedirectWithCookies } from './redirect';
+
+interface OnboardingStatus {
+  emailVerified: boolean;
+  onboardingCompleted: boolean;
+}
 
 const getOnboardingCookieName = (
   accessToken: string,
   verifiedPayload?: JWTPayload | null,
 ): string | null => {
   const userId = extractUserIdFromToken(accessToken, verifiedPayload);
-  return userId ? `${COOKIE.ONBOARDING_COMPLETED}_${userId}` : null;
+  return userId ? `${COOKIE.ONBOARDING_STATUS}_${userId}` : null;
 };
 
-const fetchOnboardingStatus = async (accessToken: string): Promise<boolean | null> => {
-  const profileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
-  profileApiService.addRequestInterceptor((request) => {
+const fetchOnboardingStatusFromApi = async (
+  accessToken: string,
+): Promise<OnboardingStatus | null> => {
+  const onboardingApiService = new OnboardingApiService({ baseUrl: API_BASE_URL });
+  onboardingApiService.addRequestInterceptor((request) => {
     const authenticatedRequest = new Request(request, {
       headers: new Headers(request.headers),
     });
@@ -29,83 +36,119 @@ const fetchOnboardingStatus = async (accessToken: string): Promise<boolean | nul
     return authenticatedRequest;
   });
 
-  const { data, error } = await profileApiService.fetchProfile();
+  const { data, error } = await onboardingApiService.fetchStatus();
 
   if (error || !data) {
     return null;
   }
 
-  return data.onboardingCompleted;
+  return {
+    emailVerified: data.emailVerified,
+    onboardingCompleted: data.onboardingCompleted,
+  };
 };
 
-const getCachedOnboardingStatus = (request: NextRequest, cookieName: string): boolean | null => {
-  const cachedStatus = request.cookies.get(cookieName)?.value;
+const getCachedOnboardingStatus = (
+  request: NextRequest,
+  cookieName: string,
+): OnboardingStatus | null => {
+  const cachedValue = request.cookies.get(cookieName)?.value;
 
-  if (cachedStatus === 'true') {
-    return true;
+  if (!cachedValue) {
+    return null;
   }
-  if (cachedStatus === 'false') {
-    return false;
+
+  try {
+    const parsed = JSON.parse(cachedValue) as OnboardingStatus;
+    if (
+      typeof parsed.emailVerified === 'boolean' &&
+      typeof parsed.onboardingCompleted === 'boolean'
+    ) {
+      return parsed;
+    }
+    return null;
+  } catch {
+    return null;
   }
-  return null;
 };
 
 const fetchAndCacheOnboardingStatus = async (
   accessToken: string,
   cookieName: string,
   response: NextResponse,
-): Promise<boolean> => {
-  const onboardingCompleted = await fetchOnboardingStatus(accessToken);
+): Promise<OnboardingStatus> => {
+  const status = await fetchOnboardingStatusFromApi(accessToken);
 
-  if (onboardingCompleted === null) {
-    return true;
+  if (!status) {
+    return { emailVerified: true, onboardingCompleted: true };
   }
 
-  response.cookies.set(cookieName, String(onboardingCompleted), {
+  response.cookies.set(cookieName, JSON.stringify(status), {
     httpOnly: false,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     path: '/',
   });
 
-  return onboardingCompleted;
+  return status;
 };
 
 export const checkOnboardingStatus = async (
   request: NextRequest,
   response: NextResponse,
   tokenResult: { accessToken: string; payload: JWTPayload | null },
-): Promise<boolean> => {
+): Promise<OnboardingStatus> => {
   const cookieName = getOnboardingCookieName(tokenResult.accessToken, tokenResult.payload);
 
   if (!cookieName) {
-    const onboardingCompleted = await fetchOnboardingStatus(tokenResult.accessToken);
-    return onboardingCompleted ?? true;
+    const status = await fetchOnboardingStatusFromApi(tokenResult.accessToken);
+    return status ?? { emailVerified: true, onboardingCompleted: true };
   }
 
   const cached = getCachedOnboardingStatus(request, cookieName);
 
-  if (cached !== null) {
+  if (cached) {
     return cached;
   }
 
   return fetchAndCacheOnboardingStatus(tokenResult.accessToken, cookieName, response);
 };
 
-export const handleOnboardingRedirect = (
+const handleVerifiedUserRedirect = (
   request: NextRequest,
   response: NextResponse,
-  onboardingCompleted: boolean,
+  status: OnboardingStatus,
 ): NextResponse | null => {
   const isOnboardingPath = checkIsOnboardingPath(request.nextUrl.pathname);
 
-  if (onboardingCompleted && isOnboardingPath) {
+  if (status.onboardingCompleted && isOnboardingPath) {
     return createRedirectWithCookies(PATHS.dashboard, request, response);
   }
 
-  if (!onboardingCompleted && !isOnboardingPath) {
+  if (!status.onboardingCompleted && !isOnboardingPath) {
     return createRedirectWithCookies(PATHS.onboarding, request, response);
   }
 
   return null;
+};
+
+export const handleOnboardingRedirect = (
+  request: NextRequest,
+  response: NextResponse,
+  status: OnboardingStatus,
+): NextResponse | null => {
+  const isVerifyEmailPath = checkIsVerifyEmailPath(request.nextUrl.pathname);
+
+  if (!status.emailVerified) {
+    return isVerifyEmailPath
+      ? null
+      : createRedirectWithCookies(PATHS.verifyEmail, request, response);
+  }
+
+  if (isVerifyEmailPath) {
+    const destination = status.onboardingCompleted ? PATHS.dashboard : PATHS.onboarding;
+    return createRedirectWithCookies(destination, request, response);
+  }
+
+  return handleVerifiedUserRedirect(request, response, status);
 };

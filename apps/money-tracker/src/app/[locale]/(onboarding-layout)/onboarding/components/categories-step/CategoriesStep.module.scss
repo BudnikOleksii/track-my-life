@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.divider {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-3);
+
+  font-size: var(--text-sm);
+  color: var(--on-surface-variant);
+
+  &::before,
+  &::after {
+    flex: 1;
+
+    height: 1px;
+
+    content: "";
+
+    background-color: var(--outline-variant);
+  }
+}
+
+.importSection {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.importLabel {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--on-surface);
+}
+
+.errorText {
+  color: var(--color-error, hsl(0deg 60% 50%));
+}
+
+.previewSection {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-3);
+
+  padding: var(--spacing-3);
+
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md, 8px);
+}
+
+.previewSummary {
+  display: flex;
+
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+}
+
+.validText {
+  color: var(--color-success, hsl(142deg 60% 40%));
+}
+
+.invalidText {
+  color: var(--color-error, hsl(0deg 60% 50%));
+}
+
+.previewList {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-1);
+
+  max-height: 200px;
+
+  padding: var(--spacing-2);
+
+  overflow-y: auto;
+
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-sm, 4px);
+}
+
+.previewRow {
+  display: flex;
+
+  align-items: center;
+  gap: var(--spacing-2);
+
+  padding: var(--spacing-1) 0;
+
+  font-size: var(--text-xs);
+
+  border-bottom: 1px solid var(--outline-variant);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.previewRowNumber {
+  flex-shrink: 0;
+
+  width: 24px;
+
+  font-weight: 600;
+  text-align: right;
+  color: var(--on-surface-variant);
+}
+
+.previewRowContent {
+  flex: 1;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.importResultSection {
+  display: flex;
+
+  flex-direction: column;
+  gap: var(--spacing-1);
+
+  padding: var(--spacing-3);
+
+  background: var(--color-bg-secondary, hsl(0deg 0% 97%));
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-md, 8px);
+}

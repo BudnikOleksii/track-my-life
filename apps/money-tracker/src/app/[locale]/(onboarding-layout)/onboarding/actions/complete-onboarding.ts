@@ -1,26 +1,33 @@
 'use server';
 
-import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
+import type { CompleteOnboardingDto } from '@track-my-life/shared/src/api/generated/types.gen';
+
+import { onboardingApiService } from '@track-my-life/next-shared/src/api/server-api';
+import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { getLocale } from 'next-intl/server';
 import { cookies } from 'next/headers';
 
 import { requireAuth } from '@/actions/require-auth';
 import { COOKIE } from '@/constants/cookie';
+import { PATHS } from '@/constants/paths';
 
-export const completeOnboarding = async () => {
+export const completeOnboarding = async (input: CompleteOnboardingDto) => {
   await requireAuth();
+  const locale = await getLocale();
 
-  const { data, error } = await profileApiService.updateProfile({ onboardingCompleted: true });
+  const { error } = await onboardingApiService.complete(input);
 
   if (error) {
-    return null;
+    return { error: 'completeFailed' };
   }
 
   const cookieStore = await cookies();
   cookieStore.getAll().forEach((cookie) => {
-    if (cookie.name.startsWith(COOKIE.ONBOARDING_COMPLETED)) {
+    if (cookie.name.startsWith(COOKIE.ONBOARDING_STATUS)) {
       cookieStore.delete(cookie.name);
     }
   });
 
-  return data;
+  redirect({ href: PATHS.dashboard, locale });
+  return { error: null };
 };

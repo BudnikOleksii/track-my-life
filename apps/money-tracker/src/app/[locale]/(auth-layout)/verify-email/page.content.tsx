@@ -14,16 +14,34 @@ import { PATHS } from '@/constants/paths';
 
 import styles from './page.module.scss';
 
+type VerifyEmailStatus = 'waiting' | 'success' | 'error';
+
 interface VerifyEmailPageContentProps {
   tVerifyEmail: (key: string) => string;
+  status: VerifyEmailStatus;
 }
 
-export const VerifyEmailPageContent: FC<VerifyEmailPageContentProps> = ({ tVerifyEmail }) => (
+const STATUS_TITLE_MAP: Record<VerifyEmailStatus, string> = {
+  waiting: 'content.title',
+  success: 'content.successTitle',
+  error: 'content.errorTitle',
+};
+
+const STATUS_SUBTITLE_MAP: Record<VerifyEmailStatus, string> = {
+  waiting: 'content.subtitle',
+  success: 'content.successSubtitle',
+  error: 'content.errorSubtitle',
+};
+
+export const VerifyEmailPageContent: FC<VerifyEmailPageContentProps> = ({
+  tVerifyEmail,
+  status,
+}) => (
   <main className={styles.main}>
     <Card className={styles.card}>
       <CardHeader>
-        <CardTitle>{tVerifyEmail('content.title')}</CardTitle>
-        <CardDescription>{tVerifyEmail('content.subtitle')}</CardDescription>
+        <CardTitle>{tVerifyEmail(STATUS_TITLE_MAP[status])}</CardTitle>
+        <CardDescription>{tVerifyEmail(STATUS_SUBTITLE_MAP[status])}</CardDescription>
       </CardHeader>
       <CardContent>
         <UnderlineLink component={NavigationLink} href={PATHS.signIn}>

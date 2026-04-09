@@ -445,8 +445,6 @@ export type AuditLogListResponseDto = {
 export type RegisterDto = {
   email: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
 };
 
 /**
@@ -594,6 +592,15 @@ export type ExchangeSocialCodeDto = {
   code: string;
 };
 
+export type SocialExchangeResponseDto = {
+  accessToken: string;
+  user: AuthUserDto;
+  /**
+   * Whether this is a newly registered user
+   */
+  isNewUser: boolean;
+};
+
 export type UserSortBy = 'email' | 'createdAt';
 
 export type UserResponseDto = {
@@ -686,6 +693,19 @@ export type MessageResponseDto = {
    * Response message
    */
   message: string;
+};
+
+export type OnboardingStatusResponseDto = {
+  onboardingCompleted: boolean;
+  emailVerified: boolean;
+  hasBaseCurrency: boolean;
+  hasCategories: boolean;
+  hasPassword: boolean;
+};
+
+export type CompleteOnboardingDto = {
+  baseCurrencyCode: string;
+  password?: string;
 };
 
 /**
@@ -2119,6 +2139,35 @@ export type AuthControllerRevokeRefreshTokensResponses = {
 export type AuthControllerRevokeRefreshTokensResponse =
   AuthControllerRevokeRefreshTokensResponses[keyof AuthControllerRevokeRefreshTokensResponses];
 
+export type AuthControllerVerifyEmailData = {
+  body?: never;
+  path?: never;
+  query: {
+    token: string;
+  };
+  url: '/api/auth/verify-email';
+};
+
+export type AuthControllerVerifyEmailErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerVerifyEmailError =
+  AuthControllerVerifyEmailErrors[keyof AuthControllerVerifyEmailErrors];
+
+export type AuthControllerVerifyEmailResponses = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerVerifyEmailResponse =
+  AuthControllerVerifyEmailResponses[keyof AuthControllerVerifyEmailResponses];
+
 export type AuthControllerGetProvidersData = {
   body?: never;
   path?: never;
@@ -2212,7 +2261,7 @@ export type AuthControllerExchangeSocialCodeError =
   AuthControllerExchangeSocialCodeErrors[keyof AuthControllerExchangeSocialCodeErrors];
 
 export type AuthControllerExchangeSocialCodeResponses = {
-  200: AuthResponseDto;
+  200: SocialExchangeResponseDto;
 };
 
 export type AuthControllerExchangeSocialCodeResponse =
@@ -2482,6 +2531,98 @@ export type UserControllerAssignRoleResponses = {
 
 export type UserControllerAssignRoleResponse =
   UserControllerAssignRoleResponses[keyof UserControllerAssignRoleResponses];
+
+export type OnboardingControllerGetStatusData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/onboarding/status';
+};
+
+export type OnboardingControllerGetStatusErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type OnboardingControllerGetStatusError =
+  OnboardingControllerGetStatusErrors[keyof OnboardingControllerGetStatusErrors];
+
+export type OnboardingControllerGetStatusResponses = {
+  200: OnboardingStatusResponseDto;
+};
+
+export type OnboardingControllerGetStatusResponse =
+  OnboardingControllerGetStatusResponses[keyof OnboardingControllerGetStatusResponses];
+
+export type OnboardingControllerCompleteData = {
+  body: CompleteOnboardingDto;
+  path?: never;
+  query?: never;
+  url: '/api/onboarding/complete';
+};
+
+export type OnboardingControllerCompleteErrors = {
+  /**
+   * Validation error or missing requirements
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type OnboardingControllerCompleteError =
+  OnboardingControllerCompleteErrors[keyof OnboardingControllerCompleteErrors];
+
+export type OnboardingControllerCompleteResponses = {
+  200: OnboardingStatusResponseDto;
+};
+
+export type OnboardingControllerCompleteResponse =
+  OnboardingControllerCompleteResponses[keyof OnboardingControllerCompleteResponses];
+
+export type OnboardingControllerAssignDefaultCategoriesData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/onboarding/assign-default-categories';
+};
+
+export type OnboardingControllerAssignDefaultCategoriesErrors = {
+  /**
+   * Categories already exist
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type OnboardingControllerAssignDefaultCategoriesError =
+  OnboardingControllerAssignDefaultCategoriesErrors[keyof OnboardingControllerAssignDefaultCategoriesErrors];
+
+export type OnboardingControllerAssignDefaultCategoriesResponses = {
+  /**
+   * Default categories assigned
+   */
+  200: unknown;
+};
 
 export type ProfileControllerDeleteAccountData = {
   body: DeleteAccountDto;
