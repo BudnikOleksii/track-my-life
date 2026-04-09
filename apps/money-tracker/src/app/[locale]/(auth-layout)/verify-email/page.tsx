@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import type { FC } from 'react';
 
-import { API_BASE_URL } from '@track-my-life/shared/src/api/api-config';
-import { AuthApiService } from '@track-my-life/shared/src/api/services/auth-api.service';
 import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+
+import type { VerifyEmailStatus } from './page.content';
 
 import { VerifyEmailPageContent } from './page.content';
 
@@ -14,7 +14,8 @@ interface Props {
     locale: string;
   }>;
   searchParams: Promise<{
-    token?: string;
+    status?: string;
+    error?: string;
   }>;
 }
 
@@ -32,22 +33,28 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const verifyEmailToken = async (token: string): Promise<'success' | 'error'> => {
-  const authApiService = new AuthApiService({ baseUrl: API_BASE_URL });
-  const { error } = await authApiService.verifyEmail(token);
-  return error ? 'error' : 'success';
+const parseVerifyEmailStatus = (status?: string): VerifyEmailStatus => {
+  if (status === 'success') {
+    return 'success';
+  }
+  if (status === 'error') {
+    return 'error';
+  }
+  return 'waiting';
 };
 
 const VerifyEmailPage: FC<Props> = async (props) => {
   const searchParams = await props.searchParams;
   const tVerifyEmail = await getTranslations(I18N_NAMESPACE.verifyEmailPage);
+  const status = parseVerifyEmailStatus(searchParams.status);
 
-  if (!searchParams.token) {
-    return <VerifyEmailPageContent tVerifyEmail={tVerifyEmail} status="waiting" />;
-  }
-
-  const status = await verifyEmailToken(searchParams.token);
-  return <VerifyEmailPageContent tVerifyEmail={tVerifyEmail} status={status} />;
+  return (
+    <VerifyEmailPageContent
+      tVerifyEmail={tVerifyEmail}
+      status={status}
+      errorReason={searchParams.error}
+    />
+  );
 };
 
 export default VerifyEmailPage;

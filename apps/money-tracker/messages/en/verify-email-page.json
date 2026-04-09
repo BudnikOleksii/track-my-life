@@ -4,9 +4,12 @@
     "title": "Check your email",
     "subtitle": "We sent a verification link to your email address. Click the link to verify your account and sign in.",
     "successTitle": "Email verified",
-    "successSubtitle": "Your email has been successfully verified. You can now sign in to continue setting up your account.",
+    "successSubtitle": "Your email has been successfully verified. Redirecting to sign in...",
     "errorTitle": "Verification failed",
     "errorSubtitle": "The verification link is invalid or has expired. Please sign in and request a new verification email.",
+    "error_invalid_token": "The verification link is invalid. Please request a new verification email.",
+    "error_token_expired": "The verification link has expired. Please request a new verification email.",
+    "error_already_verified": "This email has already been verified. You can sign in now.",
     "signInLink": "Back to Sign In"
   }
 }

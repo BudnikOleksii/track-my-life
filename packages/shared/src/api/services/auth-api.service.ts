@@ -4,7 +4,6 @@ import type {
   AuthControllerLogoutResponse,
   AuthControllerRefreshTokenResponse,
   AuthControllerRegisterResponse,
-  AuthControllerVerifyEmailResponse,
   ExchangeSocialCodeDto,
   LoginDto,
   RegisterDto,
@@ -23,7 +22,6 @@ export class AuthApiService extends ApiClient {
     REVOKE_REFRESH_TOKEN: `${this.BASE_URL}/revoke-refresh-token`,
     REVOKE_REFRESH_TOKENS: `${this.BASE_URL}/revoke-refresh-tokens`,
     EXCHANGE_SOCIAL_CODE: `${this.BASE_URL}/social/exchange`,
-    VERIFY_EMAIL: `${this.BASE_URL}/verify-email`,
   } as const;
 
   register(body: RegisterDto) {
@@ -81,14 +79,6 @@ export class AuthApiService extends ApiClient {
       url: this.ENDPOINTS.EXCHANGE_SOCIAL_CODE,
       body,
       credentials: 'include',
-    });
-  }
-
-  verifyEmail(token: string) {
-    return this.request<AuthControllerVerifyEmailResponse>({
-      method: 'GET',
-      url: this.ENDPOINTS.VERIFY_EMAIL,
-      query: { token },
     });
   }
 }
