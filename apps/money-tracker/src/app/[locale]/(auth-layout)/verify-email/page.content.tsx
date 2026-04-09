@@ -1,8 +1,5 @@
-'use client';
-
 import type { FC } from 'react';
 
-import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { UnderlineLink } from '@track-my-life/ui/src/components/atoms/underline-link/underline-link';
 import {
@@ -12,15 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@track-my-life/ui/src/components/molecules/card/card';
-import { useEffect } from 'react';
 
 import { PATHS } from '@/constants/paths';
 
+import { SuccessRedirect } from './components/success-redirect/SuccessRedirect';
 import styles from './page.module.scss';
 
 export type VerifyEmailStatus = 'waiting' | 'success' | 'error';
-
-const REDIRECT_DELAY_MS = 1000;
 
 interface VerifyEmailPageContentProps {
   tVerifyEmail: (key: string) => string;
@@ -45,22 +40,6 @@ export const VerifyEmailPageContent: FC<VerifyEmailPageContentProps> = ({
   status,
   errorReason,
 }) => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status !== 'success') {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      router.replace(PATHS.signIn);
-    }, REDIRECT_DELAY_MS);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [status, router]);
-
   const subtitle = errorReason
     ? tVerifyEmail(`content.error_${errorReason}`)
     : tVerifyEmail(STATUS_SUBTITLE_MAP[status]);
@@ -78,6 +57,8 @@ export const VerifyEmailPageContent: FC<VerifyEmailPageContentProps> = ({
           </UnderlineLink>
         </CardContent>
       </Card>
+
+      {status === 'success' && <SuccessRedirect />}
     </main>
   );
 };
