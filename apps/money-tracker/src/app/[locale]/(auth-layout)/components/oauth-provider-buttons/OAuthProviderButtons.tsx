@@ -1,35 +1,37 @@
 'use client';
 
+import type { ObjectValuesUnion } from '@track-my-life/shared/src/types/object-values-union';
 import type { FC } from 'react';
 
+import { API_BASE_URL } from '@track-my-life/shared/src/api/api-config';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { useState } from 'react';
 
 import styles from './OAuthProviderButtons.module.scss';
 
-type OAuthProviderName = 'google' | 'github' | 'linkedin_oidc';
+const AUTH_PROVIDER = {
+  GOOGLE: 'google',
+  GITHUB: 'github',
+} as const;
+
+type OAuthProviderName = ObjectValuesUnion<typeof AUTH_PROVIDER>;
 
 interface Props {
   googleLabel: string;
   githubLabel: string;
-  linkedinLabel: string;
 }
 
-const AUTH_PROVIDER_GOOGLE: OAuthProviderName = 'google';
-const AUTH_PROVIDER_GITHUB: OAuthProviderName = 'github';
-const AUTH_PROVIDER_LINKEDIN: OAuthProviderName = 'linkedin_oidc';
+const PROVIDER_URL_MAP: Record<OAuthProviderName, string> = {
+  google: `${API_BASE_URL}/api/auth/google`,
+  github: `${API_BASE_URL}/api/auth/github`,
+};
 
-export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
+export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel }) => {
   const [activeProvider, setActiveProvider] = useState<OAuthProviderName | null>(null);
 
-  const handleProviderClick = async (_provider: OAuthProviderName) => {
-    setActiveProvider(_provider);
-
-    try {
-      // TODO: wire to backend OAuth endpoint when available
-    } finally {
-      setActiveProvider(null);
-    }
+  const handleProviderClick = (provider: OAuthProviderName) => {
+    setActiveProvider(provider);
+    globalThis.location.href = PROVIDER_URL_MAP[provider];
   };
 
   const isSubmitting = Boolean(activeProvider);
@@ -40,7 +42,7 @@ export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, link
         type="button"
         variant="outline"
         disabled={isSubmitting}
-        onClick={() => handleProviderClick(AUTH_PROVIDER_GOOGLE)}
+        onClick={() => handleProviderClick(AUTH_PROVIDER.GOOGLE)}
       >
         {googleLabel}
       </Button>
@@ -48,17 +50,9 @@ export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, link
         type="button"
         variant="outline"
         disabled={isSubmitting}
-        onClick={() => handleProviderClick(AUTH_PROVIDER_GITHUB)}
+        onClick={() => handleProviderClick(AUTH_PROVIDER.GITHUB)}
       >
         {githubLabel}
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        disabled={isSubmitting}
-        onClick={() => handleProviderClick(AUTH_PROVIDER_LINKEDIN)}
-      >
-        {linkedinLabel}
       </Button>
     </div>
   );

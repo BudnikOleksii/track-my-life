@@ -1,8 +1,10 @@
 import type {
+  AuthControllerExchangeSocialCodeResponse,
   AuthControllerLoginResponse,
   AuthControllerLogoutResponse,
   AuthControllerRefreshTokenResponse,
   AuthControllerRegisterResponse,
+  ExchangeSocialCodeDto,
   LoginDto,
   RegisterDto,
   RevokeRefreshTokenDto,
@@ -19,6 +21,7 @@ export class AuthApiService extends ApiClient {
     LOGOUT: `${this.BASE_URL}/logout`,
     REVOKE_REFRESH_TOKEN: `${this.BASE_URL}/revoke-refresh-token`,
     REVOKE_REFRESH_TOKENS: `${this.BASE_URL}/revoke-refresh-tokens`,
+    EXCHANGE_SOCIAL_CODE: `${this.BASE_URL}/social/exchange`,
   } as const;
 
   register(body: RegisterDto) {
@@ -67,6 +70,15 @@ export class AuthApiService extends ApiClient {
     return this.request<void>({
       method: 'POST',
       url: this.ENDPOINTS.REVOKE_REFRESH_TOKENS,
+    });
+  }
+
+  exchangeSocialCode(body: ExchangeSocialCodeDto) {
+    return this.request<AuthControllerExchangeSocialCodeResponse>({
+      method: 'POST',
+      url: this.ENDPOINTS.EXCHANGE_SOCIAL_CODE,
+      body,
+      credentials: 'include',
     });
   }
 }

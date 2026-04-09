@@ -433,6 +433,10 @@ export type AuditLogListResponseDto = {
    */
   total: number;
   /**
+   * Total number of pages
+   */
+  totalPages: number;
+  /**
    * Whether more pages are available
    */
   hasMore: boolean;
@@ -556,10 +560,6 @@ export type RefreshTokenListDto = {
 
 export type LogoutResponseDto = {
   /**
-   * Whether the logout was successful
-   */
-  success: boolean;
-  /**
    * Human-readable result message
    */
   message: string;
@@ -570,10 +570,6 @@ export type RevokeRefreshTokenDto = {
 };
 
 export type RevokeTokenResponseDto = {
-  /**
-   * Whether the token was successfully revoked
-   */
-  success: boolean;
   /**
    * Human-readable result message
    */
@@ -589,6 +585,13 @@ export type RevokeAllTokensResponseDto = {
    * Human-readable result message
    */
   message: string;
+};
+
+export type ExchangeSocialCodeDto = {
+  /**
+   * Authorization code from social auth redirect
+   */
+  code: string;
 };
 
 export type UserSortBy = 'email' | 'createdAt';
@@ -638,6 +641,10 @@ export type UserListResponseDto = {
    */
   total: number;
   /**
+   * Total number of pages
+   */
+  totalPages: number;
+  /**
    * Whether more pages are available
    */
   hasMore: boolean;
@@ -659,9 +666,10 @@ export type UserSummaryResponseDto = {
 };
 
 export type CreateUserDto = {
-  name: string;
   email: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
   role?: UserRole;
 };
 
@@ -671,6 +679,13 @@ export type UpdateUserDto = {
 
 export type AssignRoleDto = {
   role: UserRole;
+};
+
+export type MessageResponseDto = {
+  /**
+   * Response message
+   */
+  message: string;
 };
 
 /**
@@ -986,15 +1001,11 @@ export type ChangePasswordDto = {
   newPassword: string;
 };
 
-export type MessageResponseDto = {
-  /**
-   * Response message
-   */
-  message: string;
-};
-
 export type DeleteAccountDto = {
-  password: string;
+  /**
+   * Required for email/password accounts, optional for social-only accounts
+   */
+  password?: string;
 };
 
 export type DefaultCategorySortBy = 'name' | 'createdAt';
@@ -1047,6 +1058,10 @@ export type DefaultTransactionCategoryListResponseDto = {
    * Total number of matching records
    */
   total: number;
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
   /**
    * Whether more pages are available
    */
@@ -1114,6 +1129,10 @@ export type CategoryListResponseDto = {
    * Total number of matching records
    */
   total: number;
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
   /**
    * Whether more pages are available
    */
@@ -1228,6 +1247,10 @@ export type TransactionListResponseDto = {
    */
   total: number;
   /**
+   * Total number of pages
+   */
+  totalPages: number;
+  /**
    * Whether more pages are available
    */
   hasMore: boolean;
@@ -1292,6 +1315,14 @@ export type ImportTransactionResponseDto = {
    * Number of new subcategories created
    */
   subcategoriesCreated: number;
+  /**
+   * Number of rows that failed to import
+   */
+  failedCount: number;
+  /**
+   * Row-level error descriptions
+   */
+  errors: Array<string>;
 };
 
 export type CreateTransactionDto = {
@@ -1327,10 +1358,6 @@ export type RecurringTransactionResponseDto = {
    * Recurring transaction ID
    */
   id: string;
-  /**
-   * User ID
-   */
-  userId: string;
   /**
    * Category ID
    */
@@ -1411,6 +1438,10 @@ export type RecurringTransactionListResponseDto = {
    */
   total: number;
   /**
+   * Total number of pages
+   */
+  totalPages: number;
+  /**
    * Whether more pages are available
    */
   hasMore: boolean;
@@ -1462,10 +1493,6 @@ export type BudgetResponseDto = {
    * Budget ID
    */
   id: string;
-  /**
-   * User ID
-   */
-  userId: string;
   /**
    * Category ID
    */
@@ -1529,6 +1556,10 @@ export type BudgetListResponseDto = {
    * Total number of matching records
    */
   total: number;
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
   /**
    * Whether more pages are available
    */
@@ -1664,8 +1695,8 @@ export type HealthControllerCheckResponse =
 export type TransactionsAnalyticsControllerGetSummaryData = {
   body?: never;
   path?: never;
-  query: {
-    currencyCode: CurrencyCode;
+  query?: {
+    currencyCode?: CurrencyCode;
     dateFrom?: string;
     dateTo?: string;
     type?: TransactionType;
@@ -1675,6 +1706,10 @@ export type TransactionsAnalyticsControllerGetSummaryData = {
 };
 
 export type TransactionsAnalyticsControllerGetSummaryErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1694,8 +1729,8 @@ export type TransactionsAnalyticsControllerGetSummaryResponse =
 export type TransactionsAnalyticsControllerGetCategoryBreakdownData = {
   body?: never;
   path?: never;
-  query: {
-    currencyCode: CurrencyCode;
+  query?: {
+    currencyCode?: CurrencyCode;
     dateFrom?: string;
     dateTo?: string;
     type?: TransactionType;
@@ -1705,6 +1740,10 @@ export type TransactionsAnalyticsControllerGetCategoryBreakdownData = {
 };
 
 export type TransactionsAnalyticsControllerGetCategoryBreakdownErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1725,7 +1764,7 @@ export type TransactionsAnalyticsControllerGetTrendsData = {
   body?: never;
   path?: never;
   query: {
-    currencyCode: CurrencyCode;
+    currencyCode?: CurrencyCode;
     dateFrom?: string;
     dateTo?: string;
     type?: TransactionType;
@@ -1736,6 +1775,10 @@ export type TransactionsAnalyticsControllerGetTrendsData = {
 };
 
 export type TransactionsAnalyticsControllerGetTrendsErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1755,8 +1798,8 @@ export type TransactionsAnalyticsControllerGetTrendsResponse =
 export type TransactionsAnalyticsControllerGetTopCategoriesData = {
   body?: never;
   path?: never;
-  query: {
-    currencyCode: CurrencyCode;
+  query?: {
+    currencyCode?: CurrencyCode;
     dateFrom?: string;
     dateTo?: string;
     type?: TransactionType;
@@ -1767,6 +1810,10 @@ export type TransactionsAnalyticsControllerGetTopCategoriesData = {
 };
 
 export type TransactionsAnalyticsControllerGetTopCategoriesErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1789,13 +1836,17 @@ export type TransactionsAnalyticsControllerGetDailySpendingData = {
   query: {
     year: number;
     month: number;
-    currencyCode: CurrencyCode;
+    currencyCode?: CurrencyCode;
     type?: TransactionType;
   };
   url: '/api/transactions-analytics/daily-spending';
 };
 
 export type TransactionsAnalyticsControllerGetDailySpendingErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1833,6 +1884,14 @@ export type AuditLogControllerFindAllData = {
 };
 
 export type AuditLogControllerFindAllErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1896,30 +1955,6 @@ export type AuthControllerLoginResponses = {
 export type AuthControllerLoginResponse =
   AuthControllerLoginResponses[keyof AuthControllerLoginResponses];
 
-export type AuthControllerGetRefreshTokenData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/api/auth/refresh-token';
-};
-
-export type AuthControllerGetRefreshTokenErrors = {
-  /**
-   * Error response (includes 400/401/403/404/422/429/500, etc.)
-   */
-  default: ProblemDetailsDto;
-};
-
-export type AuthControllerGetRefreshTokenError =
-  AuthControllerGetRefreshTokenErrors[keyof AuthControllerGetRefreshTokenErrors];
-
-export type AuthControllerGetRefreshTokenResponses = {
-  200: RefreshTokenInfoDto;
-};
-
-export type AuthControllerGetRefreshTokenResponse =
-  AuthControllerGetRefreshTokenResponses[keyof AuthControllerGetRefreshTokenResponses];
-
 export type AuthControllerRefreshTokenData = {
   body?: never;
   path?: never;
@@ -1944,6 +1979,34 @@ export type AuthControllerRefreshTokenResponses = {
 export type AuthControllerRefreshTokenResponse =
   AuthControllerRefreshTokenResponses[keyof AuthControllerRefreshTokenResponses];
 
+export type AuthControllerGetRefreshTokenData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/auth/refresh-token/info';
+};
+
+export type AuthControllerGetRefreshTokenErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGetRefreshTokenError =
+  AuthControllerGetRefreshTokenErrors[keyof AuthControllerGetRefreshTokenErrors];
+
+export type AuthControllerGetRefreshTokenResponses = {
+  200: RefreshTokenInfoDto;
+};
+
+export type AuthControllerGetRefreshTokenResponse =
+  AuthControllerGetRefreshTokenResponses[keyof AuthControllerGetRefreshTokenResponses];
+
 export type AuthControllerListRefreshTokensData = {
   body?: never;
   path?: never;
@@ -1952,6 +2015,10 @@ export type AuthControllerListRefreshTokensData = {
 };
 
 export type AuthControllerListRefreshTokensErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -1977,6 +2044,10 @@ export type AuthControllerLogoutData = {
 
 export type AuthControllerLogoutErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2000,6 +2071,10 @@ export type AuthControllerRevokeRefreshTokenData = {
 };
 
 export type AuthControllerRevokeRefreshTokenErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -2025,6 +2100,10 @@ export type AuthControllerRevokeRefreshTokensData = {
 
 export type AuthControllerRevokeRefreshTokensErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2039,6 +2118,105 @@ export type AuthControllerRevokeRefreshTokensResponses = {
 
 export type AuthControllerRevokeRefreshTokensResponse =
   AuthControllerRevokeRefreshTokensResponses[keyof AuthControllerRevokeRefreshTokensResponses];
+
+export type AuthControllerGetProvidersData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/auth/providers';
+};
+
+export type AuthControllerGetProvidersErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGetProvidersError =
+  AuthControllerGetProvidersErrors[keyof AuthControllerGetProvidersErrors];
+
+export type AuthControllerGetProvidersResponses = {
+  200: unknown;
+};
+
+export type AuthControllerGoogleLoginData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/auth/google';
+};
+
+export type AuthControllerGoogleLoginErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGoogleLoginError =
+  AuthControllerGoogleLoginErrors[keyof AuthControllerGoogleLoginErrors];
+
+export type AuthControllerGoogleLoginResponses = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGoogleLoginResponse =
+  AuthControllerGoogleLoginResponses[keyof AuthControllerGoogleLoginResponses];
+
+export type AuthControllerGithubLoginData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/api/auth/github';
+};
+
+export type AuthControllerGithubLoginErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGithubLoginError =
+  AuthControllerGithubLoginErrors[keyof AuthControllerGithubLoginErrors];
+
+export type AuthControllerGithubLoginResponses = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerGithubLoginResponse =
+  AuthControllerGithubLoginResponses[keyof AuthControllerGithubLoginResponses];
+
+export type AuthControllerExchangeSocialCodeData = {
+  body: ExchangeSocialCodeDto;
+  path?: never;
+  query?: never;
+  url: '/api/auth/social/exchange';
+};
+
+export type AuthControllerExchangeSocialCodeErrors = {
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type AuthControllerExchangeSocialCodeError =
+  AuthControllerExchangeSocialCodeErrors[keyof AuthControllerExchangeSocialCodeErrors];
+
+export type AuthControllerExchangeSocialCodeResponses = {
+  200: AuthResponseDto;
+};
+
+export type AuthControllerExchangeSocialCodeResponse =
+  AuthControllerExchangeSocialCodeResponses[keyof AuthControllerExchangeSocialCodeResponses];
 
 export type UserControllerFindAllData = {
   body?: never;
@@ -2061,6 +2239,14 @@ export type UserControllerFindAllData = {
 };
 
 export type UserControllerFindAllErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -2085,6 +2271,14 @@ export type UserControllerCreateData = {
 };
 
 export type UserControllerCreateErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Email already in use
    */
@@ -2114,6 +2308,14 @@ export type UserControllerGetSummaryData = {
 
 export type UserControllerGetSummaryErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2140,6 +2342,14 @@ export type UserControllerDeleteData = {
 
 export type UserControllerDeleteErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
+  /**
    * User not found
    */
   404: unknown;
@@ -2153,10 +2363,7 @@ export type UserControllerDeleteError =
   UserControllerDeleteErrors[keyof UserControllerDeleteErrors];
 
 export type UserControllerDeleteResponses = {
-  /**
-   * Deleted successfully
-   */
-  204: void;
+  200: MessageResponseDto;
 };
 
 export type UserControllerDeleteResponse =
@@ -2172,6 +2379,14 @@ export type UserControllerFindByIdData = {
 };
 
 export type UserControllerFindByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * User not found
    */
@@ -2203,6 +2418,14 @@ export type UserControllerUpdateData = {
 
 export type UserControllerUpdateErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
+  /**
    * User not found
    */
   404: unknown;
@@ -2232,6 +2455,10 @@ export type UserControllerAssignRoleData = {
 };
 
 export type UserControllerAssignRoleErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Insufficient permissions
    */
@@ -2266,6 +2493,10 @@ export type ProfileControllerDeleteAccountData = {
 export type ProfileControllerDeleteAccountErrors = {
   /**
    * Invalid password
+   */
+  400: unknown;
+  /**
+   * Unauthorized
    */
   401: unknown;
   /**
@@ -2355,6 +2586,10 @@ export type ProfileControllerChangePasswordErrors = {
   /**
    * Invalid current password
    */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
   401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
@@ -2394,6 +2629,14 @@ export type DefaultTransactionCategoriesControllerFindAllData = {
 
 export type DefaultTransactionCategoriesControllerFindAllErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2417,6 +2660,14 @@ export type DefaultTransactionCategoriesControllerCreateData = {
 };
 
 export type DefaultTransactionCategoriesControllerCreateErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Duplicate default transaction category
    */
@@ -2447,6 +2698,14 @@ export type DefaultTransactionCategoriesControllerDeleteData = {
 };
 
 export type DefaultTransactionCategoriesControllerDeleteErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Default transaction category not found
    */
@@ -2482,6 +2741,14 @@ export type DefaultTransactionCategoriesControllerFindByIdData = {
 
 export type DefaultTransactionCategoriesControllerFindByIdErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
+  /**
    * Default transaction category not found
    */
   404: unknown;
@@ -2511,6 +2778,14 @@ export type DefaultTransactionCategoriesControllerUpdateData = {
 };
 
 export type DefaultTransactionCategoriesControllerUpdateErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Forbidden
+   */
+  403: unknown;
   /**
    * Default transaction category not found
    */
@@ -2558,6 +2833,10 @@ export type TransactionCategoriesControllerFindAllData = {
 
 export type TransactionCategoriesControllerFindAllErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2581,6 +2860,10 @@ export type TransactionCategoriesControllerCreateData = {
 };
 
 export type TransactionCategoriesControllerCreateErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Duplicate category
    */
@@ -2611,6 +2894,10 @@ export type TransactionCategoriesControllerDeleteData = {
 };
 
 export type TransactionCategoriesControllerDeleteErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Category not found
    */
@@ -2646,6 +2933,10 @@ export type TransactionCategoriesControllerFindByIdData = {
 
 export type TransactionCategoriesControllerFindByIdErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Category not found
    */
   404: unknown;
@@ -2676,6 +2967,10 @@ export type TransactionCategoriesControllerUpdateData = {
 
 export type TransactionCategoriesControllerUpdateErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Category not found
    */
   404: unknown;
@@ -2705,6 +3000,10 @@ export type TransactionsControllerFindAllData = {
   query?: {
     page?: number;
     pageSize?: number;
+    /**
+     * Search transactions by description (case-insensitive)
+     */
+    search?: string;
     type?: TransactionType;
     categoryId?: string;
     currencyCode?: CurrencyCode;
@@ -2723,6 +3022,10 @@ export type TransactionsControllerFindAllData = {
 };
 
 export type TransactionsControllerFindAllErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
@@ -2751,6 +3054,10 @@ export type TransactionsControllerCreateErrors = {
    * Category type mismatch
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Category not found
    */
@@ -2785,6 +3092,10 @@ export type TransactionsControllerFindByCategoryErrors = {
    * Category is a subcategory
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Category not found
    */
@@ -2826,6 +3137,10 @@ export type TransactionsControllerExportTransactionsErrors = {
    */
   400: unknown;
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2859,6 +3174,10 @@ export type TransactionsControllerImportTransactionsErrors = {
    */
   400: unknown;
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -2884,6 +3203,10 @@ export type TransactionsControllerDeleteData = {
 };
 
 export type TransactionsControllerDeleteErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Transaction not found
    */
@@ -2914,6 +3237,10 @@ export type TransactionsControllerFindByIdData = {
 };
 
 export type TransactionsControllerFindByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Transaction not found
    */
@@ -2948,6 +3275,10 @@ export type TransactionsControllerUpdateErrors = {
    * Category type mismatch
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Transaction not found
    */
@@ -2993,6 +3324,10 @@ export type RecurringTransactionsControllerFindAllData = {
 
 export type RecurringTransactionsControllerFindAllErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -3020,6 +3355,10 @@ export type RecurringTransactionsControllerCreateErrors = {
    * Validation error
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Category not found
    */
@@ -3051,6 +3390,10 @@ export type RecurringTransactionsControllerDeleteData = {
 
 export type RecurringTransactionsControllerDeleteErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Recurring transaction not found
    */
   404: unknown;
@@ -3080,6 +3423,10 @@ export type RecurringTransactionsControllerFindByIdData = {
 };
 
 export type RecurringTransactionsControllerFindByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Recurring transaction not found
    */
@@ -3115,6 +3462,10 @@ export type RecurringTransactionsControllerUpdateErrors = {
    */
   400: unknown;
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Recurring transaction not found
    */
   404: unknown;
@@ -3148,6 +3499,10 @@ export type RecurringTransactionsControllerPauseErrors = {
    * Not active
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Recurring transaction not found
    */
@@ -3183,6 +3538,10 @@ export type RecurringTransactionsControllerResumeErrors = {
    */
   400: unknown;
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Recurring transaction not found
    */
   404: unknown;
@@ -3210,6 +3569,10 @@ export type RecurringTransactionsControllerProcessData = {
 };
 
 export type RecurringTransactionsControllerProcessErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Insufficient permissions
    */
@@ -3254,6 +3617,10 @@ export type BudgetsControllerFindAllData = {
 
 export type BudgetsControllerFindAllErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Error response (includes 400/401/403/404/422/429/500, etc.)
    */
   default: ProblemDetailsDto;
@@ -3281,6 +3648,10 @@ export type BudgetsControllerCreateErrors = {
    * Validation error
    */
   400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Category not found
    */
@@ -3316,6 +3687,10 @@ export type BudgetsControllerDeleteData = {
 
 export type BudgetsControllerDeleteErrors = {
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Budget not found
    */
   404: unknown;
@@ -3345,6 +3720,10 @@ export type BudgetsControllerFindByIdData = {
 };
 
 export type BudgetsControllerFindByIdErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Budget not found
    */
@@ -3380,6 +3759,10 @@ export type BudgetsControllerUpdateErrors = {
    */
   400: unknown;
   /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
    * Budget not found
    */
   404: unknown;
@@ -3413,6 +3796,10 @@ export type BudgetsControllerGetProgressData = {
 };
 
 export type BudgetsControllerGetProgressErrors = {
+  /**
+   * Unauthorized
+   */
+  401: unknown;
   /**
    * Budget not found
    */

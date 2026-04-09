@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "title": "Authentication",
+    "description": "Processing social login"
+  },
+  "content": {
+    "loading": "Signing you in...",
+    "errorTitle": "Authentication Failed",
+    "errorEmailExists": "An account with this email already exists using a different sign-in method. Please sign in with your original method.",
+    "errorGeneric": "Something went wrong during authentication. Please try again.",
+    "backToSignIn": "Back to sign in"
+  }
+}

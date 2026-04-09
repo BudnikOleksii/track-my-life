@@ -39,7 +39,6 @@ export const SignUpPageContent: FC<SignUpPageContentProps> = ({ tSignUp, tAuthSh
         <OAuthProviderButtons
           googleLabel={tAuthShared('continueWithGoogle')}
           githubLabel={tAuthShared('continueWithGitHub')}
-          linkedinLabel={tAuthShared('continueWithLinkedIn')}
         />
 
         <Typography className={styles.footerText}>
