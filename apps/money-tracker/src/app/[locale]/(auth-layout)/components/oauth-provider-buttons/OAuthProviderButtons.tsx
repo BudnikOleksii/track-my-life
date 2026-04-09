@@ -7,29 +7,29 @@ import { useState } from 'react';
 
 import styles from './OAuthProviderButtons.module.scss';
 
-type OAuthProviderName = 'google' | 'github' | 'linkedin_oidc';
+type OAuthProviderName = 'google' | 'github';
 
 interface Props {
   googleLabel: string;
   githubLabel: string;
-  linkedinLabel: string;
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
 
 const AUTH_PROVIDER_GOOGLE: OAuthProviderName = 'google';
 const AUTH_PROVIDER_GITHUB: OAuthProviderName = 'github';
-const AUTH_PROVIDER_LINKEDIN: OAuthProviderName = 'linkedin_oidc';
 
-export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, linkedinLabel }) => {
+const PROVIDER_URL_MAP: Record<OAuthProviderName, string> = {
+  google: `${API_BASE_URL}/api/auth/google`,
+  github: `${API_BASE_URL}/api/auth/github`,
+};
+
+export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel }) => {
   const [activeProvider, setActiveProvider] = useState<OAuthProviderName | null>(null);
 
-  const handleProviderClick = async (_provider: OAuthProviderName) => {
-    setActiveProvider(_provider);
-
-    try {
-      // TODO: wire to backend OAuth endpoint when available
-    } finally {
-      setActiveProvider(null);
-    }
+  const handleProviderClick = (provider: OAuthProviderName) => {
+    setActiveProvider(provider);
+    globalThis.location.href = PROVIDER_URL_MAP[provider];
   };
 
   const isSubmitting = Boolean(activeProvider);
@@ -51,14 +51,6 @@ export const OAuthProviderButtons: FC<Props> = ({ googleLabel, githubLabel, link
         onClick={() => handleProviderClick(AUTH_PROVIDER_GITHUB)}
       >
         {githubLabel}
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        disabled={isSubmitting}
-        onClick={() => handleProviderClick(AUTH_PROVIDER_LINKEDIN)}
-      >
-        {linkedinLabel}
       </Button>
     </div>
   );

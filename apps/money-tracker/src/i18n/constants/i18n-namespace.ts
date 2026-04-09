@@ -2,6 +2,7 @@ import type { ObjectValuesUnion } from '@track-my-life/shared/src/types/object-v
 
 export const I18N_NAMESPACE = {
   all: 'all',
+  authCallbackPage: 'authCallbackPage',
   authShared: 'authShared',
   budgetsPage: 'budgetsPage',
   categoriesFormPage: 'categoriesFormPage',

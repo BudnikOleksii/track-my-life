@@ -4,6 +4,7 @@ import { I18N_NAMESPACE } from './i18n-namespace';
 
 export const LOCALIZATION_MESSAGES_FILE_NAME_BY_NAMESPACE: Record<I18Namespace, string> = {
   [I18N_NAMESPACE.all]: 'all',
+  [I18N_NAMESPACE.authCallbackPage]: 'auth-callback-page',
   [I18N_NAMESPACE.authShared]: 'auth-shared',
   [I18N_NAMESPACE.budgetsPage]: 'budgets-page',
   [I18N_NAMESPACE.categoriesFormPage]: 'categories-form-page',

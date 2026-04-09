@@ -2,7 +2,13 @@ import { getPathWithoutLocale } from '@track-my-life/shared/src/utils/path';
 
 import { PATHS } from '@/constants/paths';
 
-const PUBLIC_PATH_LIST = [PATHS.signIn, PATHS.signUp, PATHS.verifyEmail, PATHS.homePage];
+const PUBLIC_PATH_LIST = [
+  PATHS.signIn,
+  PATHS.signUp,
+  PATHS.verifyEmail,
+  PATHS.authCallback,
+  PATHS.homePage,
+];
 
 export const checkIsPublicPath = (pathname: string): boolean =>
   PUBLIC_PATH_LIST.some((publicPath) => {

@@ -39,7 +39,6 @@ export const SignInPageContent = async () => {
           <OAuthProviderButtons
             googleLabel={tAuthShared('continueWithGoogle')}
             githubLabel={tAuthShared('continueWithGitHub')}
-            linkedinLabel={tAuthShared('continueWithLinkedIn')}
           />
 
           <Typography className={styles.footerText}>

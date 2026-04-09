@@ -41,7 +41,7 @@ The system SHALL wire the existing `proxy.ts` as Next.js middleware so that toke
 
 #### Scenario: No tokens on public route passes through
 
-- **WHEN** a request arrives for a public route (sign-in, sign-up, verify-email) without tokens
+- **WHEN** a request arrives for a public route (sign-in, sign-up, verify-email, auth/callback) without tokens
 - **THEN** the middleware SHALL allow the request through without any auth checks
 
 #### Scenario: Graceful fallback when JWT secret is not configured

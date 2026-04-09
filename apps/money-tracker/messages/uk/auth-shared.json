@@ -6,7 +6,6 @@
   "orLabel": "Або продовжити з",
   "continueWithGoogle": "Продовжити з Google",
   "continueWithGitHub": "Продовжити з GitHub",
-  "continueWithLinkedIn": "Продовжити з LinkedIn",
   "errors": {
     "emailRequired": "Електронна пошта обов'язкова",
     "emailInvalid": "Введіть дійсну електронну пошту",
