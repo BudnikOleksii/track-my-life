@@ -15,37 +15,45 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { OnboardingStep } from './constants/onboarding-step';
 
-import { CompleteStep } from './components/complete-step/CompleteStep';
-import { ProfileStep } from './components/profile-step/ProfileStep';
+import { CategoriesStep } from './components/categories-step/CategoriesStep';
+import { CurrencyStep } from './components/currency-step/CurrencyStep';
+import { PasswordStep } from './components/password-step/PasswordStep';
 import { StepIndicator } from './components/step-indicator/StepIndicator';
-import { WelcomeStep } from './components/welcome-step/WelcomeStep';
 import { ONBOARDING_STEP } from './constants/onboarding-step';
 import styles from './page.module.scss';
 
 interface OnboardingPageContentProps {
   currentStep: OnboardingStep;
+  currency?: string | undefined;
+  hasPassword: boolean;
 }
 
 const STEP_TITLE_MAP: Record<OnboardingStep, string> = {
-  [ONBOARDING_STEP.welcome]: 'content.welcomeTitle',
-  [ONBOARDING_STEP.profile]: 'content.profileTitle',
-  [ONBOARDING_STEP.complete]: 'content.completeTitle',
+  [ONBOARDING_STEP.currency]: 'content.currencyTitle',
+  [ONBOARDING_STEP.categories]: 'content.categoriesTitle',
+  [ONBOARDING_STEP.password]: 'content.passwordTitle',
 };
 
 const STEP_DESCRIPTION_MAP: Record<OnboardingStep, string> = {
-  [ONBOARDING_STEP.welcome]: 'content.welcomeDescription',
-  [ONBOARDING_STEP.profile]: 'content.profileDescription',
-  [ONBOARDING_STEP.complete]: 'content.completeDescription',
+  [ONBOARDING_STEP.currency]: 'content.currencyDescription',
+  [ONBOARDING_STEP.categories]: 'content.categoriesDescription',
+  [ONBOARDING_STEP.password]: 'content.passwordDescription',
 };
 
-const STEP_CONTENT_MAP: Record<OnboardingStep, ReactNode> = {
-  [ONBOARDING_STEP.welcome]: <WelcomeStep />,
-  [ONBOARDING_STEP.profile]: <ProfileStep />,
-  [ONBOARDING_STEP.complete]: <CompleteStep />,
-};
-
-export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({ currentStep }) => {
+export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({
+  currentStep,
+  currency,
+  hasPassword,
+}) => {
   const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
+
+  const stepContentMap: Record<OnboardingStep, ReactNode> = {
+    [ONBOARDING_STEP.currency]: <CurrencyStep defaultCurrency={currency} />,
+    [ONBOARDING_STEP.categories]: (
+      <CategoriesStep currency={currency ?? ''} hasPassword={hasPassword} />
+    ),
+    [ONBOARDING_STEP.password]: <PasswordStep currency={currency ?? ''} />,
+  };
 
   const titleKey = STEP_TITLE_MAP[currentStep];
   const descriptionKey = STEP_DESCRIPTION_MAP[currentStep];
@@ -53,12 +61,12 @@ export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({ currentS
   return (
     <Card className={styles.card}>
       <CardHeader className={styles.cardHeader}>
-        <StepIndicator currentStep={currentStep} />
+        <StepIndicator currentStep={currentStep} hasPassword={hasPassword} />
         <CardTitle>{translations(titleKey)}</CardTitle>
         <CardDescription>{translations(descriptionKey)}</CardDescription>
       </CardHeader>
 
-      <CardContent className={styles.cardContent}>{STEP_CONTENT_MAP[currentStep]}</CardContent>
+      <CardContent className={styles.cardContent}>{stepContentMap[currentStep]}</CardContent>
     </Card>
   );
 };

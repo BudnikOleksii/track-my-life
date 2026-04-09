@@ -2,6 +2,7 @@ import { API_BASE_URL, ENDPOINTS } from '@track-my-life/shared/src/api/api-confi
 import { AuthInterceptor } from '@track-my-life/shared/src/api/client/interceptors/auth-interceptor';
 import { AuthApiService } from '@track-my-life/shared/src/api/services/auth-api.service';
 import { CategoryApiService } from '@track-my-life/shared/src/api/services/category-api.service';
+import { OnboardingApiService } from '@track-my-life/shared/src/api/services/onboarding-api.service';
 import { ProfileApiService } from '@track-my-life/shared/src/api/services/profile-api.service';
 import { RecurringTransactionApiService } from '@track-my-life/shared/src/api/services/recurring-transaction-api.service';
 import { TransactionApiService } from '@track-my-life/shared/src/api/services/transaction-api.service';
@@ -20,6 +21,7 @@ const getRequestCookieHeader = async (): Promise<string | null> => {
 
 export const authApiService = new AuthApiService({ baseUrl: API_BASE_URL });
 export const categoryApiService = new CategoryApiService({ baseUrl: API_BASE_URL });
+export const onboardingApiService = new OnboardingApiService({ baseUrl: API_BASE_URL });
 export const profileApiService = new ProfileApiService({ baseUrl: API_BASE_URL });
 export const recurringTransactionApiService = new RecurringTransactionApiService({
   baseUrl: API_BASE_URL,
@@ -37,6 +39,7 @@ const authInterceptor = new AuthInterceptor({
 });
 authInterceptor.setupOn(authApiService);
 authInterceptor.setupOn(categoryApiService);
+authInterceptor.setupOn(onboardingApiService);
 authInterceptor.setupOn(profileApiService);
 authInterceptor.setupOn(recurringTransactionApiService);
 authInterceptor.setupOn(transactionApiService);

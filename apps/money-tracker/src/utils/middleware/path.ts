@@ -20,3 +20,8 @@ export const checkIsOnboardingPath = (pathname: string): boolean => {
   const normalizedPath = getPathWithoutLocale(pathname);
   return normalizedPath === PATHS.onboarding || normalizedPath.startsWith(`${PATHS.onboarding}/`);
 };
+
+export const checkIsVerifyEmailPath = (pathname: string): boolean => {
+  const normalizedPath = getPathWithoutLocale(pathname);
+  return normalizedPath === PATHS.verifyEmail || normalizedPath.startsWith(`${PATHS.verifyEmail}/`);
+};

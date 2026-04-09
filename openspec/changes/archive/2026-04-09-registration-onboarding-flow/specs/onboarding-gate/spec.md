@@ -1,3 +1,5 @@
+## MODIFIED Requirements
+
 ### Requirement: Redirect unonboarded users to onboarding
 
 The system SHALL redirect authenticated users whose onboarding status has `onboardingCompleted` equal to `false` to the `/onboarding` route when they attempt to access any app route (dashboard, transactions, categories, budgets, settings). The system SHALL fetch onboarding status from `GET /api/onboarding/status` instead of the profile endpoint.
@@ -11,24 +13,6 @@ The system SHALL redirect authenticated users whose onboarding status has `onboa
 
 - **WHEN** an authenticated user with `onboardingCompleted: false` and `emailVerified: true` navigates to `/transactions`, `/categories`, `/budgets`, or `/settings`
 - **THEN** the system redirects them to `/onboarding`
-
-### Requirement: Allow onboarded users to access app routes
-
-The system SHALL allow authenticated users whose onboarding status has `onboardingCompleted` equal to `true` to access all app routes without redirection to onboarding.
-
-#### Scenario: Onboarded user accesses dashboard
-
-- **WHEN** an authenticated user with `onboardingCompleted: true` navigates to `/dashboard`
-- **THEN** the system renders the dashboard normally without redirection
-
-### Requirement: Prevent onboarded users from accessing onboarding
-
-The system SHALL redirect authenticated users whose onboarding status has `onboardingCompleted` equal to `true` away from the `/onboarding` route to `/dashboard`.
-
-#### Scenario: Onboarded user navigates to onboarding
-
-- **WHEN** an authenticated user with `onboardingCompleted: true` navigates to `/onboarding`
-- **THEN** the system redirects them to `/dashboard`
 
 ### Requirement: Cache onboarding status
 
@@ -52,6 +36,26 @@ The system SHALL NOT apply onboarding redirect logic to public routes (`/sign-in
 
 - **WHEN** an unauthenticated user navigates to `/sign-in`
 - **THEN** the system renders the sign-in page without any onboarding redirect
+
+### Requirement: Allow onboarded users to access app routes
+
+The system SHALL allow authenticated users whose onboarding status has `onboardingCompleted` equal to `true` to access all app routes without redirection to onboarding.
+
+#### Scenario: Onboarded user accesses dashboard
+
+- **WHEN** an authenticated user with `onboardingCompleted: true` navigates to `/dashboard`
+- **THEN** the system renders the dashboard normally without redirection
+
+### Requirement: Prevent onboarded users from accessing onboarding
+
+The system SHALL redirect authenticated users whose onboarding status has `onboardingCompleted` equal to `true` away from the `/onboarding` route to `/dashboard`.
+
+#### Scenario: Onboarded user navigates to onboarding
+
+- **WHEN** an authenticated user with `onboardingCompleted: true` navigates to `/onboarding`
+- **THEN** the system redirects them to `/dashboard`
+
+## ADDED Requirements
 
 ### Requirement: Redirect unverified email users to verify-email page
 

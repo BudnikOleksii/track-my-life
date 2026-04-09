@@ -4,32 +4,43 @@ import type { FC } from 'react';
 
 import { cn } from '@track-my-life/ui/src/lib/utils';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { OnboardingStep } from '../../constants/onboarding-step';
 
-import { ONBOARDING_STEP, ONBOARDING_STEP_LIST } from '../../constants/onboarding-step';
+import { ONBOARDING_STEP } from '../../constants/onboarding-step';
 import styles from './StepIndicator.module.scss';
 
 interface StepIndicatorProps {
   currentStep: OnboardingStep;
+  hasPassword: boolean;
 }
 
 const STEP_LABEL_MAP: Record<OnboardingStep, string> = {
-  [ONBOARDING_STEP.welcome]: 'content.stepWelcome',
-  [ONBOARDING_STEP.profile]: 'content.stepProfile',
-  [ONBOARDING_STEP.complete]: 'content.stepComplete',
+  [ONBOARDING_STEP.currency]: 'content.stepCurrency',
+  [ONBOARDING_STEP.categories]: 'content.stepCategories',
+  [ONBOARDING_STEP.password]: 'content.stepPassword',
 };
 
-export const StepIndicator: FC<StepIndicatorProps> = ({ currentStep }) => {
+export const StepIndicator: FC<StepIndicatorProps> = ({ currentStep, hasPassword }) => {
   const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
-  const currentIndex = ONBOARDING_STEP_LIST.indexOf(currentStep);
+
+  const visibleStepList = useMemo(() => {
+    const stepList: OnboardingStep[] = [ONBOARDING_STEP.currency, ONBOARDING_STEP.categories];
+    if (!hasPassword) {
+      stepList.push(ONBOARDING_STEP.password);
+    }
+    return stepList;
+  }, [hasPassword]);
+
+  const currentIndex = visibleStepList.indexOf(currentStep);
 
   return (
     <div className={styles.container}>
-      {ONBOARDING_STEP_LIST.map((step, index) => {
-        const labelKey = STEP_LABEL_MAP[step] ?? '';
+      {visibleStepList.map((step, index) => {
+        const labelKey = STEP_LABEL_MAP[step];
         const isActive = index === currentIndex;
         const isCompleted = index < currentIndex;
 

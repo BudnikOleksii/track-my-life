@@ -1,9 +1,9 @@
 import type { ObjectValuesUnion } from '@track-my-life/shared/src/types/object-values-union';
 
 export const ONBOARDING_STEP = {
-  welcome: 'welcome',
-  profile: 'profile',
-  complete: 'complete',
+  currency: 'currency',
+  categories: 'categories',
+  password: 'password',
 } as const;
 
 export const ONBOARDING_STEP_LIST = Object.values(ONBOARDING_STEP);
