@@ -1,3 +1,5 @@
+import type { RecurringFrequency } from '@track-my-life/shared/src/api/generated/types.gen';
+
 import { CURRENCY_CODE_LIST } from '@track-my-life/shared/src/constants/currency';
 import { MIN_FIELD_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { z } from 'zod';
@@ -5,12 +7,12 @@ import { z } from 'zod';
 import { transactionTypeSchema } from '@/constants/transaction';
 const MIN_INTERVAL = 1;
 
-const RECURRING_FREQUENCY = {
-  DAILY: 'DAILY',
-  WEEKLY: 'WEEKLY',
-  MONTHLY: 'MONTHLY',
-  YEARLY: 'YEARLY',
-} as const;
+const RECURRING_FREQUENCY_LIST = [
+  'DAILY',
+  'WEEKLY',
+  'MONTHLY',
+  'YEARLY',
+] as const satisfies readonly RecurringFrequency[];
 
 export const recurringTransactionFormSchema = z.object({
   categoryId: z.string().min(MIN_FIELD_LENGTH, 'categoryRequired'),
@@ -21,15 +23,7 @@ export const recurringTransactionFormSchema = z.object({
     .min(MIN_FIELD_LENGTH, 'amountRequired')
     .regex(/^\d+([.,]\d{1,2})?$/, 'amountInvalid'),
   currencyCode: z.enum(CURRENCY_CODE_LIST, { error: 'currencyRequired' }),
-  frequency: z.enum(
-    [
-      RECURRING_FREQUENCY.DAILY,
-      RECURRING_FREQUENCY.WEEKLY,
-      RECURRING_FREQUENCY.MONTHLY,
-      RECURRING_FREQUENCY.YEARLY,
-    ],
-    { error: 'frequencyRequired' },
-  ),
+  frequency: z.enum(RECURRING_FREQUENCY_LIST, { error: 'frequencyRequired' }),
   interval: z.number().int().min(MIN_INTERVAL, 'intervalInvalid'),
   startDate: z.string().min(MIN_FIELD_LENGTH, 'startDateRequired'),
   endDate: z.string().optional(),

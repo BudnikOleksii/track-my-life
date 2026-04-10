@@ -3,7 +3,6 @@
 import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
 import type {
   CreateRecurringTransactionDto,
-  RecurringFrequency,
   RecurringTransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
@@ -32,7 +31,7 @@ export const createRecurringTransaction = async (
     type: validated.data.type,
     amount: validated.data.amount,
     currencyCode: validated.data.currencyCode,
-    frequency: validated.data.frequency as RecurringFrequency,
+    frequency: validated.data.frequency,
     interval: validated.data.interval,
     startDate: validated.data.startDate,
     ...(validated.data.endDate !== undefined && { endDate: validated.data.endDate }),

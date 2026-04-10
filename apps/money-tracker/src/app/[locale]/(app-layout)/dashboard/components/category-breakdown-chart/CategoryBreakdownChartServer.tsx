@@ -9,8 +9,9 @@ import type { DashboardFilters } from '../../constants/dashboard';
 
 import { fetchCategoryBreakdown } from '../../actions/fetch-category-breakdown';
 
-const CategoryBreakdownChart = dynamic(() =>
-  import('./CategoryBreakdownChart').then((mod) => mod.CategoryBreakdownChart),
+const CategoryBreakdownChart = dynamic(
+  () => import('./CategoryBreakdownChart').then((mod) => mod.CategoryBreakdownChart),
+  { loading: () => null },
 );
 
 interface CategoryBreakdownChartServerProps {

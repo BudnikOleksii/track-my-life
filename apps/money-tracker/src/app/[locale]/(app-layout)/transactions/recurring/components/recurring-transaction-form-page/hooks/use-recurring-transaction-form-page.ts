@@ -2,7 +2,6 @@ import type {
   CategoryResponseDto,
   CreateRecurringTransactionDto,
   CurrencyCode,
-  RecurringFrequency,
   RecurringTransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
@@ -99,7 +98,7 @@ export const useRecurringTransactionFormPage = ({
         ...rest,
         startDate: convertLocalDateToUTCISO(parseLocalDate(startDate)),
         currencyCode: values.currencyCode,
-        frequency: values.frequency as RecurringFrequency,
+        frequency: values.frequency,
         ...(description !== undefined && { description }),
         ...(endDate && {
           endDate: convertLocalDateToUTCISO(parseLocalDate(endDate)),

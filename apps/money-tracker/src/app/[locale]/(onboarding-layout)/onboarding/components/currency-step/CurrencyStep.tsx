@@ -4,6 +4,7 @@ import type { FC } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { checkIsCurrencyCode } from '@track-my-life/shared/src/constants/currency';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Combobox } from '@track-my-life/ui/src/components/molecules/combobox/combobox';
 import {
@@ -39,7 +40,8 @@ export const CurrencyStep: FC<CurrencyStepProps> = ({ defaultCurrency }) => {
   } = useForm<CurrencyStepValues>({
     resolver: zodResolver(currencyStepSchema),
     defaultValues: {
-      baseCurrencyCode: (defaultCurrency ?? '') as CurrencyStepValues['baseCurrencyCode'],
+      ...(defaultCurrency &&
+        checkIsCurrencyCode(defaultCurrency) && { baseCurrencyCode: defaultCurrency }),
     },
   });
 
