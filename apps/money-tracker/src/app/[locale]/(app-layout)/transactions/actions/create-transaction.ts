@@ -6,10 +6,17 @@ import { transactionApiService } from '@track-my-life/next-shared/src/api/server
 
 import { requireAuth } from '@/actions/require-auth';
 
+import { createTransactionSchema } from '../constants/create-transaction-schema';
 import { revalidateTransactionCaches } from './revalidate-transaction-caches';
 
 export const createTransaction = async (input: CreateTransactionDto) => {
   await requireAuth();
+
+  const validated = createTransactionSchema.safeParse(input);
+
+  if (!validated.success) {
+    return null;
+  }
 
   const { categoryId, type, amount, currencyCode, date, description } = input;
   const { data, error } = await transactionApiService.createTransaction({

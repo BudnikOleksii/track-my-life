@@ -39,8 +39,13 @@ const fetchRefreshedToken = async (
     return { tokenData: null, response: refreshResponse };
   }
 
-  const tokenData = (await refreshResponse.json()) as AuthResponseDto;
-  return { tokenData, response: refreshResponse };
+  const body = (await refreshResponse.json()) as Record<string, unknown>;
+
+  if (typeof body?.accessToken !== 'string') {
+    return { tokenData: null, response: refreshResponse };
+  }
+
+  return { tokenData: body as unknown as AuthResponseDto, response: refreshResponse };
 };
 
 const retryWithNewToken = (request: Request, accessToken: string): Promise<Response> => {
