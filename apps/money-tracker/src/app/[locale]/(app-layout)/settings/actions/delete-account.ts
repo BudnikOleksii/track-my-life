@@ -1,5 +1,6 @@
 'use server';
 
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
 import type { DeleteAccountDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import {
@@ -14,19 +15,19 @@ import { PATHS } from '@/constants/paths';
 
 import { deleteAccountFormSchema } from '../constants/delete-account-form-schema';
 
-export const deleteAccount = async (input: DeleteAccountDto) => {
+export const deleteAccount = async (input: DeleteAccountDto): Promise<ServerActionResult<true>> => {
   await requireAuth();
 
   const validated = deleteAccountFormSchema.safeParse(input);
 
   if (!validated.success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { error } = await profileApiService.deleteAccount(validated.data);
 
   if (error) {
-    return null;
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   await serverActionTokenProvider.clearAccessToken();

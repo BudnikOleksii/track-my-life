@@ -44,7 +44,7 @@ export const DeleteRecurringTransactionDialog: FC<DeleteRecurringTransactionDial
     setIsDeleting(true);
     try {
       const result = await deleteRecurringTransaction(recurringTransaction.id);
-      if (result?.success) {
+      if (result.ok) {
         onSuccess(recurringTransaction.id);
       } else {
         toast.error(translations('content.deleteError'));

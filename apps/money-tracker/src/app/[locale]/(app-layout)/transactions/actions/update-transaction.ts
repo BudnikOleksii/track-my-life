@@ -1,6 +1,10 @@
 'use server';
 
-import type { UpdateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
+import type {
+  TransactionResponseDto,
+  UpdateTransactionDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 
@@ -24,13 +28,16 @@ const validateUpdateTransaction = (id: string, body: UpdateTransactionDto) => {
   return validated;
 };
 
-export const updateTransaction = async (id: string, body: UpdateTransactionDto) => {
+export const updateTransaction = async (
+  id: string,
+  body: UpdateTransactionDto,
+): Promise<ServerActionResult<TransactionResponseDto>> => {
   await requireAuth();
 
   const validated = validateUpdateTransaction(id, body);
 
   if (!validated) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { data, error } = await transactionApiService.updateTransaction(id, {
@@ -42,10 +49,10 @@ export const updateTransaction = async (id: string, body: UpdateTransactionDto) 
     ...(validated.data.description !== undefined && { description: validated.data.description }),
   });
 
-  if (error) {
-    return null;
+  if (error || !data) {
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   revalidateTransactionCaches();
-  return data;
+  return { ok: true, data };
 };

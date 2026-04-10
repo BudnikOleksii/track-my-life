@@ -45,7 +45,7 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
   const handlePause = useCallback(
     async (id: string) => {
       const result = await pauseRecurringTransaction(id);
-      if (!result?.success) {
+      if (!result.ok) {
         toast.error(translations('content.pauseError'));
       }
     },
@@ -55,7 +55,7 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
   const handleResume = useCallback(
     async (id: string) => {
       const result = await resumeRecurringTransaction(id);
-      if (!result?.success) {
+      if (!result.ok) {
         toast.error(translations('content.resumeError'));
       }
     },

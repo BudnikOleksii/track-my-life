@@ -73,7 +73,11 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
         <FormField
           label={translations('content.nameLabel')}
           htmlFor="category-name"
-          error={errors.name}
+          error={
+            errors.name?.message
+              ? { message: translations(`content.${errors.name.message}`) }
+              : undefined
+          }
         >
           <Input
             id="category-name"
@@ -83,7 +87,14 @@ export const CategoryFormPage: FC<CategoryFormPageProps> = ({ category, parentCa
           />
         </FormField>
 
-        <FormField label={translations('content.typeLabel')} error={errors.type}>
+        <FormField
+          label={translations('content.typeLabel')}
+          error={
+            errors.type?.message
+              ? { message: translations(`content.${errors.type.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="type"
             control={control}

@@ -84,7 +84,14 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-        <FormField label={translations('content.typeLabel')} error={errors.type}>
+        <FormField
+          label={translations('content.typeLabel')}
+          error={
+            errors.type?.message
+              ? { message: translations(`content.${errors.type.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="type"
             control={control}
@@ -106,7 +113,14 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
           />
         </FormField>
 
-        <FormField label={translations('content.categoryLabel')} error={errors.categoryId}>
+        <FormField
+          label={translations('content.categoryLabel')}
+          error={
+            errors.categoryId?.message
+              ? { message: translations(`content.${errors.categoryId.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="categoryId"
             control={control}
@@ -128,7 +142,11 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
         <FormField
           label={translations('content.amountLabel')}
           htmlFor="recurring-transaction-amount"
-          error={errors.amount}
+          error={
+            errors.amount?.message
+              ? { message: translations(`content.${errors.amount.message}`) }
+              : undefined
+          }
         >
           <Input
             id="recurring-transaction-amount"
@@ -148,7 +166,14 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
           <Input id="recurring-transaction-currency" readOnly {...register('currencyCode')} />
         </Field>
 
-        <FormField label={translations('content.frequencyLabel')} error={errors.frequency}>
+        <FormField
+          label={translations('content.frequencyLabel')}
+          error={
+            errors.frequency?.message
+              ? { message: translations(`content.${errors.frequency.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="frequency"
             control={control}
@@ -180,7 +205,11 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
         <FormField
           label={translations('content.intervalLabel')}
           htmlFor="recurring-transaction-interval"
-          error={errors.interval}
+          error={
+            errors.interval?.message
+              ? { message: translations(`content.${errors.interval.message}`) }
+              : undefined
+          }
         >
           <Input
             id="recurring-transaction-interval"
@@ -196,7 +225,11 @@ export const RecurringTransactionFormPage: FC<RecurringTransactionFormPageProps>
         <FormField
           label={translations('content.startDateLabel')}
           htmlFor="recurring-transaction-start-date"
-          error={errors.startDate}
+          error={
+            errors.startDate?.message
+              ? { message: translations(`content.${errors.startDate.message}`) }
+              : undefined
+          }
         >
           <Input
             id="recurring-transaction-start-date"

@@ -43,7 +43,7 @@ export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
     setIsDeleting(true);
     try {
       const result = await deleteCategory(category.id);
-      if (result?.success) {
+      if (result.ok) {
         onSuccess(category.id);
       }
     } finally {

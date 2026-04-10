@@ -56,7 +56,7 @@ export const DeleteAccountSection: FC = () => {
     async (values: DeleteAccountFormValues) => {
       try {
         const result = await deleteAccount(values);
-        if (!result) {
+        if (!result.ok) {
           toast.error(translations('content.deleteAccountError'));
         }
       } catch (error) {

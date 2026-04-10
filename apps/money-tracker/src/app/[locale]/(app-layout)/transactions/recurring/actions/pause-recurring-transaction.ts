@@ -1,5 +1,7 @@
 'use server';
 
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
+
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { revalidatePath, updateTag } from 'next/cache';
 
@@ -8,21 +10,21 @@ import { CACHE_TAG } from '@/constants/cache-tag';
 import { entityIdSchema } from '@/constants/entity-id-schema';
 import { PATHS } from '@/constants/paths';
 
-export const pauseRecurringTransaction = async (id: string) => {
+export const pauseRecurringTransaction = async (id: string): Promise<ServerActionResult<true>> => {
   await requireAuth();
 
   if (!entityIdSchema.safeParse(id).success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { error } = await recurringTransactionApiService.pauseRecurringTransaction(id);
 
   if (error) {
-    return null;
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   updateTag(CACHE_TAG.RECURRING_TRANSACTIONS);
   revalidatePath(PATHS.recurringTransactions);
 
-  return { success: true };
+  return { ok: true, data: true };
 };

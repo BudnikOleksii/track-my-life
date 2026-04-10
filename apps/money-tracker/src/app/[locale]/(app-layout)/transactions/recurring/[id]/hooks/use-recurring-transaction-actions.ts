@@ -47,7 +47,7 @@ export const useRecurringTransactionActions = ({
     startTransition(async () => {
       applyOptimistic({ type: 'pause' });
       const result = await pauseRecurringTransaction(recurringTransaction.id);
-      if (!result?.success) {
+      if (!result.ok) {
         toast.error(translations('content.pauseError'));
       }
       router.refresh();
@@ -58,7 +58,7 @@ export const useRecurringTransactionActions = ({
     startTransition(async () => {
       applyOptimistic({ type: 'resume' });
       const result = await resumeRecurringTransaction(recurringTransaction.id);
-      if (!result?.success) {
+      if (!result.ok) {
         toast.error(translations('content.resumeError'));
       }
       router.refresh();
@@ -68,7 +68,7 @@ export const useRecurringTransactionActions = ({
   const handleDelete = useCallback(() => {
     startTransition(async () => {
       const result = await deleteRecurringTransaction(recurringTransaction.id);
-      if (result?.success) {
+      if (result.ok) {
         router.push(PATHS.recurringTransactions);
       } else {
         toast.error(translations('content.deleteError'));

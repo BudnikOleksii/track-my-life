@@ -111,7 +111,7 @@ export const useRecurringTransactionFormPage = ({
           ? await updateRecurringTransaction(recurringTransaction.id, body)
           : await createRecurringTransaction(body);
 
-      if (result) {
+      if (result.ok) {
         router.push(PATHS.recurringTransactions);
         return { success: true, error: null };
       }
