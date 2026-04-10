@@ -1,6 +1,7 @@
 'use client';
 
-import type { FC, ReactNode } from 'react';
+import type { LucideIcon } from 'lucide-react';
+import type { FC } from 'react';
 
 import { usePathname } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
@@ -33,43 +34,43 @@ import styles from './AppSidebar.module.scss';
 
 interface NavigationItem {
   href: string;
-  icon: ReactNode;
+  Icon: LucideIcon;
   labelKey: string;
   children?: NavigationItem[];
 }
 
 const NAVIGATION_ITEM_LIST: NavigationItem[] = [
-  { href: PATHS.dashboard, icon: <LayoutDashboard size={20} />, labelKey: 'labels.dashboard' },
+  { href: PATHS.dashboard, Icon: LayoutDashboard, labelKey: 'labels.dashboard' },
   {
     href: PATHS.transactions,
-    icon: <ArrowLeftRight size={20} />,
+    Icon: ArrowLeftRight,
     labelKey: 'labels.transactions',
     children: [
       {
         href: PATHS.transactions,
-        icon: <CalendarDays size={20} />,
+        Icon: CalendarDays,
         labelKey: 'labels.transactionsByDate',
       },
       {
         href: PATHS.transactionsByCategory,
-        icon: <LayoutList size={20} />,
+        Icon: LayoutList,
         labelKey: 'labels.transactionsByCategory',
       },
       {
         href: PATHS.recurringTransactions,
-        icon: <Repeat size={20} />,
+        Icon: Repeat,
         labelKey: 'labels.recurringTransactions',
       },
       {
         href: PATHS.transactionsImport,
-        icon: <Import size={20} />,
+        Icon: Import,
         labelKey: 'labels.transactionsImport',
       },
     ],
   },
-  { href: PATHS.categories, icon: <Tags size={20} />, labelKey: 'labels.categories' },
-  { href: PATHS.budgets, icon: <Wallet size={20} />, labelKey: 'labels.budgets' },
-  { href: PATHS.settings, icon: <Settings size={20} />, labelKey: 'labels.settings' },
+  { href: PATHS.categories, Icon: Tags, labelKey: 'labels.categories' },
+  { href: PATHS.budgets, Icon: Wallet, labelKey: 'labels.budgets' },
+  { href: PATHS.settings, Icon: Settings, labelKey: 'labels.settings' },
 ];
 
 const getAllLeafItemList = (itemList: NavigationItem[]): NavigationItem[] =>
@@ -121,23 +122,33 @@ export const AppSidebar: FC = () => {
     });
   }, [parentItemWithActiveChildList]);
 
+  useEffect(() => {
+    if (!isMobileOpen) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onCloseMobile();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isMobileOpen, onCloseMobile]);
+
   const handleToggleSubmenu = (href: string) => {
     setOpenSubmenuList((prev) =>
       prev.includes(href) ? prev.filter((item) => item !== href) : [...prev, href],
     );
   };
 
-  const checkIsSubmenuOpen = (href: string): boolean => openSubmenuList.includes(href);
-
   return (
     <>
       {isMobileOpen && (
-        <div
-          className={styles.backdrop}
-          onClick={onCloseMobile}
-          onKeyDown={undefined}
-          role="presentation"
-        />
+        <div className={styles.backdrop} aria-hidden="true" onClick={onCloseMobile} />
       )}
       <aside
         className={cn(
@@ -162,7 +173,7 @@ export const AppSidebar: FC = () => {
         <nav className={styles.nav}>
           {NAVIGATION_ITEM_LIST.map((item) => {
             if (item.children) {
-              const isOpen = checkIsSubmenuOpen(item.href);
+              const isOpen = openSubmenuList.includes(item.href);
               const hasActiveChild = checkHasActiveChild(item, activeHref);
 
               return (
@@ -181,7 +192,9 @@ export const AppSidebar: FC = () => {
                     }}
                     title={isCollapsed ? translations(item.labelKey) : undefined}
                   >
-                    <span className={styles.navIcon}>{item.icon}</span>
+                    <span className={styles.navIcon}>
+                      <item.Icon size={20} />
+                    </span>
                     {!isCollapsed && (
                       <>
                         <Typography
@@ -214,7 +227,9 @@ export const AppSidebar: FC = () => {
                             onClick={onCloseMobile}
                             title={isCollapsed ? translations(child.labelKey) : undefined}
                           >
-                            <span className={styles.navIcon}>{child.icon}</span>
+                            <span className={styles.navIcon}>
+                              <child.Icon size={20} />
+                            </span>
                             <Typography
                               variant="body-m"
                               fontWeight={isActive ? 'semibold' : 'medium'}
@@ -241,7 +256,9 @@ export const AppSidebar: FC = () => {
                 onClick={onCloseMobile}
                 title={isCollapsed ? translations(item.labelKey) : undefined}
               >
-                <span className={styles.navIcon}>{item.icon}</span>
+                <span className={styles.navIcon}>
+                  <item.Icon size={20} />
+                </span>
                 {!isCollapsed && (
                   <Typography
                     variant="body-m"

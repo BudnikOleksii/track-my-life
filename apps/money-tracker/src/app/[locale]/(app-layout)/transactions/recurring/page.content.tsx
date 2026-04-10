@@ -6,7 +6,7 @@ import type { FC } from 'react';
 import { Pagination } from '@track-my-life/ui/src/components/molecules/pagination/pagination';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useTransition } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -41,23 +41,28 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
   const { handleFilterChange } = useRecurringTransactionFilters();
   const [deletingTransaction, setDeletingTransaction] =
     useState<RecurringTransactionResponseDto | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   const handlePause = useCallback(
-    async (id: string) => {
-      const result = await pauseRecurringTransaction(id);
-      if (!result.ok) {
-        toast.error(translations('content.pauseError'));
-      }
+    (id: string) => {
+      startTransition(async () => {
+        const result = await pauseRecurringTransaction(id);
+        if (!result.ok) {
+          toast.error(translations('content.pauseError'));
+        }
+      });
     },
     [translations],
   );
 
   const handleResume = useCallback(
-    async (id: string) => {
-      const result = await resumeRecurringTransaction(id);
-      if (!result.ok) {
-        toast.error(translations('content.resumeError'));
-      }
+    (id: string) => {
+      startTransition(async () => {
+        const result = await resumeRecurringTransaction(id);
+        if (!result.ok) {
+          toast.error(translations('content.resumeError'));
+        }
+      });
     },
     [translations],
   );
@@ -75,6 +80,7 @@ export const RecurringTransactionsPageContent: FC<RecurringTransactionsPageConte
 
       <RecurringTransactionList
         recurringTransactionList={recurringTransactionList}
+        isPending={isPending}
         onDelete={setDeletingTransaction}
         onPause={handlePause}
         onResume={handleResume}

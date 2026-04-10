@@ -1,7 +1,7 @@
 import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { TransactionType } from '@/constants/transaction';
 
@@ -85,6 +85,7 @@ export const useCategoryPicker = ({
 }: UseCategoryPickerParams) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const { mainCategoryList, subcategoryMap, selectedDisplayName, selectedMainCategoryId } =
     useCategoryData({ categoryList, transactionType, value, showAllOption, allCategoriesLabel });
@@ -95,9 +96,22 @@ export const useCategoryPicker = ({
   );
 
   useEffect(() => {
-    if (isOpen) {
-      setActiveCategoryId(selectedMainCategoryId);
+    if (!isOpen) {
+      return;
     }
+
+    setActiveCategoryId(selectedMainCategoryId);
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [isOpen, selectedMainCategoryId]);
 
   const handleToggle = useCallback(() => {
@@ -122,14 +136,9 @@ export const useCategoryPicker = ({
     [subcategoryMap, handleSelectAndClose],
   );
 
-  const handleAllParentClick = useCallback(() => {
-    if (activeCategoryId) {
-      handleSelectAndClose(activeCategoryId);
-    }
-  }, [activeCategoryId, handleSelectAndClose]);
-
   return {
     isOpen,
+    rootRef,
     mainCategoryList,
     subcategoryMap,
     activeSubcategoryList,
@@ -141,6 +150,5 @@ export const useCategoryPicker = ({
     handleMainCategoryClick,
     handleSubcategoryClick: handleSelectAndClose,
     handleAllCategoriesClick: handleSelectAndClose,
-    handleAllParentClick,
   };
 };

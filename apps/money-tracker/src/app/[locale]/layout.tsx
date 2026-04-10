@@ -19,11 +19,13 @@ const poppins = Poppins({
   subsets: ['latin'],
   variable: '--default-font-family',
   weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--accent-font-family',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -52,7 +54,7 @@ const RootLayout: FC<Props> = async (props) => {
     <html lang={params.locale} suppressHydrationWarning>
       <body className={cn(poppins.variable, outfit.variable)}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
-          <ThemeProvider>
+          <ThemeProvider attribute="data-theme">
             <TimezoneOffsetSetter />
             {children}
 
