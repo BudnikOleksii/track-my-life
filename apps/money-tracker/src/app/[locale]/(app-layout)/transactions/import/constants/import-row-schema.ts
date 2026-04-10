@@ -1,6 +1,5 @@
+import { MIN_FIELD_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { z } from 'zod';
-
-const MIN_FIELD_LENGTH = 1;
 const VALID_TYPE_SET = new Set(['expense', 'income']);
 
 export const importRowSchema = z.object({

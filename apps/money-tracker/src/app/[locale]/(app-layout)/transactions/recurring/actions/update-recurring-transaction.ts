@@ -10,15 +10,21 @@ import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
+import { entityIdSchema } from '@/constants/entity-id-schema';
 import { PATHS } from '@/constants/paths';
 
 import { recurringTransactionFormSchema } from '../constants/recurring-transaction-form-schema';
 
+// oxlint-disable-next-line max-statements
 export const updateRecurringTransaction = async (
   id: string,
   body: UpdateRecurringTransactionDto,
 ) => {
   await requireAuth();
+
+  if (!entityIdSchema.safeParse(id).success) {
+    return null;
+  }
 
   const validated = recurringTransactionFormSchema.partial().safeParse(body);
 

@@ -1,10 +1,8 @@
 import { CURRENCY_CODE_LIST } from '@track-my-life/shared/src/constants/currency';
+import { MIN_FIELD_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { z } from 'zod';
 
 import { transactionTypeSchema } from '@/constants/transaction';
-
-const MIN_FIELD_LENGTH = 1;
-const MIN_AMOUNT_LENGTH = 1;
 const MIN_INTERVAL = 1;
 
 const RECURRING_FREQUENCY = {
@@ -20,7 +18,7 @@ export const recurringTransactionFormSchema = z.object({
   amount: z
     .string()
     .trim()
-    .min(MIN_AMOUNT_LENGTH, 'amountRequired')
+    .min(MIN_FIELD_LENGTH, 'amountRequired')
     .regex(/^\d+([.,]\d{1,2})?$/, 'amountInvalid'),
   currencyCode: z.enum(CURRENCY_CODE_LIST, { error: 'currencyRequired' }),
   frequency: z.enum(

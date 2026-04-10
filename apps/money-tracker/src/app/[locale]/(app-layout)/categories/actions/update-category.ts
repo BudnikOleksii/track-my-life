@@ -7,12 +7,15 @@ import { revalidatePath, updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
+import { entityIdSchema } from '@/constants/entity-id-schema';
 import { PATHS } from '@/constants/paths';
 
 import { categoryFormSchema } from '../constants/category-form-schema';
 
-export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
-  await requireAuth();
+const validateUpdateCategory = (id: string, body: UpdateCategoryDto) => {
+  if (!entityIdSchema.safeParse(id).success) {
+    return null;
+  }
 
   const validated = categoryFormSchema.partial().safeParse(body);
 
@@ -20,7 +23,24 @@ export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
     return null;
   }
 
-  const { data, error } = await categoryApiService.updateCategory(id, body);
+  return validated;
+};
+
+export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
+  await requireAuth();
+
+  const validated = validateUpdateCategory(id, body);
+
+  if (!validated) {
+    return null;
+  }
+
+  const { data, error } = await categoryApiService.updateCategory(id, {
+    ...(validated.data.name !== undefined && { name: validated.data.name }),
+    ...(validated.data.parentCategoryId !== undefined && {
+      parentCategoryId: validated.data.parentCategoryId,
+    }),
+  });
 
   if (error) {
     return null;

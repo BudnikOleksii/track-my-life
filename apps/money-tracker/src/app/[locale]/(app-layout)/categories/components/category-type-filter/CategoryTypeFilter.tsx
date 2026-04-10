@@ -14,8 +14,6 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './CategoryTypeFilter.module.scss';
 
-export type { FilterValue };
-
 interface CategoryTypeFilterProps {
   value: FilterValue;
   onValueChange: (value: FilterValue) => void;

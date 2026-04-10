@@ -3,6 +3,7 @@ import type { ApiClient } from '../api-client';
 import type { ReadOnlyTokenProvider, ReadWriteTokenProvider } from '../token/types';
 
 import { HTTP_STATUS_CODE } from '../../../constants/http-status-code';
+import { EMPTY_LIST_LENGTH } from '../../../constants/list';
 import { checkIsReadWriteTokenProvider } from '../token/types';
 
 interface AuthInterceptorConfig {
@@ -39,8 +40,16 @@ const fetchRefreshedToken = async (
     return { tokenData: null, response: refreshResponse };
   }
 
-  const tokenData = (await refreshResponse.json()) as AuthResponseDto;
-  return { tokenData, response: refreshResponse };
+  const body = (await refreshResponse.json()) as Record<string, unknown>;
+
+  if (
+    typeof body?.accessToken !== 'string' ||
+    body.accessToken.trim().length === EMPTY_LIST_LENGTH
+  ) {
+    return { tokenData: null, response: refreshResponse };
+  }
+
+  return { tokenData: body as unknown as AuthResponseDto, response: refreshResponse };
 };
 
 const retryWithNewToken = (request: Request, accessToken: string): Promise<Response> => {

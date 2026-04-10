@@ -9,7 +9,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8
 const securityHeaderList = [
   {
     key: 'Content-Security-Policy',
-    value: `default-src 'self'; script-src 'self' 'unsafe-inline'${IS_DEV ? " 'unsafe-eval'" : ''}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' ${API_BASE_URL} https:; frame-ancestors 'none'`,
+    value: `default-src 'self'; script-src 'self' 'unsafe-inline'${IS_DEV ? " 'unsafe-eval'" : ''}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' ${API_BASE_URL}; frame-ancestors 'none'`,
   },
   {
     key: 'X-Frame-Options',
@@ -26,6 +26,10 @@ const securityHeaderList = [
   {
     key: 'Referrer-Policy',
     value: 'strict-origin-when-cross-origin',
+  },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), payment=()',
   },
 ];
 
