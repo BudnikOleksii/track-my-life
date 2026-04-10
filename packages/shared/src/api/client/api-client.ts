@@ -195,12 +195,7 @@ export class ApiClient {
       initialRequest,
     );
     const fetchRequestClone = fetchRequest.clone();
-    const fetchInit: NextFetchRequestInit = {
-      method: fetchRequest.method,
-      headers: fetchRequest.headers,
-      body: fetchRequest.body,
-      duplex: 'half',
-    };
+    const fetchInit = this.buildFetchInit(fetchRequest, options as RequestOptions);
     const rawResponse = await fetch(fetchRequest.url, fetchInit);
     const response = await applyResponseInterceptorList(
       this.responseInterceptorList,
