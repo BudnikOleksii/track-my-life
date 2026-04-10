@@ -37,7 +37,6 @@ export const updateCategory = async (id: string, body: UpdateCategoryDto) => {
 
   const { data, error } = await categoryApiService.updateCategory(id, {
     ...(validated.data.name !== undefined && { name: validated.data.name }),
-    ...(validated.data.type !== undefined && { type: validated.data.type }),
     ...(validated.data.parentCategoryId !== undefined && {
       parentCategoryId: validated.data.parentCategoryId,
     }),

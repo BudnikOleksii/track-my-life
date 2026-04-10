@@ -8,7 +8,7 @@ import {
 import { MIN_FIELD_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { z } from 'zod';
 
-const socialCodeSchema = z.string().min(MIN_FIELD_LENGTH);
+const socialCodeSchema = z.string().trim().min(MIN_FIELD_LENGTH);
 
 interface ExchangeResult {
   success: boolean;
