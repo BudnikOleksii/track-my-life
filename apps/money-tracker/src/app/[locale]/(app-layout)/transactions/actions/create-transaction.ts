@@ -18,14 +18,13 @@ export const createTransaction = async (input: CreateTransactionDto) => {
     return null;
   }
 
-  const { categoryId, type, amount, currencyCode, date, description } = input;
   const { data, error } = await transactionApiService.createTransaction({
-    categoryId,
-    type,
-    amount,
-    currencyCode,
-    date,
-    ...(description !== undefined && { description }),
+    categoryId: validated.data.categoryId,
+    type: validated.data.type,
+    amount: validated.data.amount,
+    currencyCode: validated.data.currencyCode,
+    date: validated.data.date,
+    ...(validated.data.description !== undefined && { description: validated.data.description }),
   });
 
   if (error) {
