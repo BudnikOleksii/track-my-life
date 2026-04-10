@@ -85,7 +85,14 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
       </div>
 
       <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
-        <FormField label={translations('content.typeLabel')} error={errors.type}>
+        <FormField
+          label={translations('content.typeLabel')}
+          error={
+            errors.type?.message
+              ? { message: translations(`content.${errors.type.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="type"
             control={control}
@@ -102,7 +109,14 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
           />
         </FormField>
 
-        <FormField label={translations('content.categoryLabel')} error={errors.categoryId}>
+        <FormField
+          label={translations('content.categoryLabel')}
+          error={
+            errors.categoryId?.message
+              ? { message: translations(`content.${errors.categoryId.message}`) }
+              : undefined
+          }
+        >
           <Controller
             name="categoryId"
             control={control}
@@ -125,7 +139,11 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
         <FormField
           label={translations('content.amountLabel')}
           htmlFor="transaction-amount"
-          error={errors.amount}
+          error={
+            errors.amount?.message
+              ? { message: translations(`content.${errors.amount.message}`) }
+              : undefined
+          }
         >
           <Input
             id="transaction-amount"
@@ -143,7 +161,11 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
           <FormField
             label={translations('content.dateLabel')}
             htmlFor="transaction-date"
-            error={errors.date}
+            error={
+              errors.date?.message
+                ? { message: translations(`content.${errors.date.message}`) }
+                : undefined
+            }
           >
             <Input
               id="transaction-date"
@@ -153,7 +175,14 @@ export const TransactionFormPage: FC<TransactionFormPageProps> = ({
             />
           </FormField>
 
-          <FormField label={translations('content.timeLabel')} error={errors.time}>
+          <FormField
+            label={translations('content.timeLabel')}
+            error={
+              errors.time?.message
+                ? { message: translations(`content.${errors.time.message}`) }
+                : undefined
+            }
+          >
             <Controller
               name="time"
               control={control}

@@ -6,32 +6,19 @@
 
 | #   | Task                                                                                                                                             | Impact | Effort | Agent(s)                               | Status |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------ | -------------------------------------- | ------ |
-| 1   | [Strengthen `requireAuth` — verify JWT, not just cookie presence](#1-strengthen-requireauth--verify-jwt-not-just-cookie-presence)                | 5      | S      | security-auditor                       | Done   |
-| 2   | [Add startup validation for JWT_SECRET](#2-add-startup-validation-for-jwt_secret)                                                                | 5      | S      | security-auditor                       | Done   |
-| 3   | [Return structured errors from server actions (not null)](#3-return-structured-errors-from-server-actions-not-null)                              | 5      | M      | architect-reviewer, qa-expert          | Todo   |
-| 4   | [Add consistent Zod validation to all mutation server actions](#4-add-consistent-zod-validation-to-all-mutation-server-actions)                  | 4      | S      | security-auditor, architect-reviewer   | Done   |
-| 5   | [Fix form error i18n — forms may display raw keys](#5-fix-form-error-i18n--forms-may-display-raw-keys)                                           | 4      | S      | react-specialist                       | Todo   |
 | 6   | [Add `aria-invalid` to Input component](#6-add-aria-invalid-to-input-component)                                                                  | 4      | S      | react-specialist                       | Todo   |
 | 7   | [Make CategoryPicker keyboard-accessible](#7-make-categorypicker-keyboard-accessible)                                                            | 4      | M      | react-specialist                       | Todo   |
-| 8   | [Remove type re-export from `CategoryTypeFilter` client file](#8-remove-type-re-export-from-categorytypefilter-client-file)                      | 4      | S      | react-specialist                       | Done   |
 | 9   | [Verify ThemeProvider has `attribute="data-theme"`](#9-verify-themeprovider-has-attributedata-theme)                                             | 4      | S      | performance-engineer                   | Todo   |
 | 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                                         | 4      | M      | performance-engineer                   | Todo   |
-| 11  | [Wire Storybook test runner to `pnpm test`](#11-wire-storybook-test-runner-to-pnpm-test)                                                         | 4      | S      | qa-expert                              | Todo   |
-| 12  | [Add test job to GitHub Actions PR workflow](#12-add-test-job-to-github-actions-pr-workflow)                                                     | 4      | S      | qa-expert                              | Todo   |
 | 13  | [Make `ApiResponse<T>` a discriminated union](#13-make-apiresponset-a-discriminated-union)                                                       | 4      | M      | typescript-pro                         | Todo   |
-| 14  | [Add runtime guard to auth interceptor token refresh](#14-add-runtime-guard-to-auth-interceptor-token-refresh)                                   | 4      | S      | typescript-pro                         | Done   |
 | 15  | [Fix profileFormSchema — use CountryCode union](#15-fix-profileformschema--use-countrycode-union)                                                | 4      | S      | typescript-pro                         | Todo   |
 | 16  | [Replace CSP `unsafe-inline` with nonce-based script-src](#16-replace-csp-unsafe-inline-with-nonce-based-script-src)                             | 4      | L      | security-auditor, nextjs-developer     | Todo   |
-| 17  | [Tighten security headers (CSP connect-src, Permissions-Policy)](#17-tighten-security-headers-csp-connect-src-permissions-policy)                | 3      | S      | security-auditor                       | Done   |
 | 18  | [Set onboarding status cookie to httpOnly](#18-set-onboarding-status-cookie-to-httponly)                                                         | 3      | M      | security-auditor                       | Todo   |
 | 19  | [Add rate limiting on auth endpoints](#19-add-rate-limiting-on-auth-endpoints)                                                                   | 3      | M      | security-auditor                       | Todo   |
-| 20  | [Validate entity ID params in server actions](#20-validate-entity-id-params-in-server-actions)                                                   | 3      | S      | security-auditor                       | Done   |
 | 21  | [Remove redundant `revalidatePath` alongside `updateTag`](#21-remove-redundant-revalidatepath-alongside-updatetag)                               | 3      | S      | nextjs-developer, performance-engineer | Todo   |
 | 22  | [Stop invalidating CATEGORIES cache on transaction mutations](#22-stop-invalidating-categories-cache-on-transaction-mutations)                   | 3      | S      | performance-engineer                   | Todo   |
 | 23  | [Cache Intl formatter instances in formatAmount/formatDate](#23-cache-intl-formatter-instances-in-formatamountformatdate)                        | 3      | S      | performance-engineer                   | Todo   |
 | 24  | [Add `display: 'swap'` to Google Fonts](#24-add-display-swap-to-google-fonts)                                                                    | 3      | S      | nextjs-developer, performance-engineer | Todo   |
-| 25  | [Add missing loading.tsx and error.tsx for sub-routes](#25-add-missing-loadingtsx-and-errortsx-for-sub-routes)                                   | 3      | S      | nextjs-developer                       | Todo   |
-| 26  | [Complete SEO setup (metadata, sitemap, robots)](#26-complete-seo-setup-metadata-sitemap-robots)                                                 | 3      | M      | nextjs-developer                       | Todo   |
 | 27  | [Replace hand-rolled dropdowns with Radix](#27-replace-hand-rolled-dropdowns-with-radix)                                                         | 3      | S      | nextjs-developer, react-specialist     | Todo   |
 | 28  | [Fix useProfileForm — direct defaultValues instead of useEffect+reset](#28-fix-useprofileform--direct-defaultvalues-instead-of-useeffectreset)   | 3      | S      | react-specialist                       | Todo   |
 | 29  | [Link RecurringFrequency Zod enum to generated type](#29-link-recurringfrequency-zod-enum-to-generated-type)                                     | 3      | S      | typescript-pro                         | Todo   |
@@ -53,43 +40,6 @@
 | 45  | [Deduplicate option lists + add Recharts loading fallbacks](#45-deduplicate-option-lists--add-recharts-loading-fallbacks)                        | 2      | S      | performance-engineer                   | Todo   |
 | 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                               | 2      | S      | qa-expert                              | Todo   |
 
-## Previous Improvements (Done)
-
-Items completed in the previous improvement cycle (2026-04-05):
-
-| Task                                                    | Status |
-| ------------------------------------------------------- | ------ |
-| Add Security Headers                                    | Done   |
-| Add Error Boundaries and Loading States                 | Done   |
-| Add Build and Format Check to CI                        | Done   |
-| Fix JWT Validation in Middleware                        | Done   |
-| Add File Upload Validation                              | Done   |
-| Lazy-Load Recharts                                      | Done   |
-| Use Zod Enums Instead of Strings for Union Types        | Done   |
-| Fix Combobox Accessibility                              | Done   |
-| Decouple `packages/shared` from Next.js                 | Done   |
-| Fix Unsafe `query as Record<string, unknown>` Casts     | Done   |
-| Add Auth Guards to Server Actions                       | Done   |
-| Add Dashboard `revalidatePath` to Transaction Mutations | Done   |
-| Extract `useUrlFilters` Shared Hook                     | Done   |
-| Create `FormField` Wrapper for FieldError               | Done   |
-| Extract CategoryFormPage Logic to Hook                  | Done   |
-| Enable `exactOptionalPropertyTypes`                     | Done   |
-| Lazy-Load papaparse                                     | Done   |
-| Deduplicate `lucide-react`                              | Done   |
-| Enable Turborepo Cache for Lint/Type-Check              | Done   |
-| Add Exhaustive Union Checking Pattern                   | Done   |
-| Adopt React 19 APIs (useActionState, useFormStatus)     | Done   |
-| Fix Font Class Composition                              | Done   |
-
-## Backlog (Carried Over)
-
-| Task                              | Reason                                                      |
-| --------------------------------- | ----------------------------------------------------------- |
-| Make Access Token Cookie HttpOnly | Need to brainstorm BFF pattern for browser token management |
-| Add Tests (Currently 0% Coverage) | Large effort; start with pure utils in packages/shared      |
-| Commit OpenAPI Spec File          | Active development, need sync strategy                      |
-
 ## Recommended Execution Order
 
 **Sprint 1 — Critical Security (S effort, Impact 5):** #1, #2
@@ -105,82 +55,6 @@ Items completed in the previous improvement cycle (2026-04-05):
 ---
 
 ## Detailed Findings
-
-### 1. Strengthen `requireAuth` — verify JWT, not just cookie presence
-
-**Impact:** 5 | **Effort:** S | **Agent:** security-auditor
-
-`requireAuth()` only checks that the `access_token` cookie exists via `cookies().get()`. It does not verify the JWT signature or expiration. Server actions can be called directly, bypassing middleware where JWT verification actually happens.
-
-**Files:**
-
-- `apps/money-tracker/src/actions/require-auth.ts`
-
-**Action:** Call `verifyToken()` from `packages/shared/src/utils/jwt.ts` inside `requireAuth` to validate the JWT before allowing the action to proceed.
-
----
-
-### 2. Add startup validation for JWT_SECRET
-
-**Impact:** 5 | **Effort:** S | **Agent:** security-auditor
-
-`.env.local` has a weak placeholder `JWT_SECRET="your-secret-key-change-me-in-production-min-32-chars"`. No build-time or startup-time check enforces that this has been changed. If deployed with the default, attackers can forge JWTs.
-
-**Files:**
-
-- `apps/money-tracker/.env.local`
-- `packages/shared/src/utils/jwt.ts` (only warns, does not throw)
-
-**Action:** Add a check in `instrumentation.ts` or `next.config.ts` that throws if `JWT_SECRET` is unset or matches the placeholder pattern.
-
----
-
-### 3. Return structured errors from server actions (not null)
-
-**Impact:** 5 | **Effort:** M | **Agents:** architect-reviewer, qa-expert
-
-Every mutation server action returns `null` on any error. The API's `ProblemDetailsDto` (status, title, type) is discarded. Users always see a generic error toast, and failures are not logged server-side.
-
-**Files:**
-
-- All action files under `(app-layout)/transactions/actions/`, `categories/actions/`, `settings/actions/`
-
-**Action:** Define a discriminated union return type: `{ ok: true; data: T } | { ok: false; error: string }`. The import action already follows this pattern. Add `console.error` for 5xx errors.
-
----
-
-### 4. Add consistent Zod validation to all mutation server actions
-
-**Impact:** 4 | **Effort:** S | **Agents:** security-auditor, architect-reviewer
-
-`createTransaction` and `updateTransaction` pass input directly to the API without Zod validation. `updateCategory` validates with `safeParse` but then sends the raw `body` (not `validated.data`) to the API. Other actions (`createCategory`, `updateProfile`, recurring transactions) validate correctly.
-
-**Files:**
-
-- `transactions/actions/create-transaction.ts` (no validation)
-- `transactions/actions/update-transaction.ts` (no validation)
-- `categories/actions/update-category.ts:23` (uses `body` instead of `validated.data`)
-- `auth/callback/action.ts` (`exchangeSocialCode` — no validation on `code` param)
-
-**Action:** Add `safeParse` to all mutation actions. Fix `updateCategory` to use `validated.data`. Add basic validation to `exchangeSocialCode`.
-
----
-
-### 5. Fix form error i18n — forms may display raw keys
-
-**Impact:** 4 | **Effort:** S | **Agent:** react-specialist
-
-Zod error messages are i18n keys (e.g., `'categoryRequired'`). `ChangePasswordForm` translates them via `tErrors(errors.field.message)`, but `TransactionFormPage` and `CategoryFormPage` pass raw error objects to `FormField` without translation — the user may see the raw key string.
-
-**Files:**
-
-- `transactions/components/transaction-form-page/TransactionFormPage.tsx:88`
-- `categories/components/category-form-page/CategoryFormPage.tsx:86`
-- `settings/components/change-password-form/ChangePasswordForm.tsx` (correct pattern)
-
-**Action:** Apply the `tErrors()` translation pattern consistently in all forms, matching `ChangePasswordForm`.
-
----
 
 ### 6. Add `aria-invalid` to Input component
 
@@ -208,20 +82,6 @@ Zod error messages are i18n keys (e.g., `'categoryRequired'`). `ChangePasswordFo
 - `transactions/components/category-picker/CategoryPicker.tsx`
 
 **Action:** Add `role="listbox"` to the container, `role="option"` to each item, arrow key navigation, Enter to select, and Escape to close. Consider wrapping the popover portion with Radix Popover.
-
----
-
-### 8. Remove type re-export from `CategoryTypeFilter` client file
-
-**Impact:** 4 | **Effort:** S | **Agent:** react-specialist
-
-`CategoryTypeFilter.tsx:17` re-exports `FilterValue` from a `'use client'` file. This can cause a runtime `ReferenceError` if a server component imports from this path.
-
-**Files:**
-
-- `categories/components/category-type-filter/CategoryTypeFilter.tsx:17`
-
-**Action:** Remove the re-export. Callers should import `FilterValue` from `@/constants/transaction` directly.
 
 ---
 
@@ -256,35 +116,6 @@ Theme CSS uses `[data-theme="light"]` / `[data-theme="dark"]` selectors, but `ne
 
 ---
 
-### 11. Wire Storybook test runner to `pnpm test`
-
-**Impact:** 4 | **Effort:** S | **Agent:** qa-expert
-
-`@storybook/addon-vitest` and Playwright are fully configured in `apps/storybook/vite.config.ts`, but the package has no `"test"` script. The Storybook tests never run via `pnpm test`.
-
-**Files:**
-
-- `apps/storybook/package.json` (missing `"test"` script)
-- `apps/storybook/vite.config.ts` (fully configured)
-
-**Action:** Add `"test": "vitest run"` to `apps/storybook/package.json`.
-
----
-
-### 12. Add test job to GitHub Actions PR workflow
-
-**Impact:** 4 | **Effort:** S | **Agent:** qa-expert
-
-The PR workflow runs `lint`, `type-check`, `stylelint`, `build`, and `fmt:check` — but has no `test` job. Tests are not enforced on PRs.
-
-**Files:**
-
-- `.github/workflows/pull-request.yml`
-
-**Action:** Add a `test` job parallel to `lint` and `type-check`.
-
----
-
 ### 13. Make `ApiResponse<T>` a discriminated union
 
 **Impact:** 4 | **Effort:** M | **Agent:** typescript-pro
@@ -296,20 +127,6 @@ The PR workflow runs `lint`, `type-check`, `stylelint`, `build`, and `fmt:check`
 - `packages/shared/src/api/client/types.ts:26-30`
 
 **Action:** Refactor to a discriminated union with an `ok` field. Update `parseResponseBody` and all call sites.
-
----
-
-### 14. Add runtime guard to auth interceptor token refresh
-
-**Impact:** 4 | **Effort:** S | **Agent:** typescript-pro
-
-`auth-interceptor.ts:42` casts `await refreshResponse.json() as AuthResponseDto` without runtime validation. If the refresh endpoint returns an error body, `tokenData.accessToken` would be `undefined` at runtime while TypeScript believes it's `string`.
-
-**Files:**
-
-- `packages/shared/src/api/client/interceptors/auth-interceptor.ts:42`
-
-**Action:** Add a guard: `if (typeof body?.accessToken === 'string')` before casting.
 
 ---
 
@@ -342,21 +159,6 @@ CSP includes `script-src 'self' 'unsafe-inline'` in production. Any XSS that inj
 
 ---
 
-### 17. Tighten security headers (CSP connect-src, Permissions-Policy)
-
-**Impact:** 3 | **Effort:** S | **Agent:** security-auditor
-
-`connect-src` includes a trailing `https:` wildcard allowing connections to any HTTPS origin. No `Permissions-Policy` header restricts browser features.
-
-**Files:**
-
-- `apps/money-tracker/next.config.ts:12` (CSP)
-- `apps/money-tracker/next.config.ts:9-30` (headers)
-
-**Action:** Remove `https:` from `connect-src`; whitelist only the API domain. Add `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()`.
-
----
-
 ### 18. Set onboarding status cookie to httpOnly
 
 **Impact:** 3 | **Effort:** M | **Agent:** security-auditor
@@ -382,20 +184,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 - `(auth-layout)/sign-in/action.ts`, `sign-up/action.ts`, `settings/actions/change-password.ts`
 
 **Action:** Implement rate limiting in middleware or confirm backend enforces it.
-
----
-
-### 20. Validate entity ID params in server actions
-
-**Impact:** 3 | **Effort:** S | **Agent:** security-auditor
-
-`deleteTransaction`, `deleteCategory`, `pauseRecurringTransaction`, etc. accept raw `id: string` without format validation.
-
-**Files:**
-
-- `transactions/actions/delete-transaction.ts:9`, `categories/actions/delete-category.ts:10`, and 5+ others
-
-**Action:** Add Zod UUID or pattern validation for `id` parameters.
 
 ---
 
@@ -454,35 +242,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 - `apps/money-tracker/src/app/[locale]/layout.tsx:18-27`
 
 **Action:** Add `display: 'swap'` to both font configurations.
-
----
-
-### 25. Add missing loading.tsx and error.tsx for sub-routes
-
-**Impact:** 3 | **Effort:** S | **Agent:** nextjs-developer
-
-No `loading.tsx` for `transactions/recurring`, `transactions/by-category`, `transactions/import`, `transactions/create`, `categories/create`. No `error.tsx` for `(home-layout)` and `(onboarding-layout)`.
-
-**Files:**
-
-- Missing files under the above route directories
-
-**Action:** Add `loading.tsx` (reuse `PageSkeleton`) and `error.tsx` (redirect to appropriate home path) per route group.
-
----
-
-### 26. Complete SEO setup (metadata, sitemap, robots)
-
-**Impact:** 3 | **Effort:** M | **Agent:** nextjs-developer
-
-No `metadataBase`, `openGraph`, `twitter`, `sitemap.ts`, or `robots.ts`. Public routes are crawlable but not listed.
-
-**Files:**
-
-- `apps/money-tracker/src/app/[locale]/layout.tsx:29-35` (minimal metadata)
-- `apps/money-tracker/src/app/` (missing sitemap.ts, robots.ts)
-
-**Action:** Add `metadataBase`, OG/Twitter metadata to root layout. Create `sitemap.ts` and `robots.ts`.
 
 ---
 
@@ -775,3 +534,105 @@ Both components are structurally identical — same props, same render logic, on
 - `packages/ui/src/components/atoms/typography/`, `molecules/card/`, `atoms/separator/`, `atoms/underline-link/`
 
 **Action:** Create CSF3 stories with `tags: ['autodocs']` for each.
+
+---
+
+## Backlog (Carried Over)
+
+| Task                                            | Reason                                                      |
+| ----------------------------------------------- | ----------------------------------------------------------- |
+| Make Access Token Cookie HttpOnly               | Need to brainstorm BFF pattern for browser token management |
+| Add Tests (Currently 0% Coverage)               | Large effort; start with pure utils in packages/shared      |
+| Commit OpenAPI Spec File                        | Active development, need sync strategy                      |
+| Wire Storybook test runner to `pnpm test`       | POC project, not a top priority                             |
+| Add test job to GitHub Actions PR workflow      | POC project, not a top priority                             |
+| Complete SEO setup (metadata, sitemap, robots)  | POC project, not a top priority                             |
+| Add server-side error logging in server actions | Need to design logging strategy first                       |
+
+### 11. Wire Storybook test runner to `pnpm test`
+
+**Impact:** 4 | **Effort:** S | **Agent:** qa-expert
+
+`@storybook/addon-vitest` and Playwright are fully configured in `apps/storybook/vite.config.ts`, but the package has no `"test"` script. The Storybook tests never run via `pnpm test`.
+
+**Files:**
+
+- `apps/storybook/package.json` (missing `"test"` script)
+- `apps/storybook/vite.config.ts` (fully configured)
+
+**Action:** Add `"test": "vitest run"` to `apps/storybook/package.json`.
+
+---
+
+### 12. Add test job to GitHub Actions PR workflow
+
+**Impact:** 4 | **Effort:** S | **Agent:** qa-expert
+
+The PR workflow runs `lint`, `type-check`, `stylelint`, `build`, and `fmt:check` — but has no `test` job. Tests are not enforced on PRs.
+
+**Files:**
+
+- `.github/workflows/pull-request.yml`
+
+**Action:** Add a `test` job parallel to `lint` and `type-check`.
+
+---
+
+### 26. Complete SEO setup (metadata, sitemap, robots)
+
+**Impact:** 3 | **Effort:** M | **Agent:** nextjs-developer
+
+No `metadataBase`, `openGraph`, `twitter`, `sitemap.ts`, or `robots.ts`. Public routes are crawlable but not listed.
+
+**Files:**
+
+- `apps/money-tracker/src/app/[locale]/layout.tsx:29-35` (minimal metadata)
+- `apps/money-tracker/src/app/` (missing sitemap.ts, robots.ts)
+
+**Action:** Add `metadataBase`, OG/Twitter metadata to root layout. Create `sitemap.ts` and `robots.ts`.
+
+---
+
+## Previous Improvements (Done)
+
+Items completed in the previous improvement cycle (2026-04-05):
+
+| Task                                                    | Status |
+| ------------------------------------------------------- | ------ |
+| Add Security Headers                                    | Done   |
+| Add Error Boundaries and Loading States                 | Done   |
+| Add Build and Format Check to CI                        | Done   |
+| Fix JWT Validation in Middleware                        | Done   |
+| Add File Upload Validation                              | Done   |
+| Lazy-Load Recharts                                      | Done   |
+| Use Zod Enums Instead of Strings for Union Types        | Done   |
+| Fix Combobox Accessibility                              | Done   |
+| Decouple `packages/shared` from Next.js                 | Done   |
+| Fix Unsafe `query as Record<string, unknown>` Casts     | Done   |
+| Add Auth Guards to Server Actions                       | Done   |
+| Add Dashboard `revalidatePath` to Transaction Mutations | Done   |
+| Extract `useUrlFilters` Shared Hook                     | Done   |
+| Create `FormField` Wrapper for FieldError               | Done   |
+| Extract CategoryFormPage Logic to Hook                  | Done   |
+| Enable `exactOptionalPropertyTypes`                     | Done   |
+| Lazy-Load papaparse                                     | Done   |
+| Deduplicate `lucide-react`                              | Done   |
+| Enable Turborepo Cache for Lint/Type-Check              | Done   |
+| Add Exhaustive Union Checking Pattern                   | Done   |
+| Adopt React 19 APIs (useActionState, useFormStatus)     | Done   |
+| Fix Font Class Composition                              | Done   |
+
+Items completed in the current improvement cycle (2026-04-09):
+
+| Task                                                            | Status |
+| --------------------------------------------------------------- | ------ |
+| Strengthen `requireAuth` — verify JWT, not just cookie presence | Done   |
+| Add startup validation for JWT_SECRET                           | Done   |
+| Add consistent Zod validation to all mutation server actions    | Done   |
+| Remove type re-export from `CategoryTypeFilter` client file     | Done   |
+| Add runtime guard to auth interceptor token refresh             | Done   |
+| Tighten security headers (CSP connect-src, Permissions-Policy)  | Done   |
+| Validate entity ID params in server actions                     | Done   |
+| Return structured errors from server actions (not null)         | Done   |
+| Fix form error i18n — forms may display raw keys                | Done   |
+| Add missing loading.tsx and error.tsx for sub-routes            | Done   |

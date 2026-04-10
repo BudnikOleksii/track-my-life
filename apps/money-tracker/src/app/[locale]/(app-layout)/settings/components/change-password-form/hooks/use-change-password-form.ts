@@ -33,19 +33,14 @@ export const useChangePasswordForm = ({ translations }: UseChangePasswordFormPar
   const [isPending, startTransition] = useTransition();
   const [, submitAction] = useActionState(
     async (_prev: ActionState, values: ChangePasswordFormValues): Promise<ActionState> => {
-      try {
-        const result = await changePassword(values);
-        if (result) {
-          toast.success(translations('content.passwordChangeSuccess'));
-          reset();
-          return { success: true, error: null };
-        }
-        toast.error(translations('content.passwordChangeError'));
-        return { success: false, error: 'content.passwordChangeError' };
-      } catch {
-        toast.error(translations('content.passwordChangeError'));
-        return { success: false, error: 'content.passwordChangeError' };
+      const result = await changePassword(values);
+      if (result.ok) {
+        toast.success(translations('content.passwordChangeSuccess'));
+        reset();
+        return { success: true, error: null };
       }
+      toast.error(translations('content.passwordChangeError'));
+      return { success: false, error: 'content.passwordChangeError' };
     },
     INITIAL_ACTION_STATE,
   );

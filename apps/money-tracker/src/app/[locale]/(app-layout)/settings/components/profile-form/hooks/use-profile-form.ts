@@ -59,18 +59,13 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
         ...(values.baseCurrencyCode && { baseCurrencyCode: values.baseCurrencyCode }),
       };
 
-      try {
-        const result = await updateProfile(body);
-        if (result) {
-          toast.success(translations('content.profileUpdateSuccess'));
-          return { success: true, error: null };
-        }
-        toast.error(translations('content.profileUpdateError'));
-        return { success: false, error: 'content.profileUpdateError' };
-      } catch {
-        toast.error(translations('content.profileUpdateError'));
-        return { success: false, error: 'content.profileUpdateError' };
+      const result = await updateProfile(body);
+      if (result.ok) {
+        toast.success(translations('content.profileUpdateSuccess'));
+        return { success: true, error: null };
       }
+      toast.error(translations('content.profileUpdateError'));
+      return { success: false, error: 'content.profileUpdateError' };
     },
     INITIAL_ACTION_STATE,
   );

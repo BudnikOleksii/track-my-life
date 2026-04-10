@@ -44,7 +44,7 @@ export const DeleteTransactionDialog: FC<DeleteTransactionDialogProps> = ({
     setIsDeleting(true);
     try {
       const result = await deleteTransaction(transaction.id);
-      if (result?.success) {
+      if (result.ok) {
         onSuccess(transaction.id);
       } else {
         toast.error(translations('content.deleteError'));

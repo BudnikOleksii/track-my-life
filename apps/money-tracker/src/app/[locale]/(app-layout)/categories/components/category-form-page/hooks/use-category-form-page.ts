@@ -63,7 +63,7 @@ export const useCategoryFormPage = ({
               ...(parentCategoryId && { parentCategoryId }),
             });
 
-      if (result) {
+      if (result.ok) {
         router.push(PATHS.categories);
         return { success: true, error: null };
       }

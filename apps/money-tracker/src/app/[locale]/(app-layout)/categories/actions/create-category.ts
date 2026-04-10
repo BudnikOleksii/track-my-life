@@ -1,6 +1,10 @@
 'use server';
 
-import type { CreateCategoryDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
+import type {
+  CategoryResponseDto,
+  CreateCategoryDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { revalidatePath, updateTag } from 'next/cache';
@@ -11,13 +15,15 @@ import { PATHS } from '@/constants/paths';
 
 import { categoryFormSchema } from '../constants/category-form-schema';
 
-export const createCategory = async (input: CreateCategoryDto) => {
+export const createCategory = async (
+  input: CreateCategoryDto,
+): Promise<ServerActionResult<CategoryResponseDto>> => {
   await requireAuth();
 
   const validated = categoryFormSchema.safeParse(input);
 
   if (!validated.success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { data, error } = await categoryApiService.createCategory({
@@ -28,12 +34,12 @@ export const createCategory = async (input: CreateCategoryDto) => {
     }),
   });
 
-  if (error) {
-    return null;
+  if (error || !data) {
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   updateTag(CACHE_TAG.CATEGORIES);
   revalidatePath(PATHS.categories);
 
-  return data;
+  return { ok: true, data };
 };

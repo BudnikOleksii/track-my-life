@@ -124,7 +124,7 @@ export const useTransactionFormPage = ({
           ? await updateTransaction(transaction.id, body)
           : await createTransaction(body);
 
-      if (result) {
+      if (result.ok) {
         router.push(PATHS.transactions);
         return { success: true, error: null };
       }

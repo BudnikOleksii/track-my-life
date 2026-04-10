@@ -1,7 +1,9 @@
 'use server';
 
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
 import type {
   RecurringFrequency,
+  RecurringTransactionResponseDto,
   UpdateRecurringTransactionDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
@@ -19,17 +21,17 @@ import { recurringTransactionFormSchema } from '../constants/recurring-transacti
 export const updateRecurringTransaction = async (
   id: string,
   body: UpdateRecurringTransactionDto,
-) => {
+): Promise<ServerActionResult<RecurringTransactionResponseDto>> => {
   await requireAuth();
 
   if (!entityIdSchema.safeParse(id).success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const validated = recurringTransactionFormSchema.partial().safeParse(body);
 
   if (!validated.success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { data, error } = await recurringTransactionApiService.updateRecurringTransaction(id, {
@@ -48,12 +50,12 @@ export const updateRecurringTransaction = async (
     ...(validated.data.description !== undefined && { description: validated.data.description }),
   });
 
-  if (error) {
-    return null;
+  if (error || !data) {
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   updateTag(CACHE_TAG.RECURRING_TRANSACTIONS);
   revalidatePath(PATHS.recurringTransactions);
 
-  return data;
+  return { ok: true, data };
 };

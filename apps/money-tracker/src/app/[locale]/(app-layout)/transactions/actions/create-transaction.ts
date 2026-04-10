@@ -1,6 +1,10 @@
 'use server';
 
-import type { CreateTransactionDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { ServerActionResult } from '@track-my-life/next-shared/src/types/server-action-result';
+import type {
+  CreateTransactionDto,
+  TransactionResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 
@@ -9,13 +13,15 @@ import { requireAuth } from '@/actions/require-auth';
 import { createTransactionSchema } from '../constants/create-transaction-schema';
 import { revalidateTransactionCaches } from './revalidate-transaction-caches';
 
-export const createTransaction = async (input: CreateTransactionDto) => {
+export const createTransaction = async (
+  input: CreateTransactionDto,
+): Promise<ServerActionResult<TransactionResponseDto>> => {
   await requireAuth();
 
   const validated = createTransactionSchema.safeParse(input);
 
   if (!validated.success) {
-    return null;
+    return { ok: false, error: 'validationFailed' };
   }
 
   const { data, error } = await transactionApiService.createTransaction({
@@ -27,10 +33,10 @@ export const createTransaction = async (input: CreateTransactionDto) => {
     ...(validated.data.description !== undefined && { description: validated.data.description }),
   });
 
-  if (error) {
-    return null;
+  if (error || !data) {
+    return { ok: false, error: error?.title ?? 'unknownError' };
   }
 
   revalidateTransactionCaches();
-  return data;
+  return { ok: true, data };
 };
