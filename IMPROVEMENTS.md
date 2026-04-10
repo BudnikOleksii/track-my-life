@@ -6,9 +6,6 @@
 
 | #   | Task                                                                                                                                             | Impact | Effort | Agent(s)                               | Status |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------ | -------------------------------------- | ------ |
-| 6   | [Add `aria-invalid` to Input component](#6-add-aria-invalid-to-input-component)                                                                  | 4      | S      | react-specialist                       | Todo   |
-| 7   | [Make CategoryPicker keyboard-accessible](#7-make-categorypicker-keyboard-accessible)                                                            | 4      | M      | react-specialist                       | Todo   |
-| 9   | [Verify ThemeProvider has `attribute="data-theme"`](#9-verify-themeprovider-has-attributedata-theme)                                             | 4      | S      | performance-engineer                   | Todo   |
 | 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                                         | 4      | M      | performance-engineer                   | Todo   |
 | 13  | [Make `ApiResponse<T>` a discriminated union](#13-make-apiresponset-a-discriminated-union)                                                       | 4      | M      | typescript-pro                         | Todo   |
 | 15  | [Fix profileFormSchema — use CountryCode union](#15-fix-profileformschema--use-countrycode-union)                                                | 4      | S      | typescript-pro                         | Todo   |
@@ -18,13 +15,10 @@
 | 21  | [Remove redundant `revalidatePath` alongside `updateTag`](#21-remove-redundant-revalidatepath-alongside-updatetag)                               | 3      | S      | nextjs-developer, performance-engineer | Todo   |
 | 22  | [Stop invalidating CATEGORIES cache on transaction mutations](#22-stop-invalidating-categories-cache-on-transaction-mutations)                   | 3      | S      | performance-engineer                   | Todo   |
 | 23  | [Cache Intl formatter instances in formatAmount/formatDate](#23-cache-intl-formatter-instances-in-formatamountformatdate)                        | 3      | S      | performance-engineer                   | Todo   |
-| 24  | [Add `display: 'swap'` to Google Fonts](#24-add-display-swap-to-google-fonts)                                                                    | 3      | S      | nextjs-developer, performance-engineer | Todo   |
-| 27  | [Replace hand-rolled dropdowns with Radix](#27-replace-hand-rolled-dropdowns-with-radix)                                                         | 3      | S      | nextjs-developer, react-specialist     | Todo   |
 | 28  | [Fix useProfileForm — direct defaultValues instead of useEffect+reset](#28-fix-useprofileform--direct-defaultvalues-instead-of-useeffectreset)   | 3      | S      | react-specialist                       | Todo   |
 | 29  | [Link RecurringFrequency Zod enum to generated type](#29-link-recurringfrequency-zod-enum-to-generated-type)                                     | 3      | S      | typescript-pro                         | Todo   |
 | 30  | [Fix CurrencyStep — don't cast empty string to CurrencyCode](#30-fix-currencystep--dont-cast-empty-string-to-currencycode)                       | 3      | S      | typescript-pro                         | Todo   |
 | 31  | [Extract duplicated cache config constants](#31-extract-duplicated-cache-config-constants)                                                       | 3      | S      | architect-reviewer                     | Todo   |
-| 32  | [Enable a11y checks in Storybook](#32-enable-a11y-checks-in-storybook)                                                                           | 3      | S      | qa-expert                              | Todo   |
 | 33  | [Fix missing i18n keys + add parity check to CI](#33-fix-missing-i18n-keys--add-parity-check-to-ci)                                              | 3      | S      | qa-expert                              | Todo   |
 | 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                               | 3      | S      | performance-engineer                   | Todo   |
 | 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard)                | 2      | S      | nextjs-developer, performance-engineer | Todo   |
@@ -36,7 +30,6 @@
 | 41  | [Document `next-shared` in CLAUDE.md + extract error boundary](#41-document-next-shared-in-claudemd--extract-error-boundary)                     | 2      | S      | architect-reviewer                     | Todo   |
 | 42  | [Fix turbo.json task dependencies](#42-fix-turbojson-task-dependencies)                                                                          | 2      | S      | architect-reviewer                     | Todo   |
 | 43  | [Deduplicate TransactionTypeFilter/CategoryTypeFilter](#43-deduplicate-transactiontypefiltercategorytypefilter)                                  | 2      | S      | react-specialist, performance-engineer | Todo   |
-| 44  | [AppSidebar/TimePicker/RecurringTransactions minor fixes](#44-appsidebartimepickerrecurringtransactions-minor-fixes)                             | 2      | S      | react-specialist                       | Todo   |
 | 45  | [Deduplicate option lists + add Recharts loading fallbacks](#45-deduplicate-option-lists--add-recharts-loading-fallbacks)                        | 2      | S      | performance-engineer                   | Todo   |
 | 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                               | 2      | S      | qa-expert                              | Todo   |
 
@@ -55,50 +48,6 @@
 ---
 
 ## Detailed Findings
-
-### 6. Add `aria-invalid` to Input component
-
-**Impact:** 4 | **Effort:** S | **Agent:** react-specialist
-
-`Input` applies CSS `styles.error` when `error={true}` but does not set `aria-invalid`. `SelectTrigger` correctly applies `aria-invalid`. Without it, screen readers cannot detect invalid input state.
-
-**Files:**
-
-- `packages/ui/src/components/atoms/input/input.tsx` (missing)
-- `packages/ui/src/components/atoms/select/select.tsx:25` (correct)
-
-**Action:** Add `aria-invalid={error || undefined}` to the `<input>` element. Also add `aria-describedby` support for `FieldError` association.
-
----
-
-### 7. Make CategoryPicker keyboard-accessible
-
-**Impact:** 4 | **Effort:** M | **Agent:** react-specialist
-
-`CategoryPicker` has a custom two-column dropdown with no keyboard navigation, no ARIA `listbox`/`option` roles, no `aria-expanded`, and no Escape-to-close.
-
-**Files:**
-
-- `transactions/components/category-picker/CategoryPicker.tsx`
-
-**Action:** Add `role="listbox"` to the container, `role="option"` to each item, arrow key navigation, Enter to select, and Escape to close. Consider wrapping the popover portion with Radix Popover.
-
----
-
-### 9. Verify ThemeProvider has `attribute="data-theme"`
-
-**Impact:** 4 | **Effort:** S | **Agent:** performance-engineer
-
-Theme CSS uses `[data-theme="light"]` / `[data-theme="dark"]` selectors, but `next-themes` defaults to `class` strategy. If `ThemeProvider` is not configured with `attribute="data-theme"`, all theme CSS variables are dead code.
-
-**Files:**
-
-- `packages/ui/src/styles/tokens/theme.scss`
-- `apps/money-tracker/src/app/[locale]/layout.tsx:55`
-
-**Action:** Verify `<ThemeProvider attribute="data-theme">` is set. If not, add it.
-
----
 
 ### 10. Convert dashboard widgets to RSC
 
@@ -231,35 +180,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 
 ---
 
-### 24. Add `display: 'swap'` to Google Fonts
-
-**Impact:** 3 | **Effort:** S | **Agents:** nextjs-developer, performance-engineer
-
-`Poppins` and `Outfit` are loaded without `display: 'swap'`. Next.js defaults to `'optional'`, which may cause invisible text during font load.
-
-**Files:**
-
-- `apps/money-tracker/src/app/[locale]/layout.tsx:18-27`
-
-**Action:** Add `display: 'swap'` to both font configurations.
-
----
-
-### 27. Replace hand-rolled dropdowns with Radix
-
-**Impact:** 3 | **Effort:** S | **Agents:** nextjs-developer, react-specialist
-
-`ExportTransactionButton` and `UserMenu` implement custom dropdowns with `useRef`, `useState`, `useEffect` + `document.addEventListener('mousedown')`. No keyboard navigation, no Escape handling.
-
-**Files:**
-
-- `transactions/components/export-transaction-button/ExportTransactionButton.tsx:66-154`
-- `(app-layout)/components/user-menu/UserMenu.tsx:21-28`
-
-**Action:** Replace with Radix `DropdownMenu` from `@track-my-life/ui`.
-
----
-
 ### 28. Fix useProfileForm — direct defaultValues instead of useEffect+reset
 
 **Impact:** 3 | **Effort:** S | **Agent:** react-specialist
@@ -315,20 +235,6 @@ Local `RECURRING_FREQUENCY` constant duplicates the generated `RecurringFrequenc
 - `transactions/actions/fetch-transaction-list.ts`, `fetch-transaction.ts`, `by-category/actions/fetch-transactions-by-category.ts`
 
 **Action:** Move to `apps/money-tracker/src/constants/cache-tag.ts` alongside existing `CACHE_TAG` definitions.
-
----
-
-### 32. Enable a11y checks in Storybook
-
-**Impact:** 3 | **Effort:** S | **Agent:** qa-expert
-
-`@storybook/addon-a11y` is installed but `preview.ts` sets `a11y: { test: 'todo' }`, suppressing all axe-core violations.
-
-**Files:**
-
-- `apps/storybook/.storybook/preview.ts:47`
-
-**Action:** Change to `a11y: { test: 'error' }`. Audit violations first by running Storybook interactively.
 
 ---
 
@@ -491,23 +397,6 @@ Both components are structurally identical — same props, same render logic, on
 
 ---
 
-### 44. AppSidebar/TimePicker/RecurringTransactions minor fixes
-
-**Impact:** 2 | **Effort:** S | **Agent:** react-specialist
-
-- AppSidebar backdrop has `onKeyDown={undefined}` — not keyboard-dismissable. Add `aria-hidden="true"` or Escape handler
-- `NAVIGATION_ITEM_LIST` creates `<Icon />` elements at module load — store component references instead
-- TimePicker has hardcoded English `aria-label="Hours"`/`"Minutes"` — add `hoursLabel`/`minutesLabel` props
-- `RecurringTransactionsPageContent` pause/resume has no loading feedback — wrap in `useTransition`
-
-**Files:**
-
-- `(app-layout)/components/app-sidebar/AppSidebar.tsx:139,42-73`
-- `packages/ui/src/components/atoms/time-picker/time-picker.tsx:111,118`
-- `transactions/recurring/page.content.tsx:45-63`
-
----
-
 ### 45. Deduplicate option lists + add Recharts loading fallbacks
 
 **Impact:** 2 | **Effort:** S | **Agent:** performance-engineer
@@ -636,3 +525,15 @@ Items completed in the current improvement cycle (2026-04-09):
 | Return structured errors from server actions (not null)         | Done   |
 | Fix form error i18n — forms may display raw keys                | Done   |
 | Add missing loading.tsx and error.tsx for sub-routes            | Done   |
+
+Items completed in the current improvement cycle (2026-04-10):
+
+| Task                                                    | Status |
+| ------------------------------------------------------- | ------ |
+| Add `aria-invalid` to Input component                   | Done   |
+| Make CategoryPicker keyboard-accessible                 | Done   |
+| Verify ThemeProvider has `attribute="data-theme"`       | Done   |
+| Add `display: 'swap'` to Google Fonts                   | Done   |
+| Replace hand-rolled dropdowns with Radix DropdownMenu   | Done   |
+| Enable a11y checks in Storybook                         | Done   |
+| AppSidebar/TimePicker/RecurringTransactions minor fixes | Done   |

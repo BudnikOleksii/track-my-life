@@ -10,9 +10,15 @@ import {
 } from '@track-my-life/shared/src/utils/date/parse';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@track-my-life/ui/src/components/molecules/dropdown-menu/dropdown-menu';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { Download, Loader2 } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { downloadBlob } from './download-blob';
 import styles from './ExportTransactionButton.module.scss';
@@ -63,35 +69,15 @@ export const ExportTransactionButton: FC<ExportTransactionButtonProps> = ({
   downloadJsonLabel,
   errorLabel,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const formatToLabel: Record<ExportFormat, string> = {
     csv: downloadCsvLabel,
     json: downloadJsonLabel,
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
   const handleExport = useCallback(
     async (format: ExportFormat) => {
-      setIsOpen(false);
       setIsLoading(true);
 
       try {
@@ -117,39 +103,26 @@ export const ExportTransactionButton: FC<ExportTransactionButtonProps> = ({
     [categoryId, dateFrom, dateTo, errorLabel],
   );
 
-  const handleToggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
-
   return (
-    <div className={styles.wrapper} ref={menuRef}>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleToggle}
-        disabled={isLoading}
-        aria-expanded={isOpen}
-        aria-haspopup="menu"
-      >
-        {isLoading ? <Loader2 size={16} className={styles.spinner} /> : <Download size={16} />}
-        {exportLabel}
-      </Button>
-      {isOpen && (
-        <div className={styles.menu} role="menu">
-          {EXPORT_FORMAT_LIST.map((format) => (
-            <button
-              key={format}
-              className={styles.menuItem}
-              role="menuitem"
-              onClick={() => {
-                void handleExport(format);
-              }}
-            >
-              <Typography variant="body-m">{formatToLabel[format]}</Typography>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" disabled={isLoading}>
+          {isLoading ? <Loader2 size={16} className={styles.spinner} /> : <Download size={16} />}
+          {exportLabel}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        {EXPORT_FORMAT_LIST.map((format) => (
+          <DropdownMenuItem
+            key={format}
+            onSelect={() => {
+              void handleExport(format);
+            }}
+          >
+            <Typography variant="body-m">{formatToLabel[format]}</Typography>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

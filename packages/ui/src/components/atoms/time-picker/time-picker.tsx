@@ -42,10 +42,20 @@ interface TimePickerProps {
   onChange?: (value: string) => void;
   disabled?: boolean;
   className?: string;
+  hoursLabel?: string;
+  minutesLabel?: string;
   ref?: Ref<HTMLDivElement>;
 }
 
-const TimePicker = ({ value = '00:00', onChange, disabled, className, ref }: TimePickerProps) => {
+const TimePicker = ({
+  value = '00:00',
+  onChange,
+  disabled,
+  className,
+  hoursLabel = 'Hours',
+  minutesLabel = 'Minutes',
+  ref,
+}: TimePickerProps) => {
   const { hours, minutes } = parseTimeString(value);
 
   const handleHoursChange = useCallback(
@@ -107,7 +117,7 @@ const TimePicker = ({ value = '00:00', onChange, disabled, className, ref }: Tim
         onChange={handleHoursChange}
         onKeyDown={handleHoursKeyDown}
         disabled={disabled}
-        aria-label="Hours"
+        aria-label={hoursLabel}
         className={styles.input}
       />
       <span className={styles.separator}>:</span>
@@ -118,7 +128,7 @@ const TimePicker = ({ value = '00:00', onChange, disabled, className, ref }: Tim
         onChange={handleMinutesChange}
         onKeyDown={handleMinutesKeyDown}
         disabled={disabled}
-        aria-label="Minutes"
+        aria-label={minutesLabel}
         className={styles.input}
       />
     </div>

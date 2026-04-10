@@ -18,6 +18,7 @@ const Input = ({ className, error, type, ref, startAdornment, ...props }: InputP
           ref={ref}
           type={type}
           data-slot="input"
+          aria-invalid={error || undefined}
           className={cn(styles.adornmentInput, className)}
           {...props}
         />
@@ -30,6 +31,7 @@ const Input = ({ className, error, type, ref, startAdornment, ...props }: InputP
       ref={ref}
       type={type}
       data-slot="input"
+      aria-invalid={error || undefined}
       className={cn(styles.input, error && styles.error, className)}
       {...props}
     />

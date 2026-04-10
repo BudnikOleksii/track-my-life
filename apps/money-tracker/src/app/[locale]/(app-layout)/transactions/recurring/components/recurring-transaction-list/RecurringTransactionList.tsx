@@ -28,6 +28,7 @@ import styles from './RecurringTransactionList.module.scss';
 
 interface RecurringTransactionListProps {
   recurringTransactionList: RecurringTransactionResponseDto[];
+  isPending?: boolean;
   onDelete: (recurringTransaction: RecurringTransactionResponseDto) => void;
   onPause: (id: string) => void;
   onResume: (id: string) => void;
@@ -54,6 +55,7 @@ const STATUS_LABEL_KEY = {
 
 export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   recurringTransactionList,
+  isPending,
   onDelete,
   onPause,
   onResume,
@@ -116,6 +118,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
+                disabled={isPending}
                 onClick={() => {
                   onPause(item.id);
                 }}
@@ -128,6 +131,7 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
+                disabled={isPending}
                 onClick={() => {
                   onResume(item.id);
                 }}
