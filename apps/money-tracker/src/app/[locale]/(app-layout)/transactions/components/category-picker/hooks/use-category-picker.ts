@@ -150,5 +150,6 @@ export const useCategoryPicker = ({
     handleMainCategoryClick,
     handleSubcategoryClick: handleSelectAndClose,
     handleAllCategoriesClick: handleSelectAndClose,
+    handleActivateCategory: setActiveCategoryId,
   };
 };

@@ -16,25 +16,62 @@ const CHEVRON_SIZE = 16;
 const CHEVRON_SMALL_SIZE = 14;
 const MAIN_LIST_INDEX = 0;
 const SUBCATEGORY_LIST_INDEX = 1;
+const LAST_INDEX_OFFSET = 1;
+
+interface ArrowNavigationContext {
+  pickerElement: HTMLDivElement;
+  activeCategoryId: string | null;
+  onActivateCategory: (id: string) => void;
+}
 
 const getArrowFocusTarget = (
   key: string,
   target: HTMLElement,
-  pickerElement: HTMLDivElement,
+  context: ArrowNavigationContext,
 ): HTMLElement | null => {
   if (key === 'ArrowDown' || key === 'ArrowUp') {
     const sibling = key === 'ArrowDown' ? target.nextElementSibling : target.previousElementSibling;
     return sibling instanceof HTMLElement ? sibling : null;
   }
 
-  if (key === 'ArrowRight' || key === 'ArrowLeft') {
-    const listboxList = pickerElement.querySelectorAll<HTMLElement>('[role="listbox"]');
-    const targetBox =
-      key === 'ArrowRight' ? listboxList[SUBCATEGORY_LIST_INDEX] : listboxList[MAIN_LIST_INDEX];
-    return targetBox?.querySelector<HTMLElement>('[role="option"]') ?? null;
+  const currentListbox = target.closest('[role="listbox"]');
+  const listboxList = context.pickerElement.querySelectorAll<HTMLElement>('[role="listbox"]');
+
+  if (key === 'ArrowRight' && currentListbox === listboxList[MAIN_LIST_INDEX]) {
+    return (
+      listboxList[SUBCATEGORY_LIST_INDEX]?.querySelector<HTMLElement>('[role="option"]') ?? null
+    );
+  }
+
+  if (key === 'ArrowLeft' && currentListbox === listboxList[SUBCATEGORY_LIST_INDEX]) {
+    return (
+      listboxList[MAIN_LIST_INDEX]?.querySelector<HTMLElement>(
+        context.activeCategoryId
+          ? `[data-category-id="${context.activeCategoryId}"]`
+          : '[role="option"]',
+      ) ?? null
+    );
   }
 
   return null;
+};
+
+const handleArrowNavigation = (event: React.KeyboardEvent, context: ArrowNavigationContext) => {
+  const target = event.target as HTMLElement;
+  if (target.getAttribute('role') !== 'option') {
+    return;
+  }
+
+  const focusTarget = getArrowFocusTarget(event.key, target, context);
+  if (!focusTarget) {
+    return;
+  }
+
+  event.preventDefault();
+  focusTarget.focus();
+  if (focusTarget.dataset.categoryId) {
+    context.onActivateCategory(focusTarget.dataset.categoryId);
+  }
 };
 
 interface CategoryPickerProps {
@@ -74,6 +111,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
     handleMainCategoryClick,
     handleSubcategoryClick,
     handleAllCategoriesClick,
+    handleActivateCategory,
   } = useCategoryPicker({
     categoryList,
     transactionType,
@@ -90,7 +128,10 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
     if (!isOpen || !pickerRef.current) {
       return;
     }
-    const selected = pickerRef.current.querySelector<HTMLElement>('[aria-selected="true"]');
+    const selectedList = pickerRef.current.querySelectorAll<HTMLElement>(
+      '[role="option"][aria-selected="true"]',
+    );
+    const selected = selectedList[selectedList.length - LAST_INDEX_OFFSET] ?? null;
     const firstOption = pickerRef.current.querySelector<HTMLElement>('[role="option"]');
     (selected ?? firstOption)?.focus();
   }, [isOpen]);
@@ -102,18 +143,15 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
         triggerRef.current?.focus();
         return;
       }
-
-      const target = event.target as HTMLElement;
-      const focusTarget =
-        target.getAttribute('role') === 'option' && pickerRef.current
-          ? getArrowFocusTarget(event.key, target, pickerRef.current)
-          : null;
-      if (focusTarget) {
-        event.preventDefault();
-        focusTarget.focus();
+      if (pickerRef.current) {
+        handleArrowNavigation(event, {
+          pickerElement: pickerRef.current,
+          activeCategoryId,
+          onActivateCategory: handleActivateCategory,
+        });
       }
     },
-    [handleToggle],
+    [handleToggle, activeCategoryId, handleActivateCategory],
   );
 
   return (
@@ -161,6 +199,7 @@ const CategoryPicker: FC<CategoryPickerProps> = ({
                   key={category.id}
                   type="button"
                   role="option"
+                  data-category-id={category.id}
                   aria-selected={isSelected}
                   className={cn(
                     styles.categoryItem,

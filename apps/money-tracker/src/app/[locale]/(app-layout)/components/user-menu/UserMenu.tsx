@@ -3,6 +3,7 @@
 import type { FC } from 'react';
 
 import { Avatar, AvatarFallback } from '@track-my-life/ui/src/components/atoms/avatar/avatar';
+import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import {
   DropdownMenu,
@@ -24,11 +25,16 @@ export const UserMenu: FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button type="button" className={styles.trigger}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={styles.trigger}
+          aria-label={translations('actions.userMenu')}
+        >
           <Avatar size="sm">
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
-        </button>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
