@@ -9,12 +9,8 @@ const TRANSACTIONS_CACHE = { revalidate: 300, tags: [CACHE_TAG.TRANSACTIONS] } a
 
 export const fetchTransaction = cache(
   async (id: string): Promise<TransactionResponseDto | null> => {
-    const { data } = await rscTransactionApiService.fetchTransactionById(id, TRANSACTIONS_CACHE);
+    const result = await rscTransactionApiService.fetchTransactionById(id, TRANSACTIONS_CACHE);
 
-    if (data && typeof data === 'object' && 'id' in data) {
-      return data as TransactionResponseDto;
-    }
-
-    return null;
+    return result.ok ? result.data : null;
   },
 );

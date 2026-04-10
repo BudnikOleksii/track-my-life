@@ -12,8 +12,10 @@ import {
 } from '@track-my-life/shared/src/utils/date/year-month';
 import { Pagination } from '@track-my-life/ui/src/components/molecules/pagination/pagination';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { TypeFilter } from '@/components/type-filter/TypeFilter';
+import { FILTER_TO_LABEL_KEY } from '@/constants/filter';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { TransactionFilters } from './constants/transaction-filters';
@@ -23,7 +25,6 @@ import { DeleteTransactionDialog } from './components/delete-transaction-dialog/
 import { MonthNavigator } from './components/month-navigator/MonthNavigator';
 import { TransactionList } from './components/transaction-list/TransactionList';
 import { TransactionSortFilter } from './components/transaction-sort-filter/TransactionSortFilter';
-import { TransactionTypeFilter } from './components/transaction-type-filter/TransactionTypeFilter';
 import { useTransactionFilters } from './hooks/use-transaction-filters';
 import styles from './page.module.scss';
 
@@ -48,6 +49,15 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
 
   const { year, month } = parseMonthFromDateRange(filters.dateFrom);
 
+  const filterLabelMap = useMemo(
+    () => ({
+      ALL: translations(FILTER_TO_LABEL_KEY.ALL),
+      INCOME: translations(FILTER_TO_LABEL_KEY.INCOME),
+      EXPENSE: translations(FILTER_TO_LABEL_KEY.EXPENSE),
+    }),
+    [translations],
+  );
+
   const handleMonthChange = (newYear: number, newMonth: number) => {
     const { dateFrom, dateTo } = getMonthDateRange(newYear, newMonth);
     handleFilterChange({ dateFrom, dateTo });
@@ -57,11 +67,13 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
     <>
       <div className={styles.filterSection}>
         <div className={styles.primaryFilterList}>
-          <TransactionTypeFilter
+          <TypeFilter
             value={filters.type}
             onValueChange={(type) => {
               handleFilterChange({ type, categoryId: '' });
             }}
+            ariaLabel={translations('content.filterByType')}
+            labelMap={filterLabelMap}
           />
           <MonthNavigator year={year} month={month} onMonthChange={handleMonthChange} />
           <TransactionSortFilter

@@ -12,15 +12,11 @@ const RECURRING_TRANSACTIONS_CACHE = {
 
 export const fetchRecurringTransaction = cache(
   async (id: string): Promise<RecurringTransactionResponseDto | null> => {
-    const { data } = await rscRecurringTransactionApiService.fetchRecurringTransactionById(
+    const result = await rscRecurringTransactionApiService.fetchRecurringTransactionById(
       id,
       RECURRING_TRANSACTIONS_CACHE,
     );
 
-    if (data && typeof data === 'object' && 'id' in data) {
-      return data as RecurringTransactionResponseDto;
-    }
-
-    return null;
+    return result.ok ? result.data : null;
   },
 );

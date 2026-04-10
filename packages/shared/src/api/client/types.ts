@@ -23,17 +23,13 @@ export interface RequestOptions<TQuery extends Record<string, unknown> = Record<
   next?: FetchCacheOptions | undefined;
 }
 
-export interface ApiResponse<TData> {
-  data: TData | null;
-  error: ProblemDetailsDto | null;
-  response: Response;
-}
+export type ApiResponse<TData> =
+  | { ok: true; data: TData; error: null; response: Response }
+  | { ok: false; data: null; error: ProblemDetailsDto; response: Response };
 
-export interface BlobResponse {
-  blob: Blob | null;
-  error: ProblemDetailsDto | null;
-  response: Response;
-}
+export type BlobResponse =
+  | { ok: true; blob: Blob; error: null; response: Response }
+  | { ok: false; blob: null; error: ProblemDetailsDto; response: Response };
 
 export type RequestInterceptorFn = (request: Request) => Request | Promise<Request>;
 

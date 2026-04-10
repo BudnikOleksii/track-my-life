@@ -1,11 +1,8 @@
-import type {
-  CountryCode,
-  ProfileResponseDto,
-} from '@track-my-life/shared/src/api/generated/types.gen';
+import type { ProfileResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
-import { useActionState, useCallback, useEffect, useTransition } from 'react';
+import { useActionState, useCallback, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import type { ActionState } from '@/constants/action-state';
@@ -17,8 +14,6 @@ import type { ProfileFormValues } from '../../../constants/profile-form-schema';
 import { updateProfile } from '../../../actions/update-profile';
 import { profileFormSchema } from '../../../constants/profile-form-schema';
 
-const convertToString = (value: unknown): string => (typeof value === 'string' ? value : '');
-
 interface UseProfileFormParams {
   profile: ProfileResponseDto;
   translations: (key: string) => string;
@@ -29,25 +24,16 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
     register,
     handleSubmit,
     control,
-    reset,
     formState: { errors },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      countryCode: '',
+      firstName: profile.firstName ?? '',
+      lastName: profile.lastName ?? '',
+      countryCode: profile.countryCode ?? undefined,
+      ...(profile.baseCurrencyCode && { baseCurrencyCode: profile.baseCurrencyCode }),
     },
   });
-
-  useEffect(() => {
-    reset({
-      firstName: convertToString(profile.firstName),
-      lastName: convertToString(profile.lastName),
-      countryCode: profile.countryCode ?? '',
-      ...(profile.baseCurrencyCode && { baseCurrencyCode: profile.baseCurrencyCode }),
-    });
-  }, [profile, reset]);
 
   const [isPending, startTransition] = useTransition();
   const [, submitAction] = useActionState(
@@ -55,7 +41,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
       const body = {
         ...(values.firstName && { firstName: values.firstName }),
         ...(values.lastName && { lastName: values.lastName }),
-        ...(values.countryCode && { countryCode: values.countryCode as CountryCode }),
+        ...(values.countryCode && { countryCode: values.countryCode }),
         ...(values.baseCurrencyCode && { baseCurrencyCode: values.baseCurrencyCode }),
       };
 
@@ -76,7 +62,7 @@ export const useProfileForm = ({ profile, translations }: UseProfileFormParams) 
         submitAction(values);
       });
     },
-    [submitAction],
+    [submitAction, startTransition],
   );
 
   return {

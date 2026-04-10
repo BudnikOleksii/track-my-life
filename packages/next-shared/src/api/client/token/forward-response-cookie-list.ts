@@ -16,6 +16,11 @@ export interface ParsedCookie {
 
 const SEPARATOR_OFFSET = 1;
 
+type SameSiteValue = NonNullable<ParsedCookie['options']['sameSite']>;
+const SAME_SITE_VALUE_SET = new Set<string>(['lax', 'strict', 'none']);
+const checkIsSameSiteValue = (value: string): value is SameSiteValue =>
+  SAME_SITE_VALUE_SET.has(value);
+
 // oxlint-disable-next-line max-statements
 const parseAttributeList = (attributeList: string[]): ParsedCookie['options'] => {
   const options: ParsedCookie['options'] = {};
@@ -34,7 +39,10 @@ const parseAttributeList = (attributeList: string[]): ParsedCookie['options'] =>
         break;
       }
       case 'samesite': {
-        options.sameSite = attributeValue.toLowerCase() as ParsedCookie['options']['sameSite'];
+        const lowered = attributeValue.toLowerCase();
+        if (checkIsSameSiteValue(lowered)) {
+          options.sameSite = lowered;
+        }
         break;
       }
       case 'path': {

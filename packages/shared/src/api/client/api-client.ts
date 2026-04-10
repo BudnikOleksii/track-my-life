@@ -8,6 +8,11 @@ import type {
   ResponseInterceptorFn,
 } from './types';
 
+interface NextFetchRequestInit extends RequestInit {
+  next?: { revalidate?: number; tags?: string[] };
+  duplex?: 'half';
+}
+
 const buildUrl = (baseUrl: string, path: string, query?: Record<string, unknown>): string => {
   const url = new URL(path, baseUrl);
 
@@ -22,19 +27,19 @@ const buildUrl = (baseUrl: string, path: string, query?: Record<string, unknown>
   return url.toString();
 };
 
-const parseResponseBody = async <TData>(
-  response: Response,
-): Promise<{
-  data: TData | null;
-  error: ProblemDetailsDto | null;
-}> => {
+type ParsedBody<TData> =
+  | { ok: true; data: TData; error: null }
+  | { ok: false; data: null; error: ProblemDetailsDto };
+
+const parseResponseBody = async <TData>(response: Response): Promise<ParsedBody<TData>> => {
   const contentType = response.headers.get('content-type')?.toLowerCase() ?? '';
   const hasJsonBody = contentType.includes('application/json') || contentType.includes('+json');
 
   if (!hasJsonBody) {
     return response.ok
-      ? { data: null, error: null }
+      ? { ok: true, data: null as TData, error: null }
       : {
+          ok: false,
           data: null,
           error: { type: 'about:blank', title: response.statusText, status: response.status },
         };
@@ -44,10 +49,11 @@ const parseResponseBody = async <TData>(
     const body = await response.json();
 
     return response.ok
-      ? { data: body as TData, error: null }
-      : { data: null, error: body as ProblemDetailsDto };
+      ? { ok: true, data: body as TData, error: null }
+      : { ok: false, data: null, error: body as ProblemDetailsDto };
   } catch {
     return {
+      ok: false,
       data: null,
       error: { type: 'about:blank', title: 'Invalid JSON response', status: response.status },
     };
@@ -106,8 +112,8 @@ export class ApiClient {
   private buildFetchInit(
     fetchRequest: Request,
     options: RequestOptions<Record<string, unknown>>,
-  ): RequestInit & { next?: unknown } {
-    const fetchInit: RequestInit & { next?: unknown } = {
+  ): NextFetchRequestInit {
+    const fetchInit: NextFetchRequestInit = {
       method: fetchRequest.method,
       headers: fetchRequest.headers,
       body: fetchRequest.body,
@@ -120,8 +126,8 @@ export class ApiClient {
     if (options.next) {
       fetchInit.next = {
         ...(options.next.revalidate !== undefined && { revalidate: options.next.revalidate }),
-        ...(options.next.tags && { tags: [...options.next.tags] as string[] }),
-      } as Record<string, unknown>;
+        ...(options.next.tags && { tags: [...options.next.tags] }),
+      };
     }
     return fetchInit;
   }
@@ -134,7 +140,7 @@ export class ApiClient {
     );
     const fetchRequestClone = fetchRequest.clone();
     const fetchInit = this.buildFetchInit(fetchRequest, options);
-    const rawResponse = await fetch(fetchRequest.url, fetchInit as RequestInit);
+    const rawResponse = await fetch(fetchRequest.url, fetchInit);
     return applyResponseInterceptorList(
       this.responseInterceptorList,
       rawResponse,
@@ -146,8 +152,8 @@ export class ApiClient {
     options: RequestOptions<TQuery>,
   ): Promise<ApiResponse<TData>> {
     const response = await this.executeFetch(options);
-    const { data, error } = await parseResponseBody<TData>(response);
-    return { data, error, response };
+    const parsed = await parseResponseBody<TData>(response);
+    return { ...parsed, response };
   }
 
   protected async requestBlob<TQuery extends Record<string, unknown> = Record<string, unknown>>(
@@ -156,12 +162,20 @@ export class ApiClient {
     const response = await this.executeFetch(options);
 
     if (!response.ok) {
-      const { error } = await parseResponseBody<never>(response);
-      return { blob: null, error, response };
+      const parsed = await parseResponseBody<never>(response);
+      if (!parsed.ok) {
+        return { ok: false, blob: null, error: parsed.error, response };
+      }
+      return {
+        ok: false,
+        blob: null,
+        error: { type: 'about:blank', title: response.statusText, status: response.status },
+        response,
+      };
     }
 
     const blob = await response.blob();
-    return { blob, error: null, response };
+    return { ok: true, blob, error: null, response };
   }
 
   protected async requestFormData<TData>(
@@ -181,20 +195,21 @@ export class ApiClient {
       initialRequest,
     );
     const fetchRequestClone = fetchRequest.clone();
-    const rawResponse = await fetch(fetchRequest.url, {
+    const fetchInit: NextFetchRequestInit = {
       method: fetchRequest.method,
       headers: fetchRequest.headers,
       body: fetchRequest.body,
       duplex: 'half',
-    } as RequestInit);
+    };
+    const rawResponse = await fetch(fetchRequest.url, fetchInit);
     const response = await applyResponseInterceptorList(
       this.responseInterceptorList,
       rawResponse,
       fetchRequestClone,
     );
-    const { data, error } = await parseResponseBody<TData>(response);
+    const parsed = await parseResponseBody<TData>(response);
 
-    return { data, error, response };
+    return { ...parsed, response };
   }
 
   private buildRequest(options: RequestOptions<Record<string, unknown>>): Request {
