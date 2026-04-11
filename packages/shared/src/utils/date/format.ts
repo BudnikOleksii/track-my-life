@@ -47,5 +47,12 @@ const parseDateSafe = (dateString: string): Date => {
 export const formatDate = (dateString: string, locale: string): string =>
   getDateFormat(locale).format(parseDateSafe(dateString));
 
-export const formatDateTime = (dateString: string, locale: string): string =>
-  getDateTimeFormat(locale).format(new Date(dateString));
+const INVALID_DATE = 'Invalid Date';
+
+export const formatDateTime = (dateString: string, locale: string): string => {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return INVALID_DATE;
+  }
+  return getDateTimeFormat(locale).format(date);
+};
