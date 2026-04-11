@@ -84,7 +84,7 @@ const fetchAndCacheOnboardingStatus = async (
   }
 
   response.cookies.set(cookieName, JSON.stringify(status), {
-    httpOnly: false,
+    httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     path: '/',

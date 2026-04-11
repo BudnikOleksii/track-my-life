@@ -13,6 +13,7 @@
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 8 characters",
     "generic": "An error occurred. Check your credentials or try again.",
-    "invalidCredentials": "Invalid email or password"
+    "invalidCredentials": "Invalid email or password",
+    "rateLimited": "Too many attempts. Please try again later."
   }
 }

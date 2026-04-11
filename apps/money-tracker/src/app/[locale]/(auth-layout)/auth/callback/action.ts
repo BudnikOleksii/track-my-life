@@ -8,6 +8,8 @@ import {
 import { MIN_FIELD_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { z } from 'zod';
 
+import { checkRateLimit } from '@/utils/rate-limit';
+
 const socialCodeSchema = z.string().trim().min(MIN_FIELD_LENGTH);
 
 interface ExchangeResult {
@@ -15,6 +17,10 @@ interface ExchangeResult {
 }
 
 export const exchangeSocialCode = async (code: string): Promise<ExchangeResult> => {
+  if (!(await checkRateLimit('exchangeSocialCode'))) {
+    return { success: false };
+  }
+
   const validated = socialCodeSchema.safeParse(code);
 
   if (!validated.success) {

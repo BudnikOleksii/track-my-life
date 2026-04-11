@@ -7,16 +7,11 @@
 | #   | Task                                                                                                                              | Impact | Effort | Agent(s)                               | Status |
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | -------------------------------------- | ------ |
 | 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                          | 4      | M      | performance-engineer                   | Todo   |
-| 16  | [Replace CSP `unsafe-inline` with nonce-based script-src](#16-replace-csp-unsafe-inline-with-nonce-based-script-src)              | 4      | L      | security-auditor, nextjs-developer     | Todo   |
-| 18  | [Set onboarding status cookie to httpOnly](#18-set-onboarding-status-cookie-to-httponly)                                          | 3      | M      | security-auditor                       | Todo   |
-| 19  | [Add rate limiting on auth endpoints](#19-add-rate-limiting-on-auth-endpoints)                                                    | 3      | M      | security-auditor                       | Todo   |
 | 33  | [Fix missing i18n keys + add parity check to CI](#33-fix-missing-i18n-keys--add-parity-check-to-ci)                               | 3      | S      | qa-expert                              | Todo   |
 | 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                | 3      | S      | performance-engineer                   | Todo   |
 | 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard) | 2      | S      | nextjs-developer, performance-engineer | Todo   |
-| 38  | [Wrap getTimezoneOffset/RscTokenProvider in React cache()](#38-wrap-gettimezoneoffsetrsctokenprovider-in-react-cache)             | 2      | S      | performance-engineer                   | Todo   |
 | 39  | [Add `generateStaticParams` for locale segments](#39-add-generatestaticparams-for-locale-segments)                                | 2      | S      | nextjs-developer                       | Todo   |
 | 41  | [Document `next-shared` in CLAUDE.md + extract error boundary](#41-document-next-shared-in-claudemd--extract-error-boundary)      | 2      | S      | architect-reviewer                     | Todo   |
-| 42  | [Fix turbo.json task dependencies](#42-fix-turbojson-task-dependencies)                                                           | 2      | S      | architect-reviewer                     | Todo   |
 | 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                | 2      | S      | qa-expert                              | Todo   |
 
 ## Recommended Execution Order
@@ -48,50 +43,6 @@
 - `dashboard/components/recent-transaction-list/RecentTransactionList.tsx`
 
 **Action:** Pass translated strings as props from the Server components. Remove `'use client'` and `useTranslations`/`useLocale` calls.
-
----
-
----
-
-### 16. Replace CSP `unsafe-inline` with nonce-based script-src
-
-**Impact:** 4 | **Effort:** L | **Agents:** security-auditor, nextjs-developer
-
-CSP includes `script-src 'self' 'unsafe-inline'` in production. Any XSS that injects inline scripts would execute freely.
-
-**Files:**
-
-- `apps/money-tracker/next.config.ts:12`
-
-**Action:** Implement nonce-based CSP via middleware. Generate a nonce per request, set it in headers, reference via `'strict-dynamic'`.
-
----
-
-### 18. Set onboarding status cookie to httpOnly
-
-**Impact:** 3 | **Effort:** M | **Agent:** security-auditor
-
-The onboarding status cookie is `httpOnly: false` and stores `{ emailVerified, onboardingCompleted }`. A user can manually set this cookie to bypass onboarding redirection.
-
-**Files:**
-
-- `apps/money-tracker/src/utils/middleware/onboarding.ts:86-93`
-
-**Action:** Set `httpOnly: true`. Pass onboarding status to client via RSC props if needed.
-
----
-
-### 19. Add rate limiting on auth endpoints
-
-**Impact:** 3 | **Effort:** M | **Agent:** security-auditor
-
-No rate limiting on sign-in, sign-up, or password change actions at the Next.js layer.
-
-**Files:**
-
-- `(auth-layout)/sign-in/action.ts`, `sign-up/action.ts`, `settings/actions/change-password.ts`
-
-**Action:** Implement rate limiting in middleware or confirm backend enforces it.
 
 ---
 
@@ -141,21 +92,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 
 ---
 
-### 38. Wrap getTimezoneOffset/RscTokenProvider in React cache()
-
-**Impact:** 2 | **Effort:** S | **Agent:** performance-engineer
-
-`getTimezoneOffset` opens the cookie store 6x per dashboard render (once per widget). `RscTokenProvider.getAccessToken` also reads cookies independently per RSC render.
-
-**Files:**
-
-- `apps/money-tracker/src/utils/get-timezone-offset.ts`
-- `packages/next-shared/src/api/client/token/rsc-token-provider.ts`
-
-**Action:** Wrap both with `cache()` from `'react'` to deduplicate per request.
-
----
-
 ### 39. Add `generateStaticParams` for locale segments
 
 **Impact:** 2 | **Effort:** S | **Agent:** nextjs-developer
@@ -177,22 +113,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 `@track-my-life/next-shared` is actively used but absent from CLAUDE.md's structure diagram. Three error boundary files (`(app-layout)/error.tsx`, `[locale]/error.tsx`, `(auth-layout)/error.tsx`) are near-identical.
 
 **Action:** Add `next-shared` to CLAUDE.md. Extract shared `AppErrorBoundary` component accepting a `homePath` prop.
-
----
-
-### 42. Fix turbo.json task dependencies
-
-**Impact:** 2 | **Effort:** S | **Agent:** architect-reviewer
-
-- `build:storybook` depends on `^build:storybook` (resolves to nothing since no package has that script)
-- `test:e2e` has no `dependsOn: ["build"]` — may test against stale build
-- `type-check` depends on `^build` which forces full package build unnecessarily
-
-**Files:**
-
-- `turbo.json:13-16,19`
-
-**Action:** Fix `build:storybook` to depend on `^build`. Add `build` dependency to `test:e2e`. Evaluate whether `type-check` needs `^build`.
 
 ---
 
@@ -335,3 +255,13 @@ Items completed in the current improvement cycle (2026-04-10):
 | Cache Intl formatter instances in formatAmount/formatDate   | Done   |
 | Extract duplicated cache config constants                   | Done   |
 | Remove unnecessary `router.refresh()` in recurring hooks    | Done   |
+
+Items completed in the current improvement cycle (2026-04-11):
+
+| Task                                                    | Status |
+| ------------------------------------------------------- | ------ |
+| Replace CSP `unsafe-inline` with nonce-based script-src | Done   |
+| Set onboarding status cookie to httpOnly                | Done   |
+| Add rate limiting on auth endpoints                     | Done   |
+| Wrap getTimezoneOffset in React cache()                 | Done   |
+| Fix turbo.json task dependencies                        | Done   |

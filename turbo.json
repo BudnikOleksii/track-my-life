@@ -12,7 +12,7 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**", "storybook-static/**"]
     },
     "build:storybook": {
-      "dependsOn": ["^build:storybook"],
+      "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
     },
     "type-check": {
@@ -30,6 +30,8 @@
       "cache": false
     },
     "test": {},
-    "test:e2e": {}
+    "test:e2e": {
+      "dependsOn": ["build"]
+    }
   }
 }

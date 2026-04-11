@@ -7,6 +7,7 @@ import { verifyToken } from '@track-my-life/shared/src/utils/jwt';
 import createIntlMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 
+import { applySecurityHeaders, generateNonce } from '@/utils/middleware/csp';
 import { checkOnboardingStatus, handleOnboardingRedirect } from '@/utils/middleware/onboarding';
 import { checkIsPublicPath } from '@/utils/middleware/path';
 import { attemptTokenRefreshOrRedirect } from '@/utils/middleware/redirect';
@@ -55,17 +56,20 @@ const handleAuthenticatedRoute = async (
 };
 
 export const proxy = async (request: NextRequest): Promise<NextResponse> => {
+  const nonce = generateNonce();
+  request.headers.set('x-nonce', nonce);
+
   if (checkIsPublicPath(request.nextUrl.pathname)) {
-    return handleI18nRouting(request);
+    return applySecurityHeaders(handleI18nRouting(request), nonce);
   }
 
   const i18nResponse = handleI18nRouting(request);
 
   if (!i18nResponse.ok) {
-    return i18nResponse;
+    return applySecurityHeaders(i18nResponse, nonce);
   }
 
-  return handleAuthenticatedRoute(request, i18nResponse);
+  return applySecurityHeaders(await handleAuthenticatedRoute(request, i18nResponse), nonce);
 };
 
 export const config = {
