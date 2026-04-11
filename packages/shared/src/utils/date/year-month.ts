@@ -78,7 +78,19 @@ export const getNextMonth = (year: number, month: number): YearMonth => {
   return { year, month: month + MONTH_INDEX_OFFSET };
 };
 
+const monthYearFormatCache = new Map<string, Intl.DateTimeFormat>();
+
+const getMonthYearFormat = (locale: string): Intl.DateTimeFormat => {
+  const cached = monthYearFormatCache.get(locale);
+  if (cached) {
+    return cached;
+  }
+  const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
+  monthYearFormatCache.set(locale, formatter);
+  return formatter;
+};
+
 export const formatMonthYear = (year: number, month: number, locale: string): string => {
   const date = new Date(year, month - MONTH_INDEX_OFFSET);
-  return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' }).format(date);
+  return getMonthYearFormat(locale).format(date);
 };

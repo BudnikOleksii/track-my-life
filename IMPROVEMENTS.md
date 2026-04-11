@@ -4,25 +4,20 @@
 
 ## Progress Tracker
 
-| #   | Task                                                                                                                                        | Impact | Effort | Agent(s)                               | Status |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | -------------------------------------- | ------ |
-| 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                                    | 4      | M      | performance-engineer                   | Todo   |
-| 16  | [Replace CSP `unsafe-inline` with nonce-based script-src](#16-replace-csp-unsafe-inline-with-nonce-based-script-src)                        | 4      | L      | security-auditor, nextjs-developer     | Todo   |
-| 18  | [Set onboarding status cookie to httpOnly](#18-set-onboarding-status-cookie-to-httponly)                                                    | 3      | M      | security-auditor                       | Todo   |
-| 19  | [Add rate limiting on auth endpoints](#19-add-rate-limiting-on-auth-endpoints)                                                              | 3      | M      | security-auditor                       | Todo   |
-| 21  | [Remove redundant `revalidatePath` alongside `updateTag`](#21-remove-redundant-revalidatepath-alongside-updatetag)                          | 3      | S      | nextjs-developer, performance-engineer | Todo   |
-| 22  | [Stop invalidating CATEGORIES cache on transaction mutations](#22-stop-invalidating-categories-cache-on-transaction-mutations)              | 3      | S      | performance-engineer                   | Todo   |
-| 23  | [Cache Intl formatter instances in formatAmount/formatDate](#23-cache-intl-formatter-instances-in-formatamountformatdate)                   | 3      | S      | performance-engineer                   | Todo   |
-| 31  | [Extract duplicated cache config constants](#31-extract-duplicated-cache-config-constants)                                                  | 3      | S      | architect-reviewer                     | Todo   |
-| 33  | [Fix missing i18n keys + add parity check to CI](#33-fix-missing-i18n-keys--add-parity-check-to-ci)                                         | 3      | S      | qa-expert                              | Todo   |
-| 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                          | 3      | S      | performance-engineer                   | Todo   |
-| 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard)           | 2      | S      | nextjs-developer, performance-engineer | Todo   |
-| 36  | [Remove unnecessary `router.refresh()` in recurring transaction hooks](#36-remove-unnecessary-routerrefresh-in-recurring-transaction-hooks) | 2      | S      | nextjs-developer, react-specialist     | Todo   |
-| 38  | [Wrap getTimezoneOffset/RscTokenProvider in React cache()](#38-wrap-gettimezoneoffsetrsctokenprovider-in-react-cache)                       | 2      | S      | performance-engineer                   | Todo   |
-| 39  | [Add `generateStaticParams` for locale segments](#39-add-generatestaticparams-for-locale-segments)                                          | 2      | S      | nextjs-developer                       | Todo   |
-| 41  | [Document `next-shared` in CLAUDE.md + extract error boundary](#41-document-next-shared-in-claudemd--extract-error-boundary)                | 2      | S      | architect-reviewer                     | Todo   |
-| 42  | [Fix turbo.json task dependencies](#42-fix-turbojson-task-dependencies)                                                                     | 2      | S      | architect-reviewer                     | Todo   |
-| 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                          | 2      | S      | qa-expert                              | Todo   |
+| #   | Task                                                                                                                              | Impact | Effort | Agent(s)                               | Status |
+| --- | --------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | -------------------------------------- | ------ |
+| 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                          | 4      | M      | performance-engineer                   | Todo   |
+| 16  | [Replace CSP `unsafe-inline` with nonce-based script-src](#16-replace-csp-unsafe-inline-with-nonce-based-script-src)              | 4      | L      | security-auditor, nextjs-developer     | Todo   |
+| 18  | [Set onboarding status cookie to httpOnly](#18-set-onboarding-status-cookie-to-httponly)                                          | 3      | M      | security-auditor                       | Todo   |
+| 19  | [Add rate limiting on auth endpoints](#19-add-rate-limiting-on-auth-endpoints)                                                    | 3      | M      | security-auditor                       | Todo   |
+| 33  | [Fix missing i18n keys + add parity check to CI](#33-fix-missing-i18n-keys--add-parity-check-to-ci)                               | 3      | S      | qa-expert                              | Todo   |
+| 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                | 3      | S      | performance-engineer                   | Todo   |
+| 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard) | 2      | S      | nextjs-developer, performance-engineer | Todo   |
+| 38  | [Wrap getTimezoneOffset/RscTokenProvider in React cache()](#38-wrap-gettimezoneoffsetrsctokenprovider-in-react-cache)             | 2      | S      | performance-engineer                   | Todo   |
+| 39  | [Add `generateStaticParams` for locale segments](#39-add-generatestaticparams-for-locale-segments)                                | 2      | S      | nextjs-developer                       | Todo   |
+| 41  | [Document `next-shared` in CLAUDE.md + extract error boundary](#41-document-next-shared-in-claudemd--extract-error-boundary)      | 2      | S      | architect-reviewer                     | Todo   |
+| 42  | [Fix turbo.json task dependencies](#42-fix-turbojson-task-dependencies)                                                           | 2      | S      | architect-reviewer                     | Todo   |
+| 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                | 2      | S      | qa-expert                              | Todo   |
 
 ## Recommended Execution Order
 
@@ -30,11 +25,11 @@
 **Sprint 2 — Quick Security + Validation (S effort, Impact 3-4):** #4, #8, #14, #17, #20
 **Sprint 3 — Accessibility + UX (S-M effort, Impact 4):** #5, #6, #7, #27
 **Sprint 4 — Architecture (M effort, Impact 4-5):** #3
-**Sprint 5 — Performance Quick Wins (S effort, Impact 2-3):** #9, #21, #22, #23, #24, #34, #38
+**Sprint 5 — Performance Quick Wins (S effort, Impact 2-3):** #9, #24, #34, #38
 **Sprint 6 — RSC Conversion + Next.js (S-M effort, Impact 2-4):** #10, #25, #26, #35, #39
 **Sprint 7 — TypeScript Hardening (S effort, Impact 2-4):** ~~done~~
 **Sprint 8 — QA Infrastructure (S effort, Impact 3-4):** #11, #12, #32, #33, #46
-**Sprint 9 — Polish + DX (S effort, Impact 2-3):** #31, #36, #41, #42
+**Sprint 9 — Polish + DX (S effort, Impact 2-3):** #41, #42
 
 ---
 
@@ -100,67 +95,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 
 ---
 
-### 21. Remove redundant `revalidatePath` alongside `updateTag`
-
-**Impact:** 3 | **Effort:** S | **Agents:** nextjs-developer, performance-engineer
-
-`revalidateTransactionCaches` and 10+ other action files call both `updateTag` and `revalidatePath`. Per the project's own convention, `updateTag` is sufficient.
-
-**Files:**
-
-- `transactions/actions/revalidate-transaction-caches.ts:7-11`
-- All category, profile, and recurring transaction action files
-
-**Action:** Remove `revalidatePath` calls; keep `updateTag` only.
-
----
-
-### 22. Stop invalidating CATEGORIES cache on transaction mutations
-
-**Impact:** 3 | **Effort:** S | **Agent:** performance-engineer
-
-`revalidateTransactionCaches` calls `updateTag(CACHE_TAG.CATEGORIES)` on every transaction mutation. Categories don't change when transactions change.
-
-**Files:**
-
-- `transactions/actions/revalidate-transaction-caches.ts:9`
-
-**Action:** Remove `updateTag(CACHE_TAG.CATEGORIES)` from transaction cache invalidation.
-
----
-
-### 23. Cache Intl formatter instances in formatAmount/formatDate
-
-**Impact:** 3 | **Effort:** S | **Agent:** performance-engineer
-
-`formatAmount` creates a `new Intl.NumberFormat(locale, {...})` on every call. `Intl.NumberFormat` construction is expensive (locale negotiation + pattern compilation). Called 6+ times on dashboard, once per row in transaction list.
-
-**Files:**
-
-- `packages/shared/src/utils/format-amount.ts:1-7`
-- `packages/shared/src/utils/date/format.ts:14-19`
-
-**Action:** Add a module-level `Map<string, Intl.NumberFormat>` keyed by `${locale}:${currency}`.
-
----
-
----
-
-### 31. Extract duplicated cache config constants
-
-**Impact:** 3 | **Effort:** S | **Agent:** architect-reviewer
-
-`ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] }` is defined identically in 5 dashboard action files. `TRANSACTIONS_CACHE` is duplicated in 3 files.
-
-**Files:**
-
-- All `dashboard/actions/fetch-*.ts` files
-- `transactions/actions/fetch-transaction-list.ts`, `fetch-transaction.ts`, `by-category/actions/fetch-transactions-by-category.ts`
-
-**Action:** Move to `apps/money-tracker/src/constants/cache-tag.ts` alongside existing `CACHE_TAG` definitions.
-
----
-
 ### 33. Fix missing i18n keys + add parity check to CI
 
 **Impact:** 3 | **Effort:** S | **Agent:** qa-expert
@@ -207,22 +141,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 
 ---
 
-### 36. Remove unnecessary `router.refresh()` in recurring transaction hooks
-
-**Impact:** 2 | **Effort:** S | **Agents:** nextjs-developer, react-specialist
-
-`use-recurring-transaction-actions.ts` calls `router.refresh()` after both `handlePause` and `handleResume`. This is redundant with `updateTag`/`revalidatePath` in the server actions.
-
-**Files:**
-
-- `transactions/recurring/[id]/hooks/use-recurring-transaction-actions.ts:53,64`
-
-**Action:** Remove both `router.refresh()` calls.
-
----
-
----
-
 ### 38. Wrap getTimezoneOffset/RscTokenProvider in React cache()
 
 **Impact:** 2 | **Effort:** S | **Agent:** performance-engineer
@@ -252,8 +170,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 
 ---
 
----
-
 ### 41. Document `next-shared` in CLAUDE.md + extract error boundary
 
 **Impact:** 2 | **Effort:** S | **Agent:** architect-reviewer
@@ -277,8 +193,6 @@ No rate limiting on sign-in, sign-up, or password change actions at the Next.js 
 - `turbo.json:13-16,19`
 
 **Action:** Fix `build:storybook` to depend on `^build`. Add `build` dependency to `test:e2e`. Evaluate whether `type-check` needs `^build`.
-
----
 
 ---
 
@@ -398,21 +312,26 @@ Items completed in the current improvement cycle (2026-04-09):
 
 Items completed in the current improvement cycle (2026-04-10):
 
-| Task                                                       | Status |
-| ---------------------------------------------------------- | ------ |
-| Add `aria-invalid` to Input component                      | Done   |
-| Make CategoryPicker keyboard-accessible                    | Done   |
-| Verify ThemeProvider has `attribute="data-theme"`          | Done   |
-| Add `display: 'swap'` to Google Fonts                      | Done   |
-| Replace hand-rolled dropdowns with Radix DropdownMenu      | Done   |
-| Enable a11y checks in Storybook                            | Done   |
-| AppSidebar/TimePicker/RecurringTransactions minor fixes    | Done   |
-| Make `ApiResponse<T>` a discriminated union                | Done   |
-| Fix profileFormSchema — use CountryCode union              | Done   |
-| Fix useProfileForm — direct defaultValues                  | Done   |
-| Link RecurringFrequency Zod enum to generated type         | Done   |
-| Fix CurrencyStep — don't cast empty string to CurrencyCode | Done   |
-| Refactor useCategoryFilters to use useUrlFilters           | Done   |
-| Clean up TypeScript casts (NextRequestInit, sameSite)      | Done   |
-| Deduplicate TransactionTypeFilter/CategoryTypeFilter       | Done   |
-| Deduplicate option lists + add Recharts loading fallbacks  | Done   |
+| Task                                                        | Status |
+| ----------------------------------------------------------- | ------ |
+| Add `aria-invalid` to Input component                       | Done   |
+| Make CategoryPicker keyboard-accessible                     | Done   |
+| Verify ThemeProvider has `attribute="data-theme"`           | Done   |
+| Add `display: 'swap'` to Google Fonts                       | Done   |
+| Replace hand-rolled dropdowns with Radix DropdownMenu       | Done   |
+| Enable a11y checks in Storybook                             | Done   |
+| AppSidebar/TimePicker/RecurringTransactions minor fixes     | Done   |
+| Make `ApiResponse<T>` a discriminated union                 | Done   |
+| Fix profileFormSchema — use CountryCode union               | Done   |
+| Fix useProfileForm — direct defaultValues                   | Done   |
+| Link RecurringFrequency Zod enum to generated type          | Done   |
+| Fix CurrencyStep — don't cast empty string to CurrencyCode  | Done   |
+| Refactor useCategoryFilters to use useUrlFilters            | Done   |
+| Clean up TypeScript casts (NextRequestInit, sameSite)       | Done   |
+| Deduplicate TransactionTypeFilter/CategoryTypeFilter        | Done   |
+| Deduplicate option lists + add Recharts loading fallbacks   | Done   |
+| Remove redundant `revalidatePath` alongside `updateTag`     | Done   |
+| Stop invalidating CATEGORIES cache on transaction mutations | Done   |
+| Cache Intl formatter instances in formatAmount/formatDate   | Done   |
+| Extract duplicated cache config constants                   | Done   |
+| Remove unnecessary `router.refresh()` in recurring hooks    | Done   |

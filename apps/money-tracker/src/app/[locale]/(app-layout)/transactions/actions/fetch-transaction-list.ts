@@ -7,9 +7,7 @@ import { rscTransactionApiService } from '@track-my-life/next-shared/src/api/rsc
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
-
-const TRANSACTIONS_CACHE = { revalidate: 300, tags: [CACHE_TAG.TRANSACTIONS] } as const;
+import { TRANSACTIONS_CACHE } from '@/constants/cache-tag';
 
 const checkIsTransactionListResponse = (value: unknown): value is TransactionListResponseDto =>
   checkIsObject(value) && 'data' in value && Array.isArray(value.data);

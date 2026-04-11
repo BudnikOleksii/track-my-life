@@ -50,9 +50,8 @@ export const useRecurringTransactionActions = ({
       if (!result.ok) {
         toast.error(translations('content.pauseError'));
       }
-      router.refresh();
     });
-  }, [recurringTransaction.id, router, translations, applyOptimistic]);
+  }, [recurringTransaction.id, translations, applyOptimistic]);
 
   const handleResume = useCallback(() => {
     startTransition(async () => {
@@ -61,9 +60,8 @@ export const useRecurringTransactionActions = ({
       if (!result.ok) {
         toast.error(translations('content.resumeError'));
       }
-      router.refresh();
     });
-  }, [recurringTransaction.id, router, translations, applyOptimistic]);
+  }, [recurringTransaction.id, translations, applyOptimistic]);
 
   const handleDelete = useCallback(() => {
     startTransition(async () => {

@@ -7,11 +7,9 @@ import { rscCategoryApiService } from '@track-my-life/next-shared/src/api/rsc-ap
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
+import { CATEGORIES_CACHE } from '@/constants/cache-tag';
 
 const MAX_PAGE_SIZE = 100;
-
-const CATEGORIES_CACHE = { revalidate: 3600, tags: [CACHE_TAG.CATEGORIES] } as const;
 
 const checkIsCategoryListResponse = (value: unknown): value is CategoryListResponseDto =>
   checkIsObject(value) && 'data' in value && Array.isArray(value.data);
