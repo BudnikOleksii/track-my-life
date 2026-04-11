@@ -8,6 +8,7 @@ interface RateLimitConfig {
 
 interface RateLimitEntry {
   timestampList: number[];
+  windowMs: number;
 }
 
 const DEFAULT_MAX_ATTEMPT_COUNT = 5;
@@ -19,7 +20,7 @@ const FIRST_ELEMENT_INDEX = 0;
 const entryMap = new Map<string, RateLimitEntry>();
 let lastCleanupTimestamp = Date.now();
 
-const cleanupExpiredEntries = (windowMs: number) => {
+const cleanupExpiredEntries = () => {
   const now = Date.now();
 
   if (now - lastCleanupTimestamp < CLEANUP_INTERVAL_MS) {
@@ -30,7 +31,7 @@ const cleanupExpiredEntries = (windowMs: number) => {
 
   for (const [key, entry] of entryMap) {
     const validTimestampList = entry.timestampList.filter(
-      (timestamp) => now - timestamp < windowMs,
+      (timestamp) => now - timestamp < entry.windowMs,
     );
 
     if (validTimestampList.length === EMPTY_LIST_LENGTH) {
@@ -87,14 +88,14 @@ export const checkRateLimit = async (
 ): Promise<boolean> => {
   const resolvedConfig = resolveConfig(config);
 
-  cleanupExpiredEntries(resolvedConfig.windowMs);
+  cleanupExpiredEntries();
 
   const key = `${actionName}:${await getClientIp()}`;
   const now = Date.now();
   const entry = entryMap.get(key);
 
   if (!entry) {
-    entryMap.set(key, { timestampList: [now] });
+    entryMap.set(key, { timestampList: [now], windowMs: resolvedConfig.windowMs });
     return true;
   }
 
