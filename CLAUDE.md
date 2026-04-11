@@ -23,6 +23,7 @@ apps/
 packages/
   ui/                  # Shared UI component library (@track-my-life/ui)
   shared/              # Shared constants, types, i18n, API client (@track-my-life/shared)
+  next-shared/         # Next.js shared code — i18n routing, API clients, providers (@track-my-life/next-shared)
   lint-config/         # Shared oxlint config
   stylelint-config/    # Shared stylelint config
   typescript-config/   # Shared tsconfig

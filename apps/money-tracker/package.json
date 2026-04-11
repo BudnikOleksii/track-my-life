@@ -10,7 +10,8 @@
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "stylelint": "stylelint '**/*.{scss,css}'",
-    "stylelint:fix": "stylelint '**/*.{scss,css}' --fix"
+    "stylelint:fix": "stylelint '**/*.{scss,css}' --fix",
+    "i18n-check": "bash ../../scripts/check-i18n-parity.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",

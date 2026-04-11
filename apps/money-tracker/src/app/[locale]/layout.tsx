@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 
 import { NextIntlProvider } from '@track-my-life/next-shared/src/providers/NextIntlProvider';
+import { LOCALE_CODE_LIST } from '@track-my-life/shared/src/i18n/constants/locale-code';
 import { Toaster } from '@track-my-life/ui/src/components/molecules/toaster/toaster';
 import { cn } from '@track-my-life/ui/src/lib/utils';
 import { getMessages, getNow, getTimeZone, setRequestLocale } from 'next-intl/server';
@@ -27,6 +28,8 @@ const outfit = Outfit({
   variable: '--accent-font-family',
   display: 'swap',
 });
+
+export const generateStaticParams = () => LOCALE_CODE_LIST.map((locale) => ({ locale }));
 
 export const metadata: Metadata = {
   description: 'Easily manage your expenses and incomes with Money Tracker Online',
