@@ -3,6 +3,7 @@
   "emailPlaceholder": "Введіть вашу електронну пошту",
   "password": "Пароль",
   "passwordPlaceholder": "Введіть ваш пароль",
+  "errorGeneric": "Сталася помилка. Спробуйте ще раз.",
   "orLabel": "Або продовжити з",
   "continueWithGoogle": "Продовжити з Google",
   "continueWithGitHub": "Продовжити з GitHub",
@@ -12,6 +13,7 @@
     "passwordRequired": "Пароль обов'язковий",
     "passwordMinLength": "Пароль повинен містити щонайменше 8 символів",
     "generic": "Сталася помилка. Перевірте правильлність данних та спробуйте ще раз.",
-    "invalidCredentials": "Невірна електронна пошта або пароль"
+    "invalidCredentials": "Невірна електронна пошта або пароль",
+    "rateLimited": "Забагато спроб. Спробуйте пізніше."
   }
 }

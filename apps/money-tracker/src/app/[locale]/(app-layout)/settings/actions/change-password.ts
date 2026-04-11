@@ -6,6 +6,7 @@ import type { ChangePasswordDto } from '@track-my-life/shared/src/api/generated/
 import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
 
 import { requireAuth } from '@/actions/require-auth';
+import { checkRateLimit } from '@/utils/rate-limit';
 
 import { changePasswordFormSchema } from '../constants/change-password-form-schema';
 
@@ -13,6 +14,10 @@ export const changePassword = async (
   input: ChangePasswordDto,
 ): Promise<ServerActionResult<true>> => {
   await requireAuth();
+
+  if (!(await checkRateLimit('changePassword'))) {
+    return { ok: false, error: 'rateLimited' };
+  }
 
   const validated = changePasswordFormSchema.safeParse(input);
 
