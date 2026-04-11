@@ -3,12 +3,7 @@ import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/
 import { rscRecurringTransactionApiService } from '@track-my-life/next-shared/src/api/rsc-api';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
-
-const RECURRING_TRANSACTIONS_CACHE = {
-  revalidate: 3600,
-  tags: [CACHE_TAG.RECURRING_TRANSACTIONS],
-} as const;
+import { RECURRING_TRANSACTIONS_CACHE } from '@/constants/cache-tag';
 
 export const fetchRecurringTransaction = cache(
   async (id: string): Promise<RecurringTransactionResponseDto | null> => {

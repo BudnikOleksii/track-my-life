@@ -8,12 +8,7 @@ import { rscRecurringTransactionApiService } from '@track-my-life/next-shared/sr
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
-
-const RECURRING_TRANSACTIONS_CACHE = {
-  revalidate: 3600,
-  tags: [CACHE_TAG.RECURRING_TRANSACTIONS],
-} as const;
+import { RECURRING_TRANSACTIONS_CACHE } from '@/constants/cache-tag';
 
 interface FetchRecurringTransactionListParams {
   page?: number;

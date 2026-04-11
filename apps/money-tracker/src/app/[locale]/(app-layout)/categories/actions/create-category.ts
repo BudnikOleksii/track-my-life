@@ -7,11 +7,10 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, updateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
-import { PATHS } from '@/constants/paths';
 
 import { categoryFormSchema } from '../constants/category-form-schema';
 
@@ -39,7 +38,6 @@ export const createCategory = async (
   }
 
   updateTag(CACHE_TAG.CATEGORIES);
-  revalidatePath(PATHS.categories);
 
   return { ok: true, data };
 };

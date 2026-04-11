@@ -8,9 +8,7 @@ import { rscTransactionsAnalyticsApiService } from '@track-my-life/next-shared/s
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
-
-const ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] } as const;
+import { ANALYTICS_CACHE } from '@/constants/cache-tag';
 
 interface FetchDailySpendingParams {
   year: number;

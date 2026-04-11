@@ -7,9 +7,7 @@ import type {
 import { rscTransactionsAnalyticsApiService } from '@track-my-life/next-shared/src/api/rsc-api';
 import { cache } from 'react';
 
-import { CACHE_TAG } from '@/constants/cache-tag';
-
-const ANALYTICS_CACHE = { revalidate: 300, tags: [CACHE_TAG.ANALYTICS] } as const;
+import { ANALYTICS_CACHE } from '@/constants/cache-tag';
 
 interface FetchSummaryParams {
   currencyCode: CurrencyCode;

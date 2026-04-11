@@ -7,11 +7,10 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
-import { revalidatePath, updateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 
 import { requireAuth } from '@/actions/require-auth';
 import { CACHE_TAG } from '@/constants/cache-tag';
-import { PATHS } from '@/constants/paths';
 
 import { recurringTransactionFormSchema } from '../constants/recurring-transaction-form-schema';
 
@@ -43,7 +42,6 @@ export const createRecurringTransaction = async (
   }
 
   updateTag(CACHE_TAG.RECURRING_TRANSACTIONS);
-  revalidatePath(PATHS.recurringTransactions);
 
   return { ok: true, data };
 };
