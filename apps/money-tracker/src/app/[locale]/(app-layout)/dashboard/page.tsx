@@ -5,6 +5,7 @@ import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Ty
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { CategoryBreakdownChartServer } from './components/category-breakdown-chart/CategoryBreakdownChartServer';
@@ -53,6 +54,7 @@ const WidgetSkeleton = () => (
 const widgetSkeletonFallback = <WidgetSkeleton />;
 
 const DashboardPage = async (props: Props) => {
+  await redirectIfNotOnboarded();
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
   const filters = parseDashboardSearchParams(searchParams);
 

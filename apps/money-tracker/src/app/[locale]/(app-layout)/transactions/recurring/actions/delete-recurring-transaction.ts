@@ -5,12 +5,12 @@ import type { ServerActionResult } from '@track-my-life/next-shared/src/types/se
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { entityIdSchema } from '@/constants/entity-id-schema';
 
 export const deleteRecurringTransaction = async (id: string): Promise<ServerActionResult<true>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   if (!entityIdSchema.safeParse(id).success) {
     return { ok: false, error: 'validationFailed' };

@@ -1,4 +1,5 @@
 import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
+import type { FetchCacheOptions } from '../client/types';
 import type {
   CompleteOnboardingDto,
   OnboardingControllerAssignDefaultCategoriesResponses,
@@ -21,10 +22,11 @@ export class OnboardingApiService extends ApiClient {
     ASSIGN_DEFAULT_CATEGORIES: `${this.BASE_URL}/assign-default-categories`,
   } as const;
 
-  fetchStatus() {
+  fetchStatus(next?: FetchCacheOptions) {
     return this.request<GetStatusResponse>({
       method: 'GET',
       url: this.ENDPOINTS.STATUS,
+      next,
     });
   }
 

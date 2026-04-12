@@ -9,7 +9,7 @@ import type {
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 
 import { categoryFormSchema } from '../constants/category-form-schema';
@@ -17,7 +17,7 @@ import { categoryFormSchema } from '../constants/category-form-schema';
 export const createCategory = async (
   input: CreateCategoryDto,
 ): Promise<ServerActionResult<CategoryResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = categoryFormSchema.safeParse(input);
 

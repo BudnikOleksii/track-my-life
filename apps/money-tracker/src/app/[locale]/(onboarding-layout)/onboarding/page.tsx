@@ -4,12 +4,12 @@ import type { FC } from 'react';
 import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { fetchOnboardingStatus } from '@/actions/fetch-onboarding-status';
 import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { OnboardingStep } from './constants/onboarding-step';
 
-import { fetchOnboardingStatus } from './actions/fetch-onboarding-status';
 import { checkIsOnboardingStep, ONBOARDING_STEP } from './constants/onboarding-step';
 import { OnboardingPageContent } from './page.content';
 

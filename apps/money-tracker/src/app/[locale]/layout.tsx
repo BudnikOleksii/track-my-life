@@ -13,6 +13,7 @@ import '@track-my-life/ui/src/styles/index.scss';
 import '../globals.css';
 import { ThemeProvider } from 'next-themes';
 import { Outfit, Poppins } from 'next/font/google';
+import { headers } from 'next/headers';
 
 import { TimezoneOffsetSetter } from './components/timezone-offset-setter/TimezoneOffsetSetter';
 
@@ -52,12 +53,14 @@ const RootLayout: FC<Props> = async (props) => {
   const messages = await getMessages();
   const timeZone = await getTimeZone();
   const now = await getNow();
+  const headerList = await headers();
+  const nonce = headerList.get('x-nonce') ?? '';
 
   return (
     <html lang={params.locale} suppressHydrationWarning>
       <body className={cn(poppins.variable, outfit.variable)}>
         <NextIntlProvider locale={params.locale} messages={messages} timeZone={timeZone} now={now}>
-          <ThemeProvider attribute="data-theme">
+          <ThemeProvider attribute="data-theme" nonce={nonce}>
             <TimezoneOffsetSetter />
             {children}
 

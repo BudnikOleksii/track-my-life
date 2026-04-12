@@ -9,7 +9,7 @@ import type {
 import { categoryApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 import { entityIdSchema } from '@/constants/entity-id-schema';
 
@@ -33,7 +33,7 @@ export const updateCategory = async (
   id: string,
   body: UpdateCategoryDto,
 ): Promise<ServerActionResult<CategoryResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = validateUpdateCategory(id, body);
 

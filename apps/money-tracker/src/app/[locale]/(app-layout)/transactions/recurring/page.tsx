@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -41,6 +42,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const recurringTransactionsSkeletonFallback = <PageSkeleton count={8} height={56} />;
 
 const RecurringTransactionsPage = async (props: Props) => {
+  await redirectIfNotOnboarded();
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
   const filters = parseRecurringTransactionSearchParams(searchParams);
 

@@ -3,7 +3,7 @@
 import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 
 const MAX_FILE_SIZE_BYTES = 5_242_880;
@@ -35,7 +35,7 @@ const revalidateImportCaches = () => {
 };
 
 export const importTransactionList = async (formData: FormData) => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const fileResult = getValidatedImportFile(formData);
 

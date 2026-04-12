@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { fetchProfile } from '@/actions/fetch-profile';
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../../components/page-skeleton/PageSkeleton';
@@ -55,6 +56,7 @@ const EditRecurringTransactionContent = async ({ id }: { id: string }) => {
 };
 
 const EditRecurringTransactionPage = async (props: Props) => {
+  await redirectIfNotOnboarded();
   const params = await props.params;
 
   return (

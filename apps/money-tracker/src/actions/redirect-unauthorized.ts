@@ -7,7 +7,7 @@ import { PATHS } from '@/constants/paths';
 
 const { JWT_SECRET, JWT_ISSUER, JWT_AUDIENCE } = process.env;
 
-export const requireAuth = async () => {
+export const redirectUnauthorized = async () => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
 

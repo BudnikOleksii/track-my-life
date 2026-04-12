@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { fetchProfile } from '@/actions/fetch-profile';
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
@@ -43,10 +44,14 @@ const CreateRecurringTransactionContent = async () => {
   );
 };
 
-const CreateRecurringTransactionPage = async () => (
-  <Suspense fallback={createRecurringTransactionSkeletonFallback}>
-    <CreateRecurringTransactionContent />
-  </Suspense>
-);
+const CreateRecurringTransactionPage = async () => {
+  await redirectIfNotOnboarded();
+
+  return (
+    <Suspense fallback={createRecurringTransactionSkeletonFallback}>
+      <CreateRecurringTransactionContent />
+    </Suspense>
+  );
+};
 
 export default CreateRecurringTransactionPage;

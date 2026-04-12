@@ -1,14 +1,12 @@
-import type { JWTPayload } from '@track-my-life/shared/src/utils/jwt';
 import type { NextRequest } from 'next/server';
 
 import { MiddlewareTokenProvider } from '@track-my-life/next-shared/src/api/client/token/middleware-token-provider';
 import { routing } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { verifyToken } from '@track-my-life/shared/src/utils/jwt';
 import createIntlMiddleware from 'next-intl/middleware';
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 
 import { applySecurityHeaders, generateNonce } from '@/utils/middleware/csp';
-import { checkOnboardingStatus, handleOnboardingRedirect } from '@/utils/middleware/onboarding';
 import { checkIsPublicPath } from '@/utils/middleware/path';
 import { attemptTokenRefreshOrRedirect } from '@/utils/middleware/redirect';
 
@@ -16,10 +14,10 @@ const { JWT_SECRET, JWT_ISSUER, JWT_AUDIENCE } = process.env;
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
-const validateAccessToken = async (
+const handleAuthenticatedRoute = async (
   request: NextRequest,
   response: NextResponse,
-): Promise<{ accessToken: string; payload: JWTPayload | null } | NextResponse> => {
+): Promise<NextResponse> => {
   const tokenProvider = new MiddlewareTokenProvider(request, response);
   const accessToken = tokenProvider.getAccessToken();
 
@@ -37,22 +35,7 @@ const validateAccessToken = async (
     return attemptTokenRefreshOrRedirect(tokenProvider, request, response);
   }
 
-  return { accessToken, payload };
-};
-
-const handleAuthenticatedRoute = async (
-  request: NextRequest,
-  response: NextResponse,
-): Promise<NextResponse> => {
-  const tokenResult = await validateAccessToken(request, response);
-
-  if (tokenResult instanceof NextResponse) {
-    return tokenResult;
-  }
-
-  const onboardingStatus = await checkOnboardingStatus(request, response, tokenResult);
-
-  return handleOnboardingRedirect(request, response, onboardingStatus) ?? response;
+  return response;
 };
 
 export const proxy = async (request: NextRequest): Promise<NextResponse> => {
