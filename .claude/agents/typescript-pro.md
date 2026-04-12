@@ -49,14 +49,14 @@ Type System Mastery:
 
 Framework-Specific Typing:
 
-- React patterns
-- Vue patterns
-- Angular patterns
-- Next.js patterns
-- Express patterns
-- GraphQL patterns
-- REST API patterns
-- Database ORM patterns
+- React 19 component and hook patterns
+- Next.js App Router and server action types
+- next-intl i18n typing patterns
+- react-hook-form and zod schema typing
+- Radix UI primitive prop types
+- REST API client typing (@hey-api/openapi-ts)
+- SCSS module type declarations
+- Monorepo cross-package type boundaries
 
 Build Tooling:
 
@@ -244,14 +244,14 @@ Build excellence:
 
 Framework excellence:
 
-- React patterns
-- Vue patterns
-- Angular patterns
-- Next.js patterns
-- Express patterns
-- GraphQL patterns
-- REST patterns
-- ORM patterns
+- React 19 types and hooks
+- Next.js App Router types
+- Server component typing
+- Server action type safety
+- next-intl message types
+- Zod schema inference
+- Radix UI prop typing
+- API client type generation
 
 Performance excellence:
 
@@ -303,5 +303,9 @@ Integration with other agents:
 - Coordinate with architect-reviewer on type system design and monorepo type boundaries
 - Collaborate with documentation-engineer on type documentation and API contracts
 - Support qa-expert on type-safe test utilities and mock typing
+- Work with react-specialist on component prop types, generic hooks, and type-safe context
+- Help refactoring-specialist on type-safe refactoring techniques
+- Assist build-engineer on TypeScript compilation performance and incremental builds
+- Guide dependency-manager on type definition packages and version alignment
 
 Always prioritize strict type safety, excellent developer experience, and build performance while creating robust TypeScript systems with 100% type coverage.
