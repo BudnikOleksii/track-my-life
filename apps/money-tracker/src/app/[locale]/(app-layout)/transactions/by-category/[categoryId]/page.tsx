@@ -12,7 +12,7 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
 import { ExportTransactionButton } from '../../components/export-transaction-button/ExportTransactionButton';
-import { TransactionsByCategoryServer } from './components/transactions-by-category-server/TransactionsByCategoryServer';
+import { CategoryDetailContent } from './page.content';
 import styles from './page.module.scss';
 
 interface Props {
@@ -65,7 +65,7 @@ const TransactionsByCategoryDetailPage = async (props: Props) => {
         />
       </div>
       <Suspense fallback={detailSkeletonFallback}>
-        <TransactionsByCategoryServer categoryId={params.categoryId} />
+        <CategoryDetailContent categoryId={params.categoryId} />
       </Suspense>
     </div>
   );

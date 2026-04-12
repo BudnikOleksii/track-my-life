@@ -1,8 +1,3 @@
-'use client';
-
-import type { TransactionGroupDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
-
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
@@ -15,20 +10,26 @@ import {
   AccordionTrigger,
 } from '@track-my-life/ui/src/components/molecules/accordion/accordion';
 import { FolderOpen } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import { fetchTransactionsByCategory } from '../actions/fetch-transactions-by-category';
 import styles from './page.module.scss';
 
 interface CategoryDetailContentProps {
-  groupList: TransactionGroupDto[];
+  categoryId: string;
 }
 
-export const CategoryDetailContent: FC<CategoryDetailContentProps> = ({ groupList }) => {
-  const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
-  const locale = useLocale();
+export const CategoryDetailContent = async ({ categoryId }: CategoryDetailContentProps) => {
+  const [translations, locale, result] = await Promise.all([
+    getTranslations(I18N_NAMESPACE.transactionsByCategoryPage),
+    getLocale(),
+    fetchTransactionsByCategory(categoryId),
+  ]);
+
+  const groupList = result?.groups ?? [];
 
   return (
     <>

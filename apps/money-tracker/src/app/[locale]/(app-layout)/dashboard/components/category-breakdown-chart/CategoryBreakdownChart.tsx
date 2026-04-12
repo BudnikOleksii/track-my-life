@@ -1,58 +1,48 @@
-'use client';
-
-import type { CategoryBreakdownResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
-
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { useTranslations } from 'next-intl';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
+import { getTranslations } from 'next-intl/server';
+import dynamic from 'next/dynamic';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+import { getTimezoneOffset } from '@/utils/get-timezone-offset';
 
-import { CHART_COLOR_LIST } from '../../constants/dashboard';
+import type { DashboardFilters } from '../../constants/dashboard';
+
+import { fetchCategoryBreakdown } from '../../actions/fetch-category-breakdown';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './CategoryBreakdownChart.module.scss';
 
+const CategoryBreakdownChartContent = dynamic(
+  () => import('./CategoryBreakdownChartContent').then((mod) => mod.CategoryBreakdownChartContent),
+  { loading: () => null },
+);
+
 interface CategoryBreakdownChartProps {
-  data: CategoryBreakdownResponseDto | null;
+  filters: DashboardFilters;
 }
 
-const CHART_HEIGHT = 300;
-const OUTER_RADIUS = 100;
-const INNER_RADIUS = 60;
+export const CategoryBreakdownChart = async ({ filters }: CategoryBreakdownChartProps) => {
+  const [translations, offset] = await Promise.all([
+    getTranslations(I18N_NAMESPACE.dashboardPage),
+    getTimezoneOffset(),
+  ]);
 
-export const CategoryBreakdownChart: FC<CategoryBreakdownChartProps> = ({ data }) => {
-  const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
+  const data = await fetchCategoryBreakdown({
+    currencyCode: filters.currencyCode,
+    ...convertFilterDateList(filters, offset),
+    ...(filters.type !== 'ALL' && { type: filters.type }),
+  });
 
   const breakdownList = data?.breakdown ?? [];
 
   return (
     <WidgetCard
       title={translations('content.categoryBreakdownTitle')}
-      isLoading={false}
+      noDataLabel={translations('content.noData')}
       isEmpty={breakdownList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.chartContainer}>
-        <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-          <PieChart>
-            <Pie
-              data={breakdownList}
-              dataKey="total"
-              nameKey="categoryName"
-              cx="50%"
-              cy="50%"
-              outerRadius={OUTER_RADIUS}
-              innerRadius={INNER_RADIUS}
-            >
-              {breakdownList.map((item, index) => {
-                const fill = CHART_COLOR_LIST[index % CHART_COLOR_LIST.length];
-                return <Cell key={item.categoryId} {...(fill && { fill })} />;
-              })}
-            </Pie>
-            <Tooltip formatter={(value, name) => [`${data?.currencyCode ?? ''} ${value}`, name]} />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        {data && <CategoryBreakdownChartContent data={data} />}
       </div>
     </WidgetCard>
   );
