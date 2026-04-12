@@ -8,13 +8,13 @@ import { Suspense } from 'react';
 import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { CategoryBreakdownChartServer } from './components/category-breakdown-chart/CategoryBreakdownChartServer';
-import { DailySpendingChartServer } from './components/daily-spending-chart/DailySpendingChartServer';
+import { CategoryBreakdownChart } from './components/category-breakdown-chart/CategoryBreakdownChart';
+import { DailySpendingChart } from './components/daily-spending-chart/DailySpendingChart';
 import { DashboardFilterBarClient } from './components/dashboard-filter-bar/DashboardFilterBarClient';
-import { RecentTransactionListServer } from './components/recent-transaction-list/RecentTransactionListServer';
-import { SummaryWidgetServer } from './components/summary-widget/SummaryWidgetServer';
-import { TopCategoryListServer } from './components/top-category-list/TopCategoryListServer';
-import { TrendsChartServer } from './components/trends-chart/TrendsChartServer';
+import { RecentTransactionList } from './components/recent-transaction-list/RecentTransactionList';
+import { SummaryWidget } from './components/summary-widget/SummaryWidget';
+import { TopCategoryList } from './components/top-category-list/TopCategoryList';
+import { TrendsChart } from './components/trends-chart/TrendsChart';
 import { parseDashboardSearchParams } from './constants/dashboard';
 import styles from './page.module.scss';
 
@@ -73,22 +73,22 @@ const DashboardPage = async (props: Props) => {
       <DashboardFilterBarClient filters={filters} />
       <div className={styles.grid}>
         <Suspense key={`summary-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <SummaryWidgetServer filters={filters} className={styles.summary} />
+          <SummaryWidget filters={filters} className={styles.summary} />
         </Suspense>
         <Suspense key={`breakdown-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <CategoryBreakdownChartServer filters={filters} />
+          <CategoryBreakdownChart filters={filters} />
         </Suspense>
         <Suspense key={`trends-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <TrendsChartServer filters={filters} />
+          <TrendsChart filters={filters} />
         </Suspense>
         <Suspense key={`top-categories-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <TopCategoryListServer filters={filters} />
+          <TopCategoryList filters={filters} />
         </Suspense>
         <Suspense key={`daily-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <DailySpendingChartServer filters={filters} />
+          <DailySpendingChart filters={filters} />
         </Suspense>
         <Suspense key={`recent-${filtersKey}`} fallback={widgetSkeletonFallback}>
-          <RecentTransactionListServer filters={filters} />
+          <RecentTransactionList filters={filters} />
         </Suspense>
       </div>
     </div>

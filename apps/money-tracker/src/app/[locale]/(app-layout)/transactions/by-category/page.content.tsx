@@ -1,33 +1,30 @@
-'use client';
-
-import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
-
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { ChevronRight, FolderOpen } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
+import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { getTransactionsByCategoryPath } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import styles from './page.module.scss';
 
-interface TransactionsByCategoryPageContentProps {
-  categoryList: CategoryResponseDto[];
-}
+export const TransactionsByCategoryPageContent = async () => {
+  const [translations, categoryList] = await Promise.all([
+    getTranslations(I18N_NAMESPACE.transactionsByCategoryPage),
+    fetchCategoryList(),
+  ]);
 
-export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageContentProps> = ({
-  categoryList,
-}) => {
-  const translations = useTranslations(I18N_NAMESPACE.transactionsByCategoryPage);
+  const topLevelCategoryList = categoryList.filter(
+    (category) => category.parentCategoryId === null,
+  );
 
   return (
     <>
-      {categoryList.length === EMPTY_LIST_LENGTH ? (
+      {topLevelCategoryList.length === EMPTY_LIST_LENGTH ? (
         <div className={styles.empty}>
           <FolderOpen size={48} className={styles.emptyIcon} />
           <Typography variant="body-m" className={styles.emptyText}>
@@ -36,7 +33,7 @@ export const TransactionsByCategoryPageContent: FC<TransactionsByCategoryPageCon
         </div>
       ) : (
         <div className={styles.list}>
-          {categoryList.map((category) => (
+          {topLevelCategoryList.map((category) => (
             <Link
               key={category.id}
               href={getTransactionsByCategoryPath(category.id)}

@@ -4,11 +4,9 @@
 
 ## Progress Tracker
 
-| #   | Task                                                                                                                              | Impact | Effort | Agent(s)                               | Status |
-| --- | --------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | -------------------------------------- | ------ |
-| 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                          | 4      | M      | performance-engineer                   | Todo   |
-| 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                | 3      | S      | performance-engineer                   | Todo   |
-| 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard) | 2      | S      | nextjs-developer, performance-engineer | Todo   |
+| #   | Task                                                                               | Impact | Effort | Agent(s)             | Status |
+| --- | ---------------------------------------------------------------------------------- | ------ | ------ | -------------------- | ------ |
+| 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds) | 3      | S      | performance-engineer | Todo   |
 
 ## Recommended Execution Order
 
@@ -26,22 +24,6 @@
 
 ## Detailed Findings
 
-### 10. Convert dashboard widgets to RSC
-
-**Impact:** 4 | **Effort:** M | **Agent:** performance-engineer
-
-`SummaryWidget`, `TopCategoryList`, and `RecentTransactionList` are marked `'use client'` but contain zero interactivity — only `useTranslations` and `useLocale`. They can be RSC by passing translated strings as props from their `*Server.tsx` wrappers.
-
-**Files:**
-
-- `dashboard/components/summary-widget/SummaryWidget.tsx`
-- `dashboard/components/top-category-list/TopCategoryList.tsx`
-- `dashboard/components/recent-transaction-list/RecentTransactionList.tsx`
-
-**Action:** Pass translated strings as props from the Server components. Remove `'use client'` and `useTranslations`/`useLocale` calls.
-
----
-
 ### 34. Cache .next/cache in CI between builds
 
 **Impact:** 3 | **Effort:** S | **Agent:** performance-engineer
@@ -54,22 +36,6 @@
 - `.github/workflows/pull-request.yml`
 
 **Action:** Add `.next/cache` to CI caching (e.g., GitHub Actions cache step).
-
----
-
-### 35. Convert more components to RSC (by-category pages, WidgetCard)
-
-**Impact:** 2 | **Effort:** S | **Agents:** nextjs-developer, performance-engineer
-
-`TransactionsByCategoryPageContent`, `CategoryDetailContent`, and `WidgetCard` are `'use client'` only for `useTranslations`. Pass translations as props from server wrappers.
-
-**Files:**
-
-- `transactions/by-category/page.content.tsx`
-- `transactions/by-category/[categoryId]/page.content.tsx`
-- `dashboard/components/widget-card/WidgetCard.tsx`
-
-**Action:** Accept translation strings as props, remove `'use client'`. Also remove dead `isLoading` prop from `WidgetCard`.
 
 ---
 
@@ -198,6 +164,13 @@ Items completed in the current improvement cycle (2026-04-10):
 | Cache Intl formatter instances in formatAmount/formatDate   | Done   |
 | Extract duplicated cache config constants                   | Done   |
 | Remove unnecessary `router.refresh()` in recurring hooks    | Done   |
+
+Items completed in the current improvement cycle (2026-04-12):
+
+| Task                                                           | Status |
+| -------------------------------------------------------------- | ------ |
+| Convert dashboard widgets to RSC                               | Done   |
+| Convert more components to RSC (by-category pages, WidgetCard) | Done   |
 
 Items completed in the current improvement cycle (2026-04-11):
 

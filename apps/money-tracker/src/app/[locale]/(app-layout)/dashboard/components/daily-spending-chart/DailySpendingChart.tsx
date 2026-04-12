@@ -1,31 +1,42 @@
-'use client';
-
-import type { DailySpendingResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
-
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-import { useTranslations } from 'next-intl';
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { getYearMonth } from '@track-my-life/shared/src/utils/date/year-month';
+import { getTranslations } from 'next-intl/server';
+import dynamic from 'next/dynamic';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import type { DashboardFilters } from '../../constants/dashboard';
+
+import { fetchDailySpending } from '../../actions/fetch-daily-spending';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './DailySpendingChart.module.scss';
 
-interface DailySpendingChartProps {
-  data: DailySpendingResponseDto | null;
-}
+const DailySpendingChartContent = dynamic(
+  () => import('./DailySpendingChartContent').then((mod) => mod.DailySpendingChartContent),
+  { loading: () => null },
+);
 
-const CHART_HEIGHT = 300;
-const SPENDING_COLOR = '#6366f1';
+interface DailySpendingChartProps {
+  filters: DashboardFilters;
+}
 
 const formatDayLabel = (dateString: string): string => {
   const date = new Date(dateString);
   return String(date.getDate());
 };
 
-export const DailySpendingChart: FC<DailySpendingChartProps> = ({ data }) => {
-  const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
+export const DailySpendingChart = async ({ filters }: DailySpendingChartProps) => {
+  const [translations, { year, month }] = await Promise.all([
+    getTranslations(I18N_NAMESPACE.dashboardPage),
+    getYearMonth(filters.dateTo),
+  ]);
+
+  const data = await fetchDailySpending({
+    year,
+    month,
+    currencyCode: filters.currencyCode,
+    ...(filters.type !== 'ALL' && { type: filters.type }),
+  });
 
   const dayList = data?.days ?? [];
   const chartData = dayList.map((day) => ({
@@ -36,18 +47,11 @@ export const DailySpendingChart: FC<DailySpendingChartProps> = ({ data }) => {
   return (
     <WidgetCard
       title={translations('content.dailySpendingTitle')}
-      isLoading={false}
+      noDataLabel={translations('content.noData')}
       isEmpty={dayList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.chartContainer}>
-        <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-          <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="total" fill={SPENDING_COLOR} />
-          </BarChart>
-        </ResponsiveContainer>
+        <DailySpendingChartContent chartData={chartData} />
       </div>
     </WidgetCard>
   );

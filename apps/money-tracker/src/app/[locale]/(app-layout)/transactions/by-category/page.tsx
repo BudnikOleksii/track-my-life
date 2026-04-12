@@ -8,7 +8,7 @@ import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../components/page-skeleton/PageSkeleton';
-import { CategoryListServer } from './components/category-list-server/CategoryListServer';
+import { TransactionsByCategoryPageContent } from './page.content';
 import styles from './page.module.scss';
 
 interface Props {
@@ -48,7 +48,7 @@ const TransactionsByCategoryPage = async (props: Props) => {
         <Typography variant="title-l">{translations('content.title')}</Typography>
       </div>
       <Suspense fallback={categoryListSkeletonFallback}>
-        <CategoryListServer />
+        <TransactionsByCategoryPageContent />
       </Suspense>
     </div>
   );

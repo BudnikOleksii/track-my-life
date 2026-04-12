@@ -1,35 +1,47 @@
-'use client';
-
-import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
-
 import { NavigationLink } from '@track-my-life/next-shared/src/i18n/navigation/NavigationLink';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
+import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
 import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { useLocale, useTranslations } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
 
 import { PATHS } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
+import { getTimezoneOffset } from '@/utils/get-timezone-offset';
 
+import type { DashboardFilters } from '../../constants/dashboard';
+
+import { fetchTransactionList } from '../../../transactions/actions/fetch-transaction-list';
+import { RECENT_TRANSACTION_LIST_LIMIT } from '../../constants/dashboard';
 import { WidgetCard } from '../widget-card/WidgetCard';
 import styles from './RecentTransactionList.module.scss';
 
 interface RecentTransactionListProps {
-  transactionList: TransactionResponseDto[];
+  filters: DashboardFilters;
 }
 
-export const RecentTransactionList: FC<RecentTransactionListProps> = ({ transactionList }) => {
-  const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
-  const locale = useLocale();
+export const RecentTransactionList = async ({ filters }: RecentTransactionListProps) => {
+  const [translations, locale, offset] = await Promise.all([
+    getTranslations(I18N_NAMESPACE.dashboardPage),
+    getLocale(),
+    getTimezoneOffset(),
+  ]);
+
+  const result = await fetchTransactionList({
+    pageSize: RECENT_TRANSACTION_LIST_LIMIT,
+    ...(filters.type !== 'ALL' && { type: filters.type }),
+    ...convertFilterDateList(filters, offset),
+  });
+
+  const transactionList = result?.data ?? [];
 
   return (
     <WidgetCard
       title={translations('content.recentTransactionsTitle')}
-      isLoading={false}
+      noDataLabel={translations('content.noData')}
       isEmpty={transactionList.length === EMPTY_LIST_LENGTH}
     >
       <div className={styles.list}>
