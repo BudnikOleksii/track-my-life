@@ -7,12 +7,8 @@
 | #   | Task                                                                                                                              | Impact | Effort | Agent(s)                               | Status |
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | -------------------------------------- | ------ |
 | 10  | [Convert dashboard widgets to RSC](#10-convert-dashboard-widgets-to-rsc)                                                          | 4      | M      | performance-engineer                   | Todo   |
-| 33  | [Fix missing i18n keys + add parity check to CI](#33-fix-missing-i18n-keys--add-parity-check-to-ci)                               | 3      | S      | qa-expert                              | Todo   |
 | 34  | [Cache .next/cache in CI between builds](#34-cache-nextcache-in-ci-between-builds)                                                | 3      | S      | performance-engineer                   | Todo   |
 | 35  | [Convert more components to RSC (by-category pages, WidgetCard)](#35-convert-more-components-to-rsc-by-category-pages-widgetcard) | 2      | S      | nextjs-developer, performance-engineer | Todo   |
-| 39  | [Add `generateStaticParams` for locale segments](#39-add-generatestaticparams-for-locale-segments)                                | 2      | S      | nextjs-developer                       | Todo   |
-| 41  | [Document `next-shared` in CLAUDE.md + extract error boundary](#41-document-next-shared-in-claudemd--extract-error-boundary)      | 2      | S      | architect-reviewer                     | Todo   |
-| 46  | [Add missing Storybook stories](#46-add-missing-storybook-stories)                                                                | 2      | S      | qa-expert                              | Todo   |
 
 ## Recommended Execution Order
 
@@ -21,10 +17,10 @@
 **Sprint 3 — Accessibility + UX (S-M effort, Impact 4):** #5, #6, #7, #27
 **Sprint 4 — Architecture (M effort, Impact 4-5):** #3
 **Sprint 5 — Performance Quick Wins (S effort, Impact 2-3):** #9, #24, #34, #38
-**Sprint 6 — RSC Conversion + Next.js (S-M effort, Impact 2-4):** #10, #25, #26, #35, #39
+**Sprint 6 — RSC Conversion + Next.js (S-M effort, Impact 2-4):** #10, #25, #26, #35
 **Sprint 7 — TypeScript Hardening (S effort, Impact 2-4):** ~~done~~
-**Sprint 8 — QA Infrastructure (S effort, Impact 3-4):** #11, #12, #32, #33, #46
-**Sprint 9 — Polish + DX (S effort, Impact 2-3):** #41, #42
+**Sprint 8 — QA Infrastructure (S effort, Impact 3-4):** #11, #12, #32
+**Sprint 9 — Polish + DX (S effort, Impact 2-3):** #42
 
 ---
 
@@ -43,21 +39,6 @@
 - `dashboard/components/recent-transaction-list/RecentTransactionList.tsx`
 
 **Action:** Pass translated strings as props from the Server components. Remove `'use client'` and `useTranslations`/`useLocale` calls.
-
----
-
-### 33. Fix missing i18n keys + add parity check to CI
-
-**Impact:** 3 | **Effort:** S | **Agent:** qa-expert
-
-`errorGeneric` key exists in `en/auth-shared.json` but is missing from `uk/auth-shared.json`. No automated check ensures locale key parity.
-
-**Files:**
-
-- `apps/money-tracker/messages/en/auth-shared.json`
-- `apps/money-tracker/messages/uk/auth-shared.json`
-
-**Action:** Add the missing key. Create a CI script that diffs flattened keys between locales.
 
 ---
 
@@ -89,44 +70,6 @@
 - `dashboard/components/widget-card/WidgetCard.tsx`
 
 **Action:** Accept translation strings as props, remove `'use client'`. Also remove dead `isLoading` prop from `WidgetCard`.
-
----
-
-### 39. Add `generateStaticParams` for locale segments
-
-**Impact:** 2 | **Effort:** S | **Agent:** nextjs-developer
-
-`[locale]` segments are fully dynamic. The locale list is known at build time from routing config.
-
-**Files:**
-
-- `apps/money-tracker/src/app/[locale]/layout.tsx`
-
-**Action:** Add `generateStaticParams` returning supported locale codes.
-
----
-
-### 41. Document `next-shared` in CLAUDE.md + extract error boundary
-
-**Impact:** 2 | **Effort:** S | **Agent:** architect-reviewer
-
-`@track-my-life/next-shared` is actively used but absent from CLAUDE.md's structure diagram. Three error boundary files (`(app-layout)/error.tsx`, `[locale]/error.tsx`, `(auth-layout)/error.tsx`) are near-identical.
-
-**Action:** Add `next-shared` to CLAUDE.md. Extract shared `AppErrorBoundary` component accepting a `homePath` prop.
-
----
-
-### 46. Add missing Storybook stories
-
-**Impact:** 2 | **Effort:** S | **Agent:** qa-expert
-
-`Typography`, `Card`, `Separator`, and `UnderlineLink` have no stories, violating the project's storybook rule.
-
-**Files:**
-
-- `packages/ui/src/components/atoms/typography/`, `molecules/card/`, `atoms/separator/`, `atoms/underline-link/`
-
-**Action:** Create CSF3 stories with `tags: ['autodocs']` for each.
 
 ---
 
@@ -258,10 +201,14 @@ Items completed in the current improvement cycle (2026-04-10):
 
 Items completed in the current improvement cycle (2026-04-11):
 
-| Task                                                    | Status |
-| ------------------------------------------------------- | ------ |
-| Replace CSP `unsafe-inline` with nonce-based script-src | Done   |
-| Set onboarding status cookie to httpOnly                | Done   |
-| Add rate limiting on auth endpoints                     | Done   |
-| Wrap getTimezoneOffset in React cache()                 | Done   |
-| Fix turbo.json task dependencies                        | Done   |
+| Task                                                         | Status |
+| ------------------------------------------------------------ | ------ |
+| Replace CSP `unsafe-inline` with nonce-based script-src      | Done   |
+| Set onboarding status cookie to httpOnly                     | Done   |
+| Add rate limiting on auth endpoints                          | Done   |
+| Wrap getTimezoneOffset in React cache()                      | Done   |
+| Fix turbo.json task dependencies                             | Done   |
+| Fix missing i18n keys + add parity check to CI               | Done   |
+| Add `generateStaticParams` for locale segments               | Done   |
+| Document `next-shared` in CLAUDE.md + extract error boundary | Done   |
+| Add missing Storybook stories                                | Done   |
