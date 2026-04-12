@@ -52,7 +52,11 @@ check_curl() {
 # Function to fetch categories from GitHub API
 fetch_categories_remote() {
     local response
-    response=$(curl -s "$GITHUB_API_BASE/categories")
+    if ! response=$(curl -sS --connect-timeout 5 --max-time 20 "$GITHUB_API_BASE/categories"); then
+        echo -e "${RED}Failed to reach GitHub. Please try again later or use local mode.${NC}"
+        sleep 3
+        return 1
+    fi
 
     # Check for rate limiting or errors
     if echo "$response" | grep -q "API rate limit exceeded"; then
@@ -82,7 +86,11 @@ fetch_categories_remote() {
 fetch_agents_remote() {
     local category="$1"
     local response
-    response=$(curl -s "$GITHUB_API_BASE/categories/$category")
+    if ! response=$(curl -sS --connect-timeout 5 --max-time 20 "$GITHUB_API_BASE/categories/$category"); then
+        echo -e "${RED}Failed to reach GitHub. Please try again later or go back.${NC}"
+        sleep 3
+        return 1
+    fi
 
     # Check for errors
     if echo "$response" | grep -q '"message"'; then
@@ -107,9 +115,12 @@ download_agent() {
     local dest_path="$3"
     local url="$GITHUB_RAW_BASE/categories/$category/$agent_file"
 
-    if curl -sS "$url" -o "$dest_path" 2>/dev/null; then
+    local tmp_path="${dest_path}.tmp"
+    if curl -fsS --connect-timeout 5 --max-time 30 "$url" -o "$tmp_path"; then
+        mv "$tmp_path" "$dest_path"
         return 0
     else
+        rm -f "$tmp_path"
         return 1
     fi
 }
@@ -480,11 +491,15 @@ confirm_and_apply() {
     local uninstall_count=0
 
     for item in "${to_install[@]}"; do
-        [[ -n "$item" ]] && ((install_count++))
+        if [[ -n "$item" ]]; then
+            ((install_count += 1))
+        fi
     done
 
     for item in "${to_uninstall[@]}"; do
-        [[ -n "$item" ]] && ((uninstall_count++))
+        if [[ -n "$item" ]]; then
+            ((uninstall_count += 1))
+        fi
     done
 
     show_header
@@ -525,6 +540,7 @@ confirm_and_apply() {
     if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
         echo ""
 
+        local had_error=0
         # Perform installations
         for agent_file in "${to_install[@]}"; do
             if [[ -n "$agent_file" ]]; then
@@ -534,6 +550,7 @@ confirm_and_apply() {
                     if download_agent "$category" "$agent_file" "$CLAUDE_AGENTS_DIR/$agent_file"; then
                         echo -e "${GREEN}✓${NC} Installed: $agent_file"
                     else
+                        had_error=1
                         echo -e "${RED}✗${NC} Failed to download: $agent_file"
                     fi
                 else
@@ -542,6 +559,9 @@ confirm_and_apply() {
                     if [[ -f "$source_path" ]]; then
                         cp "$source_path" "$CLAUDE_AGENTS_DIR/$agent_file"
                         echo -e "${GREEN}✓${NC} Installed: $agent_file"
+                    else
+                        had_error=1
+                        echo -e "${RED}✗${NC} Missing source file: $source_path"
                     fi
                 fi
             fi
@@ -558,7 +578,11 @@ confirm_and_apply() {
         done
 
         echo ""
-        echo -e "${GREEN}${BOLD}Changes applied successfully!${NC}"
+        if [[ $had_error -eq 0 ]]; then
+            echo -e "${GREEN}${BOLD}Changes applied successfully!${NC}"
+        else
+            echo -e "${YELLOW}${BOLD}Finished with errors. Review the messages above.${NC}"
+        fi
     else
         echo -e "${YELLOW}Changes cancelled.${NC}"
     fi

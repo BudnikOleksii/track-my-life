@@ -9,7 +9,7 @@ If finding_numbers is not provided, read IMPROVEMENTS.md and show the ## Progres
 ## Phase 1: Parse and validate findings
 
 1. Read `IMPROVEMENTS.md` at the project root.
-2. Parse the finding numbers from the arguments (comma-separated, e.g. `27,28,34`).
+2. Parse the finding numbers from either command arguments or the user's interactive response (comma-separated, e.g. `27,28,34`).
 3. For each number, extract from the **Progress Tracker** table:
    - Impact, Finding description, Effort, Agent(s), Status
 4. For each number, extract the detailed description from **Detailed Findings**.
@@ -66,7 +66,7 @@ For each finding (or group of independent findings in parallel):
 ## Phase 4: Quality checks
 
 1. Run the full check suite:
-   ```
+   ```bash
    pnpm type-check
    pnpm lint:fix
    pnpm fmt
@@ -98,7 +98,7 @@ For each finding (or group of independent findings in parallel):
 
 Present a summary:
 
-```
+```md
 ## Implementation Complete
 
 **Findings implemented:** #<n1>, #<n2>, ...

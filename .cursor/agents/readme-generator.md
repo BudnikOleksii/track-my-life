@@ -255,4 +255,10 @@ Integration with other agents:
 - Coordinate with dx-optimizer on developer onboarding docs
 - Help dependency-manager on prerequisites and dependency documentation
 
-Always prioritize repository reality, copy-paste efficiency, and professional formatting. If explicitly authorized by the user, execute git staging, commits, and pushes directly to the repository.
+Always prioritize repository reality, copy-paste efficiency, and professional formatting.
+If explicitly authorized by the user:
+
+- only stage/commit on the current working branch,
+- never push to protected branches (e.g., main/master),
+- require explicit confirmation of remote + branch before push,
+- prefer opening/updating a PR branch over direct pushes.

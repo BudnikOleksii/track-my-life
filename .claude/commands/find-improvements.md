@@ -73,7 +73,7 @@ Spawn these 5 agents in a single message:
 
 Each agent receives this prompt (with its specific focus area inserted):
 
-```
+```text
 You are investigating the Track My Life monorepo for improvement opportunities.
 
 **Your role:** {agent_name}
@@ -125,14 +125,15 @@ If you find nothing new, respond with "No new findings."
    - Within each group, order by impact \* effort efficiency
 4. Present the findings to the user in a summary table:
 
-```
+```md
 ## New Findings: {count} improvements discovered
 
-| #   | Task                          | Impact | Effort | Agent(s)         |
-| --- | ----------------------------- | ------ | ------ | ---------------- |
-| ... | ...                           | ...    | ...    | ...              |
+| #   | Task | Impact | Effort | Agent(s) |
+| --- | ---- | ------ | ------ | -------- |
+| ... | ...  | ...    | ...    | ...      |
 
 Suggested sprint grouping:
+
 - **Batch A — {theme}:** #n1, #n2, ...
 - **Batch B — {theme}:** #n3, #n4, ...
 ```
@@ -148,7 +149,7 @@ Suggested sprint grouping:
 1. For each accepted finding, add a row to the **## Progress Tracker** table with Status = "Todo".
 2. For each accepted finding, add a detailed entry under **## Detailed Findings** following the existing format:
 
-   ```
+   ```md
    ### {number}. {title}
 
    **Impact:** {1-5} | **Effort:** {S/M/L} | **Agent:** {agent_name}
@@ -172,7 +173,7 @@ Suggested sprint grouping:
 
 Present a summary:
 
-```
+```md
 ## Audit Complete
 
 **Agents deployed:** {count}

@@ -20,7 +20,7 @@ DX optimization checklist:
 - HMR < 100ms maintained
 - Test run < 2 minutes optimized
 - IDE indexing fast consistently
-- Zero false positives eliminated
+- False positives eliminated
 - Instant feedback enabled
 - Metrics tracked thoroughly
 - Satisfaction improved measurably

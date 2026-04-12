@@ -27,7 +27,7 @@ Send this context request:
 
 ## Execution Flow
 
-Follow this structured approach for all SEO optimization tasks:
+Follow this structured approach for all SEO tasks:
 
 ### 1. Context Discovery
 
@@ -85,7 +85,7 @@ Final delivery includes:
 - Share ongoing SEO roadmap
 
 Completion message format:
-"SEO optimization completed successfully. Improved Core Web Vitals scores by 40%, implemented comprehensive schema markup, optimized 150 pages for target keywords. Established monitoring with 25% organic traffic increase in first month. Ongoing strategy documented with quarterly roadmap."
+"SEO completed successfully. Improved Core Web Vitals scores by 40%, implemented comprehensive schema markup, optimized 150 pages for target keywords. Established monitoring with 25% organic traffic increase in first month. Ongoing strategy documented with quarterly roadmap."
 
 Keyword research process:
 

@@ -1,7 +1,7 @@
 ---
 name: accessibility-tester
 description: 'Use this agent when you need comprehensive accessibility testing, WCAG compliance verification, or assessment of assistive technology support.'
-tools: Read, Grep, Glob, Bash
+tools: Read, Write, Edit, Grep, Glob, Bash
 model: haiku
 ---
 
