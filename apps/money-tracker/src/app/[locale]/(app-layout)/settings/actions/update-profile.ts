@@ -9,7 +9,7 @@ import type {
 import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 
 import { profileFormSchema } from '../constants/profile-form-schema';
@@ -17,7 +17,7 @@ import { profileFormSchema } from '../constants/profile-form-schema';
 export const updateProfile = async (
   input: UpdateProfileDto,
 ): Promise<ServerActionResult<ProfileResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = profileFormSchema.safeParse(input);
 

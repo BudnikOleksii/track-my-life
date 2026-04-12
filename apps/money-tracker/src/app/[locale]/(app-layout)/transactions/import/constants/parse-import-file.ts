@@ -2,7 +2,7 @@ import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { checkIsObject } from '@track-my-life/shared/src/constants/type-guard';
 
 const ACCEPTED_EXTENSION_LIST = ['.json', '.csv'] as const;
-const MAX_ROW_COUNT = 1000;
+const MAX_ROW_COUNT = 3000;
 
 const getFileExtension = (fileName: string): string =>
   fileName.slice(fileName.lastIndexOf('.')).toLowerCase();

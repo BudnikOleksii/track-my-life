@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { getTranslations } from 'next-intl/server';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { BudgetsPageContent } from './page.content';
@@ -28,6 +29,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 };
 
 const BudgetsPage: FC<Props> = async () => {
+  await redirectIfNotOnboarded();
   const translations = await getTranslations(I18N_NAMESPACE.budgetsPage);
 
   return <BudgetsPageContent translations={translations} />;

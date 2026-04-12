@@ -9,7 +9,7 @@ import type {
 import { recurringTransactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 import { updateTag } from 'next/cache';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { CACHE_TAG } from '@/constants/cache-tag';
 
 import { recurringTransactionFormSchema } from '../constants/recurring-transaction-form-schema';
@@ -17,7 +17,7 @@ import { recurringTransactionFormSchema } from '../constants/recurring-transacti
 export const createRecurringTransaction = async (
   input: CreateRecurringTransactionDto,
 ): Promise<ServerActionResult<RecurringTransactionResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = recurringTransactionFormSchema.safeParse(input);
 

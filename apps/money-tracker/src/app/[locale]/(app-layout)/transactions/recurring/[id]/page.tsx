@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
@@ -43,6 +44,7 @@ const RecurringTransactionDetailServer = async ({ id }: { id: string }) => {
 };
 
 const RecurringTransactionDetailPage = async (props: Props) => {
+  await redirectIfNotOnboarded();
   const params = await props.params;
 
   return (

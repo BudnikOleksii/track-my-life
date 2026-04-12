@@ -10,13 +10,13 @@ import {
 import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { getLocale } from 'next-intl/server';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { PATHS } from '@/constants/paths';
 
 import { deleteAccountFormSchema } from '../constants/delete-account-form-schema';
 
 export const deleteAccount = async (input: DeleteAccountDto): Promise<ServerActionResult<true>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = deleteAccountFormSchema.safeParse(input);
 

@@ -8,7 +8,7 @@ import type {
 
 import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { entityIdSchema } from '@/constants/entity-id-schema';
 
 import { updateTransactionSchema } from '../constants/update-transaction-schema';
@@ -32,7 +32,7 @@ export const updateTransaction = async (
   id: string,
   body: UpdateTransactionDto,
 ): Promise<ServerActionResult<TransactionResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = validateUpdateTransaction(id, body);
 

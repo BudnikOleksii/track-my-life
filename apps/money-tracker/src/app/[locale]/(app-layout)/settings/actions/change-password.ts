@@ -5,7 +5,7 @@ import type { ChangePasswordDto } from '@track-my-life/shared/src/api/generated/
 
 import { profileApiService } from '@track-my-life/next-shared/src/api/server-api';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 import { checkRateLimit } from '@/utils/rate-limit';
 
 import { changePasswordFormSchema } from '../constants/change-password-form-schema';
@@ -13,7 +13,7 @@ import { changePasswordFormSchema } from '../constants/change-password-form-sche
 export const changePassword = async (
   input: ChangePasswordDto,
 ): Promise<ServerActionResult<true>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   if (!(await checkRateLimit('changePassword'))) {
     return { ok: false, error: 'rateLimited' };

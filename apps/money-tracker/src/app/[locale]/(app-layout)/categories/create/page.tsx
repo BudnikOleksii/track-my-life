@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../components/page-skeleton/PageSkeleton';
@@ -37,10 +38,14 @@ const CreateCategoryContent = async () => {
   return <CategoryFormPage category={null} parentCategoryList={parentCategoryList} />;
 };
 
-const CreateCategoryPage = async () => (
-  <Suspense fallback={createCategorySkeletonFallback}>
-    <CreateCategoryContent />
-  </Suspense>
-);
+const CreateCategoryPage = async () => {
+  await redirectIfNotOnboarded();
+
+  return (
+    <Suspense fallback={createCategorySkeletonFallback}>
+      <CreateCategoryContent />
+    </Suspense>
+  );
+};
 
 export default CreateCategoryPage;

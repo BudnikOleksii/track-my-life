@@ -25,19 +25,6 @@ export const createSameUrlRedirect = (
   return redirectResponse;
 };
 
-export const createRedirectWithCookies = (
-  path: string,
-  request: NextRequest,
-  response: NextResponse,
-): NextResponse => {
-  const url = new URL(path, request.url);
-  const redirectResponse = NextResponse.redirect(url);
-  response.cookies.getAll().forEach((cookie) => {
-    redirectResponse.cookies.set(cookie.name, cookie.value);
-  });
-  return redirectResponse;
-};
-
 const forwardResponseCookieListToRedirect = (source: Response, target: NextResponse): void => {
   for (const setCookie of source.headers.getSetCookie()) {
     const parsed = parseCookieString(setCookie);

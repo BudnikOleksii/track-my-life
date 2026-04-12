@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import { getTranslations } from 'next-intl/server';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { ImportTransactionPage } from './components/import-transaction-page/ImportTransactionPage';
@@ -25,6 +26,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
   };
 };
 
-const ImportTransactionsPage = () => <ImportTransactionPage />;
+const ImportTransactionsPage = async () => {
+  await redirectIfNotOnboarded();
+
+  return <ImportTransactionPage />;
+};
 
 export default ImportTransactionsPage;

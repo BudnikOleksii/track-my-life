@@ -4,6 +4,7 @@ import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Ty
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
+import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../components/page-skeleton/PageSkeleton';
@@ -33,6 +34,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const settingsSkeletonFallback = <PageSkeleton count={4} height={56} />;
 
 const SettingsPage = async (props: Props) => {
+  await redirectIfNotOnboarded();
   const params = await props.params;
 
   const translations = await getTranslations({

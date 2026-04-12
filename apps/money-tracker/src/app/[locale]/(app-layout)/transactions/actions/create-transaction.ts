@@ -8,7 +8,7 @@ import type {
 
 import { transactionApiService } from '@track-my-life/next-shared/src/api/server-api';
 
-import { requireAuth } from '@/actions/require-auth';
+import { redirectUnauthorized } from '@/actions/redirect-unauthorized';
 
 import { createTransactionSchema } from '../constants/create-transaction-schema';
 import { revalidateTransactionCaches } from './revalidate-transaction-caches';
@@ -16,7 +16,7 @@ import { revalidateTransactionCaches } from './revalidate-transaction-caches';
 export const createTransaction = async (
   input: CreateTransactionDto,
 ): Promise<ServerActionResult<TransactionResponseDto>> => {
-  await requireAuth();
+  await redirectUnauthorized();
 
   const validated = createTransactionSchema.safeParse(input);
 
