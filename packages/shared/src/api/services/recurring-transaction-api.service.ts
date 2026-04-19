@@ -2,6 +2,7 @@ import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
 import type { FetchCacheOptions } from '../client/types';
 import type {
   CreateRecurringTransactionDto,
+  RecurringTransactionsControllerBulkDeleteResponses,
   RecurringTransactionsControllerCreateResponses,
   RecurringTransactionsControllerDeleteResponses,
   RecurringTransactionsControllerFindAllData,
@@ -23,6 +24,8 @@ type CreateResponse =
   RecurringTransactionsControllerCreateResponses[typeof HTTP_STATUS_CODE.CREATED];
 type UpdateResponse = RecurringTransactionsControllerUpdateResponses[typeof HTTP_STATUS_CODE.OK];
 type DeleteResponse = RecurringTransactionsControllerDeleteResponses[typeof HTTP_STATUS_CODE.OK];
+type BulkDeleteResponse =
+  RecurringTransactionsControllerBulkDeleteResponses[typeof HTTP_STATUS_CODE.OK];
 type PauseResponse = RecurringTransactionsControllerPauseResponses[typeof HTTP_STATUS_CODE.OK];
 type ResumeResponse = RecurringTransactionsControllerResumeResponses[typeof HTTP_STATUS_CODE.OK];
 
@@ -70,6 +73,14 @@ export class RecurringTransactionApiService extends ApiClient {
     return this.request<DeleteResponse>({
       method: 'DELETE',
       url: this.getByIdUrl(id),
+    });
+  }
+
+  bulkDelete(idList: string[]) {
+    return this.request<BulkDeleteResponse>({
+      method: 'DELETE',
+      url: `${this.BASE_URL}/batch`,
+      body: { ids: idList },
     });
   }
 

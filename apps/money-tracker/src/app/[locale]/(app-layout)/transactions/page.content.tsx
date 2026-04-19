@@ -6,6 +6,7 @@ import type {
 } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
+import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import {
   getMonthDateRange,
   parseMonthFromDateRange,
@@ -14,12 +15,15 @@ import { Pagination } from '@track-my-life/ui/src/components/molecules/paginatio
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
+import { BulkDeleteActionBar } from '@/components/bulk-delete-action-bar/BulkDeleteActionBar';
 import { TypeFilter } from '@/components/type-filter/TypeFilter';
 import { FILTER_TO_LABEL_KEY } from '@/constants/filter';
+import { useBulkDeleteSelection } from '@/hooks/use-bulk-delete-selection';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { TransactionFilters } from './constants/transaction-filters';
 
+import { BulkDeleteTransactionDialog } from './components/bulk-delete-transaction-dialog/BulkDeleteTransactionDialog';
 import { CategoryPicker } from './components/category-picker/CategoryPicker';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog/DeleteTransactionDialog';
 import { MonthNavigator } from './components/month-navigator/MonthNavigator';
@@ -47,6 +51,22 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
     null,
   );
 
+  const visibleIdList = useMemo(() => transactionList.map((item) => item.id), [transactionList]);
+
+  const {
+    selectedIdSet,
+    setSelectedIdSet,
+    bulkDeleteIdList,
+    isBulkDeleteSubmitting,
+    setIsBulkDeleteSubmitting,
+    areAllVisibleSelected,
+    handleToggleSelection,
+    handleClearSelection,
+    handleSelectAllVisible,
+    handleBulkDeleteOpen,
+    handleBulkDeleteClose,
+  } = useBulkDeleteSelection({ visibleIdList, translations });
+
   const { year, month } = parseMonthFromDateRange(filters.dateFrom);
 
   const filterLabelMap = useMemo(
@@ -62,6 +82,8 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
     const { dateFrom, dateTo } = getMonthDateRange(newYear, newMonth);
     handleFilterChange({ dateFrom, dateTo });
   };
+
+  const selectedCount = selectedIdSet.size;
 
   return (
     <>
@@ -102,7 +124,34 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
         </div>
       </div>
 
-      <TransactionList transactionList={transactionList} onDelete={setDeletingTransaction} />
+      <TransactionList
+        transactionList={transactionList}
+        onDelete={setDeletingTransaction}
+        selectedIdSet={selectedIdSet}
+        onToggleSelection={handleToggleSelection}
+        isBulkDeleteSubmitting={isBulkDeleteSubmitting}
+      />
+
+      {selectedCount > EMPTY_LIST_LENGTH && (
+        <BulkDeleteActionBar
+          selectedCount={selectedCount}
+          selectedCountLabel={translations('content.bulkDelete.selectedCount', {
+            count: selectedCount,
+          })}
+          deleteLabel={translations('content.bulkDelete.deleteSelected')}
+          clearLabel={translations('content.bulkDelete.clearSelection')}
+          selectAllLabel={translations(
+            areAllVisibleSelected
+              ? 'content.bulkDelete.deselectAllVisible'
+              : 'content.bulkDelete.selectAllVisible',
+          )}
+          onDelete={handleBulkDeleteOpen}
+          onClear={handleClearSelection}
+          onSelectAllVisible={handleSelectAllVisible}
+          isSubmitting={isBulkDeleteSubmitting}
+          areAllVisibleSelected={areAllVisibleSelected}
+        />
+      )}
 
       <Pagination
         page={filters.page}
@@ -126,6 +175,13 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
         onSuccess={() => {
           setDeletingTransaction(null);
         }}
+      />
+
+      <BulkDeleteTransactionDialog
+        idList={bulkDeleteIdList}
+        onClose={handleBulkDeleteClose}
+        onSubmittingChange={setIsBulkDeleteSubmitting}
+        setSelectedIdSet={setSelectedIdSet}
       />
     </>
   );

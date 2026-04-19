@@ -1,6 +1,5 @@
-'use client';
-
-import type { FC, ReactNode } from 'react';
+import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
+import type { ReactNode } from 'react';
 
 import {
   Card,
@@ -9,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@track-my-life/ui/src/components/molecules/card/card';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -24,7 +23,7 @@ import styles from './page.module.scss';
 
 interface OnboardingPageContentProps {
   currentStep: OnboardingStep;
-  currency?: string | undefined;
+  currency?: CurrencyCode | undefined;
   hasPassword: boolean;
 }
 
@@ -40,19 +39,19 @@ const STEP_DESCRIPTION_MAP: Record<OnboardingStep, string> = {
   [ONBOARDING_STEP.password]: 'content.passwordDescription',
 };
 
-export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({
+export const OnboardingPageContent = async ({
   currentStep,
   currency,
   hasPassword,
-}) => {
-  const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
+}: OnboardingPageContentProps) => {
+  const translations = await getTranslations(I18N_NAMESPACE.onboardingPage);
 
   const stepContentMap: Record<OnboardingStep, ReactNode> = {
     [ONBOARDING_STEP.currency]: <CurrencyStep defaultCurrency={currency} />,
-    [ONBOARDING_STEP.categories]: (
-      <CategoriesStep currency={currency ?? ''} hasPassword={hasPassword} />
-    ),
-    [ONBOARDING_STEP.password]: <PasswordStep currency={currency ?? ''} />,
+    [ONBOARDING_STEP.categories]: currency ? (
+      <CategoriesStep currency={currency} hasPassword={hasPassword} />
+    ) : null,
+    [ONBOARDING_STEP.password]: currency ? <PasswordStep currency={currency} /> : null,
   };
 
   const titleKey = STEP_TITLE_MAP[currentStep];

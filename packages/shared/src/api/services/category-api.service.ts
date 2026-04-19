@@ -2,6 +2,7 @@ import type { HTTP_STATUS_CODE } from '../../constants/http-status-code';
 import type { FetchCacheOptions } from '../client/types';
 import type {
   CreateCategoryDto,
+  TransactionCategoriesControllerBulkDeleteResponses,
   TransactionCategoriesControllerCreateResponses,
   TransactionCategoriesControllerDeleteResponses,
   TransactionCategoriesControllerFindAllData,
@@ -21,6 +22,8 @@ type CreateResponse =
   TransactionCategoriesControllerCreateResponses[typeof HTTP_STATUS_CODE.CREATED];
 type UpdateResponse = TransactionCategoriesControllerUpdateResponses[typeof HTTP_STATUS_CODE.OK];
 type DeleteResponse = TransactionCategoriesControllerDeleteResponses[typeof HTTP_STATUS_CODE.OK];
+type BulkDeleteResponse =
+  TransactionCategoriesControllerBulkDeleteResponses[typeof HTTP_STATUS_CODE.OK];
 
 export class CategoryApiService extends ApiClient {
   private BASE_URL = '/api/transaction-categories' as const;
@@ -66,6 +69,14 @@ export class CategoryApiService extends ApiClient {
     return this.request<DeleteResponse>({
       method: 'DELETE',
       url: this.getByIdUrl(id),
+    });
+  }
+
+  bulkDelete(idList: string[]) {
+    return this.request<BulkDeleteResponse>({
+      method: 'DELETE',
+      url: `${this.BASE_URL}/batch`,
+      body: { ids: idList },
     });
   }
 }

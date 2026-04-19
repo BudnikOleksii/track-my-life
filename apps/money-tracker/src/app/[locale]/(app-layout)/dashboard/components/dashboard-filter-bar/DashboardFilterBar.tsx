@@ -22,15 +22,16 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { DashboardFilters } from '../../constants/dashboard';
 
+import { useDashboardFilters } from '../../hooks/use-dashboard-filters';
 import styles from './DashboardFilterBar.module.scss';
 
 interface DashboardFilterBarProps {
   filters: DashboardFilters;
-  onFilterChange: (update: Partial<DashboardFilters>) => void;
 }
 
-export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFilterChange }) => {
+export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters }) => {
   const translations = useTranslations(I18N_NAMESPACE.dashboardPage);
+  const { handleFilterChange } = useDashboardFilters();
 
   return (
     <div className={styles.bar}>
@@ -39,7 +40,7 @@ export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFil
           type="date"
           value={filters.dateFrom}
           onChange={(event) => {
-            onFilterChange({ dateFrom: event.target.value });
+            handleFilterChange({ dateFrom: event.target.value });
           }}
           aria-label={translations('content.filterDateFrom')}
         />
@@ -47,7 +48,7 @@ export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFil
           type="date"
           value={filters.dateTo}
           onChange={(event) => {
-            onFilterChange({ dateTo: event.target.value });
+            handleFilterChange({ dateTo: event.target.value });
           }}
           aria-label={translations('content.filterDateTo')}
         />
@@ -65,7 +66,7 @@ export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFil
             size="sm"
             aria-pressed={filters.type === option}
             onClick={() => {
-              onFilterChange({ type: option });
+              handleFilterChange({ type: option });
             }}
             className={cn(styles.filterButton, filters.type === option && styles.active)}
           >
@@ -77,7 +78,7 @@ export const DashboardFilterBar: FC<DashboardFilterBarProps> = ({ filters, onFil
       <Select
         value={filters.currencyCode}
         onValueChange={(value: CurrencyCode) => {
-          onFilterChange({ currencyCode: value });
+          handleFilterChange({ currencyCode: value });
         }}
       >
         <SelectTrigger

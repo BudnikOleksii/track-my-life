@@ -10,7 +10,9 @@ import { formatLocalDate } from '@track-my-life/shared/src/utils/date/parse';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
+import { Checkbox } from '@track-my-life/ui/src/components/atoms/checkbox/checkbox';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
+import { cn } from '@track-my-life/ui/src/lib/utils';
 import { Copy, Receipt, Pencil, Trash2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -24,6 +26,9 @@ import styles from './TransactionList.module.scss';
 interface TransactionListProps {
   transactionList: TransactionResponseDto[];
   onDelete: (transaction: TransactionResponseDto) => void;
+  selectedIdSet: ReadonlySet<string>;
+  onToggleSelection: (id: string) => void;
+  isBulkDeleteSubmitting: boolean;
 }
 
 const getDateKey = (dateString: string): string => formatLocalDate(dateString);
@@ -51,7 +56,13 @@ const groupTransactionListByDate = (transactionList: TransactionResponseDto[]): 
   return groupList;
 };
 
-export const TransactionList: FC<TransactionListProps> = ({ transactionList, onDelete }) => {
+export const TransactionList: FC<TransactionListProps> = ({
+  transactionList,
+  onDelete,
+  selectedIdSet,
+  onToggleSelection,
+  isBulkDeleteSubmitting,
+}) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
   const locale = useLocale();
 
@@ -77,62 +88,87 @@ export const TransactionList: FC<TransactionListProps> = ({ transactionList, onD
               {formatDate(group.dateKey, locale)}
             </Typography>
           </div>
-          {group.transactionList.map((transaction) => (
-            <div key={transaction.id} className={styles.row}>
-              <div className={styles.info}>
-                <div className={styles.primary}>
-                  <Typography variant="body-m" className={styles.amount}>
-                    {formatAmount(transaction.amount, transaction.currencyCode)}
-                  </Typography>
-                  <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
-                    {translations(
-                      `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
-                    )}
-                  </Badge>
+          {group.transactionList.map((transaction) => {
+            const isSelected = selectedIdSet.has(transaction.id);
+            const description = transaction.description?.trim()
+              ? transaction.description
+              : formatCategoryDisplayName(transaction.category);
+            const selectLabel = translations('content.bulkDelete.selectRowLabel', {
+              description,
+              amount: formatAmount(transaction.amount, transaction.currencyCode),
+            });
+
+            return (
+              <div
+                key={transaction.id}
+                className={cn(styles.row, isSelected && styles.rowSelected)}
+              >
+                <div className={styles.rowStart}>
+                  <Checkbox
+                    className={styles.checkbox}
+                    checked={isSelected}
+                    disabled={isBulkDeleteSubmitting}
+                    aria-label={selectLabel}
+                    onCheckedChange={() => {
+                      onToggleSelection(transaction.id);
+                    }}
+                  />
+                  <div className={styles.info}>
+                    <div className={styles.primary}>
+                      <Typography variant="body-m" className={styles.amount}>
+                        {formatAmount(transaction.amount, transaction.currencyCode)}
+                      </Typography>
+                      <Badge variant={TRANSACTION_TYPE_BADGE_VARIANT_MAP[transaction.type]}>
+                        {translations(
+                          `content.${transaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
+                        )}
+                      </Badge>
+                    </div>
+                    <div className={styles.secondary}>
+                      <Typography variant="body-s" className={styles.category}>
+                        {formatCategoryDisplayName(transaction.category)}
+                      </Typography>
+                      {transaction.description && (
+                        <Typography variant="body-s" className={styles.description}>
+                          {transaction.description}
+                        </Typography>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.secondary}>
-                  <Typography variant="body-s" className={styles.category}>
-                    {formatCategoryDisplayName(transaction.category)}
-                  </Typography>
-                  {transaction.description && (
-                    <Typography variant="body-s" className={styles.description}>
-                      {transaction.description}
-                    </Typography>
-                  )}
+                <div className={styles.actions}>
+                  <Button
+                    component={Link}
+                    href={getTransactionsCopyPath(transaction.id)}
+                    variant="ghost"
+                    size="sm"
+                    aria-label={translations('content.copyButton')}
+                  >
+                    <Copy size={14} />
+                  </Button>
+                  <Button
+                    component={Link}
+                    href={getTransactionsEditPath(transaction.id)}
+                    variant="ghost"
+                    size="sm"
+                    aria-label={translations('content.editButton')}
+                  >
+                    <Pencil size={14} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      onDelete(transaction);
+                    }}
+                    aria-label={translations('content.deleteButton')}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
                 </div>
               </div>
-              <div className={styles.actions}>
-                <Button
-                  component={Link}
-                  href={getTransactionsCopyPath(transaction.id)}
-                  variant="ghost"
-                  size="sm"
-                  aria-label={translations('content.copyButton')}
-                >
-                  <Copy size={14} />
-                </Button>
-                <Button
-                  component={Link}
-                  href={getTransactionsEditPath(transaction.id)}
-                  variant="ghost"
-                  size="sm"
-                  aria-label={translations('content.editButton')}
-                >
-                  <Pencil size={14} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    onDelete(transaction);
-                  }}
-                  aria-label={translations('content.deleteButton')}
-                >
-                  <Trash2 size={14} />
-                </Button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
     </div>

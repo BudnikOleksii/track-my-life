@@ -1,5 +1,3 @@
-'use client';
-
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
