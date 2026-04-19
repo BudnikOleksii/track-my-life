@@ -118,6 +118,7 @@ export const useBulkDeleteSelection = ({
 
   const handleBulkDeleteClose = useCallback(() => {
     setBulkDeleteIdList(null);
+    setIsBulkDeleteSubmitting(false);
   }, []);
 
   return {

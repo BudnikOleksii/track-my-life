@@ -59,7 +59,6 @@
       "deselectAllVisible": "Deselect all visible",
       "confirmTitle": "Delete selected recurring transactions?",
       "confirmBody": "{count, plural, one {This will delete # recurring transaction. This action cannot be undone.} other {This will delete # recurring transactions. This action cannot be undone.}}",
-      "failureListTitle": "Some recurring transactions could not be deleted:",
       "successToast": "{count, plural, one {# recurring transaction deleted} other {# recurring transactions deleted}}",
       "partialFailureToast": "{deleted} deleted, {failed} failed",
       "totalFailureToast": "No recurring transactions were deleted",

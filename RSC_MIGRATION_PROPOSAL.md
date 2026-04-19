@@ -104,7 +104,7 @@
 
 **Fix:** Remove `'use client'`. Switch `useTranslations` to `getTranslations` (server async). The RSC shell renders static translated headings; the three child forms remain client components and are imported normally (RSC can import client components).
 
-```
+```ts
 // Before (line 1): 'use client'
 // After: remove directive entirely
 // Change: useTranslations → getTranslations from 'next-intl/server'

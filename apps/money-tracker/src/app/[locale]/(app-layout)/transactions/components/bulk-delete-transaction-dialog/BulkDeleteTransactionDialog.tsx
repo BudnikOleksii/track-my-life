@@ -4,7 +4,6 @@ import type { Dispatch, FC, SetStateAction } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,14 +16,13 @@ import {
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
 import { toast } from '@track-my-life/ui/src/components/molecules/toaster/toast';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import type { BulkDeleteResult } from '../../actions/types';
 
 import { bulkDeleteTransaction } from '../../actions/bulk-delete-transaction';
-import styles from './BulkDeleteTransactionDialog.module.scss';
 
 interface BulkDeleteTransactionDialogProps {
   idList: string[] | null;
@@ -33,6 +31,9 @@ interface BulkDeleteTransactionDialogProps {
   setSelectedIdSet: Dispatch<SetStateAction<Set<string>>>;
 }
 
+const resolveErrorKey = (errorValue: string): 'validationFailed' | 'unknownError' =>
+  errorValue === 'validationFailed' ? 'validationFailed' : 'unknownError';
+
 export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> = ({
   idList,
   onClose,
@@ -40,7 +41,6 @@ export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> =
   setSelectedIdSet,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
-  const [lastResult, setLastResult] = useState<BulkDeleteResult | null>(null);
 
   const handleSuccess = useCallback(
     (deletedCount: number) => {
@@ -60,13 +60,13 @@ export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> =
         }),
       );
       setSelectedIdSet(new Set(failureList.map((failure) => failure.id)));
+      onClose();
     },
-    [setSelectedIdSet, translations],
+    [onClose, setSelectedIdSet, translations],
   );
 
   const handleResult = useCallback(
     (result: BulkDeleteResult) => {
-      setLastResult(result);
       if (result.failureList.length === EMPTY_LIST_LENGTH) {
         handleSuccess(result.deletedCount);
         return;
@@ -88,7 +88,7 @@ export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> =
     try {
       const result = await bulkDeleteTransaction([...idList]);
       if (!result.ok) {
-        toast.error(translations(`content.bulkDelete.errors.${result.error}`));
+        toast.error(translations(`content.bulkDelete.errors.${resolveErrorKey(result.error)}`));
         return;
       }
       handleResult(result.data);
@@ -97,20 +97,14 @@ export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> =
     }
   }, [handleResult, idList, onSubmittingChange, translations]);
 
-  const handleClose = useCallback(() => {
-    setLastResult(null);
-    onClose();
-  }, [onClose]);
-
   const isOpen = idList !== null && idList.length > EMPTY_LIST_LENGTH;
-  const hasFailures = lastResult !== null && lastResult.failureList.length > EMPTY_LIST_LENGTH;
 
   return (
     <AlertDialog
       open={isOpen}
       onOpenChange={(open) => {
         if (!open) {
-          handleClose();
+          onClose();
         }
       }}
     >
@@ -123,19 +117,6 @@ export const BulkDeleteTransactionDialog: FC<BulkDeleteTransactionDialogProps> =
             })}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {hasFailures && lastResult && (
-          <div className={styles.failureList}>
-            <Typography variant="body-s" fontWeight="semibold">
-              {translations('content.bulkDelete.failureListTitle')}
-            </Typography>
-            {lastResult.failureList.map((failure) => (
-              <div key={failure.id} className={styles.failureRow}>
-                <span>{failure.id}</span>
-                <span className={styles.failureReason}>{failure.reason}</span>
-              </div>
-            ))}
-          </div>
-        )}
         <AlertDialogFooter>
           <AlertDialogCancel>
             <Button variant="outline" type="button">

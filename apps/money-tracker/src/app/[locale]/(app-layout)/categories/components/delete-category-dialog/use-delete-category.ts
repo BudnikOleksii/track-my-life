@@ -12,6 +12,7 @@ import type { BulkDeleteResult } from '../../actions/types';
 import { bulkDeleteCategory } from '../../actions/bulk-delete-category';
 import { deleteCategory } from '../../actions/delete-category';
 
+// Matches backend `BulkDeleteFailureDto.reason` text; backend rewording regresses to `cascadeUnexpectedFailure`.
 const ACTIVE_TRANSACTIONS_MARKER = 'active transactions';
 const PARENT_COUNT = 1;
 

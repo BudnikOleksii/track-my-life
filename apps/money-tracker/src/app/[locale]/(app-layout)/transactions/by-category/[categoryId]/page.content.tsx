@@ -77,10 +77,15 @@ export const CategoryDetailContent = async ({ categoryId }: CategoryDetailConten
               <AccordionContent>
                 <div className={styles.transactionList}>
                   {group.transactions.map((transaction) => {
+                    const groupLabel =
+                      group.subcategory?.name ?? translations('content.directTransactions');
+                    const description = transaction.description?.trim()
+                      ? transaction.description
+                      : groupLabel;
                     const selectLabel = transactionsPageTranslations(
                       'content.bulkDelete.selectRowLabel',
                       {
-                        description: transaction.description ?? '',
+                        description,
                         amount: formatAmount(transaction.amount, transaction.currencyCode),
                       },
                     );

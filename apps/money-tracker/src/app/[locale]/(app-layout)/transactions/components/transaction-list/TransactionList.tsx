@@ -90,8 +90,11 @@ export const TransactionList: FC<TransactionListProps> = ({
           </div>
           {group.transactionList.map((transaction) => {
             const isSelected = selectedIdSet.has(transaction.id);
+            const description = transaction.description?.trim()
+              ? transaction.description
+              : formatCategoryDisplayName(transaction.category);
             const selectLabel = translations('content.bulkDelete.selectRowLabel', {
-              description: transaction.description ?? '',
+              description,
               amount: formatAmount(transaction.amount, transaction.currencyCode),
             });
 

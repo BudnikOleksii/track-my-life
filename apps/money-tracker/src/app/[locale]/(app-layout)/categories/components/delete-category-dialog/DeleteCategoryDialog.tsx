@@ -85,7 +85,7 @@ export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
           </ul>
         )}
         {errorKey && (
-          <Typography variant="body-s" data-error>
+          <Typography variant="body-s" role="alert" data-error>
             {translations(errorKey)}
           </Typography>
         )}
