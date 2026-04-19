@@ -4,7 +4,7 @@ import type {
   CategoryResponseDto,
   TransactionResponseDto,
 } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import {
@@ -27,31 +27,34 @@ import { BulkDeleteTransactionDialog } from './components/bulk-delete-transactio
 import { CategoryPicker } from './components/category-picker/CategoryPicker';
 import { DeleteTransactionDialog } from './components/delete-transaction-dialog/DeleteTransactionDialog';
 import { MonthNavigator } from './components/month-navigator/MonthNavigator';
-import { TransactionList } from './components/transaction-list/TransactionList';
+import {
+  TransactionRowDispatchContext,
+  TransactionRowSelectionContext,
+} from './components/transaction-row-actions/transaction-row-actions-context';
 import { TransactionSortFilter } from './components/transaction-sort-filter/TransactionSortFilter';
 import { useTransactionFilters } from './hooks/use-transaction-filters';
 import styles from './page.module.scss';
 
 interface TransactionsPageContentProps {
-  transactionList: TransactionResponseDto[];
   total: number;
   categoryList: CategoryResponseDto[];
   filters: TransactionFilters;
+  visibleIdList: string[];
+  children: ReactNode;
 }
 
 export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
-  transactionList,
   total,
   categoryList,
   filters,
+  visibleIdList,
+  children,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
   const { handleFilterChange } = useTransactionFilters();
   const [deletingTransaction, setDeletingTransaction] = useState<TransactionResponseDto | null>(
     null,
   );
-
-  const visibleIdList = useMemo(() => transactionList.map((item) => item.id), [transactionList]);
 
   const {
     selectedIdSet,
@@ -83,7 +86,16 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
     handleFilterChange({ dateFrom, dateTo });
   };
 
-  const selectedCount = selectedIdSet.size;
+  const dispatchContextValue = useMemo(
+    () => ({
+      isBulkDeleteSubmitting,
+      onToggleSelection: handleToggleSelection,
+      onRequestDelete: setDeletingTransaction,
+    }),
+    [isBulkDeleteSubmitting, handleToggleSelection, setDeletingTransaction],
+  );
+
+  const selectionContextValue = useMemo(() => ({ selectedIdSet }), [selectedIdSet]);
 
   return (
     <>
@@ -124,19 +136,17 @@ export const TransactionsPageContent: FC<TransactionsPageContentProps> = ({
         </div>
       </div>
 
-      <TransactionList
-        transactionList={transactionList}
-        onDelete={setDeletingTransaction}
-        selectedIdSet={selectedIdSet}
-        onToggleSelection={handleToggleSelection}
-        isBulkDeleteSubmitting={isBulkDeleteSubmitting}
-      />
+      <TransactionRowDispatchContext.Provider value={dispatchContextValue}>
+        <TransactionRowSelectionContext.Provider value={selectionContextValue}>
+          {children}
+        </TransactionRowSelectionContext.Provider>
+      </TransactionRowDispatchContext.Provider>
 
-      {selectedCount > EMPTY_LIST_LENGTH && (
+      {selectedIdSet.size > EMPTY_LIST_LENGTH && (
         <BulkDeleteActionBar
-          selectedCount={selectedCount}
+          selectedCount={selectedIdSet.size}
           selectedCountLabel={translations('content.bulkDelete.selectedCount', {
-            count: selectedCount,
+            count: selectedIdSet.size,
           })}
           deleteLabel={translations('content.bulkDelete.deleteSelected')}
           clearLabel={translations('content.bulkDelete.clearSelection')}

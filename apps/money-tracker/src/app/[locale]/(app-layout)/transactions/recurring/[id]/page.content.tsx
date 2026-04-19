@@ -1,10 +1,9 @@
 'use client';
 
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
-import { formatDate, formatDateTime } from '@track-my-life/shared/src/utils/date/format';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -19,43 +18,29 @@ import {
   AlertDialogTitle,
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
 import { ArrowLeft, Pause, Pencil, Play, Trash2 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { PATHS, getRecurringTransactionsEditPath } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
+import {
+  STATUS_BADGE_VARIANT_MAP,
+  STATUS_LABEL_KEY,
+} from '../constants/recurring-transaction-display';
 import { useRecurringTransactionActions } from './hooks/use-recurring-transaction-actions';
 import styles from './page.module.scss';
 
 interface RecurringTransactionDetailContentProps {
   recurringTransaction: RecurringTransactionResponseDto;
+  children: ReactNode;
 }
-
-const STATUS_BADGE_VARIANT_MAP = {
-  ACTIVE: 'success',
-  PAUSED: 'warning',
-  CANCELLED: 'destructive',
-} as const;
-
-const FREQUENCY_LABEL_KEY = {
-  DAILY: 'content.dailyFrequency',
-  WEEKLY: 'content.weeklyFrequency',
-  MONTHLY: 'content.monthlyFrequency',
-  YEARLY: 'content.yearlyFrequency',
-} as const;
-
-const STATUS_LABEL_KEY = {
-  ACTIVE: 'content.activeStatus',
-  PAUSED: 'content.pausedStatus',
-  CANCELLED: 'content.cancelledStatus',
-} as const;
 
 export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailContentProps> = ({
   recurringTransaction,
+  children,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsPage);
-  const locale = useLocale();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { optimisticTransaction, isPending, handlePause, handleResume, handleDelete } =
@@ -84,88 +69,7 @@ export const RecurringTransactionDetailContent: FC<RecurringTransactionDetailCon
           </Badge>
         </div>
 
-        <div className={styles.details}>
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.typeLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {translations(
-                `content.${optimisticTransaction.type === 'INCOME' ? 'incomeType' : 'expenseType'}`,
-              )}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.frequencyLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {translations('content.every', {
-                interval: optimisticTransaction.interval,
-                frequency: translations(
-                  FREQUENCY_LABEL_KEY[optimisticTransaction.frequency],
-                ).toLowerCase(),
-              })}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.startDateLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {formatDate(optimisticTransaction.startDate, locale)}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.endDateLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {optimisticTransaction.endDate
-                ? formatDate(optimisticTransaction.endDate, locale)
-                : translations('content.noEndDate')}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.nextOccurrenceLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {formatDate(optimisticTransaction.nextOccurrenceDate, locale)}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.descriptionLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {optimisticTransaction.description || translations('content.noDescription')}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.createdAtLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {formatDateTime(optimisticTransaction.createdAt, locale)}
-            </Typography>
-          </div>
-
-          <div className={styles.detailRow}>
-            <Typography variant="body-s" className={styles.detailLabel}>
-              {translations('content.updatedAtLabel')}
-            </Typography>
-            <Typography variant="body-m">
-              {formatDateTime(optimisticTransaction.updatedAt, locale)}
-            </Typography>
-          </div>
-        </div>
+        {children}
       </div>
 
       <div className={styles.actions}>

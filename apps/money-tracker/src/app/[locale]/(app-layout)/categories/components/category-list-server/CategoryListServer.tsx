@@ -1,11 +1,17 @@
 import type { FC } from 'react';
 
+import type { FilterValue } from '@/constants/transaction';
+
 import { fetchCategoryList } from '@/actions/fetch-category-list';
 
-import { CategoriesPageContent } from '../../page.content';
+import { CategoryListClient } from '../category-list-client/CategoryListClient';
 
-export const CategoryListServer: FC = async () => {
-  const categoryList = await fetchCategoryList();
+interface CategoryListServerProps {
+  type: FilterValue;
+}
 
-  return <CategoriesPageContent categoryList={categoryList} />;
+export const CategoryListServer: FC<CategoryListServerProps> = async ({ type }) => {
+  const categoryList = await fetchCategoryList(type === 'ALL' ? undefined : type);
+
+  return <CategoryListClient categoryList={categoryList} />;
 };

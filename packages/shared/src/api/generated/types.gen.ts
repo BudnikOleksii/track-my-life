@@ -1716,6 +1716,8 @@ export type HealthControllerCheckData = {
 
 export type HealthControllerCheckErrors = {
   /**
+   * One or more components are unhealthy
+   *
    * The Health Check is not successful
    */
   503: {
@@ -1750,6 +1752,8 @@ export type HealthControllerCheckError =
 
 export type HealthControllerCheckResponses = {
   /**
+   * All components are healthy
+   *
    * The Health Check is successful
    */
   200: {

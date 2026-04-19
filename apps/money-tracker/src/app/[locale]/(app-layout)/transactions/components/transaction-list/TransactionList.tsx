@@ -1,5 +1,3 @@
-'use client';
-
 import type { TransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
@@ -10,25 +8,25 @@ import { formatLocalDate } from '@track-my-life/shared/src/utils/date/parse';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import { Checkbox } from '@track-my-life/ui/src/components/atoms/checkbox/checkbox';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { cn } from '@track-my-life/ui/src/lib/utils';
-import { Copy, Receipt, Pencil, Trash2 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { Copy, Receipt, Pencil } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
 import { getTransactionsCopyPath, getTransactionsEditPath } from '@/constants/paths';
 import { TRANSACTION_TYPE_BADGE_VARIANT_MAP } from '@/constants/transaction';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 import { formatCategoryDisplayName } from '@/utils/format-category-display-name';
 
+import {
+  TransactionRowCheckbox,
+  TransactionRowDeleteButton,
+  TransactionRowSelectionStyle,
+} from '../transaction-row-actions/TransactionRowActions';
 import styles from './TransactionList.module.scss';
 
 interface TransactionListProps {
   transactionList: TransactionResponseDto[];
-  onDelete: (transaction: TransactionResponseDto) => void;
-  selectedIdSet: ReadonlySet<string>;
-  onToggleSelection: (id: string) => void;
-  isBulkDeleteSubmitting: boolean;
+  locale: string;
 }
 
 const getDateKey = (dateString: string): string => formatLocalDate(dateString);
@@ -56,15 +54,8 @@ const groupTransactionListByDate = (transactionList: TransactionResponseDto[]): 
   return groupList;
 };
 
-export const TransactionList: FC<TransactionListProps> = ({
-  transactionList,
-  onDelete,
-  selectedIdSet,
-  onToggleSelection,
-  isBulkDeleteSubmitting,
-}) => {
-  const translations = useTranslations(I18N_NAMESPACE.transactionsPage);
-  const locale = useLocale();
+export const TransactionList: FC<TransactionListProps> = async ({ transactionList, locale }) => {
+  const translations = await getTranslations(I18N_NAMESPACE.transactionsPage);
 
   if (transactionList.length === EMPTY_LIST_LENGTH) {
     return (
@@ -89,7 +80,6 @@ export const TransactionList: FC<TransactionListProps> = ({
             </Typography>
           </div>
           {group.transactionList.map((transaction) => {
-            const isSelected = selectedIdSet.has(transaction.id);
             const description = transaction.description?.trim()
               ? transaction.description
               : formatCategoryDisplayName(transaction.category);
@@ -99,19 +89,17 @@ export const TransactionList: FC<TransactionListProps> = ({
             });
 
             return (
-              <div
+              <TransactionRowSelectionStyle
                 key={transaction.id}
-                className={cn(styles.row, isSelected && styles.rowSelected)}
+                transactionId={transaction.id}
+                baseClassName={styles.row}
+                selectedClassName={styles.rowSelected}
               >
                 <div className={styles.rowStart}>
-                  <Checkbox
+                  <TransactionRowCheckbox
+                    transactionId={transaction.id}
+                    selectLabel={selectLabel}
                     className={styles.checkbox}
-                    checked={isSelected}
-                    disabled={isBulkDeleteSubmitting}
-                    aria-label={selectLabel}
-                    onCheckedChange={() => {
-                      onToggleSelection(transaction.id);
-                    }}
                   />
                   <div className={styles.info}>
                     <div className={styles.primary}>
@@ -155,18 +143,12 @@ export const TransactionList: FC<TransactionListProps> = ({
                   >
                     <Pencil size={14} />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      onDelete(transaction);
-                    }}
-                    aria-label={translations('content.deleteButton')}
-                  >
-                    <Trash2 size={14} />
-                  </Button>
+                  <TransactionRowDeleteButton
+                    transaction={transaction}
+                    deleteLabel={translations('content.deleteButton')}
+                  />
                 </div>
-              </div>
+              </TransactionRowSelectionStyle>
             );
           })}
         </div>

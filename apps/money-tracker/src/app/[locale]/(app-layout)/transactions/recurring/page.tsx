@@ -12,10 +12,8 @@ import { PATHS } from '@/constants/paths';
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../components/page-skeleton/PageSkeleton';
-import {
-  parseRecurringTransactionSearchParams,
-  RecurringTransactionListServer,
-} from './components/recurring-transaction-list-server/RecurringTransactionListServer';
+import { RecurringTransactionListServer } from './components/recurring-transaction-list-server/RecurringTransactionListServer';
+import { parseRecurringTransactionSearchParams } from './constants/parse-recurring-transaction-search-params';
 import styles from './page.module.scss';
 
 interface Props {
