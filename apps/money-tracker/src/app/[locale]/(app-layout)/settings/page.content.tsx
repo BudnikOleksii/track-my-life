@@ -1,7 +1,4 @@
-'use client';
-
 import type { ProfileResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
 
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import {
@@ -9,7 +6,7 @@ import {
   FieldLegend,
   FieldGroup,
 } from '@track-my-life/ui/src/components/molecules/field/field';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -21,8 +18,8 @@ interface SettingsPageContentProps {
   profile: ProfileResponseDto;
 }
 
-export const SettingsPageContent: FC<SettingsPageContentProps> = ({ profile }) => {
-  const translations = useTranslations(I18N_NAMESPACE.settingsPage);
+export const SettingsPageContent = async ({ profile }: SettingsPageContentProps) => {
+  const translations = await getTranslations(I18N_NAMESPACE.settingsPage);
 
   return (
     <>

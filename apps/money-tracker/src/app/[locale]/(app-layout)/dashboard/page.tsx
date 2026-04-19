@@ -10,7 +10,7 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { CategoryBreakdownChart } from './components/category-breakdown-chart/CategoryBreakdownChart';
 import { DailySpendingChart } from './components/daily-spending-chart/DailySpendingChart';
-import { DashboardFilterBarClient } from './components/dashboard-filter-bar/DashboardFilterBarClient';
+import { DashboardFilterBar } from './components/dashboard-filter-bar/DashboardFilterBar';
 import { RecentTransactionList } from './components/recent-transaction-list/RecentTransactionList';
 import { SummaryWidget } from './components/summary-widget/SummaryWidget';
 import { TopCategoryList } from './components/top-category-list/TopCategoryList';
@@ -70,7 +70,7 @@ const DashboardPage = async (props: Props) => {
       <div className={styles.header}>
         <Typography variant="title-s">{translations('content.title')}</Typography>
       </div>
-      <DashboardFilterBarClient filters={filters} />
+      <DashboardFilterBar filters={filters} />
       <div className={styles.grid}>
         <Suspense key={`summary-${filtersKey}`} fallback={widgetSkeletonFallback}>
           <SummaryWidget filters={filters} className={styles.summary} />

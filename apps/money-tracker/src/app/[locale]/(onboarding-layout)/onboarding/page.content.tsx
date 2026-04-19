@@ -1,7 +1,5 @@
-'use client';
-
 import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import {
   Card,
@@ -10,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@track-my-life/ui/src/components/molecules/card/card';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -41,12 +39,12 @@ const STEP_DESCRIPTION_MAP: Record<OnboardingStep, string> = {
   [ONBOARDING_STEP.password]: 'content.passwordDescription',
 };
 
-export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({
+export const OnboardingPageContent = async ({
   currentStep,
   currency,
   hasPassword,
-}) => {
-  const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
+}: OnboardingPageContentProps) => {
+  const translations = await getTranslations(I18N_NAMESPACE.onboardingPage);
 
   const stepContentMap: Record<OnboardingStep, ReactNode> = {
     [ONBOARDING_STEP.currency]: <CurrencyStep defaultCurrency={currency} />,

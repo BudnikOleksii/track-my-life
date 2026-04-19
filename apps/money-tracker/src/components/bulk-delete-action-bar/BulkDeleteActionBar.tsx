@@ -1,5 +1,3 @@
-'use client';
-
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';

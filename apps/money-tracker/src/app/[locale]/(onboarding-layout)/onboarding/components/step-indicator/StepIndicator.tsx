@@ -1,10 +1,5 @@
-'use client';
-
-import type { FC } from 'react';
-
 import { cn } from '@track-my-life/ui/src/lib/utils';
-import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { getTranslations } from 'next-intl/server';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
@@ -24,16 +19,14 @@ const STEP_LABEL_MAP: Record<OnboardingStep, string> = {
   [ONBOARDING_STEP.password]: 'content.stepPassword',
 };
 
-export const StepIndicator: FC<StepIndicatorProps> = ({ currentStep, hasPassword }) => {
-  const translations = useTranslations(I18N_NAMESPACE.onboardingPage);
+const BASE_STEP_LIST: OnboardingStep[] = [ONBOARDING_STEP.currency, ONBOARDING_STEP.categories];
 
-  const visibleStepList = useMemo(() => {
-    const stepList: OnboardingStep[] = [ONBOARDING_STEP.currency, ONBOARDING_STEP.categories];
-    if (!hasPassword) {
-      stepList.push(ONBOARDING_STEP.password);
-    }
-    return stepList;
-  }, [hasPassword]);
+export const StepIndicator = async ({ currentStep, hasPassword }: StepIndicatorProps) => {
+  const translations = await getTranslations(I18N_NAMESPACE.onboardingPage);
+
+  const visibleStepList = hasPassword
+    ? BASE_STEP_LIST
+    : [...BASE_STEP_LIST, ONBOARDING_STEP.password];
 
   const currentIndex = visibleStepList.indexOf(currentStep);
 
