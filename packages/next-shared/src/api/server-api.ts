@@ -8,6 +8,7 @@ import { RecurringTransactionApiService } from '@track-my-life/shared/src/api/se
 import { TransactionApiService } from '@track-my-life/shared/src/api/services/transaction-api.service';
 import { TransactionsAnalyticsApiService } from '@track-my-life/shared/src/api/services/transactions-analytics-api.service';
 
+import { forwardDeviceContext } from './client/interceptors/forward-device-context';
 import { forwardResponseCookieList } from './client/token/forward-response-cookie-list';
 import { ServerActionTokenProvider } from './client/token/server-action-token-provider';
 
@@ -38,6 +39,7 @@ const authInterceptor = new AuthInterceptor({
   onRefreshResponse: forwardResponseCookieList,
 });
 authInterceptor.setupOn(authApiService);
+authApiService.addRequestInterceptor(forwardDeviceContext);
 authInterceptor.setupOn(categoryApiService);
 authInterceptor.setupOn(onboardingApiService);
 authInterceptor.setupOn(profileApiService);
