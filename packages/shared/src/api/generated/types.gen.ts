@@ -603,113 +603,13 @@ export type SocialExchangeResponseDto = {
 
 export type UserSortBy = 'email' | 'createdAt';
 
-export type UserResponseDto = {
-  /**
-   * User ID
-   */
-  id: string;
-  /**
-   * User email address
-   */
-  email: string;
-  /**
-   * User role
-   */
-  role: UserRole;
-  /**
-   * Creation timestamp
-   */
-  createdAt: string;
-  /**
-   * Last update timestamp
-   */
-  updatedAt: string;
-};
-
-export type UserListResponseDto = {
-  /**
-   * Object type
-   */
-  object: 'list';
-  /**
-   * List of users
-   */
-  data: Array<UserResponseDto>;
-  /**
-   * Current page number
-   */
-  page: number;
-  /**
-   * Number of items per page
-   */
-  pageSize: number;
-  /**
-   * Total number of matching records
-   */
-  total: number;
-  /**
-   * Total number of pages
-   */
-  totalPages: number;
-  /**
-   * Whether more pages are available
-   */
-  hasMore: boolean;
-};
-
-export type UserSummaryResponseDto = {
-  /**
-   * Total number of registered users
-   */
-  total: number;
-  /**
-   * Number of users with the ADMIN role
-   */
-  adminCount: number;
-  /**
-   * Number of users registered today
-   */
-  newToday: number;
-};
-
-export type CreateUserDto = {
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-  role?: UserRole;
-};
-
-export type UpdateUserDto = {
-  role?: UserRole;
-};
-
-export type AssignRoleDto = {
-  role: UserRole;
-};
-
-export type MessageResponseDto = {
-  /**
-   * Response message
-   */
-  message: string;
-};
-
-export type OnboardingStatusResponseDto = {
-  onboardingCompleted: boolean;
-  emailVerified: boolean;
-  hasBaseCurrency: boolean;
-  hasCategories: boolean;
-  hasPassword: boolean;
-};
-
-export type CompleteOnboardingDto = {
-  baseCurrencyCode: string;
-  password?: string;
-};
+/**
+ * Derived auth provider: LOCAL if the user has a password identity, else the earliest-created social identity. Null only when no authentication identity is associated with the user.
+ */
+export type AuthProvider = 'LOCAL' | 'GOOGLE' | 'GITHUB';
 
 /**
- * Country code (ISO 3166-1 alpha-2)
+ * Country code (ISO 3166-1 alpha-3)
  */
 export type CountryCode =
   | 'AD'
@@ -962,6 +862,139 @@ export type CountryCode =
   | 'ZM'
   | 'ZW';
 
+export type UserResponseDto = {
+  /**
+   * User ID
+   */
+  id: string;
+  /**
+   * User email address
+   */
+  email: string;
+  /**
+   * User role
+   */
+  role: UserRole;
+  /**
+   * Derived auth provider: LOCAL if the user has a password identity, else the earliest-created social identity. Null only when no authentication identity is associated with the user.
+   */
+  authProvider: AuthProvider | null;
+  /**
+   * Whether user email is verified
+   */
+  emailVerified: boolean;
+  /**
+   * Country code (ISO 3166-1 alpha-3)
+   */
+  countryCode: CountryCode | null;
+  /**
+   * Base currency code (ISO 4217)
+   */
+  baseCurrencyCode: CurrencyCode | null;
+  /**
+   * Whether onboarding is completed
+   */
+  onboardingCompleted: boolean;
+  /**
+   * Last known IP address
+   */
+  ipAddress: string | null;
+  /**
+   * Last known user agent
+   */
+  userAgent: string | null;
+  /**
+   * Creation timestamp
+   */
+  createdAt: string;
+  /**
+   * Last update timestamp
+   */
+  updatedAt: string;
+};
+
+export type UserListResponseDto = {
+  /**
+   * Object type
+   */
+  object: 'list';
+  /**
+   * List of users
+   */
+  data: Array<UserResponseDto>;
+  /**
+   * Current page number
+   */
+  page: number;
+  /**
+   * Number of items per page
+   */
+  pageSize: number;
+  /**
+   * Total number of matching records
+   */
+  total: number;
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
+  /**
+   * Whether more pages are available
+   */
+  hasMore: boolean;
+};
+
+export type UserSummaryResponseDto = {
+  /**
+   * Total number of registered users
+   */
+  total: number;
+  /**
+   * Number of users with the ADMIN role
+   */
+  adminCount: number;
+  /**
+   * Number of users registered today
+   */
+  newToday: number;
+};
+
+export type CreateUserDto = {
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  role?: UserRole;
+};
+
+export type UpdateUserDto = {
+  role?: UserRole;
+};
+
+export type AssignRoleDto = {
+  role: UserRole;
+};
+
+export type MessageResponseDto = {
+  /**
+   * Response message
+   */
+  message: string;
+};
+
+export type OnboardingStatusResponseDto = {
+  onboardingCompleted: boolean;
+  emailVerified: boolean;
+  hasBaseCurrency: boolean;
+  hasCategories: boolean;
+  hasPassword: boolean;
+};
+
+export type CompleteOnboardingDto = {
+  baseCurrencyCode: CurrencyCode;
+  password?: string;
+};
+
 export type ProfileResponseDto = {
   /**
    * User ID
@@ -1010,10 +1043,6 @@ export type UpdateProfileDto = {
   lastName?: string;
   countryCode?: CountryCode;
   baseCurrencyCode?: CurrencyCode;
-  /**
-   * Whether the user has completed onboarding
-   */
-  onboardingCompleted?: boolean;
 };
 
 export type ChangePasswordDto = {
@@ -1170,6 +1199,39 @@ export type UpdateCategoryDto = {
   parentCategoryId?: string | null;
 };
 
+export type BulkDeleteDto = {
+  /**
+   * Array of UUIDs to delete
+   */
+  ids: Array<string>;
+};
+
+export type BulkDeleteFailureDto = {
+  /**
+   * ID of the record that failed to delete
+   */
+  id: string;
+  /**
+   * Reason the record could not be deleted
+   */
+  reason: string;
+};
+
+export type BulkDeleteResponseDto = {
+  /**
+   * Number of records successfully deleted
+   */
+  deleted: number;
+  /**
+   * Records that could not be deleted with reasons
+   */
+  failed: Array<BulkDeleteFailureDto>;
+  /**
+   * Summary message
+   */
+  message: string;
+};
+
 export type TransactionSortBy = 'date' | 'amount' | 'createdAt';
 
 export type ParentCategoryInfoDto = {
@@ -1318,6 +1380,10 @@ export type TransactionsByCategoryResponseDto = {
    * Transaction groups by subcategory
    */
   groups: Array<TransactionGroupDto>;
+  /**
+   * Whether the result set was truncated due to exceeding the maximum row limit
+   */
+  isTruncated: boolean;
 };
 
 export type ExportFormat = 'json' | 'csv';
@@ -1887,8 +1953,8 @@ export type AuditLogControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     actorId?: string;
     action?: string;
     /**
@@ -2271,8 +2337,8 @@ export type UserControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     search?: string;
     role?: UserRole;
     /**
@@ -2601,10 +2667,6 @@ export type OnboardingControllerAssignDefaultCategoriesData = {
 
 export type OnboardingControllerAssignDefaultCategoriesErrors = {
   /**
-   * Categories already exist
-   */
-  400: unknown;
-  /**
    * Unauthorized
    */
   401: unknown;
@@ -2752,8 +2814,8 @@ export type DefaultTransactionCategoriesControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     type?: TransactionType;
     root?: boolean;
     /**
@@ -2955,8 +3017,8 @@ export type TransactionCategoriesControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     type?: TransactionType;
     parentCategoryId?: string;
     root?: boolean;
@@ -3135,12 +3197,44 @@ export type TransactionCategoriesControllerUpdateResponses = {
 export type TransactionCategoriesControllerUpdateResponse =
   TransactionCategoriesControllerUpdateResponses[keyof TransactionCategoriesControllerUpdateResponses];
 
+export type TransactionCategoriesControllerBulkDeleteData = {
+  body: BulkDeleteDto;
+  path?: never;
+  query?: never;
+  url: '/api/transaction-categories/batch';
+};
+
+export type TransactionCategoriesControllerBulkDeleteErrors = {
+  /**
+   * Validation error
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type TransactionCategoriesControllerBulkDeleteError =
+  TransactionCategoriesControllerBulkDeleteErrors[keyof TransactionCategoriesControllerBulkDeleteErrors];
+
+export type TransactionCategoriesControllerBulkDeleteResponses = {
+  200: BulkDeleteResponseDto;
+};
+
+export type TransactionCategoriesControllerBulkDeleteResponse =
+  TransactionCategoriesControllerBulkDeleteResponses[keyof TransactionCategoriesControllerBulkDeleteResponses];
+
 export type TransactionsControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     /**
      * Search transactions by description (case-insensitive)
      */
@@ -3440,12 +3534,44 @@ export type TransactionsControllerUpdateResponses = {
 export type TransactionsControllerUpdateResponse =
   TransactionsControllerUpdateResponses[keyof TransactionsControllerUpdateResponses];
 
+export type TransactionsControllerBulkDeleteData = {
+  body: BulkDeleteDto;
+  path?: never;
+  query?: never;
+  url: '/api/transactions/batch';
+};
+
+export type TransactionsControllerBulkDeleteErrors = {
+  /**
+   * Validation error
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type TransactionsControllerBulkDeleteError =
+  TransactionsControllerBulkDeleteErrors[keyof TransactionsControllerBulkDeleteErrors];
+
+export type TransactionsControllerBulkDeleteResponses = {
+  200: BulkDeleteResponseDto;
+};
+
+export type TransactionsControllerBulkDeleteResponse =
+  TransactionsControllerBulkDeleteResponses[keyof TransactionsControllerBulkDeleteResponses];
+
 export type RecurringTransactionsControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     status?: RecurringTransactionStatus;
     type?: TransactionType;
     categoryId?: string;
@@ -3626,6 +3752,38 @@ export type RecurringTransactionsControllerUpdateResponses = {
 export type RecurringTransactionsControllerUpdateResponse =
   RecurringTransactionsControllerUpdateResponses[keyof RecurringTransactionsControllerUpdateResponses];
 
+export type RecurringTransactionsControllerBulkDeleteData = {
+  body: BulkDeleteDto;
+  path?: never;
+  query?: never;
+  url: '/api/recurring-transactions/batch';
+};
+
+export type RecurringTransactionsControllerBulkDeleteErrors = {
+  /**
+   * Validation error
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type RecurringTransactionsControllerBulkDeleteError =
+  RecurringTransactionsControllerBulkDeleteErrors[keyof RecurringTransactionsControllerBulkDeleteErrors];
+
+export type RecurringTransactionsControllerBulkDeleteResponses = {
+  200: BulkDeleteResponseDto;
+};
+
+export type RecurringTransactionsControllerBulkDeleteResponse =
+  RecurringTransactionsControllerBulkDeleteResponses[keyof RecurringTransactionsControllerBulkDeleteResponses];
+
 export type RecurringTransactionsControllerPauseData = {
   body?: never;
   path: {
@@ -3738,8 +3896,8 @@ export type BudgetsControllerFindAllData = {
   body?: never;
   path?: never;
   query?: {
-    page?: number;
-    pageSize?: number;
+    page?: unknown;
+    pageSize?: unknown;
     status?: BudgetStatus;
     period?: BudgetPeriod;
     categoryId?: string;
@@ -3960,3 +4118,35 @@ export type BudgetsControllerGetProgressResponses = {
 
 export type BudgetsControllerGetProgressResponse =
   BudgetsControllerGetProgressResponses[keyof BudgetsControllerGetProgressResponses];
+
+export type BudgetsControllerBulkDeleteData = {
+  body: BulkDeleteDto;
+  path?: never;
+  query?: never;
+  url: '/api/budgets/batch';
+};
+
+export type BudgetsControllerBulkDeleteErrors = {
+  /**
+   * Validation error
+   */
+  400: unknown;
+  /**
+   * Unauthorized
+   */
+  401: unknown;
+  /**
+   * Error response (includes 400/401/403/404/422/429/500, etc.)
+   */
+  default: ProblemDetailsDto;
+};
+
+export type BudgetsControllerBulkDeleteError =
+  BudgetsControllerBulkDeleteErrors[keyof BudgetsControllerBulkDeleteErrors];
+
+export type BudgetsControllerBulkDeleteResponses = {
+  200: BulkDeleteResponseDto;
+};
+
+export type BudgetsControllerBulkDeleteResponse =
+  BudgetsControllerBulkDeleteResponses[keyof BudgetsControllerBulkDeleteResponses];

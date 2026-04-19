@@ -1,5 +1,6 @@
 'use client';
 
+import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
@@ -17,7 +18,7 @@ import { useCategoriesStep } from './hooks/use-categories-step';
 const ROW_NUMBER_OFFSET = 1;
 
 interface CategoriesStepProps {
-  currency: string;
+  currency: CurrencyCode;
   hasPassword: boolean;
 }
 

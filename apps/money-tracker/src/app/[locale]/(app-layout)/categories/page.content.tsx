@@ -31,6 +31,13 @@ export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ category
     [activeFilter, categoryList],
   );
 
+  const deletingSubcategoryList = useMemo(() => {
+    if (!deletingCategory) {
+      return [];
+    }
+    return categoryList.filter((item) => item.parentCategoryId === deletingCategory.id);
+  }, [categoryList, deletingCategory]);
+
   const labelMap = useMemo(
     () => ({
       ALL: translations(FILTER_TO_LABEL_KEY.ALL),
@@ -53,6 +60,7 @@ export const CategoriesPageContent: FC<CategoriesPageContentProps> = ({ category
 
       <DeleteCategoryDialog
         category={deletingCategory}
+        subcategoryList={deletingSubcategoryList}
         onClose={() => {
           setDeletingCategory(null);
         }}

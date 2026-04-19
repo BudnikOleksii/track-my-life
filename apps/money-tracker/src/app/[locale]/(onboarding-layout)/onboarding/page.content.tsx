@@ -1,5 +1,6 @@
 'use client';
 
+import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC, ReactNode } from 'react';
 
 import {
@@ -24,7 +25,7 @@ import styles from './page.module.scss';
 
 interface OnboardingPageContentProps {
   currentStep: OnboardingStep;
-  currency?: string | undefined;
+  currency?: CurrencyCode | undefined;
   hasPassword: boolean;
 }
 
@@ -49,10 +50,10 @@ export const OnboardingPageContent: FC<OnboardingPageContentProps> = ({
 
   const stepContentMap: Record<OnboardingStep, ReactNode> = {
     [ONBOARDING_STEP.currency]: <CurrencyStep defaultCurrency={currency} />,
-    [ONBOARDING_STEP.categories]: (
-      <CategoriesStep currency={currency ?? ''} hasPassword={hasPassword} />
-    ),
-    [ONBOARDING_STEP.password]: <PasswordStep currency={currency ?? ''} />,
+    [ONBOARDING_STEP.categories]: currency ? (
+      <CategoriesStep currency={currency} hasPassword={hasPassword} />
+    ) : null,
+    [ONBOARDING_STEP.password]: currency ? <PasswordStep currency={currency} /> : null,
   };
 
   const titleKey = STEP_TITLE_MAP[currentStep];

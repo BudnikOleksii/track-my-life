@@ -1,5 +1,6 @@
 'use client';
 
+import type { CurrencyCode } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +25,7 @@ import { passwordStepSchema } from '../../constants/password-step-schema';
 import styles from './PasswordStep.module.scss';
 
 interface PasswordStepProps {
-  currency: string;
+  currency: CurrencyCode;
 }
 
 export const PasswordStep: FC<PasswordStepProps> = ({ currency }) => {

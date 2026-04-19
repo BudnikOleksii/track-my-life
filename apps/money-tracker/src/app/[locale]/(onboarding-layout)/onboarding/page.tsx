@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { FC } from 'react';
 
 import { redirect } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { checkIsCurrencyCode } from '@track-my-life/shared/src/constants/currency';
 import { getTranslations } from 'next-intl/server';
 
 import { fetchOnboardingStatus } from '@/actions/fetch-onboarding-status';
@@ -48,7 +49,8 @@ const parseOnboardingStep = (step?: string): OnboardingStep => {
 const OnboardingPage: FC<Props> = async (props) => {
   const [searchParams, params] = await Promise.all([props.searchParams, props.params]);
   const currentStep = parseOnboardingStep(searchParams.step);
-  const { currency } = searchParams;
+  const rawCurrency = searchParams.currency;
+  const currency = rawCurrency && checkIsCurrencyCode(rawCurrency) ? rawCurrency : undefined;
 
   if (currentStep !== ONBOARDING_STEP.currency && !currency) {
     redirect({

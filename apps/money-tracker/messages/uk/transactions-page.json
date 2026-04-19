@@ -35,6 +35,25 @@
     "exportButton": "Експорт",
     "downloadCsv": "Завантажити CSV",
     "downloadJson": "Завантажити JSON",
-    "exportError": "Не вдалося експортувати транзакції"
+    "exportError": "Не вдалося експортувати транзакції",
+    "bulkDelete": {
+      "selectRowLabel": "Вибрати транзакцію {amount} {description}",
+      "selectedCount": "{count, plural, one {# транзакцію вибрано} few {# транзакції вибрано} many {# транзакцій вибрано} other {# транзакцій вибрано}}",
+      "deleteSelected": "Видалити вибрані",
+      "clearSelection": "Скасувати вибір",
+      "selectAllVisible": "Вибрати всі видимі",
+      "deselectAllVisible": "Зняти вибір з усіх видимих",
+      "confirmTitle": "Видалити вибрані транзакції?",
+      "confirmBody": "{count, plural, one {Буде видалено # транзакцію. Цю дію не можна скасувати.} few {Буде видалено # транзакції. Цю дію не можна скасувати.} many {Буде видалено # транзакцій. Цю дію не можна скасувати.} other {Буде видалено # транзакцій. Цю дію не можна скасувати.}}",
+      "failureListTitle": "Деякі транзакції не вдалося видалити:",
+      "successToast": "{count, plural, one {# транзакцію видалено} few {# транзакції видалено} many {# транзакцій видалено} other {# транзакцій видалено}}",
+      "partialFailureToast": "{deleted} видалено, {failed} з помилкою",
+      "totalFailureToast": "Жодну транзакцію не видалено",
+      "overCapNotice": "Можна вибрати не більше {cap} елементів одночасно",
+      "errors": {
+        "validationFailed": "Некоректний вибір. Спробуйте ще раз.",
+        "unknownError": "Щось пішло не так. Спробуйте ще раз."
+      }
+    }
   }
 }

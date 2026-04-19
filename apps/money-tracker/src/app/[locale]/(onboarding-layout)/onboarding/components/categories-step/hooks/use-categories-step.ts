@@ -1,5 +1,8 @@
 import type { TranslateFn } from '@track-my-life/next-shared/src/types/translate-fn';
-import type { ImportTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
+import type {
+  CurrencyCode,
+  ImportTransactionResponseDto,
+} from '@track-my-life/shared/src/api/generated/types.gen';
 import type { ChangeEvent } from 'react';
 
 import { useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
@@ -21,7 +24,7 @@ import { ONBOARDING_STEP } from '../../../constants/onboarding-step';
 const FIRST_FILE_INDEX = 0;
 
 interface UseCategoriesStepParams {
-  currency: string;
+  currency: CurrencyCode;
   hasPassword: boolean;
   translations: TranslateFn;
 }

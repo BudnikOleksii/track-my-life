@@ -35,6 +35,25 @@
     "exportButton": "Export",
     "downloadCsv": "Download CSV",
     "downloadJson": "Download JSON",
-    "exportError": "Failed to export transactions"
+    "exportError": "Failed to export transactions",
+    "bulkDelete": {
+      "selectRowLabel": "Select transaction {amount} {description}",
+      "selectedCount": "{count, plural, one {# transaction selected} other {# transactions selected}}",
+      "deleteSelected": "Delete selected",
+      "clearSelection": "Clear selection",
+      "selectAllVisible": "Select all visible",
+      "deselectAllVisible": "Deselect all visible",
+      "confirmTitle": "Delete selected transactions?",
+      "confirmBody": "{count, plural, one {This will delete # transaction. This action cannot be undone.} other {This will delete # transactions. This action cannot be undone.}}",
+      "failureListTitle": "Some transactions could not be deleted:",
+      "successToast": "{count, plural, one {# transaction deleted} other {# transactions deleted}}",
+      "partialFailureToast": "{deleted} deleted, {failed} failed",
+      "totalFailureToast": "No transactions were deleted",
+      "overCapNotice": "You can select at most {cap} items at a time",
+      "errors": {
+        "validationFailed": "Invalid selection. Please try again.",
+        "unknownError": "Something went wrong. Please try again."
+      }
+    }
   }
 }

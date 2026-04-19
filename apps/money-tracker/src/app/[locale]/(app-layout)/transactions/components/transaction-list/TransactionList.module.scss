@@ -33,6 +33,7 @@
 
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-3);
 
   padding: var(--spacing-3) var(--spacing-4);
 
@@ -47,6 +48,24 @@
   @include mixins.hover {
     background-color: var(--surface-container);
   }
+}
+
+.rowSelected {
+  background-color: var(--surface-container);
+}
+
+.rowStart {
+  display: flex;
+
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--spacing-3);
+
+  min-width: 0;
+}
+
+.checkbox {
+  flex-shrink: 0;
 }
 
 .info {

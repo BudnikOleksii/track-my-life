@@ -4,6 +4,7 @@ import type { CategoryResponseDto } from '@track-my-life/shared/src/api/generate
 import type { FC } from 'react';
 
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
+import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,49 +16,79 @@ import {
   AlertDialogTitle,
 } from '@track-my-life/ui/src/components/molecules/alert-dialog/alert-dialog';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
-import { deleteCategory } from '../../actions/delete-category';
+import { useDeleteCategory } from './use-delete-category';
+
+const PARENT_COUNT = 1;
 
 interface DeleteCategoryDialogProps {
   category: CategoryResponseDto | null;
+  subcategoryList: CategoryResponseDto[];
   onClose: () => void;
   onSuccess: (categoryId: string) => void;
 }
 
 export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
   category,
+  subcategoryList,
   onClose,
   onSuccess,
 }) => {
   const translations = useTranslations(I18N_NAMESPACE.categoriesPage);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { isSubmitting, errorKey, hasSubcategories, handleConfirm, resetError } = useDeleteCategory(
+    { category, subcategoryList, onSuccess, translations },
+  );
 
-  const handleConfirm = useCallback(async () => {
-    if (!category) {
-      return;
-    }
+  const handleClose = useCallback(() => {
+    resetError();
+    onClose();
+  }, [onClose, resetError]);
 
-    setIsDeleting(true);
-    try {
-      const result = await deleteCategory(category.id);
-      if (result.ok) {
-        onSuccess(category.id);
-      }
-    } finally {
-      setIsDeleting(false);
-    }
-  }, [category, onSuccess]);
+  const confirmLabel = hasSubcategories
+    ? translations('content.cascadeDeleteConfirm', {
+        count: subcategoryList.length + PARENT_COUNT,
+      })
+    : translations('content.deleteButton');
+
+  const titleLabel = hasSubcategories
+    ? translations('content.cascadeDeleteTitle')
+    : translations('content.deleteButton');
+
+  const descriptionLabel = hasSubcategories
+    ? translations('content.cascadeDeleteBody', { count: subcategoryList.length })
+    : translations('content.deleteConfirm');
 
   return (
-    <AlertDialog open={Boolean(category)} onOpenChange={(open) => !open && onClose()}>
+    <AlertDialog
+      open={Boolean(category)}
+      onOpenChange={(open) => {
+        if (!open) {
+          handleClose();
+        }
+      }}
+    >
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
-          <AlertDialogTitle>{translations('content.deleteButton')}</AlertDialogTitle>
-          <AlertDialogDescription>{translations('content.deleteConfirm')}</AlertDialogDescription>
+          <AlertDialogTitle>{titleLabel}</AlertDialogTitle>
+          <AlertDialogDescription>{descriptionLabel}</AlertDialogDescription>
         </AlertDialogHeader>
+        {hasSubcategories && (
+          <ul>
+            {subcategoryList.map((child) => (
+              <li key={child.id}>
+                <Typography variant="body-s">{child.name}</Typography>
+              </li>
+            ))}
+          </ul>
+        )}
+        {errorKey && (
+          <Typography variant="body-s" data-error>
+            {translations(errorKey)}
+          </Typography>
+        )}
         <AlertDialogFooter>
           <AlertDialogCancel>
             <Button variant="outline" type="button">
@@ -70,8 +101,8 @@ export const DeleteCategoryDialog: FC<DeleteCategoryDialogProps> = ({
               await handleConfirm();
             }}
           >
-            <Button variant="destructive" disabled={isDeleting}>
-              {translations('content.deleteButton')}
+            <Button variant="destructive" disabled={isSubmitting}>
+              {confirmLabel}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
