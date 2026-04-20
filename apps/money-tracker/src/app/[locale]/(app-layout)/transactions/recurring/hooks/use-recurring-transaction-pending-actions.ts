@@ -22,7 +22,7 @@ export const useRecurringTransactionPendingActions = ({
         if (!result.ok) {
           toast.error(translations('content.pauseError'));
         }
-        setPendingId(null);
+        setPendingId((currentPendingId) => (currentPendingId === id ? null : currentPendingId));
       });
     },
     [translations],
@@ -36,7 +36,7 @@ export const useRecurringTransactionPendingActions = ({
         if (!result.ok) {
           toast.error(translations('content.resumeError'));
         }
-        setPendingId(null);
+        setPendingId((currentPendingId) => (currentPendingId === id ? null : currentPendingId));
       });
     },
     [translations],

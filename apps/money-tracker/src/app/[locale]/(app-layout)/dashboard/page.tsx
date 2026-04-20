@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { Skeleton } from '@track-my-life/ui/src/components/atoms/skeleton/skeleton';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
@@ -54,8 +54,10 @@ const WidgetSkeleton = () => (
 const widgetSkeletonFallback = <WidgetSkeleton />;
 
 const DashboardPage = async (props: Props) => {
-  await redirectIfNotOnboarded();
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
+  setRequestLocale(params.locale);
+  await redirectIfNotOnboarded();
+
   const filters = parseDashboardSearchParams(searchParams);
 
   const translations = await getTranslations({

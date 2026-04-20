@@ -4,7 +4,7 @@ import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation'
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
 import { Plus } from 'lucide-react';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import { redirectIfNotOnboarded } from '@/actions/redirect-if-not-onboarded';
@@ -41,8 +41,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const transactionsSkeletonFallback = <PageSkeleton count={8} height={56} />;
 
 const TransactionsPage = async (props: Props) => {
-  await redirectIfNotOnboarded();
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
+  setRequestLocale(params.locale);
+  await redirectIfNotOnboarded();
+
   const filters = parseTransactionSearchParams(searchParams);
 
   const translations = await getTranslations({

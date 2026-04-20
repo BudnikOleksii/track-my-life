@@ -55,9 +55,9 @@ const RecurringTransactionDetailServer = async ({ id }: { id: string }) => {
 };
 
 const RecurringTransactionDetailPage = async (props: Props) => {
-  await redirectIfNotOnboarded();
   const params = await props.params;
   setRequestLocale(params.locale);
+  await redirectIfNotOnboarded();
 
   return (
     <Suspense fallback={detailSkeletonFallback}>

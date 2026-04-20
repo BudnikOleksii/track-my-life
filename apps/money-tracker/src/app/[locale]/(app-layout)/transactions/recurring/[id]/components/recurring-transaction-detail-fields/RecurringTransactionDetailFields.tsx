@@ -1,5 +1,4 @@
 import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
-import type { FC } from 'react';
 
 import { formatDate, formatDateTime } from '@track-my-life/shared/src/utils/date/format';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
@@ -15,10 +14,10 @@ interface RecurringTransactionDetailFieldsProps {
   locale: string;
 }
 
-export const RecurringTransactionDetailFields: FC<RecurringTransactionDetailFieldsProps> = async ({
+export const RecurringTransactionDetailFields = async ({
   recurringTransaction,
   locale,
-}) => {
+}: RecurringTransactionDetailFieldsProps) => {
   const translations = await getTranslations(I18N_NAMESPACE.recurringTransactionsPage);
 
   return (

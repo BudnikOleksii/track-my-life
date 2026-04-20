@@ -42,9 +42,10 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const categoriesSkeletonFallback = <PageSkeleton count={5} height={48} />;
 
 const CategoriesSettingsPage = async (props: Props) => {
-  await redirectIfNotOnboarded();
   const [params, searchParams] = await Promise.all([props.params, props.searchParams]);
   setRequestLocale(params.locale);
+  await redirectIfNotOnboarded();
+
   const filters = parseCategorySearchParams(searchParams);
 
   const translations = await getTranslations({
