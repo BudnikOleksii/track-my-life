@@ -2,6 +2,7 @@ import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { convertFilterDateList } from '@track-my-life/shared/src/utils/convert-filter-date-list';
+import { getLocale } from 'next-intl/server';
 
 import { fetchCategoryList } from '@/actions/fetch-category-list';
 import { getTimezoneOffset } from '@/utils/get-timezone-offset';
@@ -11,6 +12,7 @@ import type { TransactionFilters } from '../../constants/transaction-filters';
 import { fetchTransactionList } from '../../actions/fetch-transaction-list';
 import { checkIsSortBy, checkIsSortOrder } from '../../constants/sort';
 import { TransactionsPageContent } from '../../page.content';
+import { TransactionList } from '../transaction-list/TransactionList';
 
 export const TransactionListServer: FC<TransactionFilters> = async ({
   page,
@@ -38,16 +40,20 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
     ...(normalizedSortOrder && { sortOrder: normalizedSortOrder }),
   };
 
-  const [result, categoryList] = await Promise.all([
+  const [result, categoryList, locale] = await Promise.all([
     fetchTransactionList(params),
     fetchCategoryList(),
+    getLocale(),
   ]);
+
+  const transactionList = result?.data ?? [];
+  const visibleIdList = transactionList.map((item) => item.id);
 
   return (
     <TransactionsPageContent
-      transactionList={result?.data ?? []}
       total={result?.total ?? EMPTY_LIST_LENGTH}
       categoryList={categoryList ?? []}
+      visibleIdList={visibleIdList}
       filters={{
         page,
         pageSize,
@@ -58,6 +64,8 @@ export const TransactionListServer: FC<TransactionFilters> = async ({
         sortBy: normalizedSortBy,
         sortOrder: normalizedSortOrder,
       }}
-    />
+    >
+      <TransactionList transactionList={transactionList} locale={locale} />
+    </TransactionsPageContent>
   );
 };

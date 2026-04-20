@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -9,6 +9,7 @@ import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 
 import { PageSkeleton } from '../../../components/page-skeleton/PageSkeleton';
 import { fetchRecurringTransaction } from '../actions/fetch-recurring-transaction';
+import { RecurringTransactionDetailFields } from './components/recurring-transaction-detail-fields/RecurringTransactionDetailFields';
 import { RecurringTransactionDetailContent } from './page.content';
 
 interface Props {
@@ -34,18 +35,29 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 const detailSkeletonFallback = <PageSkeleton count={8} height={40} />;
 
 const RecurringTransactionDetailServer = async ({ id }: { id: string }) => {
-  const recurringTransaction = await fetchRecurringTransaction(id);
+  const [recurringTransaction, locale] = await Promise.all([
+    fetchRecurringTransaction(id),
+    getLocale(),
+  ]);
 
   if (!recurringTransaction) {
     notFound();
   }
 
-  return <RecurringTransactionDetailContent recurringTransaction={recurringTransaction} />;
+  return (
+    <RecurringTransactionDetailContent recurringTransaction={recurringTransaction}>
+      <RecurringTransactionDetailFields
+        recurringTransaction={recurringTransaction}
+        locale={locale}
+      />
+    </RecurringTransactionDetailContent>
+  );
 };
 
 const RecurringTransactionDetailPage = async (props: Props) => {
-  await redirectIfNotOnboarded();
   const params = await props.params;
+  setRequestLocale(params.locale);
+  await redirectIfNotOnboarded();
 
   return (
     <Suspense fallback={detailSkeletonFallback}>

@@ -1,23 +1,15 @@
-'use client';
-
-import type {
-  RecurringTransactionResponseDto,
-  RecurringTransactionStatus,
-} from '@track-my-life/shared/src/api/generated/types.gen';
-import type { BadgeVariant } from '@track-my-life/ui/src/components/atoms/badge/badge';
+import type { RecurringTransactionResponseDto } from '@track-my-life/shared/src/api/generated/types.gen';
 import type { FC } from 'react';
 
-import { Link, useRouter } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
+import { Link } from '@track-my-life/next-shared/src/i18n/navigation/navigation';
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
 import { formatDate } from '@track-my-life/shared/src/utils/date/format';
 import { formatAmount } from '@track-my-life/shared/src/utils/format-amount';
 import { Badge } from '@track-my-life/ui/src/components/atoms/badge/badge';
 import { Button } from '@track-my-life/ui/src/components/atoms/button/button';
-import { Checkbox } from '@track-my-life/ui/src/components/atoms/checkbox/checkbox';
 import { Typography } from '@track-my-life/ui/src/components/atoms/typography/Typography';
-import { cn } from '@track-my-life/ui/src/lib/utils';
-import { Pencil, Repeat, Trash2, Pause, Play } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { Pencil, Repeat } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
 import {
   getRecurringTransactionsDetailPath,
@@ -26,51 +18,28 @@ import {
 import { I18N_NAMESPACE } from '@/i18n/constants/i18n-namespace';
 import { formatCategoryDisplayName } from '@/utils/format-category-display-name';
 
+import {
+  FREQUENCY_LABEL_KEY,
+  STATUS_BADGE_VARIANT_MAP,
+  STATUS_LABEL_KEY,
+} from '../../constants/recurring-transaction-display';
+import {
+  RecurringTransactionRowActions,
+  RecurringTransactionRowCheckbox,
+  RecurringTransactionRowSelectionStyle,
+} from '../recurring-transaction-row-actions/RecurringTransactionRowActions';
 import styles from './RecurringTransactionList.module.scss';
 
 interface RecurringTransactionListProps {
   recurringTransactionList: RecurringTransactionResponseDto[];
-  isPending?: boolean;
-  onDelete: (recurringTransaction: RecurringTransactionResponseDto) => void;
-  onPause: (id: string) => void;
-  onResume: (id: string) => void;
-  selectedIdSet: ReadonlySet<string>;
-  onToggleSelection: (id: string) => void;
-  isBulkDeleteSubmitting: boolean;
+  locale: string;
 }
 
-const STATUS_BADGE_VARIANT_MAP: Record<RecurringTransactionStatus, BadgeVariant> = {
-  ACTIVE: 'success',
-  PAUSED: 'warning',
-  CANCELLED: 'destructive',
-} as const;
-
-const FREQUENCY_LABEL_KEY = {
-  DAILY: 'content.dailyFrequency',
-  WEEKLY: 'content.weeklyFrequency',
-  MONTHLY: 'content.monthlyFrequency',
-  YEARLY: 'content.yearlyFrequency',
-} as const;
-
-const STATUS_LABEL_KEY = {
-  ACTIVE: 'content.activeStatus',
-  PAUSED: 'content.pausedStatus',
-  CANCELLED: 'content.cancelledStatus',
-} as const;
-
-export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
+export const RecurringTransactionList: FC<RecurringTransactionListProps> = async ({
   recurringTransactionList,
-  isPending,
-  onDelete,
-  onPause,
-  onResume,
-  selectedIdSet,
-  onToggleSelection,
-  isBulkDeleteSubmitting,
+  locale,
 }) => {
-  const translations = useTranslations(I18N_NAMESPACE.recurringTransactionsPage);
-  const locale = useLocale();
-  const router = useRouter();
+  const translations = await getTranslations(I18N_NAMESPACE.recurringTransactionsPage);
 
   if (recurringTransactionList.length === EMPTY_LIST_LENGTH) {
     return (
@@ -89,22 +58,22 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
   return (
     <div className={styles.list}>
       {recurringTransactionList.map((item) => {
-        const isSelected = selectedIdSet.has(item.id);
         const selectLabel = translations('content.bulkDelete.selectRowLabel', {
           amount: formatAmount(item.amount, item.currencyCode),
           category: formatCategoryDisplayName(item.category),
         });
 
         return (
-          <div key={item.id} className={cn(styles.row, isSelected && styles.rowSelected)}>
-            <Checkbox
+          <RecurringTransactionRowSelectionStyle
+            key={item.id}
+            recurringTransactionId={item.id}
+            baseClassName={styles.row}
+            selectedClassName={styles.rowSelected}
+          >
+            <RecurringTransactionRowCheckbox
+              recurringTransactionId={item.id}
+              selectLabel={selectLabel}
               className={styles.checkbox}
-              checked={isSelected}
-              disabled={isBulkDeleteSubmitting}
-              aria-label={selectLabel}
-              onCheckedChange={() => {
-                onToggleSelection(item.id);
-              }}
             />
             <Link href={getRecurringTransactionsDetailPath(item.id)} className={styles.info}>
               <div className={styles.primary}>
@@ -138,54 +107,23 @@ export const RecurringTransactionList: FC<RecurringTransactionListProps> = ({
               )}
             </Link>
             <div className={styles.actions}>
-              {item.status === 'ACTIVE' && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={isPending}
-                  onClick={() => {
-                    onPause(item.id);
-                  }}
-                  aria-label={translations('content.pauseButton')}
-                >
-                  <Pause size={14} />
-                </Button>
-              )}
-              {item.status === 'PAUSED' && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  disabled={isPending}
-                  onClick={() => {
-                    onResume(item.id);
-                  }}
-                  aria-label={translations('content.resumeButton')}
-                >
-                  <Play size={14} />
-                </Button>
-              )}
               <Button
+                component={Link}
+                href={getRecurringTransactionsEditPath(item.id)}
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  router.push(getRecurringTransactionsEditPath(item.id));
-                }}
                 aria-label={translations('content.editButton')}
               >
                 <Pencil size={14} />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  onDelete(item);
-                }}
-                aria-label={translations('content.deleteButton')}
-              >
-                <Trash2 size={14} />
-              </Button>
+              <RecurringTransactionRowActions
+                recurringTransaction={item}
+                pauseLabel={translations('content.pauseButton')}
+                resumeLabel={translations('content.resumeButton')}
+                deleteLabel={translations('content.deleteButton')}
+              />
             </div>
-          </div>
+          </RecurringTransactionRowSelectionStyle>
         );
       })}
     </div>

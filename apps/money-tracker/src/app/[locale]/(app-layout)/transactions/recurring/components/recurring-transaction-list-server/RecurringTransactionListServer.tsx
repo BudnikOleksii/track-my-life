@@ -1,14 +1,13 @@
 import type { FC } from 'react';
 
 import { EMPTY_LIST_LENGTH } from '@track-my-life/shared/src/constants/list';
-
-import { normalizeParam } from '@/constants/normalize-param';
+import { getLocale } from 'next-intl/server';
 
 import type { RecurringTransactionFilterStatus } from '../../constants/recurring-transaction-list';
 
 import { fetchRecurringTransactionList } from '../../actions/fetch-recurring-transaction-list';
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '../../constants/recurring-transaction-list';
 import { RecurringTransactionsPageContent } from '../../page.content';
+import { RecurringTransactionList } from '../recurring-transaction-list/RecurringTransactionList';
 
 interface RecurringTransactionListServerProps {
   page: number;
@@ -27,28 +26,20 @@ export const RecurringTransactionListServer: FC<RecurringTransactionListServerPr
     ...(status !== 'ALL' && { status }),
   };
 
-  const result = await fetchRecurringTransactionList(params);
+  const [result, locale] = await Promise.all([fetchRecurringTransactionList(params), getLocale()]);
+  const recurringTransactionList = result?.data ?? [];
+  const visibleIdList = recurringTransactionList.map((item) => item.id);
 
   return (
     <RecurringTransactionsPageContent
-      recurringTransactionList={result?.data ?? []}
       total={result?.total ?? EMPTY_LIST_LENGTH}
       filters={{ page, pageSize, status }}
-    />
+      visibleIdList={visibleIdList}
+    >
+      <RecurringTransactionList
+        recurringTransactionList={recurringTransactionList}
+        locale={locale}
+      />
+    </RecurringTransactionsPageContent>
   );
-};
-
-const VALID_STATUS_SET = new Set(['ACTIVE', 'PAUSED', 'CANCELLED']);
-
-export const parseRecurringTransactionSearchParams = (
-  searchParams: Record<string, string | string[] | undefined>,
-) => {
-  const page = Number(normalizeParam(searchParams.page)) || DEFAULT_PAGE;
-  const pageSize = Number(normalizeParam(searchParams.pageSize)) || DEFAULT_PAGE_SIZE;
-  const rawStatus = normalizeParam(searchParams.status);
-  const status: RecurringTransactionFilterStatus = VALID_STATUS_SET.has(rawStatus)
-    ? (rawStatus as RecurringTransactionFilterStatus)
-    : 'ALL';
-
-  return { page, pageSize, status };
 };
